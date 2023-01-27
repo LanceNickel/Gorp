@@ -26,3 +26,11 @@ The C.U.M. has been installed and a basic server has been created.
 5. Change `eula=false` to `eula=true`
 6. Press `CTL + X`, `Y`, `ENTER` to save and quit the text editor.
 7. Now, start the server with `sudo mcstart server`
+
+### Wrapping up
+Congratulations! You have now installed the C.U.M. and started up your Minecraft server.
+
+## Next steps
+Customize your server.properties file to change the settings you want. Learn more about server.properties [here](https://minecraft.fandom.com/wiki/Server.properties)
+
+Learn more about the C.U.M. on the Getting Started wiki page: LINK
