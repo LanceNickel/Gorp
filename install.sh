@@ -25,7 +25,7 @@ echo -e "\nDownloading required software..."
 sleep 2
 echo
 apt-get update
-apt-get install apt-transport-https curl wget jq -y
+apt-get install apt-transport-https curl wget jq screen -y
 
 sleep 2
 
