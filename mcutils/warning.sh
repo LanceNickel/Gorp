@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 
-# THIS IS THE IN-GAME SERVER ACTION WARNING SCRIPT
-# This is a utility function (ends in .sh), it should not be called directly by the command line user.
-# This should not need to be updated outside of updates to functionality of the program itself.
+### [IN-GAME WARNING WORKER] #######################################
+#   Description:  Worker script that warns players via server chat.
+#   Parameters:   1: (required) Server directory name
+#                 2: (required) <stop, restart, power>
 
-# PARAMS:
-# 1: Server directory name -- required!
-# 2: Action: <stop, restart, power> -- Required!
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
 
 
+
+# PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
         echo "(worker) WARNING: Insufficient privilege. Warning failed."
@@ -17,10 +21,18 @@ fi
 
 
 
+# SCRIPT VARIBLES
+
 SERVER=$1
 ACTION=$2
 
 
+
+####
+
+
+
+# SEND WARNING MESSAGE
 
 echo "(worker) WARNING: Sending $ACTION warning in the chat and waiting 30 seconds..."
 
@@ -30,6 +42,10 @@ if [ $ACTION == "power" ]; then
 else
         screen -S $SERVER -X stuff "say ATTENTION: This server will $ACTION in 30 seconds.\n"
 fi
+
+
+
+# WAIT 30 SECONDS
 
 NOT30=true
 I=0
@@ -44,5 +60,7 @@ do
                 NOT30=false
         fi
 done
+
+
 
 echo -ne "\n"

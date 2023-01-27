@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 
-# THIS IS THE STARTUP SCRIPT!
-# This is a utility function (ends in .sh), it should not be called directly by the command line user.
-# This should not need to be updated outside of updates to functionality of the program itself.
+### [STARTUP WORKER] ##############################################
+#   Description:  Worker script that performs the startup tasks.
+#   Parameters:   1: (required) Server directory name
 
-# PARAMS:
-# 1: Server directory name -- Required!
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
 
 
+
+# PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
     echo "(worker) STARTUP: Insufficient privilege. Startup failed."
@@ -16,12 +20,19 @@ fi
 
 
 
+# SCRIPT VARIABLES
+
 SERVER=$1
 PORT=$(cat /minecraft/servers/$SERVER/server.properties | grep server-port | cut -d "=" -f 2)
 
 
 
-# check if screen already running
+####
+
+
+
+# SCREEN ALREADY EXISTS GUARD
+
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
     echo "(worker) STARTUP: Screen '$SERVER' already exists. Startup failed."
     exit
@@ -29,9 +40,14 @@ fi
 
 
 
-# start a new screen with server name, run run.sh within that server's directory to start it up
+# CREATE NEW SCREEN, EXECUTE SERVER'S RUN SCRIPT INSIDE
+
 echo "(worker) STARTUP: Starting server in a screen named '$SERVER'..."
 sudo screen -d -m -S "$SERVER" /minecraft/servers/$SERVER/run.sh
+
+
+
+# WAIT FOR PORT TO COME ALIVE
 
 PORT_ALIVE=false
 

@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
-# THIS IS THE POWER OUTAGE SCRIPT!
-# This should not need to be updated outside of updates to functionality of the program itself.
+### [MCPOWER] #####################################################
+#   Description:  Shut down all servers during a power outage
+#   Parameters:   None
 
-# PARAMS:
-# None
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
 
 
+
+# PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
     echo "POWER OUTAGE SHUTDOWN: Insufficient privilege. Shutdown failed."
@@ -15,7 +20,12 @@ fi
 
 
 
-# for each server, call the shutdown worker, passing server name and "power" as params
+####
+
+
+
+# FOR EACH SERVER, RUN SHUTDOWN WORKER WITH POWER PARAM
+
 for d in "/minecraft/servers/"*
 do
         SERVER=$(echo $(basename "$d"))

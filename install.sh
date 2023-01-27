@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
-# THIS IS THE INSTALLER SCRIPT!
-# This should not need to be updated outside of updates to functionality of the program itself.
+### [INSTALLER] ####################################################
+#   Description:  Installs dependencies and installs script files.
+#   Parameters:   None
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
 
 
+
+# PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
     echo "This installer must be run as root. Use 'sudo !!' to do this again as root."
@@ -12,18 +20,21 @@ fi
 
 
 
-sleep 1
+####
 
 
 
-echo -e "\nWelcome to The Minecraft C.U.M. (Commandline Utility Mechanism)"
-sleep 2
+# WELCOME
 
-# Download required software...
+echo -e "\NWelcome to The Minecraft C.U.M. (Commandline Utility Mechanism)"
+sleep 0.5
+
+
+
+# APT-GET DEPENDENCIES
 
 echo -e "\nDownloading required software..."
-sleep 2
-echo
+sleep 0.5
 apt-get update
 apt-get install apt-transport-https curl wget jq screen -y
 
@@ -31,20 +42,20 @@ sleep 2
 
 
 
-
-# Install...
-
 echo -e "\n\nInstalling..."
 
 
-# Change permissions
-chmod +x cum.conf
+
+# MAKE SCRIPTS +X
+
 chmod +x mc*
 chmod +x -R mcutils/
 chmod +x *.sh
 
 
-# Create required directories
+
+# CREATE REQUIRED DIRS
+
 mkdir /bin/mcutils
 mkdir /minecraft
 mkdir /minecraft/backups
@@ -54,7 +65,9 @@ mkdir /minecraft/tmp
 mkdir /minecraft/servers/server
 
 
-# Move files to proper locations
+
+# MOVE FILES
+
 mv mcbackup /bin/mcbackup
 mv mcpower /bin/mcpower
 mv mcrestart /bin/mcrestart
@@ -73,29 +86,22 @@ mv run.sh /minecraft/servers/server/
 
 
 
-
-# Clean up...
+# CLEAN UP
 rm -rf mcutils
 
 
 
-
-# Get server JAR file...
+# RUN MCUPDATE TO GET & SET JAR FILE
 
 echo -e "Getting latest Paper JAR file..."
-
-
-# Execute mcupdate to get latest file
 sleep 1
-echo
 /bin/mcupdate
 
 sleep 2
 
 
 
-
-# Finished, but...
+# FINISHED, SHOW WARNING
 
 echo -e "INSTALLATION FINISHED!\nHowever,"
 sleep 1

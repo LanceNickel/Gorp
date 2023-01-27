@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
-# THIS IS THE IN-SERVER-DIRECTORY RUN SCRIPT
-# This is a utility function (ends in .sh), it should not be called directly by the command line user.
-# This should not need to be updated outside of updates to functionality of the program itself.
+### [RUN SERVER IN-DIRECTORY WORKER] ##############################
+#   Description:  Worker that actually executes a server JAR.
+#   Parameters:   None
+#   Global Conf:  RAM
 
-# PARAMS:
-# None
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
 
 
 
@@ -24,13 +27,17 @@ JAR=$(cat /minecraft/jars/latest)
 
 
 
-
-
+# SCRIPT VARIABLES
 
 RAM=$(cat /minecraft/cum.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
 
 
 
+####
+
+
+
+# EXECUTE SERVER, WAIT FOR PROCESS TO DIE
 
 while [ true ]; do
         java -Xmx$RAM -Xms$RAM -jar $JAR nogui

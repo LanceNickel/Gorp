@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 
-# THIS IS THE SHUT DOWN SCRIPT!
-# This is a utility function (ends in .sh), it should not be called directly by the command line user.
-# This should not need to be updated outside of updates to functionality of the program itself.
+### [SHUTDOWN WORKER] #############################################
+#   Description:  Worker script that performs the shutdown tasks.
+#   Parameters:   1: (required) Server directory name
 
-# PARAMS:
-# 1: Server directory name -- Required!
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
 
 
+
+# PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
         echo "(worker) SHUTDOWN: Insufficient privilege. Shutdown failed."
@@ -16,24 +20,33 @@ fi
 
 
 
-# check if screen is running
+# SCREEN NOT RUNNING GUARD
+
 if [[ $(screen -ls | grep "$SERVER")  = "" ]]; then
         echo "(worker) SHUTDOWN: Screen '$SERVER' is not running. Shutdown failed."
 fi
 
 
 
+# SCRIPT VARIABLES
+
 SERVER=$1
 
 
 
-# issue stop command to server
+####
+
+
+
+# STOP SERVER
+
 echo "(worker) SHUTDOWN: Stopping server..."
 screen -S $SERVER -X stuff 'stop\n'
 
 
 
-# wait for screen to terminate
+# WAIT FOR SCREEN TO TERMINATE
+
 I=0
 SCREEN=true
 
@@ -65,5 +78,7 @@ do
 
         sleep 3
 done
+
+
 
 echo "(worker) SHUTDOWN: Shutdown complete."
