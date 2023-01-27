@@ -20,4 +20,9 @@ The C.U.M. has been installed and a basic server has been created.
 
 ### Initial server setup
 1. Go to the default Minecraft server directory: `cd /minecraft/servers/server`
-2. 
+2. Execute run.sh: `sudo ./run.sh`
+3. The server will show errors. This is normal! Wait for the "THIS SERVER HAS STOPPED! warning, then press any key.
+4. Read and accept the EULA: `sudo nano eula.txt`
+5. Change `eula=false` to `eula=true`
+6. Press `CTL + X`, `Y`, `ENTER` to save and quit the text editor.
+7. Now, start the server with `sudo mcstart`
