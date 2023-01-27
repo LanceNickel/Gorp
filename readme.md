@@ -31,6 +31,6 @@ The C.U.M. has been installed and a basic server has been created.
 Congratulations! You have now installed the C.U.M. and started up your Minecraft server.
 
 ## Next steps
-Customize your server.properties file to change the settings you want. Learn more about server.properties [here](https://minecraft.fandom.com/wiki/Server.properties)
+Customize your server.properties file to change the settings you want. [Learn more about server.properties](https://minecraft.fandom.com/wiki/Server.properties)
 
-Learn more about the C.U.M. on the Getting Started wiki page: LINK
+Learn more about the C.U.M. on the [Getting Started wiki page](https://github.com/LanceNickel/mc-cum/wiki/Getting-Started).
