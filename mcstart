@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# THIS IS THE START SCRIPT!
+# This should not need to be updated outside of updates to functionality of the program itself.
+
+# PARAMS:
+# 1: Server directory name -- Required!
+
+
+
+if [[ "$EUID" != 0 ]]; then
+        echo "STARTUP: Insufficient privilege. Startup failed."
+        exit
+fi
+
+
+
+SERVER=$1
+
+
+
+# check to make sure server exists
+if [ -d "/minecraft/servers/$SERVER" ]; then
+    cd /minecraft/servers/$SERVER
+else
+    echo "STARTUP: Specified server doesn't exist. Startup failed."
+    exit
+fi
+
+
+
+/bin/mcutils/start.sh $SERVER
+echo -e "\n"

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# THIS IS THE POWER OUTAGE SCRIPT!
+# This should not need to be updated outside of updates to functionality of the program itself.
+
+# PARAMS:
+# None
+
+
+
+if [[ "$EUID" != 0 ]]; then
+    echo "POWER OUTAGE SHUTDOWN: Insufficient privilege. Shutdown failed."
+    exit
+fi
+
+
+
+# for each server, call the shutdown worker, passing server name and "power" as params
+for d in "/minecraft/servers/"*
+do
+        SERVER=$(echo $(basename "$d"))
+        /bin/mcstop $SERVER power
+done

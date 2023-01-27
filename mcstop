@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+# THIS IS THE SHUT DOWN SCRIPT!
+# This should not need to be updated outside of updates to functionality of the program itself.
+
+# PARAMS:
+# 1: Server directory name -- Required!
+# 2: Speed: <fast, now, power> -- Optional.
+
+
+
+if [[ "$EUID" != 0 ]]; then
+    echo "SHUTDOWN: Insufficient privilege. Shutdown failed."
+    exit
+fi
+
+
+
+SERVER=$1
+ARG=$2
+
+
+
+# check to make sure server exists
+if [ -d "/minecraft/servers/$SERVER" ]; then
+    cd /minecraft/servers/$SERVER
+else
+    echo "SHUTDOWN: Specified server doesn't exist. Shutdown failed."
+    exit
+fi
+
+
+
+# no speed parameter passed, this will be a normal speed shutdown
+if [ -z "$ARG" ]; then
+    /bin/mcutils/backup.sh $SERVER
+    /bin/mcutils/warning.sh $SERVER stop
+    /bin/mcutils/shutdown.sh $SERVER
+
+# 'power' arg, no backup shutdown with power outage warning
+elif [ $ARG == "power" ]; then
+    /bin/mcutils/warning.sh $SERVER power
+    /bin/mcutils/shutdown.sh $SERVER
+
+# 'fast' arg, no backup will be taken
+elif [ $ARG == "fast" ]; then
+    /bin/mcutils/warning.sh $SERVER stop
+    /bin/mcutils/shutdown.sh $SERVER
+
+# 'now' arg, no backup or warning will be done
+elif [ $ARG == "now" ]; then
+    /bin/mcutils/shutdown.sh $SERVER
+
+else
+    echo "SHUTDOWN: Invalid second parameter. Shutdown failed."
+fi
+
+echo -e "\n"

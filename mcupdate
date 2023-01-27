@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# THIS IS THE UPDATE SCRIPT!
+# SETTINGS:
+
+GAMEVER=1.19.3
+
+# PARAMS:
+# None
+
+
+
+if [[ "$EUID" != 0 ]]; then
+    echo "UPDATE: Insufficient privilege. Update failed."
+    exit
+fi
+
+
+
+/bin/mcutils/update.sh
+
+echo -e "\n"

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# THIS IS THE RESTART SCRIPT!
+# This should not need to be updated outside of updates to functionality of the program itself.
+
+# PARAMS:
+# 1: Server directory name -- Required!
+
+
+
+if [[ "$EUID" != 0 ]]; then
+        echo "BACKUP: Insufficient privilege. Backup failed."
+        exit
+fi
+
+
+
+SERVER=$1
+
+
+
+# check to make sure server exists
+if [ -d "/minecraft/servers/$SERVER" ]; then
+    # we can continue
+    sleep 0.005
+else
+    echo "BACKUP: Specified server doesn't exist. Backup failed."
+    exit
+fi
+
+
+
+/bin/mcutils/backup.sh $SERVER
+
+echo -e "\n"

@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# THIS IS THE RESTART SCRIPT!
+# This should not need to be updated outside of updates to functionality of the program itself.
+
+# PARAMS:
+# 1: Server directory name -- Required!
+# 2: Speed: <fast, now> -- Optional.
+
+
+
+if [[ "$EUID" != 0 ]]; then
+    echo "RESTART: Insufficient privilege. Restart failed."
+    exit
+fi
+
+
+
+SERVER=$1
+SPEED=$2
+
+
+
+# check to make sure server exists
+if [ -d "/minecraft/servers/$SERVER" ]; then
+    cd /minecraft/servers/$SERVER
+else
+    echo "RESTART: Specified server doesn't exist. Restart failed."
+    exit
+fi
+
+
+
+# no speed parameter passed, this will be a normal speed restart
+if [ -z "$SPEED" ]; then
+    /bin/mcutils/backup.sh $SERVER
+    /bin/mcutils/warning.sh $SERVER restart
+    /bin/mcutils/shutdown.sh $SERVER
+    /bin/mcutils/start.sh $SERVER
+
+# fast speed parameter, no backup will be taken
+elif [ $SPEED == "fast" ]; then
+    /bin/mcutils/warning.sh $SERVER stop
+    /bin/mcutils/shutdown.sh $SERVER
+    /bin/mcutils/start.sh $SERVER
+
+# now speed parameter, no backup or warning will be done
+elif [ $SPEED == "now" ]; then
+    /bin/mcutils/shutdown.sh $SERVER
+    /bin/mcutils/start.sh $SERVER
+
+else
+    echo "RESTART: Invalid second parameter. Restart failed."
+    exit
+fi
+
+echo -e "\n"
