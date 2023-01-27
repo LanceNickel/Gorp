@@ -74,26 +74,21 @@ fi
 
 # MOVE FILES
 
-mv mcbackup /bin/mcbackup
-mv mcpower /bin/mcpower
-mv mcrestart /bin/mcrestart
-mv mcstart /bin/mcstart
-mv mcstop /bin/mcstop
-mv mcupdate /bin/mcupdate
+cp mcbackup /bin/mcbackup
+cp mcpower /bin/mcpower
+cp mcrestart /bin/mcrestart
+cp mcstart /bin/mcstart
+cp mcstop /bin/mcstop
+cp mcupdate /bin/mcupdate
 
-mv mcutils/backup.sh /bin/mcutils/backup.sh
-mv mcutils/shutdown.sh /bin/mcutils/shutdown.sh
-mv mcutils/start.sh /bin/mcutils/start.sh
-mv mcutils/update.sh /bin/mcutils/update.sh
-mv mcutils/warning.sh /bin/mcutils/warning.sh
+cp mcutils/backup.sh /bin/mcutils/backup.sh
+cp mcutils/shutdown.sh /bin/mcutils/shutdown.sh
+cp mcutils/start.sh /bin/mcutils/start.sh
+cp mcutils/update.sh /bin/mcutils/update.sh
+cp mcutils/warning.sh /bin/mcutils/warning.sh
 
-mv cum.conf /minecraft
-mv run.sh /minecraft/servers/server/
-
-
-
-# CLEAN UP
-rm -rf mcutils
+cp cum.conf /minecraft
+cp run.sh /minecraft/servers/server/
 
 
 

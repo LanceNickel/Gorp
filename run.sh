@@ -42,7 +42,7 @@ RAM=$(cat /minecraft/cum.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
 while [ true ]; do
         java -Xmx$RAM -Xms$RAM -jar $JAR nogui
 
-        echo "\n\n THIS SERVER HAS STOPPED! Press any key to prevent restart."
+        echo -e "\n\n THIS SERVER HAS STOPPED! Press any key to prevent restart."
 
         read -t 5 input;
 
