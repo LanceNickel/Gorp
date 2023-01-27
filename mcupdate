@@ -18,5 +18,3 @@ fi
 
 
 /bin/mcutils/update.sh
-
-echo -e "\n"

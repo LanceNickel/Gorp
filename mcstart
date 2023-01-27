@@ -30,4 +30,3 @@ fi
 
 
 /bin/mcutils/start.sh $SERVER
-echo -e "\n"

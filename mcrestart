@@ -53,5 +53,3 @@ else
     echo "RESTART: Invalid second parameter. Restart failed."
     exit
 fi
-
-echo -e "\n"

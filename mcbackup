@@ -31,5 +31,3 @@ fi
 
 
 /bin/mcutils/backup.sh $SERVER
-
-echo -e "\n"
