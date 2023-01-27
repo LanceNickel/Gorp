@@ -14,6 +14,6 @@ OpenJDK 64-Bit Server VM (build 17.0.5+8-Ubuntu-2ubuntu122.04, mixed mode, shari
 1. SSH into your (soon to be) Minecraft server.
 2. Go to your home directory: `cd`
 3. Make a new folder called install: `mkdir install && cd install`
-4. Run `git clone https://github.com/LanceNickel/mc-cum/`
+4. Run `git clone https://github.com/LanceNickel/mc-cum/ && cd mc-cum`
 5. Run `chmod +x install.sh`
 6. Run `sudo ./install.sh`
