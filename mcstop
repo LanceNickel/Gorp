@@ -32,6 +32,19 @@ ARG=$2
 
 
 
+# PARAM GUARD
+
+if [ "$SERVER" = "" ]; then
+    echo "SHUTDOWN: Please specify a server"
+    exit
+
+elif [ "$SERVER" == 'fast' ] || [ "$SERVER" == 'now' ] || [ "$SERVER" == 'power' ]; then
+    echo "SHUTDOWN: Malformed command. Expected form: 'mcstop <server> <argument>'"
+    exit
+fi
+
+
+
 # SERVER DIRECTORY GUARD
 
 if [ -d "/minecraft/servers/$SERVER" ]; then
@@ -39,6 +52,14 @@ if [ -d "/minecraft/servers/$SERVER" ]; then
 else
     echo "SHUTDOWN: Specified server doesn't exist. Shutdown failed."
     exit
+fi
+
+
+
+# NO SCREEN GUARD
+if [[ $(screen -ls | grep "$SERVER")  = "" ]]; then
+        echo "SHUTDOWN: Screen '$SERVER' is not running. Seems '$SERVER' is already stopped."
+        exit
 fi
 
 

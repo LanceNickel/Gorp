@@ -30,6 +30,15 @@ SERVER=$1
 
 
 
+# PARAM GUARD
+
+if [ "$SERVER" = "" ]; then
+    echo "STARTUP: Please specify a server."
+    exit
+fi
+
+
+
 # SERVER DIRECTORY GUARD
 
 if [ -d "/minecraft/servers/$SERVER" ]; then
@@ -37,6 +46,15 @@ if [ -d "/minecraft/servers/$SERVER" ]; then
 else
     echo "STARTUP: Specified server doesn't exist. Startup failed."
     exit
+fi
+
+
+
+# SCREEN GUARD
+
+if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
+        echo "STARTUP: Screen '$SERVER' already exists. Seems '$SERVER' is already running."
+        exit
 fi
 
 

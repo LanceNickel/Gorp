@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 
 ### [MCRESTART] ###################################################
@@ -32,6 +33,19 @@ SPEED=$2
 
 
 
+# PARAM GUARD
+
+if [ "$SERVER" = "" ]; then
+    echo "RESTART: Please specify a server"
+    exit
+
+elif [ "$SERVER" == 'fast' ] || [ "$SERVER" == 'now' ] || [ "$SERVER" == 'power' ]; then
+    echo "RESTART: Malformed command. Expected form: 'mcstop <server> <argument>'"
+    exit
+fi
+
+
+
 # SERVER DIRECTORY GUARD
 
 if [ -d "/minecraft/servers/$SERVER" ]; then
@@ -39,6 +53,15 @@ if [ -d "/minecraft/servers/$SERVER" ]; then
 else
     echo "RESTART: Specified server doesn't exist. Restart failed."
     exit
+fi
+
+
+
+# NO SCREEN GUARD
+
+if [[ $(screen -ls | grep "$SERVER")  = "" ]]; then
+        echo "RESTART: Screen '$SERVER' is not running. Seems '$SERVER' is already stopped."
+        exit
 fi
 
 

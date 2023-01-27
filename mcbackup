@@ -30,6 +30,15 @@ SERVER=$1
 
 
 
+# PARAM GUARD
+
+if [ "$SERVER" = "" ]; then
+    echo "BACKUP: Please specify a server"
+    exit
+fi
+
+
+
 # SERVER DIRECTORY GUARD
 
 if [ -d "/minecraft/servers/$SERVER" ]; then
