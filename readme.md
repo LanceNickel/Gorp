@@ -1,10 +1,32 @@
+# The C.U.M. (Commandline Utility Mechanism)
+Hello! I created this small jumble of shell scripts to help automate my Minecraft server and thought I'd polish it a bit and put it here. It is by no means the most advanced Minecraft utility, and it could probably be written better. However, it is very simple to install, update, and uninstall.
+
+Below are the requirements and installation instructions for this software. It will take you from no Minecraft (not even a JAR file) to an online server.
+
+
+
+
 ## Requirements
 * At least 8GB RAM (for decent Minecraft server performance)
 * At least 120GB storage (for world saves and local backups)
 * Debian or Debian-based distro (Tested on: Debian 11, Ubuntu Server 20.04 LTS, Mint 21.1)
 
 
+
+
+## Notices
+The C.U.M. will update or install the following packages and their dependencies:
+* apt-transport-https
+* curl
+* wget
+* jq
+* screen
+
+
+
+
 ## Installation instructions
+
 ### Install Java 17
 1. Run `sudo apt update`
 2. Run `sudo apt install openjdk-17-jdk openjdk-17-jre`
@@ -16,6 +38,7 @@ OpenJDK Runtime Environment (build 17.0.5+8-Ubuntu-2ubuntu122.04)
 OpenJDK 64-Bit Server VM (build 17.0.5+8-Ubuntu-2ubuntu122.04, mixed mode, sharing)
 ```
 
+
 ### Download and install the C.U.M.
 1. SSH into your (soon to be) Minecraft server.
 2. Go to your home directory: `cd`
@@ -23,6 +46,7 @@ OpenJDK 64-Bit Server VM (build 17.0.5+8-Ubuntu-2ubuntu122.04, mixed mode, shari
 4. Run `chmod +x install.sh`
 5. Run `sudo ./install.sh`
 The C.U.M. has been installed and a basic server has been created.
+
 
 ### Initial server setup
 1. Go to the default Minecraft server directory: `cd /minecraft/servers/server`
@@ -33,8 +57,12 @@ The C.U.M. has been installed and a basic server has been created.
 6. Press `CTL + X`, `Y`, `ENTER` to save and quit the text editor.
 7. Now, start the server with `sudo mcstart server`
 
+
 ### Wrapping up
 Congratulations! You have now installed the C.U.M. and started up your Minecraft server.
+
+
+
 
 ## Next steps
 Customize your server.properties file to change the settings you want. [Learn more about server.properties](https://minecraft.fandom.com/wiki/Server.properties).
