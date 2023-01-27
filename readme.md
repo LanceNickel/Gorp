@@ -45,7 +45,13 @@ OpenJDK 64-Bit Server VM (build 17.0.5+8-Ubuntu-2ubuntu122.04, mixed mode, shari
 3. Run `git clone https://github.com/LanceNickel/mc-cum/ && cd mc-cum`
 4. Run `chmod +x install.sh`
 5. Run `sudo ./install.sh`
+
 The C.U.M. has been installed and a basic server has been created.
+
+#### HEADS UP: If you received a warning message:
+If you received a warning message about the `/minecraft` directory already existing, please read this.
+
+During install, the installer script noticed that your computer already has a directory named "minecraft" in the root. Because this could be from a previous install of this utility, or previous use, the installer skips these directories. This is to prevent potential catastrophic data loss.
 
 
 ### Initial server setup

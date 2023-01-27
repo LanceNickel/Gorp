@@ -27,7 +27,7 @@ fi
 
 # WELCOME
 
-echo -e "\NWelcome to The Minecraft C.U.M. (Commandline Utility Mechanism)"
+echo -e "Welcome to The Minecraft C.U.M. (Commandline Utility Mechanism)"
 sleep 0.5
 
 
@@ -50,4 +50,4 @@ rm -rf /bin/mcutils
 
 sleep 1
 
-echo -e "\nThe Minecraft C.U.M. (Commandline Utility Mechanism) has been uninstalled.\n"
+echo -e "The Minecraft C.U.M. (Commandline Utility Mechanism) has been uninstalled."

@@ -26,7 +26,7 @@ fi
 
 # WELCOME
 
-echo -e "\NWelcome to The Minecraft C.U.M. (Commandline Utility Mechanism)"
+echo -e "\nWelcome to The Minecraft C.U.M. (Commandline Utility Mechanism)"
 sleep 0.5
 
 
@@ -42,7 +42,7 @@ sleep 2
 
 
 
-echo -e "\n\nInstalling..."
+echo -e "Installing..."
 
 
 
@@ -57,12 +57,18 @@ chmod +x *.sh
 # CREATE REQUIRED DIRS
 
 mkdir /bin/mcutils
-mkdir /minecraft
-mkdir /minecraft/backups
-mkdir /minecraft/jars
-mkdir /minecraft/servers
-mkdir /minecraft/tmp
-mkdir /minecraft/servers/server
+
+if [ -d "/minecraft" ]; then
+    WARN=true
+else
+    WARN=false
+    mkdir /minecraft
+    mkdir /minecraft/backups
+    mkdir /minecraft/jars
+    mkdir /minecraft/servers
+    mkdir /minecraft/tmp
+    mkdir /minecraft/servers/server
+fi
 
 
 
@@ -103,7 +109,7 @@ sleep 2
 
 # FINISHED, SHOW WARNING
 
-echo -e "INSTALLATION FINISHED!\nHowever,"
+echo -e "\nINSTALLATION FINISHED!\nHowever,"
 sleep 1
 echo -e "\nYOU"
 sleep 0.5
@@ -114,3 +120,7 @@ sleep 0.5
 echo "YET"
 sleep 1
 echo -e "\nPlease continue to follow the installation instructions.\n"
+
+if [ $WARN ]; then
+    echo -e "WARNING: '/minecraft' directory already exists. Refer to installation instructions for more info:\nhttps://github.com/LanceNickel/mc-cum/blob/main/readme.md\n"
+fi
