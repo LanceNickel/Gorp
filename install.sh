@@ -40,6 +40,7 @@ echo -e "\n\nInstalling..."
 # Change permissions
 chmod +x mc*
 chmod +x -R mcutils/
+chmod +x *.sh
 
 
 # Create required directories
