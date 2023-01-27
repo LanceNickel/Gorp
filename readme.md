@@ -1,7 +1,7 @@
 ## Requirements
 * At least 8GB RAM (for decent Minecraft server performance)
 * At least 120GB storage (for world saves and local backups)
-* Debian or debian-based distro (Tested on: Debian 11, Ubuntu Server 20.04 LTS, Mint 21.1)
+* Debian or Debian-based distro (Tested on: Debian 11, Ubuntu Server 20.04 LTS, Mint 21.1)
 
 
 ## Installation instructions
