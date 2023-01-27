@@ -57,7 +57,7 @@ During install, the installer script noticed that your computer already has a di
 ### Initial server setup
 1. Go to the default Minecraft server directory: `cd /minecraft/servers/server`
 2. Execute run.sh: `sudo ./run.sh`
-3. The server will show errors. This is normal! Wait for the "THIS SERVER HAS STOPPED! warning, then press any key.
+3. The server will show errors. This is normal! Wait for the stop warning, then press any key to quit.
 4. Read and accept the EULA: `sudo nano eula.txt`
 5. Change `eula=false` to `eula=true`
 6. Press `CTL + X`, `Y`, `ENTER` to save and quit the text editor.

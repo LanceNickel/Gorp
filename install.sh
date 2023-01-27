@@ -24,6 +24,15 @@ fi
 
 
 
+# ALREADY INSTALLED GUARD
+if [ -d "/bin/mcutils" ]; then
+    echo "The C.U.M. is already installed."
+    echo "If you're looking to update, please use updatecum.sh"
+    exit
+fi
+
+
+
 # WELCOME
 
 echo -e "\nWelcome to The Minecraft C.U.M. (Commandline Utility Mechanism)"
@@ -66,7 +75,6 @@ else
     mkdir /minecraft/backups
     mkdir /minecraft/jars
     mkdir /minecraft/servers
-    mkdir /minecraft/tmp
     mkdir /minecraft/servers/server
 fi
 
@@ -116,6 +124,6 @@ echo "YET"
 sleep 1
 echo -e "\nPlease continue to follow the installation instructions.\n"
 
-if [ $WARN ]; then
+if [ $WARN = true ]; then
     echo -e "WARNING: '/minecraft' directory already exists. Refer to installation instructions for more info:\nhttps://github.com/LanceNickel/mc-cum/blob/main/readme.md\n"
 fi
