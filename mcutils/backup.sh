@@ -28,6 +28,8 @@ WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep "level-name" | c
 
 YEAR=$(date +"%Y")
 MONTH=$(date +"%m")
+DATE_FILE=$(date +"%Y-%m-%d_%H%M_%S")
+
 
 BACKUP=$(echo "$WORLD-$DATE_FILE")
 SOURCE=$(echo "/minecraft/servers/$SERVER/$WORLD")
@@ -56,23 +58,23 @@ fi
 
 echo "(worker) BACKUP: Starting backup..."
 
-if [ -d "$DEST" ]; then
+if [ -d "$FULL_DEST" ]; then
         sleep 0.005
 
-elif [ -d "$DEST_ROOT/$WORLD/$YEAR" ]; then
-        mkdir $DEST
+elif [ -d "$DEST/$WORLD/$YEAR" ]; then
+        mkdir $FULL_DEST
 
-elif [ -d "$DEST_ROOT/$WORLD" ]; then
-        mkdir $DEST_ROOT/$WORLD/$YEAR
-        mkdir $DEST
+elif [ -d "$DEST/$WORLD" ]; then
+        mkdir $DEST/$WORLD/$YEAR
+        mkdir $FULL_DEST
 
-elif [ -d "$DEST_ROOT" ]; then
-        mkdir $DEST_ROOT/$WORLD
-        mkdir $DEST_ROOT/$WORLD/$YEAR
-        mkdir $DEST
+elif [ -d "$DEST" ]; then
+        mkdir $DEST/$WORLD
+        mkdir $DEST/$WORLD/$YEAR
+        mkdir $FULL_DEST
 else
         echo "(worker) BACKUP: Backup destination cannot be created. Backup failed."
-        echo "(worker) BACKUP: Intended destination was $DEST"
+        echo "(worker) BACKUP: Intended destination was $FULL_DEST"
         exit 2
 fi
 
@@ -82,6 +84,8 @@ fi
 
 if [ -d "/minecraft/tmp" ]; then rm -rf /minecraft/tmp; fi
 mkdir /minecraft/tmp
+mkdir $TMP
+mkdir $TMP/$BACKUP
 
 
 
@@ -91,7 +95,7 @@ echo "(worker) BACKUP: Copying files to temp directory..."
 
 cp -r $SOURCE $TMP/$BACKUP/$WORLD
 cp -r ${SOURCE}_nether $TMP/$BACKUP/${WORLD}_nether
-cp -r $SOURCE $TMP/$BACKUP/${WORLD}_the_end
+cp -r ${SOURCE}_the_end $TMP/$BACKUP/${WORLD}_the_end
 
 
 
@@ -105,7 +109,7 @@ tar -czf $TMP/$BACKUP.tar.gz $TMP/$BACKUP >/dev/null 2>/dev/null
 # COPY THE COMPRESSED BACKUP TO THE DESTINATION
 
 echo "(worker) BACKUP: Copying files to backup directory..."
-cp $TMP/$BACKUP.tar.gz $DEST/
+cp $TMP/$BACKUP.tar.gz $FULL_DEST/
 
 
 
