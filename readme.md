@@ -25,4 +25,4 @@ The C.U.M. has been installed and a basic server has been created.
 4. Read and accept the EULA: `sudo nano eula.txt`
 5. Change `eula=false` to `eula=true`
 6. Press `CTL + X`, `Y`, `ENTER` to save and quit the text editor.
-7. Now, start the server with `sudo mcstart`
+7. Now, start the server with `sudo mcstart server`
