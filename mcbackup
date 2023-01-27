@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
-# THIS IS THE RESTART SCRIPT!
-# This should not need to be updated outside of updates to functionality of the program itself.
+### [MCBACKUP] ####################################################
+#   Description:  User-frontend script to backup a server.
+#   Parameters:   1: (required) Server directory name
 
-# PARAMS:
-# 1: Server directory name -- Required!
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
 
 
+
+# PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
         echo "BACKUP: Insufficient privilege. Backup failed."
@@ -15,11 +20,27 @@ fi
 
 
 
+# SCRIPT VARIABLES
+
 SERVER=$1
 
 
 
-# check to make sure server exists
+####
+
+
+
+# PARAM GUARD
+
+if [ "$SERVER" = "" ]; then
+    echo "BACKUP: Please specify a server"
+    exit
+fi
+
+
+
+# SERVER DIRECTORY GUARD
+
 if [ -d "/minecraft/servers/$SERVER" ]; then
     # we can continue
     sleep 0.005
@@ -29,5 +50,7 @@ else
 fi
 
 
+
+# RUN BACKUP WORKER
 
 /bin/mcutils/backup.sh $SERVER

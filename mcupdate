@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 
-# THIS IS THE UPDATE SCRIPT!
-# SETTINGS:
+### [MCUPDATE] ####################################################
+#   Description:  User-frontend script to get latest server JAR.
+#   Parameters:   None
 
-GAMEVER=1.19.3
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
 
-# PARAMS:
-# None
 
 
+# PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
     echo "UPDATE: Insufficient privilege. Update failed."
@@ -16,5 +19,11 @@ if [[ "$EUID" != 0 ]]; then
 fi
 
 
+
+####
+
+
+
+# RUN UPDATE WORKER
 
 /bin/mcutils/update.sh

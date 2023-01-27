@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
-# THIS IS THE START SCRIPT!
-# This should not need to be updated outside of updates to functionality of the program itself.
+### [MCSTART] #####################################################
+#   Description:  User-frontend script to start a server.
+#   Parameters:   1: (required) Server directory name
 
-# PARAMS:
-# 1: Server directory name -- Required!
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
 
 
+
+# PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
         echo "STARTUP: Insufficient privilege. Startup failed."
@@ -15,11 +20,27 @@ fi
 
 
 
+# SCRIPT VARIABLES
+
 SERVER=$1
 
 
 
-# check to make sure server exists
+####
+
+
+
+# PARAM GUARD
+
+if [ "$SERVER" = "" ]; then
+    echo "STARTUP: Please specify a server."
+    exit
+fi
+
+
+
+# SERVER DIRECTORY GUARD
+
 if [ -d "/minecraft/servers/$SERVER" ]; then
     cd /minecraft/servers/$SERVER
 else
@@ -28,5 +49,16 @@ else
 fi
 
 
+
+# SCREEN GUARD
+
+if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
+        echo "STARTUP: Screen '$SERVER' already exists. Seems '$SERVER' is already running."
+        exit
+fi
+
+
+
+# RUN STARTUP WORKER
 
 /bin/mcutils/start.sh $SERVER

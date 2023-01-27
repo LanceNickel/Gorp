@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
-# THIS IS THE INSTALLER SCRIPT!
-# This should not need to be updated outside of updates to functionality of the program itself.
+### [INSTALLER] ####################################################
+#   Description:  Installs dependencies and installs script files.
+#   Parameters:   None
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
 
 
+
+# PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
     echo "This installer must be run as root. Use 'sudo !!' to do this again as root."
@@ -12,18 +20,30 @@ fi
 
 
 
-sleep 1
+####
 
 
+
+# ALREADY INSTALLED GUARD
+if [ -d "/bin/mcutils" ]; then
+    echo "The C.U.M. is already installed."
+    echo "If you're looking to update, please use updatecum.sh"
+    exit
+fi
+
+
+
+# WELCOME
 
 echo -e "\nWelcome to The Minecraft C.U.M. (Commandline Utility Mechanism)"
-sleep 2
+sleep 0.5
 
-# Download required software...
+
+
+# APT-GET DEPENDENCIES
 
 echo -e "\nDownloading required software..."
-sleep 2
-echo
+sleep 0.5
 apt-get update
 apt-get install apt-transport-https curl wget jq screen -y
 
@@ -31,71 +51,68 @@ sleep 2
 
 
 
-
-# Install...
-
-echo -e "\n\nInstalling..."
+echo -e "Installing..."
 
 
-# Change permissions
+
+# MAKE SCRIPTS +X
+
 chmod +x mc*
 chmod +x -R mcutils/
 chmod +x *.sh
 
 
-# Create required directories
+
+# CREATE REQUIRED DIRS
+
 mkdir /bin/mcutils
-mkdir /minecraft
-mkdir /minecraft/backups
-mkdir /minecraft/jars
-mkdir /minecraft/servers
-mkdir /minecraft/tmp
-mkdir /minecraft/servers/server
 
-
-# Move files to proper locations
-mv mcbackup /bin/mcbackup
-mv mcpower /bin/mcpower
-mv mcrestart /bin/mcrestart
-mv mcstart /bin/mcstart
-mv mcstop /bin/mcstop
-mv mcupdate /bin/mcupdate
-
-mv mcutils/backup.sh /bin/mcutils/backup.sh
-mv mcutils/shutdown.sh /bin/mcutils/shutdown.sh
-mv mcutils/start.sh /bin/mcutils/start.sh
-mv mcutils/update.sh /bin/mcutils/update.sh
-mv mcutils/warning.sh /bin/mcutils/warning.sh
-
-mv run.sh /minecraft/servers/server/
+if [ -d "/minecraft" ]; then
+    WARN=true
+else
+    WARN=false
+    mkdir /minecraft
+    mkdir /minecraft/backups
+    mkdir /minecraft/jars
+    mkdir /minecraft/servers
+    mkdir /minecraft/servers/server
+fi
 
 
 
+# MOVE FILES
 
-# Clean up...
-rm -rf mcutils
+cp mcbackup /bin/mcbackup
+cp mcpower /bin/mcpower
+cp mcrestart /bin/mcrestart
+cp mcstart /bin/mcstart
+cp mcstop /bin/mcstop
+cp mcupdate /bin/mcupdate
+
+cp mcutils/backup.sh /bin/mcutils/backup.sh
+cp mcutils/shutdown.sh /bin/mcutils/shutdown.sh
+cp mcutils/start.sh /bin/mcutils/start.sh
+cp mcutils/update.sh /bin/mcutils/update.sh
+cp mcutils/warning.sh /bin/mcutils/warning.sh
+
+cp cum.conf /minecraft
+cp run.sh /minecraft/servers/server/
 
 
 
-
-# Get server JAR file...
+# RUN MCUPDATE TO GET & SET JAR FILE
 
 echo -e "Getting latest Paper JAR file..."
-
-
-# Execute mcupdate to get latest file
 sleep 1
-echo
 /bin/mcupdate
 
 sleep 2
 
 
 
+# FINISHED, SHOW WARNING
 
-# Finished, but...
-
-echo -e "INSTALLATION FINISHED!\nHowever,"
+echo -e "\nINSTALLATION FINISHED!\nHowever,"
 sleep 1
 echo -e "\nYOU"
 sleep 0.5
@@ -106,3 +123,7 @@ sleep 0.5
 echo "YET"
 sleep 1
 echo -e "\nPlease continue to follow the installation instructions.\n"
+
+if [ $WARN = true ]; then
+    echo -e "WARNING: '/minecraft' directory already exists. Refer to installation instructions for more info:\nhttps://github.com/LanceNickel/mc-cum/blob/main/readme.md\n"
+fi

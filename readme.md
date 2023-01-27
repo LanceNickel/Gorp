@@ -45,9 +45,10 @@ OpenJDK 64-Bit Server VM (build 17.0.5+8-Ubuntu-2ubuntu122.04, mixed mode, shari
 3. Run `git clone https://github.com/LanceNickel/mc-cum/ && cd mc-cum`
 4. Run `chmod +x install.sh`
 5. Run `sudo ./install.sh`
+
 The C.U.M. has been installed and a basic server has been created.
 
-#### If you receive a warning message:
+#### HEADS UP: If you received a warning message:
 If you received a warning message about the `/minecraft` directory already existing, please read this.
 
 During install, the installer script noticed that your computer already has a directory named "minecraft" in the root. Because this could be from a previous install of this utility, or previous use, the installer skips these directories. This is to prevent potential catastrophic data loss.
@@ -56,7 +57,7 @@ During install, the installer script noticed that your computer already has a di
 ### Initial server setup
 1. Go to the default Minecraft server directory: `cd /minecraft/servers/server`
 2. Execute run.sh: `sudo ./run.sh`
-3. The server will show errors. This is normal! Wait for the "THIS SERVER HAS STOPPED! warning, then press any key.
+3. The server will show errors. This is normal! Wait for the stop warning, then press any key to quit.
 4. Read and accept the EULA: `sudo nano eula.txt`
 5. Change `eula=false` to `eula=true`
 6. Press `CTL + X`, `Y`, `ENTER` to save and quit the text editor.

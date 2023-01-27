@@ -1,13 +1,19 @@
+
 #!/usr/bin/env bash
 
-# THIS IS THE RESTART SCRIPT!
-# This should not need to be updated outside of updates to functionality of the program itself.
+### [MCRESTART] ###################################################
+#   Description:  User-frontend script to restart a server.
+#   Parameters:   1: (required) Server directory name
+#                 2: (optional) <fast, now>
 
-# PARAMS:
-# 1: Server directory name -- Required!
-# 2: Speed: <fast, now> -- Optional.
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
 
 
+
+# PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
     echo "RESTART: Insufficient privilege. Restart failed."
@@ -16,12 +22,32 @@ fi
 
 
 
+# SCRIPT VARIABLES
+
 SERVER=$1
 SPEED=$2
 
 
 
-# check to make sure server exists
+####
+
+
+
+# PARAM GUARD
+
+if [ "$SERVER" = "" ]; then
+    echo "RESTART: Please specify a server"
+    exit
+
+elif [ "$SERVER" == 'fast' ] || [ "$SERVER" == 'now' ] || [ "$SERVER" == 'power' ]; then
+    echo "RESTART: Malformed command. Expected form: 'mcstop <server> <argument>'"
+    exit
+fi
+
+
+
+# SERVER DIRECTORY GUARD
+
 if [ -d "/minecraft/servers/$SERVER" ]; then
     cd /minecraft/servers/$SERVER
 else
@@ -31,20 +57,28 @@ fi
 
 
 
-# no speed parameter passed, this will be a normal speed restart
+# NO SCREEN GUARD
+
+if [[ $(screen -ls | grep "$SERVER")  = "" ]]; then
+        echo "RESTART: Screen '$SERVER' is not running. Seems '$SERVER' is already stopped."
+        exit
+fi
+
+
+
+# RUN WORKERS BASED ON PASSED PARAMS
+
 if [ -z "$SPEED" ]; then
     /bin/mcutils/backup.sh $SERVER
     /bin/mcutils/warning.sh $SERVER restart
     /bin/mcutils/shutdown.sh $SERVER
     /bin/mcutils/start.sh $SERVER
 
-# fast speed parameter, no backup will be taken
 elif [ $SPEED == "fast" ]; then
     /bin/mcutils/warning.sh $SERVER stop
     /bin/mcutils/shutdown.sh $SERVER
     /bin/mcutils/start.sh $SERVER
 
-# now speed parameter, no backup or warning will be done
 elif [ $SPEED == "now" ]; then
     /bin/mcutils/shutdown.sh $SERVER
     /bin/mcutils/start.sh $SERVER
