@@ -47,6 +47,11 @@ OpenJDK 64-Bit Server VM (build 17.0.5+8-Ubuntu-2ubuntu122.04, mixed mode, shari
 5. Run `sudo ./install.sh`
 The C.U.M. has been installed and a basic server has been created.
 
+#### If you receive a warning message:
+If you received a warning message about the `/minecraft` directory already existing, please read this.
+
+During install, the installer script noticed that your computer already has a directory named "minecraft" in the root. Because this could be from a previous install of this utility, or previous use, the installer skips these directories. This is to prevent potential catastrophic data loss.
+
 
 ### Initial server setup
 1. Go to the default Minecraft server directory: `cd /minecraft/servers/server`
