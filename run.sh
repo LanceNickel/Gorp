@@ -7,28 +7,33 @@
 # PARAMS:
 # None
 
-# SETTINGS:
 
-# JAR
-# JAR file to use for the server (PAPER REQUIRED!)
+
+# ==== CHANGE JAR ====
+# Change the value below to a custom absolute path to the JAR file for this server.
+# This is an advanced setting and is not supported, as it may break your install.
+# Please be sure to use a Paper server or properly migrate this server away from Paper if it was initially created with paper.
+# Also, please accept the risk of manual updates or running outdated server software.
 # Default: JAR=$(cat /minecraft/jars/latest)
+
 JAR=$(cat /minecraft/jars/latest)
 
-# MIN and MAX
-# Use these to allocate memory to the server, both should have the same valye.
-# Enter in terms of gigabytes.
-# Default: MAX=10G, MIN=10G
-MAX=10G
-MIN=10G
+## END OF OPTIONS
+# Please don't edit below this line
 
 
 
+
+
+
+
+RAM=$(cat /minecraft/cum.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
 
 
 
 
 while [ true ]; do
-        java -Xmx$MAX -Xms$MIN -jar $JAR nogui
+        java -Xmx$RAM -Xms$RAM -jar $JAR nogui
 
         echo "\n\n THIS SERVER HAS STOPPED! Press any key to prevent restart."
 

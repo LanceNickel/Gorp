@@ -15,6 +15,8 @@ if [[ "$EUID" != 0 ]]; then
 fi
 
 
+# Get global varibles
+/minecraft/cum.conf
 
 SERVER=$1
 WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep "level-name" | cut -d "=" -f2)
@@ -24,8 +26,8 @@ MONTH=$(date +"%m")
 
 BACKUP=$(echo "$WORLD-$DATE_FILE")
 SOURCE=$(echo "/minecraft/servers/$SERVER/$WORLD")
-DEST_ROOT=$(echo "/minecraft/backups")
-DEST=$(echo "$DEST_ROOT/$WORLD/$YEAR/$MONTH")
+DEST=$(cat /minecraft/cum.conf | grep "^[^#;]" | grep 'DEST=' | cut -d '=' -f 2)
+FULL_DEST=$(echo "$DEST/$WORLD/$YEAR/$MONTH")
 TMP=$(echo "/minecraft/tmp/backup")
 
 

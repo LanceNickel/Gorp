@@ -7,17 +7,17 @@
 # PARAMS:
 # None
 
-# SETTINGS:
-#
-# Game version: Version of Minecraft to check for updates for.
-GAMEVER=1.19.3
-
 
 
 if [[ "$EUID" != 0 ]]; then
     echo "STARTUP WORKER: Insufficient privilege. Skipping startup."
     exit
 fi
+
+
+
+# GET GLOBAL VARIABLES
+GAMEVER=$(cat /minecraft/cum.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f 2)
 
 
 

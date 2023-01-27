@@ -38,6 +38,7 @@ echo -e "\n\nInstalling..."
 
 
 # Change permissions
+chmod +x cum.conf
 chmod +x mc*
 chmod +x -R mcutils/
 chmod +x *.sh
@@ -67,6 +68,7 @@ mv mcutils/start.sh /bin/mcutils/start.sh
 mv mcutils/update.sh /bin/mcutils/update.sh
 mv mcutils/warning.sh /bin/mcutils/warning.sh
 
+mv cum.conf /minecraft
 mv run.sh /minecraft/servers/server/
 
 
