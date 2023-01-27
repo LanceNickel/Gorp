@@ -13,7 +13,11 @@ OpenJDK 64-Bit Server VM (build 17.0.5+8-Ubuntu-2ubuntu122.04, mixed mode, shari
 ### Download and install the C.U.M.
 1. SSH into your (soon to be) Minecraft server.
 2. Go to your home directory: `cd`
-3. Make a new folder called install: `mkdir install && cd install`
-4. Run `git clone https://github.com/LanceNickel/mc-cum/ && cd mc-cum`
-5. Run `chmod +x install.sh`
-6. Run `sudo ./install.sh`
+3. Run `git clone https://github.com/LanceNickel/mc-cum/ && cd mc-cum`
+4. Run `chmod +x install.sh`
+5. Run `sudo ./install.sh`
+The C.U.M. has been installed and a basic server has been created.
+
+### Initial server setup
+1. Go to the default Minecraft server directory: `cd /minecraft/servers/server`
+2. 
