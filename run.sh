@@ -9,8 +9,8 @@
 ##    No part of this script is designed to be user-editable.    ##
 ##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
 ###################################################################
-# DO NOT, EVER, EVER, EVER, EVER UPDATE THE RUN SCRIPT VERSION NUMBER BELOW!
-RUN_VER=1
+# DO NOT, EVER, EVER, EVER, EVER CHANGE THE RUN SCRIPT VERSION NUMBER BELOW!
+RUN_VER=2
 
 
 
@@ -44,7 +44,7 @@ RAM=$(cat /minecraft/cum.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
 while [ true ]; do
         java -Xmx$RAM -Xms$RAM -jar $JAR nogui
 
-        echo -e "\n\n THIS SERVER HAS STOPPED! Press any key to prevent restart."
+        echo -e "\n\nTHIS SERVER HAS STOPPED! Press any key to prevent restart."
 
         read -t 5 input;
 

@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+### [MCCREATE] ####################################################
+#   Description:  User-frontend script to create a new server dir.
+#   Parameters:   1: (required) Server directory name
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
+
+
+
+# PERMISSIONS GUARD
+
+if [[ "$EUID" != 0 ]]; then
+    echo "CREATE: Insufficient privilege. Restart failed."
+    exit
+fi
+
+
+
+# SCRIPT VARIABLES
+
+SERVER=$1
+
+
+
+####
+
+
+
+# PARAM GUARD
+
+if [ "$SERVER" = "" ]; then
+    echo "CREATE: Please specify a server name to create."
+    exit
+fi
+
+
+
+# SERVER DIRECTORY GUARD
+
+if [ -d "/minecraft/servers/$SERVER" ]; then
+    echo "CREATE: Specified server already exists. Creation failed."
+    exit
+fi
+
+
+
+# RUN THE CREATOR WORKER
+
+/bin/mcutils/create.sh $SERVER

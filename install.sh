@@ -25,6 +25,7 @@ fi
 
 
 # ALREADY INSTALLED GUARD
+
 if [ -d "/bin/mcutils" ]; then
     echo "The C.U.M. is already installed."
     echo "If you're looking to update, please use updatecum.sh"
@@ -58,9 +59,9 @@ echo -e "Installing..."
 # MAKE SCRIPTS +X
 
 chmod +x mc*
-chmod +x cumupdate
-chmod +x -R mcutils/
-chmod +x *.sh
+chmod +x cum*
+chmod +x mcutils/*.sh
+chmod +x run.sh
 
 
 
@@ -83,22 +84,26 @@ fi
 
 # MOVE FILES
 
+cp cumupdate /bin/cumupdate
 cp mcbackup /bin/mcbackup
+cp mccreate /bin/mccreate
+cp mcdelete /bin/mcdelete
 cp mcpower /bin/mcpower
 cp mcrestart /bin/mcrestart
 cp mcstart /bin/mcstart
 cp mcstop /bin/mcstop
 cp mcupdate /bin/mcupdate
-cp cumupdate /bin/cumupdate
 
 cp mcutils/backup.sh /bin/mcutils/backup.sh
+cp mcutils/create.sh /bin/mcutils/create.sh
+cp mcutils/delete.sh /bin/mcutils/delete.sh
 cp mcutils/shutdown.sh /bin/mcutils/shutdown.sh
 cp mcutils/start.sh /bin/mcutils/start.sh
 cp mcutils/update.sh /bin/mcutils/update.sh
 cp mcutils/warning.sh /bin/mcutils/warning.sh
 
-cp cum.conf /minecraft
-cp run.sh /minecraft/servers/server/
+cp cum.conf /minecraft/cum.conf
+cp run.sh /minecraft/servers/server/run.sh
 
 
 

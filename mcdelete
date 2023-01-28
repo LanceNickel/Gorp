@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+### [MCDELETE] ####################################################
+#   Description:  User-frontend script to delete a server dir.
+#   Parameters:   1: (required) Server directory name
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
+
+
+
+# PERMISSIONS GUARD
+
+if [[ "$EUID" != 0 ]]; then
+    echo "DELETE: Insufficient privilege. Deletion failed."
+    exit
+fi
+
+
+
+# SCRIPT VARIABLES
+
+SERVER=$1
+
+
+
+####
+
+
+
+# PARAM GUARD
+
+if [ "$SERVER" = "" ]; then
+    echo "DELETE: Please specify a server."
+    exit
+fi
+
+
+
+# SERVER DIRECTORY GUARD
+
+if [ -d "/minecraft/servers/$SERVER" ]; then
+    cd /minecraft/servers/$SERVER
+else
+    echo "DELETE: Specified server doesn't exist. There's nothing to delete :)"
+    exit
+fi
+
+
+
+# SCREEN GUARD
+
+if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
+        echo "DELETE: Server is running in screen '$SERVER', please stop the server first."
+        exit
+fi
+
+
+
+# RUN DELETE WORKER
+
+/bin/mcutils/delete.sh $SERVER
