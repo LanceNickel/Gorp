@@ -3,6 +3,8 @@ Hello! I created this small jumble of shell scripts to help automate my Minecraf
 
 Below are the requirements and installation instructions for this software. It will take you from no Minecraft (not even a JAR file) to an online server.
 
+Yes, the name and command scheme is a joke. I'm sorry, I'm a child :)
+
 
 
 
