@@ -35,8 +35,9 @@ echo "(worker) C.U.M. UPDATER: Installing new scripts..."
 # MAKE SCRIPT FILES EXECUTABLE
 
 chmod +x /minecraft/tmp/updatefiles/mc*
+chmod +x /minecraft/tmp/updatefiles/cum*
 chmod +x /minecraft/tmp/updatefiles/mcutils/*.sh
-chmod +x /minecraft/tmp/updatefiles/*.sh
+chmod +x /minecraft/tmp/updatefiles/run.sh
 
 
 
@@ -49,18 +50,23 @@ mkdir /bin/mcutils
 
 # COPY SCRIPT FILES TO /bin
 
-cp /minecraft/tmp/updatefiles/mcutils/backup.sh /bin/mcutils/backup.sh
-cp /minecraft/tmp/updatefiles/mcutils/shutdown.sh /bin/mcutils/shutdown.sh
-cp /minecraft/tmp/updatefiles/mcutils/start.sh /bin/mcutils/start.sh
-cp /minecraft/tmp/updatefiles/mcutils/update.sh /bin/mcutils/update.sh
-cp /minecraft/tmp/updatefiles/mcutils/warning.sh /bin/mcutils/warning.sh
-
+cp /minecraft/tmp/updatefiles/cumupdate /bin/cumupdate
 cp /minecraft/tmp/updatefiles/mcbackup /bin/mcbackup
+cp /minecraft/tmp/updatefiles/mccreate /bin/mccreate
+cp /minecraft/tmp/updatefiles/mcdelete /bin/mcdelete
 cp /minecraft/tmp/updatefiles/mcpower /bin/mcpower
 cp /minecraft/tmp/updatefiles/mcrestart /bin/mcrestart
 cp /minecraft/tmp/updatefiles/mcstart /bin/mcstart
 cp /minecraft/tmp/updatefiles/mcstop /bin/mcstop
 cp /minecraft/tmp/updatefiles/mcupdate /bin/mcupdate
+
+cp /minecraft/tmp/updatefiles/mcutils/backup.sh /bin/mcutils/backup.sh
+cp /minecraft/tmp/updatefiles/mcutils/create.sh /bin/mcutils/create.sh
+cp /minecraft/tmp/updatefiles/mcutils/delete.sh /bin/mcutils/delete.sh
+cp /minecraft/tmp/updatefiles/mcutils/shutdown.sh /bin/mcutils/shutdown.sh
+cp /minecraft/tmp/updatefiles/mcutils/start.sh /bin/mcutils/start.sh
+cp /minecraft/tmp/updatefiles/mcutils/update.sh /bin/mcutils/update.sh
+cp /minecraft/tmp/updatefiles/mcutils/warning.sh /bin/mcutils/warning.sh
 
 
 
