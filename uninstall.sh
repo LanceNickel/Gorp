@@ -36,7 +36,7 @@ echo -e "\nUninstalling..."
 
 
 
-# REMOVE THE C.U.M.
+# REMOVE THE C.U.M. FROM /bin (/minecraft is never deleted to avoid catastrophic data loss)
 
 rm /bin/mcbackup
 rm /bin/mcpower
