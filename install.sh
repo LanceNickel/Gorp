@@ -58,6 +58,7 @@ echo -e "Installing..."
 # MAKE SCRIPTS +X
 
 chmod +x mc*
+chmod +x cumupdate
 chmod +x -R mcutils/
 chmod +x *.sh
 
@@ -88,6 +89,7 @@ cp mcrestart /bin/mcrestart
 cp mcstart /bin/mcstart
 cp mcstop /bin/mcstop
 cp mcupdate /bin/mcupdate
+cp cumupdate /bin/cumupdate
 
 cp mcutils/backup.sh /bin/mcutils/backup.sh
 cp mcutils/shutdown.sh /bin/mcutils/shutdown.sh

@@ -15,7 +15,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "STARTUP WORKER: Insufficient privilege. Skipping startup."
+    echo "(worker) UPDATE: Insufficient privilege. Skipping startup."
     exit
 fi
 

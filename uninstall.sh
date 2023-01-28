@@ -44,6 +44,7 @@ rm /bin/mcrestart
 rm /bin/mcstart
 rm /bin/mcstop
 rm /bin/mcupdate
+rm /bin/cumupdate
 rm -rf /bin/mcutils
 
 

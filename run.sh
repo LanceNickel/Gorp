@@ -9,6 +9,8 @@
 ##    No part of this script is designed to be user-editable.    ##
 ##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
 ###################################################################
+# DO NOT, EVER, EVER, EVER, EVER UPDATE THE RUN SCRIPT VERSION NUMBER BELOW!
+RUN_VER=1
 
 
 

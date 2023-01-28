@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+### [CUMUPDATE] ###################################################
+#   Description:  User-frontend script to update the C.U.M install.
+#   Parameters:   None
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+###################################################################
+
+
+
+# PERMISSIONS GUARD
+
+if [[ "$EUID" != 0 ]]; then
+    echo "C.U.M. UPDATE: Insufficient privilege. Update failed."
+    exit
+fi
+
+
+
+####
+
+
+
+# TEMP DIRECTORY
+
+rm -rf /minecraft/tmp
+mkdir /minecraft/tmp
+
+
+
+# GIT CLONE LATEST C.U.M. FILES
+
+git clone https://github.com/LanceNickel/mc-cum /minecraft/tmp/updatefiles
+
+
+
+# RUN UPDATE WORKER
+
+chmod +x /minecraft/tmp/updatefiles/update.sh
+/minecraft/tmp/updatefiles/update.sh
+
+
+
+# CLEAN UP
+
+rm -rf /minecraft/tmp
