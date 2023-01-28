@@ -40,23 +40,3 @@ RAM=6G
 # Default:         DEST=/minecraft/backups
 
 DEST=/minecraft/backups
-
-
-
-######## Option: DEMO2 ################################################################
-# Description:     Destination directory for backups. Must be accessible by root.
-# Expected value:  Absolute path to destination directory.
-# Requirements:    Do NOT leave a trailing slash!
-# Default:         DEST=/minecraft/backups
-
-DEMO2=2
-
-
-
-######## Option: DEMO3 ################################################################
-# Description:     Destination directory for backups. Must be accessible by root.
-# Expected value:  Absolute path to destination directory.
-# Requirements:    Do NOT leave a trailing slash!
-# Default:         DEST=/minecraft/backups
-
-DEMO3=DEMO
