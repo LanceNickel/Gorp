@@ -38,6 +38,7 @@ echo "(worker) WARNING: Sending $ACTION warning in the chat and waiting 30 secon
 
 if [ $ACTION == "power" ]; then
         screen -S $SERVER -X stuff "say ATTENTION: Due to a power outage, this server must be shut down.\n"
+        sleep 0.25
         screen -S $SERVER -X stuff "say ATTENTION: This server will shut down in 30 seconds.\n"
 else
         screen -S $SERVER -X stuff "say ATTENTION: This server will $ACTION in 30 seconds.\n"
@@ -54,7 +55,7 @@ while [ $NOT30 == true ];
 do
         sleep 1
         ((I++))
-        echo -ne "  $I s\r"
+        echo -ne "  ${I}s\r"
 
         if [ $I -eq "30" ]; then
                 NOT30=false

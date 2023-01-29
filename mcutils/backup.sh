@@ -56,7 +56,7 @@ fi
 
 # CHECK FOR (OR CREATE) DESTINATION DIRECTORY (GUARD)
 
-echo "(worker) BACKUP: Starting backup..."
+echo "(worker) BACKUP: Starting backup of `$WORLD`..."
 
 if [ -d "$FULL_DEST" ]; then
         sleep 0.005

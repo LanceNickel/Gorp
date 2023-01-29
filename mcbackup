@@ -33,7 +33,7 @@ SERVER=$1
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "BACKUP: Please specify a server"
+    echo "BACKUP: Please specify a server."
     exit
 fi
 
