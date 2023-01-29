@@ -33,7 +33,9 @@ mkdir /minecraft/tmp
 
 # GIT CLONE LATEST C.U.M. FILES
 
-git clone https://github.com/LanceNickel/mc-cum /minecraft/tmp/updatefiles
+echo "C.U.M. UPDATER: Downloading newest scripts..."
+
+git clone --quiet https://github.com/LanceNickel/mc-cum /minecraft/tmp/updatefiles
 
 
 
