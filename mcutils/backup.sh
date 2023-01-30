@@ -39,7 +39,7 @@ TMP=$(echo "/minecraft/tmp/backup")
 
 
 
-
+####
 
 
 
@@ -56,7 +56,7 @@ fi
 
 # CHECK FOR (OR CREATE) DESTINATION DIRECTORY (GUARD)
 
-echo "(worker) BACKUP: Starting backup..."
+echo "(worker) BACKUP: Backing up $WORLD..."
 
 if [ -d "$FULL_DEST" ]; then
         sleep 0.005
