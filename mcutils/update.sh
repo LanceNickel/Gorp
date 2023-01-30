@@ -15,7 +15,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "(worker) UPDATE: Insufficient privilege. Skipping startup."
+    echo "(worker) UPDATE: Insufficient privilege. Update failed."
     exit
 fi
 
@@ -56,7 +56,7 @@ while [ $FOUND = false ];
 do
         ((I++))
         # if the channel in latest.json is experimental...
-        if [[ $(jq '.channel' /minecraft/tmp/latest.json) = '"experimental"' ]]; then
+        if [[ $(jq '.channel' /minecraft/tmp/latest.json) != '"default"' ]]; then
                 # get the second-oldest build version from builds.json and overwrite latest.json with it
                 jq ".builds[-$I] | {build, channel, downloads}" /minecraft/tmp/builds.json > /minecraft/tmp/latest.json
         else
@@ -67,11 +67,23 @@ done
 
 
 
-# STORE INFORMATION ABOUT THE LATEST STABLE VERSION
+# STORE INFORMATION ABOUT LATEST STABLE BUILD AND CURRENTLY INSTALLED
 
+INSTALLED=$(cat /minecraft/jars/latest | cut -d "-" -f3 | cut -d "." -f1)
 BUILD=$(jq '.build' /minecraft/tmp/latest.json)
 NAME=$(jq '.downloads.application.name' /minecraft/tmp/latest.json | tail -c +2 | head -c -2)
 CHECKSUM=$(jq '.downloads.application.sha256' /minecraft/tmp/latest.json | tail -c +2 | head -c -2)
+
+
+
+# DO WE EVEN NEED TO UPDATE?
+
+if (( $INSTALLED < $BUILD )); then
+        echo "(worker) UPDATE: Installing build $BUILD over $INSTALLED..."
+else
+        echo "(worker) UPDATE: Installed build is already the latest available version (installed: $INSTALLED, found: $BUILD). No need to update :)"
+        exit
+fi
 
 
 
