@@ -147,11 +147,12 @@ do
 
     elif (( $INSTALLEDVER < $NEWVER )); then
         CUSTOMJAR="$(cat /minecraft/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=')"
-        DEFAULTJAR='$(cat /minecraft/jars/latest)'
+        CUSTOMRAM="$(cat /minecraft/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'RAM=')"
 
         cp /minecraft/tmp/updatefiles/run.sh /minecraft/servers/$SERVER/run.sh
 
-        sed -i "24s#.*#$CUSTOMJAR#" /minecraft/servers/$SERVER/run.sh
+        sed -i "32s#.*#$CUSTOMJAR#" /minecraft/servers/$SERVER/run.sh
+        sed -i "42s#.*#$CUSTOMRAM#" /minecraft/servers/$SERVER/run.sh
     fi
 
 done
