@@ -10,11 +10,12 @@
 ##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
 ###################################################################
 # DO NOT, EVER, EVER, EVER, EVER CHANGE THE RUN SCRIPT VERSION NUMBER BELOW!
-RUN_VER=2
+RUN_VER=3
 
 
 
 # ==== CHANGE JAR ====
+# Further documentation: https://github.com/LanceNickel/mc-cum/wiki/Changing-Individual-Server-Settings
 # Change the value below to a custom absolute path to the JAR file for this server.
 # This is an advanced setting and is not supported, as it may break your install.
 # Please be sure to use a Paper server or properly migrate this server away from Paper if it was initially created with paper.
@@ -23,15 +24,19 @@ RUN_VER=2
 
 JAR=$(cat /minecraft/jars/latest)
 
-## END OF OPTIONS
-# Please don't edit below this line
 
 
-
-
-# SCRIPT VARIABLES
+# ==== CHANGE RAM =====
+# Further documentation: https://github.com/LanceNickel/mc-cum/wiki/Changing-Individual-Server-Settings
+# Change this value to change the amount of RAM (in gigabytes) to be allocated for this server instance.
+# Plese change it based on what you believe will be required.
+# This is a good resource: https://minecraft.fandom.com/wiki/Server/Requirements/Dedicated#Unix_(Linux,_BSD,_macOS)
 
 RAM=$(cat /minecraft/cum.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
+
+
+
+#### END OF OPTIONS! Please do not edit below this line.
 
 
 
