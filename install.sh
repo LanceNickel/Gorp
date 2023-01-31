@@ -105,6 +105,8 @@ cp mcutils/warning.sh /bin/mcutils/warning.sh
 cp cum.conf /minecraft/cum.conf
 cp run.sh /minecraft/servers/server/run.sh
 
+echo "paper-0-000.jar" > /minecraft/jars/latest
+
 
 
 # RUN MCUPDATE TO GET & SET JAR FILE
