@@ -41,7 +41,7 @@ mkdir /minecraft/tmp
 
 echo "(worker) CREATE: Creating new server at '/minecraft/servers/$SERVER/'"
 
-wget -q https://raw.githubusercontent.com/LanceNickel/mc-cum/main/run.sh -P /minecraft/tmp/
+wget -q https://raw.githubusercontent.com/LanceNickel/Gorp/main/run.sh -P /minecraft/tmp/
 
 
 
