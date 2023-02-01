@@ -1,0 +1,38 @@
+Gorp - Simple Minecraft CLI tools.
+
+Usage:      gorp command [options]
+
+Examples:   gorp start public     # Start a server named "public"
+            gorp create private   # Create a new server named "private"
+            gorp stop public now  # Shut down the server named "public" in the fastest way possible
+            gorp update           # Update the default JAR file to the latest stable version.
+
+Commands:
+    start [server name]                 -- Start a server instance
+
+    stop [server name] <argument>       -- Stop a server instance
+      valid arguments:
+        - fast: skip the backup and only give a warning
+        - now: shut down immediately (no warning)
+        - power: for use during a power outage
+    
+    restart [server name] <argument>    -- Restart a server instance
+      valid arguments:
+        - fast: skip the backup and only give a warning
+        - now: restart immediately (no warning)
+    
+    create [server name]    -- Create a new server instance
+
+    delete [server name]    -- Delete a server instance
+
+    backup [server name]    -- Backup a server instance's world files
+
+    update                  -- Get the newest Minecraft server JAR file and install it
+
+    upgrade                 -- Get the newest version of Gorp and install it
+
+    help                    -- View this help text
+
+
+MORE ABOUT GORP:
+https://github.com/LanceNickel/Gorp/wiki

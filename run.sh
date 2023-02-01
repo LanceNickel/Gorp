@@ -6,30 +6,25 @@
 #   Global Conf:  RAM
 
 ############################ [WARNING] ############################
-##    No part of this script is designed to be user-editable.    ##
-##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+##   Small portions of this script are designed to be changed.   ##
+##     All other parts are OVERWRITTEN during a Gorp update.     ##
 ###################################################################
 
 
 
-# ==== CHANGE JAR ====
-# Further documentation: https://github.com/LanceNickel/mc-cum/wiki/Changing-Individual-Server-Settings
-# Change the value below to a custom absolute path to the JAR file for this server.
-# This is an advanced setting and is not supported, as it may break your install.
-# Please be sure to use a Paper server or properly migrate this server away from Paper if it was initially created with paper.
-# Also, please accept the risk of manual updates or running outdated server software.
-# Default: JAR=$(cat /minecraft/jars/latest)
+######## Option: JAR #############################################################
+# Description:     An (optional) custom JAR file to run as the server.
+# Expected value:  Absolute path to a JAR file
+# Default:         JAR=$(cat /minecraft/jars/latest)
 
 JAR=$(cat /minecraft/jars/latest)
 
 
 
-# ==== CHANGE RAM =====
-# Further documentation: https://github.com/LanceNickel/mc-cum/wiki/Changing-Individual-Server-Settings
-# Change this value to change the amount of RAM (in gigabytes) to be allocated for this server instance.
-# Plese change it based on what you believe will be required.
-# This is a good resource: https://minecraft.fandom.com/wiki/Server/Requirements/Dedicated#Unix_(Linux,_BSD,_macOS)
-# Default: RAM=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
+######## Option: RAM #############################################################
+# Description:     An (optional) custom RAM allocation for this server.
+# Expected value:  Amount of RAM as an integer, followed immedately by "G" (ex: 4G)
+# Default:         RAM=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
 
 RAM=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
 

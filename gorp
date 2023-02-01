@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+### [GORP] ########################################################
+#   Description:  Main Gorp launcher.
+#   Parameters:   1: (required) Action <backup, update, create, delete, power, start, stop, restart, help, upgrade>
+#                 2: (required) Server name
+#                 3: (optional) Argument <fast, now, power>
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+
+
+# PERMISSIONS GUARD
+
+if [[ "$EUID" != 0 ]]; then
+    echo "GORP UPDATE: Insufficient privilege. Update failed."
+    exit
+fi
+
+
+
+# SCRIPT VARIABLES
+
+ACTION=$1
+SERVER=$2
+ARG=$3
+
+
+
+####
+
+
+
+if [ $ACTION = "backup" ]; then
+    /bin/gorputils/action/mcbackup $SERVER
+
+elif [ $ACTION = "update" ]; then
+    /bin/gorputils/action/mcupdate $SERVER
+
+elif [ $ACTION = "create" ]; then
+    /bin/gorputils/action/mccreate $SERVER
+
+elif [ $ACTION = "delete" ]; then
+    /bin/gorputils/action/mcdelete $SERVER
+
+elif [ $ACTION = "power" ]; then
+    /bin/gorputils/action/mcpower
+
+elif [ $ACTION = "start" ]; then
+    /bin/gorputils/action/mcstart $SERVER
+
+elif [ $ACTION = "stop" ]; then
+    /bin/gorputils/action/mcstop $SERVER $ARG
+
+elif [ $ACTION = "restart" ]; then
+    /bin/gorputils/action/mcrestart $SERVER $ARG
+
+elif [ $ACTION = "help" ]; then
+    /bin/gorputils/action/gorphelp
+
+elif [ $ACTION = "upgrade" ]; then
+    /bin/gorputils/action/gorpupgrade
+
+else
+    echo "Invalid parameters. Use gorp help for more information."
+fi

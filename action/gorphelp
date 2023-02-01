@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+### [GORPHELP] #####################################################
+#   Description:  Action script that displays help text.
+#   Parameters:   None
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+
+
+####
+
+
+
+cat /bin/gorputils/help.txt
