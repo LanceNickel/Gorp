@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ### [INSTALLER] ####################################################
-#   Description:  Installs dependencies and installs script files.
+#   Description:  Script that installs Gorp and dependencies :)
 #   Parameters:   None
 
 ############################ [WARNING] ############################

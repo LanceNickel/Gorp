@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 ### [MCPOWER] #####################################################
-#   Description:  Shut down all servers during a power outage
+#   Description:  Action script that does mcstop action on all.
 #   Parameters:   None
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
-##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
 ###################################################################
 
 

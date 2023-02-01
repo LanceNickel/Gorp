@@ -7,7 +7,7 @@
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
-##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
 ###################################################################
 
 

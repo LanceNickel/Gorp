@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 ### [UNINSTALLER] ##################################################
-#   Description:  Worker that uninstalls all aspects of C.U.M.
+#   Description:  Script that uninstalls Gorp :(
 #   Parameters:   None
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
-##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
 ###################################################################
 
 

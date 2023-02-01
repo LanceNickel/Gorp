@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 ### [MCBACKUP] ####################################################
-#   Description:  User-frontend script to backup a server.
+#   Description:  Action script to setup backup worker.
 #   Parameters:   1: (required) Server directory name
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
-##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
 ###################################################################
 
 

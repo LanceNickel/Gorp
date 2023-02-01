@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 ### [MCRESTART] ###################################################
-#   Description:  User-frontend script to restart a server.
+#   Description:  Action script to setup restart worker.
 #   Parameters:   1: (required) Server directory name
 #                 2: (optional) <fast, now>
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
-##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
 ###################################################################
 
 

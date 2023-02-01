@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 ### [MCUPDATE] ####################################################
-#   Description:  User-frontend script to get latest server JAR.
+#   Description:  Action script to setup update worker.
 #   Parameters:   None
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
-##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
 ###################################################################
 
 
