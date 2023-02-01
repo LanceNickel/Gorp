@@ -33,7 +33,7 @@ DATE_FILE=$(date +"%Y-%m-%d_%H%M_%S")
 
 BACKUP=$(echo "$WORLD-$DATE_FILE")
 SOURCE=$(echo "/minecraft/servers/$SERVER/$WORLD")
-DEST=$(cat /minecraft/cum.conf | grep "^[^#;]" | grep 'DEST=' | cut -d '=' -f 2)
+DEST=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'DEST=' | cut -d '=' -f 2)
 FULL_DEST=$(echo "$DEST/$WORLD/$YEAR/$MONTH")
 TMP=$(echo "/minecraft/tmp/backup")
 

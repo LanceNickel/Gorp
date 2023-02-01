@@ -68,19 +68,19 @@ fi
 # RUN WORKERS BASED ON PASSED PARAMS
 
 if [ -z "$SPEED" ]; then
-    /bin/mcutils/backup.sh $SERVER
-    /bin/mcutils/warning.sh $SERVER restart
-    /bin/mcutils/shutdown.sh $SERVER
-    /bin/mcutils/start.sh $SERVER
+    /bin/gorputils/worker/backup.sh $SERVER
+    /bin/gorputils/worker/warning.sh $SERVER restart
+    /bin/gorputils/worker/shutdown.sh $SERVER
+    /bin/gorputils/worker/start.sh $SERVER
 
 elif [ $SPEED == "fast" ]; then
-    /bin/mcutils/warning.sh $SERVER stop
-    /bin/mcutils/shutdown.sh $SERVER
-    /bin/mcutils/start.sh $SERVER
+    /bin/gorputils/worker/warning.sh $SERVER stop
+    /bin/gorputils/worker/shutdown.sh $SERVER
+    /bin/gorputils/worker/start.sh $SERVER
 
 elif [ $SPEED == "now" ]; then
-    /bin/mcutils/shutdown.sh $SERVER
-    /bin/mcutils/start.sh $SERVER
+    /bin/gorputils/worker/shutdown.sh $SERVER
+    /bin/gorputils/worker/start.sh $SERVER
 
 else
     echo "RESTART: Invalid second parameter. Restart failed."

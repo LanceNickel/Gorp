@@ -6,7 +6,7 @@
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
-##  This script is OVERWRITTEN any time a C.U.M. update is run.  ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
 ###################################################################
 
 
@@ -27,7 +27,7 @@ fi
 # ALREADY INSTALLED GUARD
 
 if [ -d "/bin/mcutils" ]; then
-    echo "The C.U.M. is already installed."
+    echo "Gorp is already installed."
     echo "If you're looking to update, please use updatecum.sh"
     exit
 fi
@@ -36,7 +36,7 @@ fi
 
 # WELCOME
 
-echo -e "\nWelcome to The Minecraft C.U.M. (Commandline Utility Mechanism)"
+echo -e "\nWelcome to Gorp!"
 sleep 0.5
 
 
@@ -58,16 +58,17 @@ echo -e "Installing..."
 
 # MAKE SCRIPTS +X
 
-chmod +x mc*
-chmod +x cum*
-chmod +x mcutils/*.sh
+chmod +x action/*
+chmod +x worker/*
 chmod +x run.sh
 
 
 
 # CREATE REQUIRED DIRS
 
-mkdir /bin/mcutils
+mkdir /bin/gorputils
+mkdir /bin/gorputils/action
+mkdir /bin/borputils/worker
 
 if [ -d "/minecraft" ]; then
     WARN=true
@@ -84,25 +85,11 @@ fi
 
 # MOVE FILES
 
-cp cumupdate /bin/cumupdate
-cp mcbackup /bin/mcbackup
-cp mccreate /bin/mccreate
-cp mcdelete /bin/mcdelete
-cp mcpower /bin/mcpower
-cp mcrestart /bin/mcrestart
-cp mcstart /bin/mcstart
-cp mcstop /bin/mcstop
-cp mcupdate /bin/mcupdate
+cp action/* /bin/gorputils/action/
+cp worker/* /bin/gorputils/worker/
+cp gorp /bin/
 
-cp mcutils/backup.sh /bin/mcutils/backup.sh
-cp mcutils/create.sh /bin/mcutils/create.sh
-cp mcutils/delete.sh /bin/mcutils/delete.sh
-cp mcutils/shutdown.sh /bin/mcutils/shutdown.sh
-cp mcutils/start.sh /bin/mcutils/start.sh
-cp mcutils/update.sh /bin/mcutils/update.sh
-cp mcutils/warning.sh /bin/mcutils/warning.sh
-
-cp cum.conf /minecraft/cum.conf
+cp gorp.conf /minecraft/
 cp run.sh /minecraft/servers/server/run.sh
 
 echo "paper-0-000.jar" > /minecraft/jars/latest

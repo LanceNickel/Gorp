@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [MCDELETE] ####################################################
-#   Description:  User-frontend script to delete a server dir.
+### [MCCREATE] ####################################################
+#   Description:  User-frontend script to create a new server dir.
 #   Parameters:   1: (required) Server directory name
 
 ############################ [WARNING] ############################
@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "DELETE: Insufficient privilege. Deletion failed."
+    echo "CREATE: Insufficient privilege. Restart failed."
     exit
 fi
 
@@ -33,7 +33,7 @@ SERVER=$1
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "DELETE: Please specify a server."
+    echo "CREATE: Please specify a server name to create."
     exit
 fi
 
@@ -42,23 +42,12 @@ fi
 # SERVER DIRECTORY GUARD
 
 if [ -d "/minecraft/servers/$SERVER" ]; then
-    cd /minecraft/servers/$SERVER
-else
-    echo "DELETE: Specified server doesn't exist. There's nothing to delete :)"
+    echo "CREATE: Specified server already exists. Creation failed."
     exit
 fi
 
 
 
-# SCREEN GUARD
+# RUN THE CREATOR WORKER
 
-if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "DELETE: Server is running in screen '$SERVER', please stop the server first."
-        exit
-fi
-
-
-
-# RUN DELETE WORKER
-
-/bin/mcutils/delete.sh $SERVER
+/bin/gorputils/worker/create.sh $SERVER

@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "(worker) C.U.M. UPDATER: Insufficient privilege. Skipping startup."
+    echo "(worker) GORP UPDATER: Insufficient privilege. Skipping startup."
     exit
 fi
 
@@ -28,45 +28,31 @@ fi
 
 
 
-echo "(worker) C.U.M. UPDATER: Installing new scripts..."
+echo "(worker) GORP UPDATER: Installing new scripts..."
 
 
 
 # MAKE SCRIPT FILES EXECUTABLE
 
-chmod +x /minecraft/tmp/updatefiles/mc*
-chmod +x /minecraft/tmp/updatefiles/cum*
-chmod +x /minecraft/tmp/updatefiles/mcutils/*.sh
+chmod +x /minecraft/tmp/updatefiles/action/*
+chmod +x /minecraft/tmp/updatefiles/worker/*
 chmod +x /minecraft/tmp/updatefiles/run.sh
 
 
 
-# REMOVE & RECREATE /bin/mcutils
+# REMOVE & RECREATE DIRS IN /bin
 
-rm -rf /bin/mcutils
-mkdir /bin/mcutils
+rm -rf /bin/gorputils
+mkdir /bin/gorputils/action
+mkdir /bin/gorputils/worker
 
 
 
 # COPY SCRIPT FILES TO /bin
 
-cp /minecraft/tmp/updatefiles/cumupdate /bin/cumupdate
-cp /minecraft/tmp/updatefiles/mcbackup /bin/mcbackup
-cp /minecraft/tmp/updatefiles/mccreate /bin/mccreate
-cp /minecraft/tmp/updatefiles/mcdelete /bin/mcdelete
-cp /minecraft/tmp/updatefiles/mcpower /bin/mcpower
-cp /minecraft/tmp/updatefiles/mcrestart /bin/mcrestart
-cp /minecraft/tmp/updatefiles/mcstart /bin/mcstart
-cp /minecraft/tmp/updatefiles/mcstop /bin/mcstop
-cp /minecraft/tmp/updatefiles/mcupdate /bin/mcupdate
-
-cp /minecraft/tmp/updatefiles/mcutils/backup.sh /bin/mcutils/backup.sh
-cp /minecraft/tmp/updatefiles/mcutils/create.sh /bin/mcutils/create.sh
-cp /minecraft/tmp/updatefiles/mcutils/delete.sh /bin/mcutils/delete.sh
-cp /minecraft/tmp/updatefiles/mcutils/shutdown.sh /bin/mcutils/shutdown.sh
-cp /minecraft/tmp/updatefiles/mcutils/start.sh /bin/mcutils/start.sh
-cp /minecraft/tmp/updatefiles/mcutils/update.sh /bin/mcutils/update.sh
-cp /minecraft/tmp/updatefiles/mcutils/warning.sh /bin/mcutils/warning.sh
+cp action/* /bin/gorputils/action/
+cp worker/* /bin/gorputils/worker/
+cp gorp /bin/
 
 
 
@@ -80,34 +66,32 @@ sleep 1
 
 # CHECK CONFIG FILE VERSIONS
 
-INSTALLEDVER=$(cat /minecraft/cum.conf | grep "CFG_VER" | cut -d "=" -f 2)
-NEWVER=$(cat /minecraft/tmp/updatefiles/cum.conf | grep "CFG_VER" | cut -d "=" -f 2)
+INSTALLEDVER=$(cat /minecraft/gorp.conf | grep "CFG_VER" | cut -d "=" -f2)
+NEWVER=$(cat /minecraft/tmp/updatefiles/gorp.conf | grep "CFG_VER" | cut -d "=" -f2)
 
 
 
 # IF INSTALLED IS NEWER THAN DOWNLOADED
 
 if (( $INSTALLEDVER > $NEWVER )); then
-    echo "(worker) C.U.M. UPDATER: Installed config file is newer than downloaded config file. Leaving config file in inconsistent state. Please check the config file later."
+    echo "(worker) GORP UPDATER: Installed config file is newer than downloaded config file. Leaving config file in inconsistent state. Please check the config file later."
 
 
 
 # ELSE, INSTALLED IS OLDER THAN DOWNLOADED
 
 elif (( $INSTALLEDVER < $NEWVER )); then
-    echo "(worker) C.U.M. UPDATER: Updating configuration file..."
+    echo "(worker) GORP UPDATER: Updating configuration file..."
 
     I=$INSTALLEDVER
 
     while (( $I < $NEWVER ));
     do
         ((I++))
-        cat /minecraft/tmp/updatefiles/confighistory/$I >> /minecraft/cum.conf
+        cat /minecraft/tmp/updatefiles/confighistory/$I >> /minecraft/gorp.conf
     done
 
-    sed "s/.*CFG_VER=.*/CFG_VER=3/" /minecraft/cum.conf > /minecraft/cum.new
-    rm /minecraft/cum.conf
-    cp /minecraft/cum.new /minecraft/cum.conf && rm /minecraft/cum.new
+    sed -i "s/.*CFG_VER=.*/CFG_VER=3/" /minecraft/gorp.conf
 fi
 
 
@@ -116,7 +100,7 @@ fi
 
 
 
-echo "(worker) C.U.M. UPDATER: Checking server run scripts..."
+echo "(worker) GORP UPDATER: Checking server run scripts..."
 
 
 
@@ -139,7 +123,7 @@ do
     # IF INSTALLED IS NEWER THAN DOWNLOADED
 
     if (( $INSTALLEDVER > $NEWVER )); then
-        echo "(worker) C.U.M. UPDATER: Installed run script for server '$SERVER' is newer than downloaded config file. Leaving config file in inconsistent state. Please check the run script later."
+        echo "(worker) GORP UPDATER: Installed run script for server '$SERVER' is newer than downloaded config file. Leaving config file in inconsistent state. Please check the run script later."
     
 
 
@@ -159,4 +143,4 @@ done
 
 
 
-echo "(worker) C.U.M. UPDATER: Update complete."
+echo "(worker) GORP UPDATER: Update complete."

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [MCPOWER] #####################################################
-#   Description:  Shut down all servers during a power outage
+### [MCUPDATE] ####################################################
+#   Description:  User-frontend script to get latest server JAR.
 #   Parameters:   None
 
 ############################ [WARNING] ############################
@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "POWER OUTAGE SHUTDOWN: Insufficient privilege. Shutdown failed."
+    echo "UPDATE: Insufficient privilege. Update failed."
     exit
 fi
 
@@ -24,10 +24,6 @@ fi
 
 
 
-# FOR EACH SERVER, RUN SHUTDOWN WORKER WITH POWER PARAM
+# RUN UPDATE WORKER
 
-for d in "/minecraft/servers/"*
-do
-        SERVER=$(echo $(basename "$d"))
-        /bin/mcstop $SERVER power
-done
+/bin/gorputils/worker/update.sh

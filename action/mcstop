@@ -67,20 +67,20 @@ fi
 # RUN WORKERS BASED ON PASSED PARAMS
 
 if [ -z "$ARG" ]; then
-    /bin/mcutils/backup.sh $SERVER
-    /bin/mcutils/warning.sh $SERVER stop
-    /bin/mcutils/shutdown.sh $SERVER
+    /bin/gorputils/worker/backup.sh $SERVER
+    /bin/gorputils/worker/warning.sh $SERVER stop
+    /bin/gorputils/worker/shutdown.sh $SERVER
 
 elif [ $ARG == "power" ]; then
-    /bin/mcutils/warning.sh $SERVER power
-    /bin/mcutils/shutdown.sh $SERVER
+    /bin/gorputils/worker/warning.sh $SERVER power
+    /bin/gorputils/worker/shutdown.sh $SERVER
 
 elif [ $ARG == "fast" ]; then
-    /bin/mcutils/warning.sh $SERVER stop
-    /bin/mcutils/shutdown.sh $SERVER
+    /bin/gorputils/worker/warning.sh $SERVER stop
+    /bin/gorputils/worker/shutdown.sh $SERVER
 
 elif [ $ARG == "now" ]; then
-    /bin/mcutils/shutdown.sh $SERVER
+    /bin/gorputils/worker/shutdown.sh $SERVER
 
 else
     echo "SHUTDOWN: Invalid second parameter. Shutdown failed."

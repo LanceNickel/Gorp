@@ -31,8 +31,9 @@ JAR=$(cat /minecraft/jars/latest)
 # Change this value to change the amount of RAM (in gigabytes) to be allocated for this server instance.
 # Plese change it based on what you believe will be required.
 # This is a good resource: https://minecraft.fandom.com/wiki/Server/Requirements/Dedicated#Unix_(Linux,_BSD,_macOS)
+# Default: RAM=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
 
-RAM=$(cat /minecraft/cum.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
+RAM=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
 
 
 

@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "C.U.M. UPDATE: Insufficient privilege. Update failed."
+    echo "GORP UPDATE: Insufficient privilege. Update failed."
     exit
 fi
 
@@ -33,7 +33,7 @@ mkdir /minecraft/tmp
 
 # GIT CLONE LATEST C.U.M. FILES
 
-echo "C.U.M. UPDATER: Downloading newest scripts..."
+echo "GORP UPDATE: Downloading newest scripts..."
 
 git clone --quiet https://github.com/LanceNickel/mc-cum /minecraft/tmp/updatefiles
 

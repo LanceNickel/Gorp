@@ -61,4 +61,4 @@ fi
 
 # RUN STARTUP WORKER
 
-/bin/mcutils/start.sh $SERVER
+/bin/gorputils/worker/start.sh $SERVER

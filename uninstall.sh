@@ -27,7 +27,7 @@ fi
 
 # WELCOME
 
-echo -e "Welcome to The Minecraft C.U.M. (Commandline Utility Mechanism)"
+echo -e "Welcome to Gorp!"
 sleep 0.5
 
 
@@ -36,19 +36,13 @@ echo -e "\nUninstalling..."
 
 
 
-# REMOVE THE C.U.M. FROM /bin (/minecraft is never deleted to avoid catastrophic data loss)
+# REMOVE GORP FROM /bin (/minecraft is never deleted to avoid catastrophic data loss)
 
-rm /bin/mcbackup
-rm /bin/mcpower
-rm /bin/mcrestart
-rm /bin/mcstart
-rm /bin/mcstop
-rm /bin/mcupdate
-rm /bin/cumupdate
-rm -rf /bin/mcutils
+rm -rf /bin/gorputils/
+rm /bin/gorp
 
 
 
 sleep 1
 
-echo -e "The Minecraft C.U.M. (Commandline Utility Mechanism) has been uninstalled."
+echo -e "Gorp has been uninstalled."
