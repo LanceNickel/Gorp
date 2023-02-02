@@ -60,6 +60,7 @@ echo -e "Installing..."
 
 chmod +x action/*
 chmod +x worker/*
+chmod +x gorp
 chmod +x run.sh
 
 
@@ -68,7 +69,7 @@ chmod +x run.sh
 
 mkdir /bin/gorputils
 mkdir /bin/gorputils/action
-mkdir /bin/borputils/worker
+mkdir /bin/gorputils/worker
 
 if [ -d "/minecraft" ]; then
     WARN=true
@@ -96,11 +97,11 @@ echo "paper-0-000.jar" > /minecraft/jars/latest
 
 
 
-# RUN MCUPDATE TO GET & SET JAR FILE
+# RUN UPDATE ACTION TO GET & SET JAR FILE
 
 echo -e "Getting latest Paper JAR file..."
 sleep 1
-/bin/mcupdate
+/bin/gorputils/action/mcupdate
 
 sleep 2
 
