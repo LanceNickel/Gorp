@@ -72,9 +72,9 @@ DEST_ORIG="$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'DEST=')"
 
 cp /minecraft/tmp/updatefiles/gorp.conf /minecraft/gorp.conf
 
-sed -i "19s#.*#"$GAMEVER_ORIG"#" /minecraft/gorp.conf
-sed -i "29s#.*#"$RAM_ORIG"#" /minecraft/gorp.conf
-sed -i "39s#.*#"$DEST_ORIG"#" /minecraft/gorp.conf
+sed -i "19s:.*:$GAMEVER_ORIG:" /minecraft/gorp.conf
+sed -i "29s:.*:$RAM_ORIG:" /minecraft/gorp.conf
+sed -i "39s:.*:$DEST_ORIG:" /minecraft/gorp.conf
 
 
 
@@ -96,8 +96,8 @@ do
 
     cp /minecraft/tmp/updatefiles/run.sh /minecraft/servers/$SERVER/run.sh
 
-    sed -i "20s#.*#$JAR_ORIG#" /minecraft/servers/$SERVER/run.sh
-    sed -i "29s#.*#$RAM_ORIG#" /minecraft/servers/$SERVER/run.sh
+    sed -i "20s:.*:$JAR_ORIG:" /minecraft/servers/$SERVER/run.sh
+    sed -i "29s:.*:$RAM_ORIG:" /minecraft/servers/$SERVER/run.sh
 
 done
 
