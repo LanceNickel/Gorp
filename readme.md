@@ -8,10 +8,11 @@ Please refer to this site for documentation and installation instructions:
 
 ## Roadmap
 These are the features I want to add next (in no particular order or timeframe):
-* Restore backup feature
+* Restore world from backup feature
 * Enable/disable automatic backups at regular intervals
-* Rename an instance
-* Make documentation site mobile-friendly (I'm SORRY!!!)
+* Instance renaming
+* Backup entire /minecraft folder
+* Make documentation site mobile friendly
 
 ## For help
 Shoot me an email: gorp@lanickel.com
