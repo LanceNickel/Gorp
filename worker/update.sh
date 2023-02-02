@@ -15,7 +15,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "(worker) UPDATE: Insufficient privilege. Update failed."
+    echo "update.sh: Insufficient privilege. Exiting."
     exit
 fi
 
@@ -40,7 +40,7 @@ mkdir /minecraft/tmp
 
 # GET AND PROCESS JSON FOR LATEST STABLE PAPER BUILD
 
-echo "(worker) UPDATE: Getting latest build information for $GAMEVER..."
+echo "update.sh: Getting latest build information for $GAMEVER..."
 
 curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds" -H 'accept: application/json' -o /minecraft/tmp/builds.json
 jq '.builds[-1] | {build, channel, downloads}' /minecraft/tmp/builds.json > /minecraft/tmp/latest.json
@@ -79,9 +79,9 @@ CHECKSUM=$(jq '.downloads.application.sha256' /minecraft/tmp/latest.json | tail 
 # DO WE EVEN NEED TO UPDATE?
 
 if (( $INSTALLED < $BUILD )); then
-        echo "(worker) UPDATE: Installing build $BUILD over $INSTALLED..."
+        echo "update.sh: Installing build $BUILD over $INSTALLED..."
 else
-        echo "(worker) UPDATE: Installed build is already the latest available version (installed: $INSTALLED, found: $BUILD). No need to update :)"
+        echo "update.sh: Installed build is already the latest available version (installed: $INSTALLED, found: $BUILD). Exiting."
         exit
 fi
 
@@ -89,7 +89,7 @@ fi
 
 # DOWNLOAD THE LATEST JAR FILE
 
-echo "(worker) UPDATE: Downloading latest stable jar file..."
+echo "update.sh: Downloading latest stable jar file..."
 
 wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME -P /minecraft/tmp/
 
@@ -100,7 +100,7 @@ wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD
 TESTSUM="$(sha256sum /minecraft/tmp/$NAME | cut -d " " -f 1)"
 
 if [ $TESTSUM != $CHECKSUM ]; then
-        echo "UPDATE: Checksum comparison of download failed. This is a security risk. Update failed."
+        echo "update.sh: Checksum comparison of download failed. This is a security risk. Exiting."
         rm -rf /minecraft/tmp
         exit
 fi
@@ -109,7 +109,7 @@ fi
 
 # MOVE THE JAR TO THE /minecraft/jars/ FOLDER AND MAKE IT EXECUTABLE
 
-echo "(worker) UPDATE: Setting jar file as new global default."
+echo "update.sh: Setting jar file as new global default..."
 
 mv /minecraft/tmp/$NAME /minecraft/jars/
 chmod +x /minecraft/jars/$NAME
@@ -128,4 +128,4 @@ rm -rf /minecraft/tmp
 
 
 
-echo "(worker) UPDATE: Update complete. Changes won't take effect until a server restart."
+echo "update.sh: Update complete. Changes won't take effect until a server restart."

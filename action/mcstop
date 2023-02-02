@@ -15,7 +15,7 @@
 # PERMISSION GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "SHUTDOWN: Insufficient privilege. Shutdown failed."
+    echo "mcstop: Insufficient privilege. Exiting."
     exit
 fi
 
@@ -35,11 +35,11 @@ ARG=$2
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "SHUTDOWN: Please specify a server"
+    echo "mcstop: Please specify a server"
     exit
 
 elif [ "$SERVER" == 'fast' ] || [ "$SERVER" == 'now' ] || [ "$SERVER" == 'power' ]; then
-    echo "SHUTDOWN: Malformed command. Expected form: 'mcstop <server> <argument>'"
+    echo "mcstop: Malformed command. Expected form: 'mcstop <server> <argument>'"
     exit
 fi
 
@@ -50,7 +50,7 @@ fi
 if [ -d "/minecraft/servers/$SERVER" ]; then
     cd /minecraft/servers/$SERVER
 else
-    echo "SHUTDOWN: Specified server doesn't exist. Shutdown failed."
+    echo "mcstop: Specified server doesn't exist. Exiting."
     exit
 fi
 
@@ -58,7 +58,7 @@ fi
 
 # NO SCREEN GUARD
 if [[ $(screen -ls | grep "$SERVER")  = "" ]]; then
-        echo "SHUTDOWN: Screen '$SERVER' is not running. Seems '$SERVER' is already stopped."
+        echo "mcstop: Server '$SERVER' is not running. Exiting."
         exit
 fi
 
@@ -83,5 +83,5 @@ elif [ $ARG == "now" ]; then
     /bin/gorputils/worker/shutdown.sh $SERVER
 
 else
-    echo "SHUTDOWN: Invalid second parameter. Shutdown failed."
+    echo "mcstop: Invalid second parameter. Exiting."
 fi

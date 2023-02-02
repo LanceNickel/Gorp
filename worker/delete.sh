@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-        echo "(worker) DELETE: Insufficient privilege. Deletion failed."
+        echo "delete.sh: Insufficient privilege. Exiting."
         exit
 fi
 
@@ -46,7 +46,7 @@ read -r -p "Enter '$SERVER' to confirm: " response
 if [[ "$response" == "$SERVER" ]]; then
     sleep 0.5
 else
-    echo "Incorrect response. Aborting deletion."
+    echo "Incorrect response. Exiting."
     exit
 fi
 
@@ -54,10 +54,10 @@ fi
 
 # DELETE SERVER
 
-echo "(worker) DELETE: Deleting server..."
+echo "delete.sh: Deleting server..."
 
 rm -rf /minecraft/servers/$SERVER
 
 
 
-echo "(worker) DELETE: Server deleted."
+echo "delete.sh: Server deleted."

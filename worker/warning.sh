@@ -15,7 +15,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-        echo "(worker) WARNING: Insufficient privilege. Warning failed."
+        echo "warning.sh: Insufficient privilege. Exiting."
         exit
 fi
 
@@ -34,7 +34,7 @@ ACTION=$2
 
 # SEND WARNING MESSAGE
 
-echo "(worker) WARNING: Sending $ACTION warning in the chat and waiting 30 seconds..."
+echo "warning.sh: Sending $ACTION warning in the chat and waiting 30 seconds..."
 
 if [ $ACTION == "power" ]; then
         screen -S $SERVER -X stuff "say ATTENTION: Due to a power outage, this server must be shut down.\n"

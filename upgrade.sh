@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "(worker) GORP UPGRADER: Insufficient privilege. Skipping startup."
+    echo "upgrade.sh: Insufficient privilege. Exiting."
     exit
 fi
 
@@ -28,7 +28,7 @@ fi
 
 
 
-echo "(worker) GORP UPGRADER: Installing new scripts..."
+echo "upgrade.sh: Installing new scripts..."
 
 
 
@@ -83,7 +83,7 @@ sed -i "39s:.*:$DEST_ORIG:" /minecraft/gorp.conf
 
 
 
-echo "(worker) GORP UPGRADER: Checking server run scripts..."
+echo "upgrade.sh: Checking server run scripts..."
 
 
 
@@ -104,4 +104,4 @@ done
 
 
 
-echo "(worker) GORP UPGRADER: Update complete."
+echo "upgrade.sh: Gorp upgrade complete."

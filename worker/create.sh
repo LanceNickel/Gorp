@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-        echo "(worker) CREATE: Insufficient privilege. Creation failed."
+        echo "create.sh: Insufficient privilege. Exiting."
         exit
 fi
 
@@ -39,7 +39,7 @@ mkdir /minecraft/tmp
 
 # GET LATEST RUN.SH
 
-echo "(worker) CREATE: Creating new server at '/minecraft/servers/$SERVER/'"
+echo "create.sh: Creating new server at '/minecraft/servers/$SERVER/'"
 
 wget -q https://raw.githubusercontent.com/LanceNickel/Gorp/main/run.sh -P /minecraft/tmp/
 
@@ -59,4 +59,4 @@ rm -rf /minecraft/tmp
 
 
 
-echo "(worker) CREATE: Creation complete."
+echo "create.sh: Creation complete."

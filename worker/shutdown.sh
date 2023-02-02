@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-        echo "(worker) SHUTDOWN: Insufficient privilege. Shutdown failed."
+        echo "shutdown.sh: Insufficient privilege. Exiting."
         exit
 fi
 
@@ -23,7 +23,7 @@ fi
 # SCREEN NOT RUNNING GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  = "" ]]; then
-        echo "(worker) SHUTDOWN: Screen '$SERVER' is not running. Shutdown failed."
+        echo "shutdown.sh: Server '$SERVER' is not running. Exiting."
 fi
 
 
@@ -40,7 +40,7 @@ SERVER=$1
 
 # STOP SERVER
 
-echo "(worker) SHUTDOWN: Stopping server..."
+echo "shutdown.sh: Stopping server..."
 screen -S $SERVER -X stuff 'stop\n'
 
 
@@ -63,16 +63,18 @@ do
         fi
 
         if [ $I -eq "6" ]; then
-                echo "(worker) SHUTDOWN: This is taking longer than expected..."
+                echo "shutdown.sh: This is taking longer than expected..."
         fi
 
         if [ $I -eq "12" ]; then
-                echo "(worker) SHUTDOWN: The server process has hung, force quitting. Plese check Minecraft server logs after to figure out what happened."
+                echo "shutdown.sh: The server shutdown process has hung. The server will be force-quit."
+                sleep 0.05
+                echo "Please investigate this further in the server log: '/minecraft/servers/$SERVER/logs/latest.log'."
                 screen -X -S mc quit
         fi
 
         if [ $I -eq "13" ]; then
-                echo "(worker) SHUTDOWN: Cannot get screen $SERVER to quit. Shutdown will now exit. Please investigate, something is in a very broken state."
+                echo "shutdown.sh: Cannot get screen $SERVER to quit. Shutdown will now exit. Please investigate, something is in a very broken state."
                 exit
         fi
 
@@ -81,4 +83,4 @@ done
 
 
 
-echo "(worker) SHUTDOWN: Shutdown complete."
+echo "shutdown.sh: Shutdown complete."

@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "CREATE: Insufficient privilege. Restart failed."
+    echo "mccreate: Insufficient privilege. Exiting."
     exit
 fi
 
@@ -33,7 +33,7 @@ SERVER=$1
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "CREATE: Please specify a server name to create."
+    echo "mccreate: Please specify a server name to create. Exiting."
     exit
 fi
 
@@ -42,7 +42,7 @@ fi
 # SERVER DIRECTORY GUARD
 
 if [ -d "/minecraft/servers/$SERVER" ]; then
-    echo "CREATE: Specified server already exists. Creation failed."
+    echo "mccreate: Specified server already exists. Exiting."
     exit
 fi
 

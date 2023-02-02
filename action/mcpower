@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "POWER OUTAGE SHUTDOWN: Insufficient privilege. Shutdown failed."
+    echo "mcpower: Insufficient privilege. Exiting."
     exit
 fi
 

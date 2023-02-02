@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "DELETE: Insufficient privilege. Deletion failed."
+    echo "mcdelete: Insufficient privilege. Exiting."
     exit
 fi
 
@@ -33,7 +33,7 @@ SERVER=$1
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "DELETE: Please specify a server."
+    echo "mcdelete: Please specify a server. Exiting"
     exit
 fi
 
@@ -44,7 +44,7 @@ fi
 if [ -d "/minecraft/servers/$SERVER" ]; then
     cd /minecraft/servers/$SERVER
 else
-    echo "DELETE: Specified server doesn't exist. There's nothing to delete :)"
+    echo "mcdelete: Specified server doesn't exist. Exiting."
     exit
 fi
 
@@ -53,7 +53,7 @@ fi
 # SCREEN GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "DELETE: Server is running in screen '$SERVER', please stop the server first."
+        echo "mcdelete: Server '$SERVER' is still running. Please stop the server first. Exiting."
         exit
 fi
 

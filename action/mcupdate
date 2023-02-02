@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "UPDATE: Insufficient privilege. Update failed."
+    echo "mcupdate: Insufficient priviliege. Exiting."
     exit
 fi
 

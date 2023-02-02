@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-        echo "BACKUP: Insufficient privilege. Backup failed."
+        echo "mcbackup: Insufficient privilege. Exiting."
         exit
 fi
 
@@ -33,7 +33,7 @@ SERVER=$1
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "BACKUP: Please specify a server."
+    echo "mcbackup: Please specify a server. Exiting."
     exit
 fi
 
@@ -45,7 +45,7 @@ if [ -d "/minecraft/servers/$SERVER" ]; then
     # we can continue
     sleep 0.005
 else
-    echo "BACKUP: Specified server doesn't exist. Backup failed."
+    echo "mcbackup: Specified server doesn't exist. Exiting."
     exit
 fi
 

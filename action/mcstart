@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-        echo "STARTUP: Insufficient privilege. Startup failed."
+        echo "mcstart: Insufficient privilege. Exiting."
         exit
 fi
 
@@ -33,7 +33,7 @@ SERVER=$1
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "STARTUP: Please specify a server."
+    echo "mcstart: Please specify a server. Exiting."
     exit
 fi
 
@@ -44,7 +44,7 @@ fi
 if [ -d "/minecraft/servers/$SERVER" ]; then
     cd /minecraft/servers/$SERVER
 else
-    echo "STARTUP: Specified server doesn't exist. Startup failed."
+    echo "mcstart: Specified server doesn't exist. Exiting."
     exit
 fi
 
@@ -53,7 +53,7 @@ fi
 # SCREEN GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "STARTUP: Screen '$SERVER' already exists. Seems '$SERVER' is already running."
+        echo "mcstart: Server '$SERVER' is already running. Exiting."
         exit
 fi
 

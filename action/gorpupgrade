@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "GORP UPGRADE: Insufficient privilege. Upgrade failed."
+    echo "gorpupgrade: Insufficient privilege. Exiting."
     exit
 fi
 
@@ -33,7 +33,7 @@ mkdir /minecraft/tmp
 
 # GIT CLONE LATEST C.U.M. FILES
 
-echo "GORP UPGRADE: Downloading newest scripts..."
+echo "gorpupgrade: Downloading newest scripts..."
 
 git clone --quiet https://github.com/LanceNickel/Gorp /minecraft/tmp/updatefiles
 

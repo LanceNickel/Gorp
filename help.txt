@@ -35,4 +35,4 @@ Commands:
 
 
 MORE ABOUT GORP:
-https://github.com/LanceNickel/Gorp/wiki
+https://gorp.lanickel.com/

@@ -15,7 +15,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "RESTART: Insufficient privilege. Restart failed."
+    echo "mcrestart: Insufficient privilege. Exiting."
     exit
 fi
 
@@ -35,11 +35,11 @@ SPEED=$2
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "RESTART: Please specify a server"
+    echo "mcrestart: Please specify a server"
     exit
 
 elif [ "$SERVER" == 'fast' ] || [ "$SERVER" == 'now' ] || [ "$SERVER" == 'power' ]; then
-    echo "RESTART: Malformed command. Expected form: 'mcstop <server> <argument>'"
+    echo -e "mcrestart: Bad command. Expected form: 'mcstop <server> <argument>'. Exiting.\nUse 'gorp help' for more information."
     exit
 fi
 
@@ -50,7 +50,7 @@ fi
 if [ -d "/minecraft/servers/$SERVER" ]; then
     cd /minecraft/servers/$SERVER
 else
-    echo "RESTART: Specified server doesn't exist. Restart failed."
+    echo "mcrestart: Specified server doesn't exist. Exiting."
     exit
 fi
 
@@ -59,7 +59,7 @@ fi
 # NO SCREEN GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  = "" ]]; then
-        echo "RESTART: Screen '$SERVER' is not running. Seems '$SERVER' is already stopped."
+        echo "mcrestart: Server '$SERVER' is not running. Exiting."
         exit
 fi
 
@@ -83,6 +83,6 @@ elif [ $SPEED == "now" ]; then
     /bin/gorputils/worker/start.sh $SERVER
 
 else
-    echo "RESTART: Invalid second parameter. Restart failed."
+    echo "mcrestart: Invalid second parameter. Exiting."
     exit
 fi

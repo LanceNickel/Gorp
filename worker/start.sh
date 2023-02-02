@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "(worker) STARTUP: Insufficient privilege. Startup failed."
+    echo "start.sh: Insufficient privilege. Exiting."
     exit
 fi
 
@@ -34,7 +34,7 @@ PORT=$(cat /minecraft/servers/$SERVER/server.properties | grep server-port | cut
 # SCREEN ALREADY EXISTS GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-    echo "(worker) STARTUP: Screen '$SERVER' already exists. Startup failed."
+    echo "start.sh: Server '$SERVER' is already running. Exiting."
     exit
 fi
 
@@ -42,7 +42,7 @@ fi
 
 # CREATE NEW SCREEN, EXECUTE SERVER'S RUN SCRIPT INSIDE
 
-echo "(worker) STARTUP: Starting server in a screen named '$SERVER'..."
+echo "start.sh: Starting server in a screen named '$SERVER'..."
 sudo screen -d -m -S "$SERVER" /minecraft/servers/$SERVER/run.sh
 
 
@@ -56,7 +56,7 @@ do
         ((I++))
 
         if [[ $(sudo lsof -i:$PORT) != "" ]]; then
-                echo "(worker) STARTUP: Port $PORT is alive."
+                echo "start.sh: Port $PORT is alive."
                 PORT_ALIVE=true
         fi
 
@@ -65,4 +65,4 @@ done
 
 
 
-echo "(worker) STARTUP: Startup complete. Use 'screen -r $SERVER' to get to this server's console."
+echo "start.sh: Startup complete. Use 'screen -r $SERVER' to get to this server's console."

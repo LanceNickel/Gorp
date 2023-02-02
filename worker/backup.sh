@@ -15,7 +15,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-        echo "(worker) BACKUP: Insufficient privilege. Backup failed."
+        echo "backup.sh: Insufficient privilege. Exiting."
         exit
 fi
 
@@ -48,7 +48,7 @@ TMP=$(echo "/minecraft/tmp/backup")
 if [ -d "$SOURCE" ]; then
         sleep 0.005
 else
-        echo "(worker) BACKUP: Source directory does not exist. Backup failed."
+        echo "backup.sh: Source directory does not exist. Exiting."
         exit
 fi
 
@@ -56,7 +56,7 @@ fi
 
 # CHECK FOR (OR CREATE) DESTINATION DIRECTORY (GUARD)
 
-echo "(worker) BACKUP: Backing up $WORLD..."
+echo "backup.sh: Backing up $WORLD..."
 
 if [ -d "$FULL_DEST" ]; then
         sleep 0.005
@@ -73,8 +73,8 @@ elif [ -d "$DEST" ]; then
         mkdir $DEST/$WORLD/$YEAR
         mkdir $FULL_DEST
 else
-        echo "(worker) BACKUP: Backup destination cannot be created. Backup failed."
-        echo "(worker) BACKUP: Intended destination was $FULL_DEST"
+        echo "backup.sh: Backup destination cannot be created. Exiting."
+        echo "backup.sh: Intended destination was $FULL_DEST"
         exit 2
 fi
 
@@ -91,7 +91,7 @@ mkdir $TMP/$BACKUP
 
 # COPY WORLD DIRECTORIES TO TEMP
 
-echo "(worker) BACKUP: Copying files to temp directory..."
+echo "backup.sh: Copying files to temp directory..."
 
 cp -r $SOURCE $TMP/$BACKUP/$WORLD
 cp -r ${SOURCE}_nether $TMP/$BACKUP/${WORLD}_nether
@@ -101,14 +101,14 @@ cp -r ${SOURCE}_the_end $TMP/$BACKUP/${WORLD}_the_end
 
 # COMPRESS FILES IN TEMP DIRECTORY
 
-echo "(worker) BACKUP: Compressing files..."
+echo "backup.sh: Compressing files..."
 tar -czf $TMP/$BACKUP.tar.gz $TMP/$BACKUP >/dev/null 2>/dev/null
 
 
 
 # COPY THE COMPRESSED BACKUP TO THE DESTINATION
 
-echo "(worker) BACKUP: Copying files to backup directory..."
+echo "backup.sh: Copying files to backup directory..."
 cp $TMP/$BACKUP.tar.gz $FULL_DEST/
 
 
@@ -119,4 +119,4 @@ rm -rf /minecraft/tmp
 
 
 
-echo "(worker) BACKUP: Backup complete."
+echo "backup.sh: Backup complete."
