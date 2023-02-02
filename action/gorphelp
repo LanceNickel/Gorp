@@ -15,4 +15,4 @@
 
 
 
-cat /bin/gorputils/help.txt
+less /bin/gorputils/help.txt
