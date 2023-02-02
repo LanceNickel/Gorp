@@ -56,6 +56,7 @@ mkdir /bin/gorputils/worker
 
 cp /minecraft/tmp/updatefiles/action/* /bin/gorputils/action/
 cp /minecraft/tmp/updatefiles/worker/* /bin/gorputils/worker/
+cp /minecraft/tmp/updatefiles/help.txt /bin/gorputils/
 cp /minecraft/tmp/updatefiles/gorp /bin/
 
 

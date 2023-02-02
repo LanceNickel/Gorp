@@ -88,6 +88,7 @@ fi
 
 cp action/* /bin/gorputils/action/
 cp worker/* /bin/gorputils/worker/
+cp help.txt /bin/gorputils/
 cp gorp /bin/
 
 cp gorp.conf /minecraft/
