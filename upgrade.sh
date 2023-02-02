@@ -43,6 +43,7 @@ chmod +x /minecraft/tmp/updatefiles/run.sh
 # REMOVE & RECREATE DIRS IN /bin
 
 rm -rf /bin/gorputils
+mkdir /bin/gorp
 mkdir /bin/gorputils/action
 mkdir /bin/gorputils/worker
 
