@@ -11,3 +11,8 @@ These are the features I want to add next (in no particular order or timeframe):
 * Restore backup feature
 * Enable/disable automatic backups at regular intervals
 * Rename an instance
+
+## For help
+Shoot me an email: gorp@lanickel.com
+
+Or open an issue.
