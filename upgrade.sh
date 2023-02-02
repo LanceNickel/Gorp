@@ -36,24 +36,27 @@ echo "(worker) GORP UPGRADER: Installing new scripts..."
 
 chmod +x /minecraft/tmp/updatefiles/action/*
 chmod +x /minecraft/tmp/updatefiles/worker/*
+chmod +x /minecraft/tmp/updatefiles/gorp
 chmod +x /minecraft/tmp/updatefiles/run.sh
 
 
 
-# REMOVE & RECREATE DIRS IN /bin
+# REMOVE CURRENT INSTALLATION
 
 rm -rf /bin/gorputils
-mkdir /bin/gorp
+rm /bin/gorp
+
+
+
+# CREATE DIRECTORIES AND RE-INSTALL GORP
+
+mkdir /bin/gorputils
 mkdir /bin/gorputils/action
 mkdir /bin/gorputils/worker
 
-
-
-# COPY SCRIPT FILES TO /bin
-
-cp action/* /bin/gorputils/action/
-cp worker/* /bin/gorputils/worker/
-cp gorp /bin/
+cp /minecraft/tmp/updatefiles/action/* /bin/gorputils/action/
+cp /minecraft/tmp/updatefiles/worker/* /bin/gorputils/worker/
+cp /minecraft/tmp/updatefiles/gorp /bin/
 
 
 
