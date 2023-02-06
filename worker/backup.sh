@@ -71,24 +71,32 @@ mkdir -p $TMP/$BACKUP_NAME
 
 
 
-# ISSUE SAVE COMMAND... WAIT UNTIL FINISHED
+# FIGURE OUT IF THE SERVER IS CURRENTLY RUNNING
 
-screen -S $SERVER -X stuff "save-all\n"
-
-while [ true ]
-do
-        sleep 0.2
-
-        if [[ $(tail /minecraft/servers/$SERVER/logs/latest.log -n1 | grep 'Saved the game') != "" ]]; then
-                break
-        fi
-done
+if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
+        RUNNING=true
+else
+        RUNNING=false
+fi
 
 
 
-# TURN OFF AUTOSAVE
+# IF SERVER IS RUNNING, SAVE PROPERLY, THEN TURN OFF AUTOSAVE
 
-screen -S $SERVER -X stuff "save-off\n"
+if [ $RUNNING ]; then
+        screen -S $SERVER -X stuff "save-all\n"
+
+        while [ true ]
+        do
+                sleep 0.2
+
+                if [[ $(tail /minecraft/servers/$SERVER/logs/latest.log -n1 | grep 'Saved the game') != "" ]]; then
+                        break
+                fi
+        done
+
+        screen -S $SERVER -X stuff "save-off\n"
+fi
 
 
 
@@ -102,9 +110,11 @@ cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end
 
 
 
-# TURN AUTOSAVE BACK ON
+# IF SERVER IS RUNNING, TURN AUTOSAVE BACK ON
 
-screen -S $SERVER -X stuff "save-on\n"
+if [ $RUNNING ]; then
+        screen -S $SERVER -X stuff "save-on\n"
+fi
 
 
 
