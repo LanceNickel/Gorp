@@ -28,14 +28,16 @@ WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep "level-name" | c
 
 YEAR=$(date +"%Y")
 MONTH=$(date +"%m")
-DATE_FILE=$(date +"%Y-%m-%d_%H%M_%S")
+DAY=$(date +"%d")
+DATE_FILE=$(date +"%Y-%m-%d_%H%M-%S")
 
+BACKUP_NAME=$WORLD-$DATE_FILE
 
-BACKUP=$(echo "$WORLD-$DATE_FILE")
-SOURCE=$(echo "/minecraft/servers/$SERVER/$WORLD")
-DEST=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'DEST=' | cut -d '=' -f 2)
-FULL_DEST=$(echo "$DEST/$WORLD/$YEAR/$MONTH")
-TMP=$(echo "/minecraft/tmp/backup")
+SOURCE=/minecraft/servers/$SERVER/$WORLD
+DEST_ROOT=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'DEST=' | cut -d '=' -f 2)
+DEST=$DEST_ROOT/$SERVER/$WORLD/$YEAR/$MONTH/$DAY
+
+TMP=/minecraft/tmp/backup
 
 
 
@@ -58,34 +60,35 @@ fi
 
 echo "backup.sh: Backing up $WORLD..."
 
-if [ -d "$FULL_DEST" ]; then
-        sleep 0.005
-
-elif [ -d "$DEST/$WORLD/$YEAR" ]; then
-        mkdir $FULL_DEST
-
-elif [ -d "$DEST/$WORLD" ]; then
-        mkdir $DEST/$WORLD/$YEAR
-        mkdir $FULL_DEST
-
-elif [ -d "$DEST" ]; then
-        mkdir $DEST/$WORLD
-        mkdir $DEST/$WORLD/$YEAR
-        mkdir $FULL_DEST
-else
-        echo "backup.sh: Backup destination cannot be created. Exiting."
-        echo "backup.sh: Intended destination was $FULL_DEST"
-        exit 2
-fi
+mkdir -p $DEST
 
 
 
 # FLUSH TEMP DIRECTORY
 
-if [ -d "/minecraft/tmp" ]; then rm -rf /minecraft/tmp; fi
-mkdir /minecraft/tmp
-mkdir $TMP
-mkdir $TMP/$BACKUP
+rm -rf /minecraft/tmp
+mkdir -p $TMP/$BACKUP_NAME
+
+
+
+# ISSUE SAVE COMMAND... WAIT UNTIL FINISHED
+
+screen -S $SERVER -X stuff "save-all\n"
+
+while [ true ]
+do
+        sleep 0.2
+
+        if [[ $(tail /minecraft/servers/$SERVER/logs/latest.log -n1 | grep 'Saved the game') != "" ]]; then
+                break
+        fi
+done
+
+
+
+# TURN OFF AUTOSAVE
+
+screen -S $SERVER -X stuff "save-off\n"
 
 
 
@@ -93,23 +96,30 @@ mkdir $TMP/$BACKUP
 
 echo "backup.sh: Copying files to temp directory..."
 
-cp -r $SOURCE $TMP/$BACKUP/$WORLD
-cp -r ${SOURCE}_nether $TMP/$BACKUP/${WORLD}_nether
-cp -r ${SOURCE}_the_end $TMP/$BACKUP/${WORLD}_the_end
+cp -r $SOURCE $TMP/$BACKUP_NAME/$WORLD
+cp -r ${SOURCE}_nether $TMP/$BACKUP_NAME/${WORLD}_nether
+cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end
+
+
+
+# TURN AUTOSAVE BACK ON
+
+screen -S $SERVER -X stuff "save-on\n"
 
 
 
 # COMPRESS FILES IN TEMP DIRECTORY
 
 echo "backup.sh: Compressing files..."
-tar -czf $TMP/$BACKUP.tar.gz $TMP/$BACKUP >/dev/null 2>/dev/null
+cd $TMP
+tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
 
 
 
 # COPY THE COMPRESSED BACKUP TO THE DESTINATION
 
 echo "backup.sh: Copying files to backup directory..."
-cp $TMP/$BACKUP.tar.gz $FULL_DEST/
+cp $TMP/$BACKUP_NAME.tar.gz $DEST/
 
 
 

@@ -28,6 +28,9 @@ ARG=$3
 if [ $ACTION = "backup" ]; then
     /bin/gorputils/action/mcbackup $SERVER
 
+elif [ $ACTION = "restore" ]; then
+    /bin/gorputils/action/mcrestore $SERVER
+
 elif [ $ACTION = "update" ]; then
     /bin/gorputils/action/mcupdate $SERVER
 
