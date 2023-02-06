@@ -21,18 +21,23 @@ Commands:
         - fast: skip the backup and only give a warning
         - now: restart immediately (no warning)
     
-    create [server name]    -- Create a new server instance
+    create-server [server name]               -- Create a new server instance
 
-    delete [server name]    -- Delete a server instance
+    delete-server [server name]               -- Delete a server instance
 
-    backup [server name]    -- Backup a server instance's world files
+    create-world [server name] [world name]   -- Create a new world in a particular server instance
 
-    update                  -- Get the newest Minecraft server JAR file and install it
+    delete-world [server name] [world name]   -- Delete a world in a particular server instance
 
-    upgrade                 -- Get the newest version of Gorp and install it
+    switch-world [server name]                -- Switch the active world in a particular server instance
 
-    help                    -- View this help text
+    backup [server name]                      -- Backup a server instance's world files
 
+    update                                    -- Get the newest Minecraft server JAR file and install it
 
-MORE ABOUT GORP:
+    upgrade                                   -- Get the newest version of Gorp and install it
+
+    help                                      -- View this help text
+
+READ THE FULL DOCUMENTATION:
 https://gorp.lanickel.com/

@@ -34,11 +34,20 @@ elif [ $ACTION = "restore" ]; then
 elif [ $ACTION = "update" ]; then
     /bin/gorputils/action/mcupdate $SERVER
 
-elif [ $ACTION = "create" ]; then
-    /bin/gorputils/action/mccreate $SERVER
+elif [ $ACTION = "create-server" ]; then
+    /bin/gorputils/action/mccreateserver $SERVER
 
-elif [ $ACTION = "delete" ]; then
-    /bin/gorputils/action/mcdelete $SERVER
+elif [ $ACTION = "delete-server" ]; then
+    /bin/gorputils/action/mcdeleteserver $SERVER
+
+elif [ $ACTION = "create-world" ]; then
+    /bin/gorputils/action/mccreateworld $SERVER $ARG
+
+elif [ $ACTION = "delete-world" ]; then
+    /bin/gorputils/action/mcdeleteworld $SERVER $ARG
+
+elif [ $ACTION = "switch-world" ]; then
+    /bin/gorputils/action/mcswitchworld $SERVER
 
 elif [ $ACTION = "power" ]; then
     /bin/gorputils/action/mcpower

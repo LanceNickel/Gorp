@@ -41,6 +41,28 @@ sleep 0.5
 
 
 
+# USER EULA AND AGREEMENT GUARD
+
+echo -e "\n==== IMPORTANT! ====\nTo continue you must agree to the Minecraft EULA (https://aka.ms/MinecraftEULA).\nYou must also agree to use Gorp for PERSONAL USE ONLY."
+
+read -r -p "Do you agree to the Minecraft EULA? [y/n]: " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    sleep 0.25
+else
+    echo "You did not agree to the Minecraft EULA. Exiting."
+    exit
+fi
+
+read -r -p "Do you agree to use Gorp for personal use only? COMMERCIAL USE PROHIBITED. [y/n]: " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    sleep 0.25
+else
+    echo "Gorp is for personal use. If you are an interested commercial entity, please reach out to gorp@lanickel.com"
+    exit
+fi
+
+
+
 # APT-GET DEPENDENCIES
 
 echo -e "\nDownloading required software..."
@@ -95,6 +117,14 @@ cp gorp.conf /minecraft/
 cp run.sh /minecraft/servers/server/run.sh
 
 echo "paper-0-000.jar" > /minecraft/jars/latest
+
+
+
+# INDICATE USER'S AGREEMENT TO EULA
+# It is not possible to get to this part of code execution without first agreeing to the Minecraft EULA via a prompt.
+# Users who did not expressly agree to the EULA did not get here, as declining above would exit the script there.
+
+echo "eula=true" > /minecraft/servers/server/eula.txt
 
 
 
