@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+### [MCDELETEWORLD] ###############################################
+#   Description:  Action script to setup world delete worker.
+#   Parameters:   1: (required) Server directory name
+#                 2: (required) World (level) name for directory
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+
+
+# PERMISSIONS GUARD
+
+if [[ "$EUID" != 0 ]]; then
+    echo "mcdeleteworld: Insufficient privilege. Exiting."
+    exit
+fi
+
+
+
+# SCRIPT VARIABLES
+
+SERVER=$1
+WORLD_TO_DELETE=$2
+
+
+
+####
+
+
+
+# PARAM GUARD
+
+if [ "$SERVER" = "" ]; then
+    echo "mcdeleteworld: Please specify you want to delete the world in. Exiting."
+    exit
+fi
+
+if [ "$SERVER" = "" ]; then
+    echo "mcdeleteworld: Please specify the name of the world to delete. Exiting."
+    exit
+fi
+
+
+
+# SERVER DIRECTORY GUARD
+
+if [ -d "/minecraft/servers/$SERVER" ]; then
+    sleep 0.05
+else
+    echo "mcdeleteworld: Server doesn't exist. Exiting."
+    exit
+fi
+
+
+
+# SCREEN GUARD
+
+if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
+        echo "mcdeleteworld: Server '$SERVER' is running. Stop the server and then delete the world. Exiting."
+        exit
+fi
+
+
+
+# WORLD DIRECTORY GUARD
+
+if [ -d "/minecraft/servers/$SERVER/world-$WORLD_TO_DELETE" ]; then
+    sleep 0.005
+else
+    echo "mcdeleteworld: A world with name '$WORLD_TO_DELETE' doesn't exist. No need to delete what doesn't exist :)"
+    exit
+fi
+
+
+
+# RUN THE WORLD CREATOR WORKER
+
+/bin/gorputils/worker/deleteworld.sh $SERVER $WORLD_TO_DELETE

@@ -53,6 +53,14 @@ cp /minecraft/tmp/run.sh /minecraft/servers/$SERVER/run.sh
 
 
 
+# INDICATE USER'S AGREEMENT TO EULA
+# It is not possible to get to this part of code execution without first agreeing to the Minecraft EULA via a prompt.
+# Users who did not expressly agree to the EULA did not get here, as they would not have been able to execute this script with the key.
+
+echo "eula=true" > /minecraft/servers/$SERVER/eula.txt
+
+
+
 # CLEAN UP
 
 rm -rf /minecraft/tmp

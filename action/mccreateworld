@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+### [MCCREATEWORLD] ###############################################
+#   Description:  Action script to setup world creator worker.
+#   Parameters:   1: (required) Server directory name
+#                 2: (required) World (level) name for directory
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+
+
+# PERMISSIONS GUARD
+
+if [[ "$EUID" != 0 ]]; then
+    echo "mccreateworld: Insufficient privilege. Exiting."
+    exit
+fi
+
+
+
+# SCRIPT VARIABLES
+
+SERVER=$1
+NEW_WORLD=$2
+
+
+
+####
+
+
+
+# PARAM GUARD
+
+if [ "$SERVER" = "" ]; then
+    echo "mccreateworld: Please specify you want to create the world in. Exiting."
+    exit
+fi
+
+if [ "$SERVER" = "" ]; then
+    echo "mccreateworld: Please specify the name of the world to create. Exiting."
+    exit
+fi
+
+
+
+# SERVER DIRECTORY GUARD
+
+if [ -d "/minecraft/servers/$SERVER" ]; then
+    sleep 0.05
+else
+    echo "mccreateworld: Server doesn't exist. Exiting."
+    exit
+fi
+
+
+
+# WORLD DIRECTORY GUARD
+
+if [ -d "/minecraft/servers/$SERVER/world$NEW_WORLD" ]; then
+    echo "mccreateworld: A world with name '$NEW_WORLD' already exists. Exiting."
+fi
+
+
+
+# SCREEN GUARD
+
+if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
+        echo "mccreateworld: Server '$SERVER' is running. Stop the server and then create a new world. Exiting."
+        exit
+fi
+
+
+
+# RUN THE WORLD CREATOR WORKER
+
+/bin/gorputils/worker/createworld.sh $SERVER $NEW_WORLD

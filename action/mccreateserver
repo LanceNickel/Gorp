@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-### [MCCREATE] ####################################################
+### [MCCREATESERVER] ##############################################
 #   Description:  Action script to setup server creator worker.
 #   Parameters:   1: (required) Server directory name
 
@@ -48,6 +48,29 @@ fi
 
 
 
+# USER EULA AND AGREEMENT GUARD
+
+echo -e "\n==== IMPORTANT! ====\nTo continue you must agree to the Minecraft EULA (https://aka.ms/MinecraftEULA).\nYou must also agree to use Gorp for PERSONAL USE ONLY."
+
+read -r -p "Do you agree to the Minecraft EULA? [y/n]: " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    sleep 0.25
+else
+    echo "You did not agree to the Minecraft EULA. Exiting."
+    exit
+fi
+
+read -r -p "Do you agree to use Gorp for personal use only? COMMERCIAL USE PROHIBITED. [y/n]: " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    sleep 0.25
+else
+    echo "Gorp is for personal use. If you are an interested commercial entity, please reach out to gorp@lanickel.com"
+    exit
+fi
+
+
+
+
 # RUN THE CREATOR WORKER
 
-/bin/gorputils/worker/create.sh $SERVER
+/bin/gorputils/worker/createserver.sh $SERVER

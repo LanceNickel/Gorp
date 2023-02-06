@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-### [MCDELETE] ####################################################
+### [MCDELETESERVER] ##############################################
 #   Description:  Action script to setup server delete worker.
 #   Parameters:   1: (required) Server directory name
 
@@ -61,4 +61,4 @@ fi
 
 # RUN DELETE WORKER
 
-/bin/gorputils/worker/delete.sh $SERVER
+/bin/gorputils/worker/deleteserver.sh $SERVER
