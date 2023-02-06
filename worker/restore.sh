@@ -112,11 +112,17 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 # BACKUP CURRENT WORLD
 
-#/bin/gorputils/action/mcbackup $SERVER
+echo "restore.sh: Backing up current world..."
+
+sleep 0.5
+
+/bin/gorputils/action/mcbackup $SERVER
 
 
 
 # FLUSH CURRENT WORLD
+
+echo "restore.sh: Restoring selected files..."
 
 rm -rf /minecraft/servers/$SERVER/${CURRENT_LEVEL_NAME}*
 
@@ -132,3 +138,7 @@ cp /minecraft/backups/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RES
 tar -xf /minecraft/tmp/restore/$FILE_TO_RESTORE -C /minecraft/tmp/restore/
 
 cp -r /minecraft/tmp/restore/$FOLDER_TO_RESTORE/* /minecraft/servers/$SERVER/
+
+
+
+echo "restore.sh: Restoration complete."
