@@ -83,7 +83,7 @@ fi
 
 # IF SERVER IS RUNNING, SAVE PROPERLY, THEN TURN OFF AUTOSAVE
 
-if [ $RUNNING ]; then
+if [ $RUNNING = true ]; then
         screen -S $SERVER -X stuff "save-all\n"
 
         while [ true ]
@@ -112,7 +112,7 @@ cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end
 
 # IF SERVER IS RUNNING, TURN AUTOSAVE BACK ON
 
-if [ $RUNNING ]; then
+if [ $RUNNING = true ]; then
         screen -S $SERVER -X stuff "save-on\n"
 fi
 
