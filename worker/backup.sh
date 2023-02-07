@@ -140,3 +140,4 @@ rm -rf /minecraft/tmp
 
 
 echo "backup.sh: Backup complete."
+echo "backup.sh: Backup name: $BACKUP_NAME"
