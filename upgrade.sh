@@ -28,7 +28,7 @@ fi
 
 
 
-echo "upgrade.sh: Installing new scripts..."
+echo "upgrade.sh: Upgrading Gorp..."
 
 
 
@@ -80,12 +80,6 @@ sed -i "39s:.*:$DEST_ORIG:" /minecraft/gorp.conf
 
 
 ################### STAGE 3: DEAL WITH THE RUN SCRIPTS IN ALL SERVERS
-
-
-
-echo "upgrade.sh: Checking server run scripts..."
-
-
 
 for d in "/minecraft/servers/"*
 do
