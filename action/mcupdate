@@ -20,10 +20,16 @@ fi
 
 
 
+# SCRIPT VARIABLES
+
+VERSION=$1
+
+
+
 ####
 
 
 
 # RUN UPDATE WORKER
 
-/bin/gorputils/worker/update.sh
+/bin/gorputils/worker/update.sh $VERSION
