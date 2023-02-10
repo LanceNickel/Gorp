@@ -23,7 +23,7 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
-DEST=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'DEST=' | cut -d '=' -f 2)
+BACKUP_DIR=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'DEST=' | cut -d '=' -f 2)
 
 CURRENT_LEVEL_NAME=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
 
@@ -35,7 +35,7 @@ CURRENT_LEVEL_NAME=$(cat /minecraft/servers/$SERVER/server.properties | grep 'le
 
 # SELECT FROM AVAILABLE WORLD FILES
 
-cd /minecraft/backups/$SERVER
+cd $BACKUP_DIR/$SERVER
 
 echo -e "\nPlease select a world (level-name in server.properties)"
 
@@ -133,7 +133,7 @@ rm -rf /minecraft/servers/$SERVER/${CURRENT_LEVEL_NAME}*
 rm -rf /minecraft/tmp
 mkdir -p /minecraft/tmp/restore
 
-cp /minecraft/backups/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /minecraft/tmp/restore/
+cp $BACKUP_DIR/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /minecraft/tmp/restore/
 
 tar -xf /minecraft/tmp/restore/$FILE_TO_RESTORE -C /minecraft/tmp/restore/
 

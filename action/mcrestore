@@ -23,7 +23,7 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
-DEST=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'DEST=' | cut -d '=' -f 2)
+BACKUP_DIR=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'DEST=' | cut -d '=' -f 2)
 
 
 
@@ -42,7 +42,7 @@ fi
 
 # SERVER DIRECTORY GUARD
 
-if [ -d "$DEST/$SERVER" ]; then
+if [ -d "$BACKUP_DIR/$SERVER" ]; then
     sleep 0.005
 else
     echo "mcrestore: Specified server has no backups to restore from. Exiting."
