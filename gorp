@@ -32,7 +32,7 @@ elif [ $ACTION = "restore" ]; then
     /bin/gorputils/action/mcrestore $ARG1
 
 elif [ $ACTION = "update" ]; then
-    /bin/gorputils/action/mcupdate $ARG1
+    /bin/gorputils/action/mcupdate
 
 elif [ $ACTION = "get-jar" ]; then
     /bin/gorputils/action/mcgetjar $ARG1
