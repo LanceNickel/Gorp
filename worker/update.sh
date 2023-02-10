@@ -85,12 +85,7 @@ CHECKSUM=$(jq '.downloads.application.sha256' /minecraft/tmp/latest.json | tail 
 
 # DO WE EVEN NEED TO UPDATE?
 
-if (( $INSTALLED < $BUILD )); then
-        echo "update.sh: Installing build $BUILD over $INSTALLED..."
-else
-        echo "update.sh: Installed build is already the latest available version (installed: $INSTALLED, found: $BUILD). Exiting."
-        exit
-fi
+echo "update.sh: Installing build $BUILD over $INSTALLED..."
 
 
 
