@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+### [MCGETJAR] ####################################################
+#   Description:  Action script to setup jar download worker.
+#   Parameters:   1: (required) Game version
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+
+
+# PERMISSIONS GUARD
+
+if [[ "$EUID" != 0 ]]; then
+    echo "mcupdate: Insufficient priviliege. Exiting."
+    exit
+fi
+
+
+
+# SCRIPT VARIABLES
+
+VERSION=$1
+
+
+
+####
+
+
+
+# PARAM GUARD
+
+if [ "$VERSION" = "" ]; then
+    echo "mcgetjar: Please specify a game version. Exiting."
+    exit
+fi
+
+
+
+# VALID WORLD VERSION GUARD
+
+FOUND=false
+VERSIONS=("1.8.8", "1.9.4", "1.10.2", "1.11.2", "1.12", "1.12.1", "1.12.2", "1.13-pre7", "1.13", "1.13.1", "1.13.2", "1.14", "1.14.1", "1.14.2", "1.14.3", "1.14.4", "1.15", "1.15.1", "1.15.2", "1.16.1", "1.16.2", "1.16.3", "1.16.4", "1.16.5", "1.17", "1.17.1", "1.18", "1.18.1", "1.18.2", "1.19", "1.19.1", "1.19.2", "1.19.3")
+
+for ver in $VERSIONS; do
+    if [ $ver == $VERSION ]; then
+        FOUND=true
+        break
+    fi
+done
+
+if [ $FOUND = false ]; then
+    echo -e "mcgetjar: Invalid game version. Exiting."
+    exit
+fi
+
+
+
+# RUN JAR DOWNLOADER
+
+/bin/gorputils/worker/getjar.sh $VERSION

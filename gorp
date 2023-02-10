@@ -34,6 +34,9 @@ elif [ $ACTION = "restore" ]; then
 elif [ $ACTION = "update" ]; then
     /bin/gorputils/action/mcupdate $ARG1
 
+elif [ $ACTION = "get-jar" ]; then
+    /bin/gorputils/action/mcgetjar $ARG1
+
 elif [ $ACTION = "create-server" ]; then
     /bin/gorputils/action/mccreateserver $ARG1
 
