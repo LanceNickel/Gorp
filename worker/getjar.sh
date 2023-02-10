@@ -42,11 +42,22 @@ mkdir /minecraft/tmp
 echo "getjar.sh: Getting latest build information for $VERSION..."
 
 curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$VERSION/builds" -H 'accept: application/json' -o /minecraft/tmp/builds.json
-jq '.builds[-1] | {build, channel, downloads}' /minecraft/tmp/builds.json > /minecraft/tmp/latest.json
+
+
+
+# VERSION NOT FOUND GUARD
+
+if [[ $(cat /minecraft/tmp/builds.json | grep "Version not found.") != "" ]]; then
+    echo "getjar.sh: Specified game version not found. Exiting."
+    exit
+fi
+
 
 
 
 # DETERMINE THE LATEST STABLE BUILD
+
+jq '.builds[-1] | {build, channel, downloads}' /minecraft/tmp/builds.json > /minecraft/tmp/latest.json
 
 FOUND=false
 I=1
