@@ -26,7 +26,7 @@ fi
 GLOBAL_VERSION=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f 2)
 CUSTOM_VERSION=$1
 
-if [ {"$CUSTOM_VERSION" != "" ]; then
+if [ "$CUSTOM_VERSION" != "" ]; then
         GAMEVER=$CUSTOM_VERSION
 else
         GAMEVER=$GLOBAL_VERSION
