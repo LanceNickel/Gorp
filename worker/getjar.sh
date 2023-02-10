@@ -43,8 +43,6 @@ echo "getjar.sh: Getting latest build information for $VERSION..."
 
 curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$VERSION/builds" -H 'accept: application/json' -o /minecraft/tmp/builds.json
 
-exit
-
 
 
 # VERSION NOT FOUND GUARD
