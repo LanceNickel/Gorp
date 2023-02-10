@@ -47,7 +47,7 @@ curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$VERSION/bui
 
 # VERSION NOT FOUND GUARD
 
-if [[ $(cat /minecraft/tmp/builds.json | grep "Version not found.") != "" ]]; then
+if [[ $(cat /minecraft/tmp/builds.json | grep 'Version not found.') != "" ]]; then
     echo "getjar.sh: Specified game version not found. Exiting."
     exit
 fi
