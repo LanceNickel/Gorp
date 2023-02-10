@@ -21,16 +21,9 @@ fi
 
 
 
-# SCRIPT VARIABLES (argument 1 used as override)
+# SCRIPT VARIABLES
 
-GLOBAL_VERSION=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f 2)
-CUSTOM_VERSION=$1
-
-if [ "$CUSTOM_VERSION" != "" ]; then
-        GAMEVER=$CUSTOM_VERSION
-else
-        GAMEVER=$GLOBAL_VERSION
-fi
+$GAMEVER=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f 2)
 
 
 
