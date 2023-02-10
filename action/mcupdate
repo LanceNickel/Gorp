@@ -20,12 +20,6 @@ fi
 
 
 
-# SCRIPT VARIABLES
-
-VERSION=$1
-
-
-
 ####
 
 
