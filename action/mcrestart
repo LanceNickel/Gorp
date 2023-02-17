@@ -68,7 +68,7 @@ fi
 # RUN WORKERS BASED ON PASSED PARAMS
 
 if [ -z "$SPEED" ]; then
-    /usr/local/bin/gorputils/worker/backup.sh $SERVER
+    /usr/local/bin/gorputils/worker/backupworld.sh $SERVER
     /usr/local/bin/gorputils/worker/warning.sh $SERVER restart
     /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
     /usr/local/bin/gorputils/worker/start.sh $SERVER
