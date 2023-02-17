@@ -68,9 +68,9 @@ mkdir -p /minecraft/tmp/$WORLD_TO_ARCHIVE
 
 echo "archiveworld.sh: Archiving $WORLD_TO_ARCHIVE..."
 
-cp -r /minecraft/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ /minecraft/tmp/$WORLD/
-cp -r /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ /minecraft/tmp/$WORLD/
-cp -r /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /minecraft/tmp/$WORLD/
+cp -r /minecraft/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ /minecraft/tmp/$WORLD_TO_ARCHIVE/
+cp -r /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ /minecraft/tmp/$WORLD_TO_ARCHIVE/
+cp -r /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /minecraft/tmp/$WORLD_TO_ARCHIVE/
 
 cd /minecraft/tmp
 tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null
