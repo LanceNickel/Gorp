@@ -88,9 +88,9 @@ chmod +x run.sh
 
 # CREATE REQUIRED DIRS
 
-mkdir /usr/local/bin/gorputils
-mkdir /usr/local/bin/gorputils/action
-mkdir /usr/local/bin/gorputils/worker
+mkdir -p /usr/local/bin/gorputils
+mkdir -p /usr/local/bin/gorputils/action
+mkdir -p /usr/local/bin/gorputils/worker
 
 if [ -d "/minecraft" ]; then
     WARN=true

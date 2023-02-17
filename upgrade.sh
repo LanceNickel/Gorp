@@ -59,7 +59,7 @@ rm /usr/local/bin/gorp
 
 # CREATE DIRECTORIES AND RE-INSTALL GORP
 
-mkdir /usr/local/bin/gorputils
+mkdir -p /usr/local/bin/gorputils
 mkdir /usr/local/bin/gorputils/action
 mkdir /usr/local/bin/gorputils/worker
 
