@@ -3,7 +3,7 @@
 ### [DELETE-WORLD WORKER] #########################################
 #   Description:  Worker script that performs the world delete.
 #   Parameters:   1: (required) Server directory name
-#                 2: (required) World (level) name for directory
+#                 2: (optional) World (level) name for directory
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -26,19 +26,42 @@ fi
 SERVER=$1
 WORLD_TO_DELETE=$2
 
+OPTIONS=$(ls /minecraft/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
+
 
 
 ####
 
 
 
+# IF WORLD_TO_DELETE NOT SPECIFIED, ASK USER
+
+if [ "$WORLD_TO_DELETE" == "" ]; then
+    while [ true ]
+    do
+        echo -e "Options:\n$OPTIONS"
+
+        read -r -p "Please enter a world to delete: " response
+
+        TEST=$(echo $OPTIONS | grep -w $response)
+
+        if [[ "$TEST" != "" ]]; then
+            WORLD_TO_DELETE=$response
+            break
+        else
+            echo -e "\nSpecified world does not exist.\n"
+        fi
+    done
+
+
+
 # USER CONFIRMATION GUARDS
 
-echo "You are going to DELETE a world in the '$SERVER' server instance. There is no way back."
+echo "You are about to delete a world named '$WORLD_TO_DELETE' in the '$SERVER' server instance."
 
 read -r -p "Did you back up the world? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    sleep 0.25
+    sleep 0.005
 else
     echo "PLEASE BACK UP YOUR WORLD FILES! Run 'mcbackup $SERVER' to take a back up first."
     exit

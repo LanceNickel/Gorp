@@ -49,6 +49,9 @@ elif [ $ACTION = "create-world" ]; then
 elif [ $ACTION = "delete-world" ]; then
     /usr/local/bin/gorputils/action/mcdeleteworld $ARG1 $ARG2
 
+elif [ $ACTION = "archive-world" ]; then
+    /usr/local/bin/gorputils/action/mcdeleteworld $ARG1 $ARG2
+
 elif [ $ACTION = "switch-world" ]; then
     /usr/local/bin/gorputils/action/mcswitchworld $ARG1 $ARG2
 

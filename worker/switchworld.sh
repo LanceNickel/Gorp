@@ -23,6 +23,8 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
+SWITCH_TO=$2
+
 OPTIONS=$(ls /minecraft/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
 CURRENT_WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
 
@@ -32,29 +34,33 @@ CURRENT_WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-n
 
 
 
-# GET USER INPUT
+# GET USER INPUT (if user did not specify a world)
 
-while [ true ]
-do
-    echo -e "Options:\n$OPTIONS"
+if [ "$SWITCH_TO" == "" ]; then
 
-    read -r -p "Please enter a world to switch to: " response
+    while [ true ]
+    do
+        echo -e "Options:\n$OPTIONS"
 
-    TEST=$(echo $OPTIONS | grep -w $response)
+        read -r -p "Please enter a world to switch to: " response
 
-    if [[ "$TEST" != "" ]]; then
-        NEW_WORLD=$response
-        break
-    else
-        echo -e "\nPlease enter a valid world name.\n"
-    fi
-done
+        TEST=$(echo $OPTIONS | grep -w $response)
+
+        if [[ "$TEST" != "" ]]; then
+            SWITCH_TO=$response
+            break
+        else
+            echo -e "\nSpecified world does not exist.\n"
+        fi
+    done
+
+fi
 
 
 
 # SWITCH THE VALUE IN 'server.properties'
 
-sed -i "s/level-name=$CURRENT_WORLD/level-name=world-$NEW_WORLD/" /minecraft/servers/$SERVER/server.properties
+sed -i "s/level-name=$CURRENT_WORLD/level-name=world-$SWITCH_TO/" /minecraft/servers/$SERVER/server.properties
 
 
 

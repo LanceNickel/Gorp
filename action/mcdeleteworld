@@ -3,7 +3,7 @@
 ### [MCDELETEWORLD] ###############################################
 #   Description:  Action script to setup world delete worker.
 #   Parameters:   1: (required) Server directory name
-#                 2: (required) World (level) name for directory
+#                 2: (optional) World (level) name for directory
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -35,12 +35,7 @@ WORLD_TO_DELETE=$2
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "mcdeleteworld: Please specify you want to delete the world in. Exiting."
-    exit
-fi
-
-if [ "$SERVER" = "" ]; then
-    echo "mcdeleteworld: Please specify the name of the world to delete. Exiting."
+    echo "mcdeleteworld: Server name missing. Expected command format: 'gorp delete-world [server-name] <world-name>'"
     exit
 fi
 
@@ -66,17 +61,21 @@ fi
 
 
 
-# WORLD DIRECTORY GUARD
+# WORLD DIRECTORY GUARD (when world name passed as param)
 
-if [ -d "/minecraft/servers/$SERVER/world-$WORLD_TO_DELETE" ]; then
-    sleep 0.005
-else
-    echo "mcdeleteworld: A world with name '$WORLD_TO_DELETE' doesn't exist. No need to delete what doesn't exist :)"
-    exit
+if [ "$WORLD_TO_DELETE" != "" ]; then
+
+    if [ -d "/minecraft/servers/$SERVER/world-$WORLD_TO_DELETE" ]; then
+        sleep 0.005
+    else
+        echo "mcdeleteworld: A world with name '$WORLD_TO_DELETE' doesn't exist. Exiting."
+        exit
+    fi
+
 fi
 
 
 
-# RUN THE WORLD CREATOR WORKER
+# RUN THE WORLD DELETE WORKER
 
 /usr/local/bin/gorputils/worker/deleteworld.sh $SERVER $WORLD_TO_DELETE

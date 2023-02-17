@@ -3,6 +3,7 @@
 ### [MCSWITCHWORLD] ###############################################
 #   Description:  Action script to setup world switch worker.
 #   Parameters:   1: (required) Server directory name
+#                 2: (optional) Server world name
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -23,6 +24,7 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
+SWITCH_T0=$2
 
 
 
@@ -33,7 +35,7 @@ SERVER=$1
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "mcswitchworld: Please specify the server you want to modify. Exiting."
+    echo "mcswitchworld: Server name missing. Expected command format: 'gorp switch-world [server-name] <world-name>'"
     exit
 fi
 
@@ -59,6 +61,21 @@ fi
 
 
 
+# WORLD DOESN'T EXIST GUARD (when world name passed as param)
+
+if [ "$SWITCH_TO" != "" ]; then
+
+    if [ -d "/minecraft/servers/$SERVER/world-$SWITCH_TO" ]; then
+        sleep 0.005
+    else
+        echo "mcswitchworld: Specified world does not exist. Exiting."
+        exit
+    fi
+
+fi
+
+
+
 # SCREEN GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
@@ -70,4 +87,4 @@ fi
 
 # RUN THE WORLD CREATOR WORKER
 
-/usr/local/bin/gorputils/worker/switchworld.sh $SERVER $NEW_WORLD
+/usr/local/bin/gorputils/worker/switchworld.sh $SERVER $SWITCH_TO

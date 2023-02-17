@@ -3,7 +3,7 @@
 ### [MCCREATEWORLD] ###############################################
 #   Description:  Action script to setup world creator worker.
 #   Parameters:   1: (required) Server directory name
-#                 2: (required) World (level) name for directory
+#                 2: (optional) World (level) name for directory
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -35,12 +35,7 @@ NEW_WORLD=$2
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "mccreateworld: Please specify you want to create the world in. Exiting."
-    exit
-fi
-
-if [ "$SERVER" = "" ]; then
-    echo "mccreateworld: Please specify the name of the world to create. Exiting."
+    echo "mccreateworld: Server name missing. Expected command format: 'gorp create-world [server-name] <world-name>'"
     exit
 fi
 
@@ -57,10 +52,15 @@ fi
 
 
 
-# WORLD DIRECTORY GUARD
+# WORLD DIRECTORY GUARD (when world name passed as param)
 
-if [ -d "/minecraft/servers/$SERVER/world$NEW_WORLD" ]; then
-    echo "mccreateworld: A world with name '$NEW_WORLD' already exists. Exiting."
+if [ "$NEW_WORLD" != "" ]; then
+
+    if [ -d "/minecraft/servers/$SERVER/world-$NEW_WORLD" ]; then
+        echo "mccreateworld: A world with name '$NEW_WORLD' already exists. Exiting."
+        exit
+    fi
+
 fi
 
 
