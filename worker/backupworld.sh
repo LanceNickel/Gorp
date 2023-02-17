@@ -34,7 +34,7 @@ DATE_FILE=$(date +"%Y-%m-%d_%H%M-%S")
 BACKUP_NAME=$WORLD-$DATE_FILE
 
 SOURCE=/minecraft/servers/$SERVER/$WORLD
-DEST_ROOT=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'DEST=' | cut -d '=' -f 2)
+DEST_ROOT=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d '=' -f2)
 DEST=$DEST_ROOT/$SERVER/$WORLD/$YEAR/$MONTH/$DAY
 
 TMP=/minecraft/tmp/backup

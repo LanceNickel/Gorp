@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+### [MCARCHIVEWORLD] ##############################################
+#   Description:  Action script to setup world archive worker.
+#   Parameters:   1: (required) Server directory name
+#                 2: (optional) World (level) name for directory
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+
+
+# PERMISSIONS GUARD
+
+if [[ "$EUID" != 0 ]]; then
+    echo "mcarchiveworld: Insufficient privilege. Exiting."
+    exit
+fi
+
+
+
+# SCRIPT VARIABLES
+
+SERVER=$1
+WORLD_TO_ARCHIVE=$2
+
+
+
+####
+
+
+
+# PARAM GUARD
+
+if [ "$SERVER" = "" ]; then
+    echo "mcarchiveworld: Server name missing. Expected command format: 'gorp archive-world [server-name] <world-name>'"
+    exit
+fi
+
+
+
+# SERVER DIRECTORY GUARD
+
+if [ -d "/minecraft/servers/$SERVER" ]; then
+    sleep 0.05
+else
+    echo "mcarchiveworld: Server doesn't exist. Exiting."
+    exit
+fi
+
+
+
+# SCREEN GUARD
+
+if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
+        echo "mcarchiveworld: Server '$SERVER' is running. Stop the server and then archive the world. Exiting."
+        exit
+fi
+
+
+
+# WORLD DIRECTORY GUARD (when world name passed as param)
+
+if [ "$WORLD_TO_ARCHIVE" != "" ]; then
+
+    if [ -d "/minecraft/servers/$SERVER/world-$WORLD_TO_ARCHIVE" ]; then
+        sleep 0.005
+    else
+        echo "mcarchiveworld: A world with name '$WORLD_TO_ARCHIVE' doesn't exist. Exiting."
+        exit
+    fi
+
+fi
+
+
+
+# RUN THE WORLD ARCHIVE WORKER
+
+/usr/local/bin/gorputils/worker/archiveworld.sh $SERVER $WORLD_TO_ARCHIVE

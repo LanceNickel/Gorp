@@ -52,6 +52,7 @@ if [ "$WORLD_TO_DELETE" == "" ]; then
             echo -e "\nSpecified world does not exist.\n"
         fi
     done
+fi
 
 
 

@@ -76,15 +76,40 @@ sleep 1
 
 ################### STAGE 2: DEAL WITH THE CONFIGURATION FILE
 
-GAMEVER_ORIG="$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=')"
-RAM_ORIG="$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=')"
-DEST_ORIG="$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'DEST=')"
+# Store currently set values in config
+
+GAMEVER_ORIG="$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f2)"
+RAM_ORIG="$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f2)"
+BACKUPS_ORIG="$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=\|DEST=' | cut -d '=' -f2)"
+ARCHIVES_ORIG="$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'ARCHIVES=' | cut -d '=' -f2)"
+
+
+
+# Copy the new config over
 
 cp /minecraft/tmp/updatefiles/gorp.conf /minecraft/gorp.conf
 
-sed -i "19s:.*:$GAMEVER_ORIG:" /minecraft/gorp.conf
-sed -i "29s:.*:$RAM_ORIG:" /minecraft/gorp.conf
-sed -i "39s:.*:$DEST_ORIG:" /minecraft/gorp.conf
+
+
+# Deal with the OG settings (will always be there)
+
+sed -i "20s:.*:GAMEVER=$GAMEVER_ORIG:" /minecraft/gorp.conf
+sed -i "30s:.*:RAM=$RAM_ORIG:" /minecraft/gorp.conf
+sed -i "40s:.*:BACKUPS=$BACKUPS_ORIG:" /minecraft/gorp.conf
+
+
+
+# If ARCHIVES existed, replace the value, otherwise leave the default from the copied file
+
+if [ "$ARCHIVES_ORIG" != "" ]; then
+    sed -i "50s:.*:ARCHIVES=$ARCHIVES_ORIG:" /minecraft/gorp.conf
+fi
+
+
+
+
+
+
 
 
 
