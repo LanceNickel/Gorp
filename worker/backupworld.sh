@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [BACKUP WORKER] ################################################
-#   Description:  Worker script that performs the backup tasks.
+### [WORLD BACKUP WORKER] #########################################
+#   Description:  Worker script that performs the world backup.
 #   Parameters:   1: (required) Server directory name
 #   Global Conf:  DEST
 
@@ -15,7 +15,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-        echo "backup.sh: Insufficient privilege. Exiting."
+        echo "backupworld.sh: Insufficient privilege. Exiting."
         exit
 fi
 
@@ -50,7 +50,7 @@ TMP=/minecraft/tmp/backup
 if [ -d "$SOURCE" ]; then
         sleep 0.005
 else
-        echo "backup.sh: Source directory does not exist. Exiting."
+        echo "backupworld.sh: Source directory does not exist. Exiting."
         exit
 fi
 
@@ -58,7 +58,7 @@ fi
 
 # CHECK FOR (OR CREATE) DESTINATION DIRECTORY (GUARD)
 
-echo "backup.sh: Backing up $WORLD..."
+echo "backupworld.sh: Backing up $WORLD..."
 
 mkdir -p $DEST
 
@@ -102,7 +102,7 @@ fi
 
 # COPY WORLD DIRECTORIES TO TEMP
 
-echo "backup.sh: Copying files to temp directory..."
+echo "backupworld.sh: Copying files to temp directory..."
 
 cp -r $SOURCE $TMP/$BACKUP_NAME/$WORLD
 cp -r ${SOURCE}_nether $TMP/$BACKUP_NAME/${WORLD}_nether
@@ -120,7 +120,7 @@ fi
 
 # COMPRESS FILES IN TEMP DIRECTORY
 
-echo "backup.sh: Compressing files..."
+echo "backupworld.sh: Compressing files..."
 cd $TMP
 tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
 
@@ -128,7 +128,7 @@ tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
 
 # COPY THE COMPRESSED BACKUP TO THE DESTINATION
 
-echo "backup.sh: Copying files to backup directory..."
+echo "backupworld.sh: Copying files to backup directory..."
 cp $TMP/$BACKUP_NAME.tar.gz $DEST/
 
 
@@ -139,5 +139,5 @@ rm -rf /minecraft/tmp
 
 
 
-echo "backup.sh: Backup complete."
-echo "backup.sh: Backup name: $BACKUP_NAME"
+echo "backupworld.sh: Backup complete."
+echo "backupworld.sh: Backup name: $BACKUP_NAME"

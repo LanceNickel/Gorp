@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [MCBACKUP] ####################################################
-#   Description:  Action script to setup backup worker.
+### [MCBACKUPWORLD] ################################################
+#   Description:  Action script to setup world backup worker.
 #   Parameters:   1: (required) Server directory name
 
 ############################ [WARNING] ############################
@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-        echo "mcbackup: Insufficient privilege. Exiting."
+        echo "mcbackupworld: Insufficient privilege. Exiting."
         exit
 fi
 
@@ -33,7 +33,7 @@ SERVER=$1
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "mcbackup: Please specify a server. Exiting."
+    echo "mcbackupworld: Please specify a server. Exiting."
     exit
 fi
 
@@ -45,7 +45,7 @@ if [ -d "/minecraft/servers/$SERVER" ]; then
     # we can continue
     sleep 0.005
 else
-    echo "mcbackup: Specified server doesn't exist. Exiting."
+    echo "mcbackupworld: Specified server doesn't exist. Exiting."
     exit
 fi
 
@@ -53,4 +53,4 @@ fi
 
 # RUN BACKUP WORKER
 
-/usr/local/bin/gorputils/worker/backup.sh $SERVER
+/usr/local/bin/gorputils/worker/backupworld.sh $SERVER

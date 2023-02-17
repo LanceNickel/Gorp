@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [UPDATE WORKER] ################################################
-#   Description:  Worker script that performs the update tasks.
+### [JAR UPDATE WORKER] ############################################
+#   Description:  Worker script that performs the jar update tasks.
 #   Parameters:   1: (required) Server directory name
 #   Global Conf:  GAMEVER
 
@@ -15,7 +15,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-    echo "update.sh: Insufficient privilege. Exiting."
+    echo "updatejar.sh: Insufficient privilege. Exiting."
     exit
 fi
 
@@ -40,7 +40,7 @@ mkdir /minecraft/tmp
 
 # GET AND PROCESS JSON FOR LATEST STABLE PAPER BUILD
 
-echo "update.sh: Getting latest build information for $GAMEVER..."
+echo "updatejar.sh: Getting latest build information for $GAMEVER..."
 
 curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds" -H 'accept: application/json' -o /minecraft/tmp/builds.json
 
@@ -88,11 +88,11 @@ CHECKSUM=$(jq '.downloads.application.sha256' /minecraft/tmp/latest.json | tail 
 
 # DOWNLOAD THE LATEST JAR FILE
 
-echo "update.sh: Downloading latest stable jar file..."
+echo "updatejar.sh: Downloading latest stable jar file..."
 
 wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME -P /minecraft/tmp/
 
-echo "update.sh: Installing build $BUILD over $INSTALLED..."
+echo "updatejar.sh: Installing build $BUILD over $INSTALLED..."
 
 
 
@@ -101,7 +101,7 @@ echo "update.sh: Installing build $BUILD over $INSTALLED..."
 TESTSUM="$(sha256sum /minecraft/tmp/$NAME | cut -d " " -f 1)"
 
 if [ $TESTSUM != $CHECKSUM ]; then
-        echo "update.sh: Checksum comparison of download failed. This is a security risk. Exiting."
+        echo "updatejar.sh: Checksum comparison of download failed. This is a security risk. Exiting."
         rm -rf /minecraft/tmp
         exit
 fi
@@ -110,7 +110,7 @@ fi
 
 # MOVE THE JAR TO THE /minecraft/jars/ FOLDER AND MAKE IT EXECUTABLE
 
-echo "update.sh: Setting jar file as new global default..."
+echo "updatejar.sh: Setting jar file as new global default..."
 
 mv /minecraft/tmp/$NAME /minecraft/jars/
 chmod +x /minecraft/jars/$NAME
@@ -129,4 +129,4 @@ rm -rf /minecraft/tmp
 
 
 
-echo "update.sh: Update complete. Changes won't take effect until a server restart."
+echo "updatejar.sh: Update complete. Changes won't take effect until a server restart."

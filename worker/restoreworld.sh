@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-### [RESTORE WORKER] ##############################################
+### [WORLD RESTORE WORKER] ########################################
 #   Description:  Worker script that performs world restore tasks.
 #   Parameters:   1: (required) Server directory name
 
@@ -14,7 +14,7 @@
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
-        echo "restore.sh: Insufficient privilege. Exiting."
+        echo "restoreworld.sh: Insufficient privilege. Exiting."
         exit
 fi
 
@@ -112,7 +112,7 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 # BACKUP CURRENT WORLD
 
-echo "restore.sh: Backing up current world..."
+echo "restoreworld.sh: Backing up current world..."
 
 sleep 0.5
 
@@ -122,7 +122,7 @@ sleep 0.5
 
 # FLUSH CURRENT WORLD
 
-echo "restore.sh: Restoring selected files..."
+echo "restoreworld.sh: Restoring selected files..."
 
 rm -rf /minecraft/servers/$SERVER/${CURRENT_LEVEL_NAME}*
 
@@ -141,4 +141,4 @@ cp -r /minecraft/tmp/restore/$FOLDER_TO_RESTORE/* /minecraft/servers/$SERVER/
 
 
 
-echo "restore.sh: Restoration complete."
+echo "restoreworld.sh: Restoration complete."

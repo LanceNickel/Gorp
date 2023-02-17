@@ -2,9 +2,9 @@
 
 ### [GORP] ########################################################
 #   Description:  Main Gorp launcher.
-#   Parameters:   1: (required) Action <backup, update, create, delete, power, start, stop, restart, help, upgrade>
-#                 2: (required) Server name
-#                 3: (optional) Argument <fast, now, power>
+#   Parameters:   1: (required) Action
+#                 2: (optional) Argument 1
+#                 3: (optional) Argument 2
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -25,14 +25,14 @@ ARG2=$3
 
 
 
-if [ $ACTION = "backup" ]; then
-    /usr/local/bin/gorputils/action/mcbackup $ARG1
+if [ $ACTION = "backup-world" ]; then
+    /usr/local/bin/gorputils/action/mcbackupworld $ARG1
 
-elif [ $ACTION = "restore" ]; then
-    /usr/local/bin/gorputils/action/mcrestore $ARG1
+elif [ $ACTION = "restore-world" ]; then
+    /usr/local/bin/gorputils/action/mcrestoreworld $ARG1
 
-elif [ $ACTION = "update" ]; then
-    /usr/local/bin/gorputils/action/mcupdate
+elif [ $ACTION = "update-jar" ]; then
+    /usr/local/bin/gorputils/action/mcupdatejar
 
 elif [ $ACTION = "get-jar" ]; then
     /usr/local/bin/gorputils/action/mcgetjar $ARG1
@@ -50,7 +50,7 @@ elif [ $ACTION = "delete-world" ]; then
     /usr/local/bin/gorputils/action/mcdeleteworld $ARG1 $ARG2
 
 elif [ $ACTION = "switch-world" ]; then
-    /usr/local/bin/gorputils/action/mcswitchworld $ARG1
+    /usr/local/bin/gorputils/action/mcswitchworld $ARG1 $ARG2
 
 elif [ $ACTION = "power" ]; then
     /usr/local/bin/gorputils/action/mcpower
@@ -69,6 +69,9 @@ elif [ $ACTION = "help" ]; then
 
 elif [ $ACTION = "upgrade" ]; then
     /usr/local/bin/gorputils/action/gorpupgrade
+
+elif [ $ACTION = "-v" ]; then
+    echo $(cat /minecraft/gorp.conf | grep 'Gorp version' | cut -d ':' -f2)
 
 else
     echo "Invalid parameters. Use gorp help for more information."
