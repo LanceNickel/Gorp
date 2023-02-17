@@ -95,9 +95,9 @@ done
 
 if [ $FIRST_TIME = true ]; then
 
-    echo "start.sh: Taking initial backup of world..."
+    echo "start.sh: Taking initial backup of world... (This will take ~30 seconds longer than a normal backup, don't worry!)"
 
-    sleep 10
+    sleep 30
 
     /usr/local/bin/gorputils/action/mcbackupworld $SERVER > /dev/null
 
