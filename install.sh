@@ -131,7 +131,7 @@ echo "eula=true" > /minecraft/servers/server/eula.txt
 
 echo -e "Getting latest Paper JAR file..."
 sleep 1
-/usr/local/bin/gorputils/action/mcupdate
+/usr/local/bin/gorputils/action/mcupdatejar
 
 sleep 2
 
