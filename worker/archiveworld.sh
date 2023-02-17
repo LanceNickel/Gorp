@@ -35,9 +35,9 @@ DEST=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'ARCHIVES=' | cut -d '=' 
 
 
 
-# MAKE SURE ARCHIVE ROOT DESTINATION EXISTS
+# MAKE SURE ARCHIVE DESTINATION EXISTS
 
-mkdir -p $DEST
+mkdir -p $DEST/$SERVER
 
 
 
@@ -87,14 +87,14 @@ tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null
 
 echo "archiveworld.sh: Moving world to archive destination... ($DEST/$WORLD_TO_ARCHIVE.tar.gz)"
 
-cp /minecraft/tmp/$WORLD_TO_ARCHIVE.tar.gz $DEST/
+cp /minecraft/tmp/$WORLD_TO_ARCHIVE.tar.gz $DEST/$SERVER/
 
 
 
 # ARCHIVE INTEGRITY GUARD
 
 CHECKSUM=$(md5sum /minecraft/tmp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
-TESTSUM=$(md5sum $DEST/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
+TESTSUM=$(md5sum $DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 
 if [ "$CHECKSUM" != "$TESTSUM" ]; then
     echo "archiveworld.sh: Checksum failed. Ensure the archive destination directory is correctly configured. Exiting."
