@@ -56,13 +56,13 @@ fi
 
 # UPDATE 'level-name' IN 'server.properties' AND START/STOP SERVER TO GENERATE WORLD FILES
 
-echo "createworld.sh: Updating server config and generating new world... (This will take ~30s)"
+echo "createworld.sh: Updating server config and generating new world... (This will take ~1m)"
 
 sed -i "s/level-name=$OLD_WORLD/level-name=world-$NEW_WORLD/" /minecraft/servers/$SERVER/server.properties
 
 /usr/local/bin/gorputils/action/mcstart $SERVER > /dev/null
 
-sleep 10
+sleep 30
 
 /usr/local/bin/gorputils/action/mcstop $SERVER now > /dev/null
 
