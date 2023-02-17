@@ -1,6 +1,6 @@
 # Gorp Changelog
 
-## 1.0.1 (17 Feb 2023)
+## 1.0.2 (17 Feb 2023)
 #### General
 * A changelog will now be kept for subsequent updates.
 
