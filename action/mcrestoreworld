@@ -23,7 +23,7 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
-BACKUP_DIR=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'DEST=' | cut -d '=' -f 2)
+BACKUP_DIR=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d '=' -f 2)
 
 
 
