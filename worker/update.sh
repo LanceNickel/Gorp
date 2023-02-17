@@ -23,7 +23,7 @@ fi
 
 # SCRIPT VARIABLES
 
-GAMEVER=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f 2)
+$GAMEVER=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f 2)
 
 
 
