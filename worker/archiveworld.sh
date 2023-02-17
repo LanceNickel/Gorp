@@ -35,12 +35,6 @@ DEST=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'ARCHIVES=' | cut -d '=' 
 
 
 
-# MAKE SURE ARCHIVE DESTINATION EXISTS
-
-mkdir -p $DEST/$SERVER
-
-
-
 # IF WORLD_TO_ARCHIVE NOT SPECIFIED, ASK USER
 
 if [ "$WORLD_TO_ARCHIVE" == "" ]; then
@@ -80,6 +74,12 @@ cp -r /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /minecraft/t
 
 cd /minecraft/tmp
 tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null
+
+
+
+# MAKE SURE ARCHIVE DESTINATION EXISTS
+
+mkdir -p $DEST/$SERVER
 
 
 

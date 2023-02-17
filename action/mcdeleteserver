@@ -39,6 +39,15 @@ fi
 
 
 
+# NO SERVERS GUARD
+
+if [[ $(ls /minecraft/servers/) = "" ]]; then
+    echo -e "mcdeleteserver: No server instances exist..\nRun 'gorp create-server [name]' to create a new server."
+    exit
+fi
+
+
+
 # SERVER DIRECTORY GUARD
 
 if [ -d "/minecraft/servers/$SERVER" ]; then
