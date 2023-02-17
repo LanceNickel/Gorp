@@ -23,6 +23,7 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
+FIRST_TIME=false
 
 
 
@@ -42,7 +43,9 @@ fi
 # DETECT IF THE FIRST TIME SETUP IS NEEDED
 
 if [[ $(ls /minecraft/servers/$SERVER/ | grep 'server.properties') = "" ]]; then
-    echo "start.sh: Performing first-run setup. This will take about 1 minute and will restart the server."
+    FIRST_TIME=true
+
+    echo "start.sh: Performing first-time instance setup... Server instance will restart several times (please do NOT join until this is done)."
 
     screen -d -m -S "$SERVER" /minecraft/servers/$SERVER/run.sh
     
@@ -88,4 +91,18 @@ done
 
 
 
-echo "start.sh: Startup complete. Use 'screen -r $SERVER' to get to this server's console."
+# IF FIRST TIME, WAIT A FEW SECONS THEN TAKE AN INITIAL BACKUP (and also override the default end text)
+
+if [ $FIRST_TIME = true ]; then
+
+    echo "start.sh: Taking initial backup of world..."
+
+    sleep 10
+
+    /usr/local/bin/gorputils/action/mcbackupworld $SERVER > /dev/null
+
+    echo "start.sh: The server instance first-time setup is complete. You may now join your new server instance. Happy exploring!"
+else
+
+    echo "start.sh: Startup complete. Use 'screen -r $SERVER' to get to this server's console."
+fi

@@ -10,6 +10,7 @@
 * `update` has been changed to `update-jar` to alleviate potential confusion.
 * `create-world`, `delete-world`, and `switch-world` now accept the world name as well for more direct action. Ex: `gorp switch-world [server-name] <world-name>`.
 * `create-world` now starts the server to generate the files, then shuts it down and takes an initial backup.
+* `start` will now take an initial backup of a world when the first-run world generation is done.
 
 #### Added
 * `archive-world` in conjunction with the already-existing `delete-world` action. Accepts a secondary world name parameter to skip a query step.
