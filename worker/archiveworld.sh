@@ -66,35 +66,35 @@ fi
 # CREATE TMP DIRECTORY
 
 rm -rf /minecraft/tmp
-mkdir -p /minecraft/tmp/$WORLD
+mkdir -p /minecraft/tmp/$WORLD_TO_ARCHIVE
 
 
 
 # COMPRESS THE WORLD FILES
 
-echo "archiveworld.sh: Archiving $WORLD..."
+echo "archiveworld.sh: Archiving $WORLD_TO_ARCHIVE..."
 
 cp -r /minecraft/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ /minecraft/tmp/$WORLD/
 cp -r /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ /minecraft/tmp/$WORLD/
 cp -r /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /minecraft/tmp/$WORLD/
 
 cd /minecraft/tmp
-tar -czf $WORLD.tar.gz $WORLD >/dev/null 2>/dev/null
+tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null
 
 
 
 # COPY THE WORLD FILES TO DESTINATION
 
-echo "archiveworld.sh: Moving world to archive destination... ($DEST/$WORLD.tar.gz)"
+echo "archiveworld.sh: Moving world to archive destination... ($DEST/$WORLD_TO_ARCHIVE.tar.gz)"
 
-cp /minecraft/tmp/$WORLD.tar.gz $DEST/
+cp /minecraft/tmp/$WORLD_TO_ARCHIVE.tar.gz $DEST/
 
 
 
 # ARCHIVE INTEGRITY GUARD
 
-CHECKSUM=$(md5sum /minecraft/tmp/$WORLD.tar.gz | cut -d ' ' -f1)
-TESTSUM=$(md5sum $DEST/$WORLD.tar.gz | cut -d ' ' -f1)
+CHECKSUM=$(md5sum /minecraft/tmp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
+TESTSUM=$(md5sum $DEST/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 
 if [ "$CHECKSUM" != "$TESTSUM" ]; then
     echo "archiveworld.sh: Checksum failed. Ensure the archive destination directory is correctly configured. Exiting."
