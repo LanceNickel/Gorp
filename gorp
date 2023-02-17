@@ -26,49 +26,49 @@ ARG2=$3
 
 
 if [ $ACTION = "backup" ]; then
-    /bin/gorputils/action/mcbackup $ARG1
+    /usr/local/bin/gorputils/action/mcbackup $ARG1
 
 elif [ $ACTION = "restore" ]; then
-    /bin/gorputils/action/mcrestore $ARG1
+    /usr/local/bin/gorputils/action/mcrestore $ARG1
 
 elif [ $ACTION = "update" ]; then
-    /bin/gorputils/action/mcupdate
+    /usr/local/bin/gorputils/action/mcupdate
 
 elif [ $ACTION = "get-jar" ]; then
-    /bin/gorputils/action/mcgetjar $ARG1
+    /usr/local/bin/gorputils/action/mcgetjar $ARG1
 
 elif [ $ACTION = "create-server" ]; then
-    /bin/gorputils/action/mccreateserver $ARG1
+    /usr/local/bin/gorputils/action/mccreateserver $ARG1
 
 elif [ $ACTION = "delete-server" ]; then
-    /bin/gorputils/action/mcdeleteserver $ARG1
+    /usr/local/bin/gorputils/action/mcdeleteserver $ARG1
 
 elif [ $ACTION = "create-world" ]; then
-    /bin/gorputils/action/mccreateworld $ARG1 $ARG2
+    /usr/local/bin/gorputils/action/mccreateworld $ARG1 $ARG2
 
 elif [ $ACTION = "delete-world" ]; then
-    /bin/gorputils/action/mcdeleteworld $ARG1 $ARG2
+    /usr/local/bin/gorputils/action/mcdeleteworld $ARG1 $ARG2
 
 elif [ $ACTION = "switch-world" ]; then
-    /bin/gorputils/action/mcswitchworld $ARG1
+    /usr/local/bin/gorputils/action/mcswitchworld $ARG1
 
 elif [ $ACTION = "power" ]; then
-    /bin/gorputils/action/mcpower
+    /usr/local/bin/gorputils/action/mcpower
 
 elif [ $ACTION = "start" ]; then
-    /bin/gorputils/action/mcstart $ARG1
+    /usr/local/bin/gorputils/action/mcstart $ARG1
 
 elif [ $ACTION = "stop" ]; then
-    /bin/gorputils/action/mcstop $ARG1 $ARG2
+    /usr/local/bin/gorputils/action/mcstop $ARG1 $ARG2
 
 elif [ $ACTION = "restart" ]; then
-    /bin/gorputils/action/mcrestart $ARG1 $ARG2
+    /usr/local/bin/gorputils/action/mcrestart $ARG1 $ARG2
 
 elif [ $ACTION = "help" ]; then
-    /bin/gorputils/action/gorphelp
+    /usr/local/bin/gorputils/action/gorphelp
 
 elif [ $ACTION = "upgrade" ]; then
-    /bin/gorputils/action/gorpupgrade
+    /usr/local/bin/gorputils/action/gorpupgrade
 
 else
     echo "Invalid parameters. Use gorp help for more information."

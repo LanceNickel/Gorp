@@ -24,7 +24,16 @@ fi
 
 
 
-################### STAGE 1: INSTALL UPDATED SHELL SCRIPTS TO /bin
+################### STAGE 0: DETECT IF THIS IS AN OLDER INSTALLATION (/bin)
+
+if [ -d "/bin/gorputils" ]; then
+    rm -rf /bin/gorputils
+    rm /bin/gorp
+fi
+
+
+
+################### STAGE 1: INSTALL UPDATED SHELL SCRIPTS TO /usr/local/bin/
 
 
 
@@ -43,21 +52,21 @@ chmod +x /minecraft/tmp/updatefiles/run.sh
 
 # REMOVE CURRENT INSTALLATION
 
-rm -rf /bin/gorputils
-rm /bin/gorp
+rm -rf /usr/local/bin/gorputils
+rm /usr/local/bin/gorp
 
 
 
 # CREATE DIRECTORIES AND RE-INSTALL GORP
 
-mkdir /bin/gorputils
-mkdir /bin/gorputils/action
-mkdir /bin/gorputils/worker
+mkdir /usr/local/bin/gorputils
+mkdir /usr/local/bin/gorputils/action
+mkdir /usr/local/bin/gorputils/worker
 
-cp /minecraft/tmp/updatefiles/action/* /bin/gorputils/action/
-cp /minecraft/tmp/updatefiles/worker/* /bin/gorputils/worker/
-cp /minecraft/tmp/updatefiles/help.txt /bin/gorputils/
-cp /minecraft/tmp/updatefiles/gorp /bin/
+cp /minecraft/tmp/updatefiles/action/* /usr/local/bin/gorputils/action/
+cp /minecraft/tmp/updatefiles/worker/* /usr/local/bin/gorputils/worker/
+cp /minecraft/tmp/updatefiles/help.txt /usr/local/bin/gorputils/
+cp /minecraft/tmp/updatefiles/gorp /usr/local/bin/
 
 
 

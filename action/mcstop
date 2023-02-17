@@ -67,20 +67,20 @@ fi
 # RUN WORKERS BASED ON PASSED PARAMS
 
 if [ -z "$ARG" ]; then
-    /bin/gorputils/worker/backup.sh $SERVER
-    /bin/gorputils/worker/warning.sh $SERVER stop
-    /bin/gorputils/worker/shutdown.sh $SERVER
+    /usr/local/bin/gorputils/worker/backup.sh $SERVER
+    /usr/local/bin/gorputils/worker/warning.sh $SERVER stop
+    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
 
 elif [ $ARG == "power" ]; then
-    /bin/gorputils/worker/warning.sh $SERVER power
-    /bin/gorputils/worker/shutdown.sh $SERVER
+    /usr/local/bin/gorputils/worker/warning.sh $SERVER power
+    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
 
 elif [ $ARG == "fast" ]; then
-    /bin/gorputils/worker/warning.sh $SERVER stop
-    /bin/gorputils/worker/shutdown.sh $SERVER
+    /usr/local/bin/gorputils/worker/warning.sh $SERVER stop
+    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
 
 elif [ $ARG == "now" ]; then
-    /bin/gorputils/worker/shutdown.sh $SERVER
+    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
 
 else
     echo "mcstop: Invalid second parameter. Exiting."

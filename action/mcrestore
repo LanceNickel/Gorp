@@ -62,4 +62,4 @@ fi
 
 # RUN RESTORE WORKER
 
-/bin/gorputils/worker/restore.sh $SERVER
+/usr/local/bin/gorputils/worker/restore.sh $SERVER

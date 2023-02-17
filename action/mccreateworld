@@ -76,4 +76,4 @@ fi
 
 # RUN THE WORLD CREATOR WORKER
 
-/bin/gorputils/worker/createworld.sh $SERVER $NEW_WORLD
+/usr/local/bin/gorputils/worker/createworld.sh $SERVER $NEW_WORLD

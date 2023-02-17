@@ -29,5 +29,5 @@ fi
 for d in "/minecraft/servers/"*
 do
         SERVER=$(echo $(basename "$d"))
-        /bin/gorputils/action/mcstop $SERVER power
+        /usr/local/bin/gorputils/action/mcstop $SERVER power
 done

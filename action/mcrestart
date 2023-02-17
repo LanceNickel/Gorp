@@ -68,19 +68,19 @@ fi
 # RUN WORKERS BASED ON PASSED PARAMS
 
 if [ -z "$SPEED" ]; then
-    /bin/gorputils/worker/backup.sh $SERVER
-    /bin/gorputils/worker/warning.sh $SERVER restart
-    /bin/gorputils/worker/shutdown.sh $SERVER
-    /bin/gorputils/worker/start.sh $SERVER
+    /usr/local/bin/gorputils/worker/backup.sh $SERVER
+    /usr/local/bin/gorputils/worker/warning.sh $SERVER restart
+    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
+    /usr/local/bin/gorputils/worker/start.sh $SERVER
 
 elif [ $SPEED == "fast" ]; then
-    /bin/gorputils/worker/warning.sh $SERVER stop
-    /bin/gorputils/worker/shutdown.sh $SERVER
-    /bin/gorputils/worker/start.sh $SERVER
+    /usr/local/bin/gorputils/worker/warning.sh $SERVER stop
+    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
+    /usr/local/bin/gorputils/worker/start.sh $SERVER
 
 elif [ $SPEED == "now" ]; then
-    /bin/gorputils/worker/shutdown.sh $SERVER
-    /bin/gorputils/worker/start.sh $SERVER
+    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
+    /usr/local/bin/gorputils/worker/start.sh $SERVER
 
 else
     echo "mcrestart: Invalid second parameter. Exiting."

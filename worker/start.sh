@@ -48,7 +48,7 @@ if [[ $(ls /minecraft/servers/$SERVER/ | grep 'server.properties') = "" ]]; then
     
     sleep 30
 
-    /bin/gorputils/action/mcstop $SERVER now > /dev/null
+    /usr/local/bin/gorputils/action/mcstop $SERVER now > /dev/null
 
     sed -i "s/level-name=world/level-name=world-default/" /minecraft/servers/$SERVER/server.properties
 

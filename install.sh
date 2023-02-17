@@ -26,9 +26,8 @@ fi
 
 # ALREADY INSTALLED GUARD
 
-if [ -d "/bin/mcutils" ]; then
-    echo "Gorp is already installed."
-    echo "If you're looking to update, please use updatecum.sh"
+if [ -d "/usr/local/bin/gorputils" ]; then
+    echo -e "Gorp is already installed. To update, run 'sudo gorp upgrade'.\nRunning into problems? Open an issue: https://github.com/LanceNickel/Gorp/issues\nOr send me an email: gorp@lanickel.com"
     exit
 fi
 
@@ -89,9 +88,9 @@ chmod +x run.sh
 
 # CREATE REQUIRED DIRS
 
-mkdir /bin/gorputils
-mkdir /bin/gorputils/action
-mkdir /bin/gorputils/worker
+mkdir /usr/local/bin/gorputils
+mkdir /usr/local/bin/gorputils/action
+mkdir /usr/local/bin/gorputils/worker
 
 if [ -d "/minecraft" ]; then
     WARN=true
@@ -108,10 +107,10 @@ fi
 
 # MOVE FILES
 
-cp action/* /bin/gorputils/action/
-cp worker/* /bin/gorputils/worker/
-cp help.txt /bin/gorputils/
-cp gorp /bin/
+cp action/* /usr/local/bin/gorputils/action/
+cp worker/* /usr/local/bin/gorputils/worker/
+cp help.txt /usr/local/bin/gorputils/
+cp gorp /usr/local/bin/
 
 cp gorp.conf /minecraft/
 cp run.sh /minecraft/servers/server/run.sh
@@ -132,7 +131,7 @@ echo "eula=true" > /minecraft/servers/server/eula.txt
 
 echo -e "Getting latest Paper JAR file..."
 sleep 1
-/bin/gorputils/action/mcupdate
+/usr/local/bin/gorputils/action/mcupdate
 
 sleep 2
 
@@ -153,5 +152,5 @@ sleep 1
 echo -e "\nPlease continue to follow the installation instructions.\n"
 
 if [ $WARN = true ]; then
-    echo -e "WARNING: '/minecraft' directory already exists. Refer to installation instructions for more info:\nhttps://github.com/LanceNickel/mc-cum/blob/main/readme.md\n"
+    echo -e "WARNING: '/minecraft' directory already exists. Refer to installation instructions for more info:\nhttps://gorp.lanickel.com/"
 fi

@@ -36,13 +36,13 @@ echo -e "\nUninstalling..."
 
 
 
-# REMOVE GORP FROM /bin (/minecraft is never deleted to avoid catastrophic data loss)
+# REMOVE GORP FROM /usr/local/bin (/minecraft is never deleted to avoid catastrophic data loss)
 
-rm -rf /bin/gorputils/
-rm /bin/gorp
+rm -rf /usr/local/bin/gorputils/
+rm /usr/local/bin/gorp
 
 
 
 sleep 1
 
-echo -e "Gorp has been uninstalled."
+echo -e "Gorp has been uninstalled. Minecraft files have been preserved."

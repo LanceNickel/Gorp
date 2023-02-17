@@ -61,4 +61,4 @@ fi
 
 # RUN STARTUP WORKER
 
-/bin/gorputils/worker/start.sh $SERVER
+/usr/local/bin/gorputils/worker/start.sh $SERVER

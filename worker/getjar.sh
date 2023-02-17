@@ -54,7 +54,6 @@ fi
 
 
 
-
 # DETERMINE THE LATEST STABLE BUILD
 
 jq '.builds[-1] | {build, channel, downloads}' /minecraft/tmp/builds.json > /minecraft/tmp/latest.json

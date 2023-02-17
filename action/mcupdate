@@ -26,4 +26,4 @@ fi
 
 # RUN UPDATE WORKER
 
-/bin/gorputils/worker/update.sh $VERSION
+/usr/local/bin/gorputils/worker/update.sh $VERSION

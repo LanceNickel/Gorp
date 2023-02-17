@@ -61,4 +61,4 @@ fi
 
 # RUN DELETE WORKER
 
-/bin/gorputils/worker/deleteserver.sh $SERVER
+/usr/local/bin/gorputils/worker/deleteserver.sh $SERVER

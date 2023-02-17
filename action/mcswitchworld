@@ -70,4 +70,4 @@ fi
 
 # RUN THE WORLD CREATOR WORKER
 
-/bin/gorputils/worker/switchworld.sh $SERVER $NEW_WORLD
+/usr/local/bin/gorputils/worker/switchworld.sh $SERVER $NEW_WORLD

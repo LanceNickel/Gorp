@@ -43,11 +43,21 @@ mkdir /minecraft/tmp
 echo "update.sh: Getting latest build information for $GAMEVER..."
 
 curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds" -H 'accept: application/json' -o /minecraft/tmp/builds.json
-jq '.builds[-1] | {build, channel, downloads}' /minecraft/tmp/builds.json > /minecraft/tmp/latest.json
+
+
+
+# VERSION NOT FOUND GUARD
+
+if [[ $(cat /minecraft/tmp/builds.json | grep 'Version not found.') != "" ]]; then
+    echo "getjar.sh: Specified game version not found. Exiting."
+    exit
+fi
 
 
 
 # DETERMINE THE LATEST BUILD NUMBER
+
+jq '.builds[-1] | {build, channel, downloads}' /minecraft/tmp/builds.json > /minecraft/tmp/latest.json
 
 FOUND=false
 I=1
@@ -76,17 +86,13 @@ CHECKSUM=$(jq '.downloads.application.sha256' /minecraft/tmp/latest.json | tail 
 
 
 
-# DO WE EVEN NEED TO UPDATE?
-
-echo "update.sh: Installing build $BUILD over $INSTALLED..."
-
-
-
 # DOWNLOAD THE LATEST JAR FILE
 
 echo "update.sh: Downloading latest stable jar file..."
 
 wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME -P /minecraft/tmp/
+
+echo "update.sh: Installing build $BUILD over $INSTALLED..."
 
 
 

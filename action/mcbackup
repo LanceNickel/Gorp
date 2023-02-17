@@ -53,4 +53,4 @@ fi
 
 # RUN BACKUP WORKER
 
-/bin/gorputils/worker/backup.sh $SERVER
+/usr/local/bin/gorputils/worker/backup.sh $SERVER

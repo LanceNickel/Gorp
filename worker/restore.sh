@@ -116,7 +116,7 @@ echo "restore.sh: Backing up current world..."
 
 sleep 0.5
 
-/bin/gorputils/action/mcbackup $SERVER
+/usr/local/bin/gorputils/action/mcbackup $SERVER
 
 
 

@@ -79,4 +79,4 @@ fi
 
 # RUN THE WORLD CREATOR WORKER
 
-/bin/gorputils/worker/deleteworld.sh $SERVER $WORLD_TO_DELETE
+/usr/local/bin/gorputils/worker/deleteworld.sh $SERVER $WORLD_TO_DELETE
