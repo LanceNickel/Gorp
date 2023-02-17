@@ -58,6 +58,7 @@ if [ "$WORLD_TO_ARCHIVE" == "" ]; then
         else
             echo -e "\nSpecified world does not exist.\n"
         fi
+    done
 fi
 
 
