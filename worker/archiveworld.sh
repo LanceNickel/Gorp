@@ -37,7 +37,7 @@ DEST=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'ARCHIVES=' | cut -d '=' 
 
 # MAKE SURE ARCHIVE ROOT DESTINATION EXISTS
 
-mkdir -p $DEST_ROOT
+mkdir -p $DEST
 
 
 
