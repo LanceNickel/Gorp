@@ -1,6 +1,7 @@
 Gorp - Simple Minecraft CLI tools.
+v1.0.3
 
-Usage:      gorp command [options]
+Usage:      gorp command [options]...
 
 Examples:   gorp start public     # Start a server named "public"
             gorp create private   # Create a new server named "private"
@@ -8,32 +9,39 @@ Examples:   gorp start public     # Start a server named "public"
             gorp update           # Update the default JAR file to the latest stable version.
 
 Commands:
-    start [server name]                 -- Start a server instance
+    [] = required
+    <> = optional
 
-    stop [server name] <argument>       -- Stop a server instance
+    start [server-name]                 -- Start a server instance
+
+    stop [server-name] <argument>       -- Stop a server instance
       valid arguments:
         - fast: skip the backup and only give a warning
         - now: shut down immediately (no warning)
         - power: for use during a power outage
     
-    restart [server name] <argument>    -- Restart a server instance
+    restart [server-name] <argument>    -- Restart a server instance
       valid arguments:
         - fast: skip the backup and only give a warning
         - now: restart immediately (no warning)
     
-    create-server [server name]               -- Create a new server instance
+    create-server [server-name]               -- Create a new server instance
 
-    delete-server [server name]               -- Delete a server instance
+    delete-server [server-name]               -- Delete a server instance
 
-    create-world [server name] [world name]   -- Create a new world in a particular server instance
+    create-world [server-name] <world-name>   -- Create a new world in a particular server instance
 
-    delete-world [server name] [world name]   -- Delete a world in a particular server instance
+    delete-world [server-name] <world-name>   -- Delete a world in a particular server instance
 
-    switch-world [server name]                -- Switch the active world in a particular server instance
+    archive-world [server-name] <world-name>  -- Archive and move a world out of a particular server instance
 
-    backup [server name]                      -- Backup a server instance's world files
+    switch-world [server-name] <world-name>   -- Switch the active world in a particular server instance
 
-    update                                    -- Get the newest Minecraft server JAR file and install it
+    backup-world [server-name]                -- Backup a server instance's currently set world files
+
+    update-jar                                -- Get the newest Minecraft server JAR file and install it
+
+    get-jar [game-version]                    -- Download a Paper server JAR file to /minecraft/jars
 
     upgrade                                   -- Get the newest version of Gorp and install it
 

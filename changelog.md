@@ -1,5 +1,14 @@
 # Gorp Changelog
 
+## 1.0.3 (20 Feb 2023)
+#### General
+* The documentation site has been overhauled. It's now much easier to navigate and now has an improved experience on mobile. [Check it out](https://gorp.lanickel.com/)!
+
+#### Changed
+* Help text updated to reflect command updates.
+
+
+
 ## 1.0.2 (17 Feb 2023)
 #### General
 * A changelog will now be kept for subsequent updates.

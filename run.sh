@@ -3,7 +3,7 @@
 ### [RUN SERVER IN-DIRECTORY WORKER] ##############################
 #   Description:  Worker that actually executes a server JAR.
 #   Parameters:   None
-#   Global Conf:  RAM
+#   Global Conf:  JAR, RAM
 
 ############################ [WARNING] ############################
 ##   Small portions of this script are designed to be changed.   ##
