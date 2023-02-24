@@ -23,7 +23,12 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
-WORLD=$2
+
+if [ "$2" = "" ]; then
+    WORLD=default
+else
+    WORLD=$2
+fi
 
 
 

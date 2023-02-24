@@ -3,6 +3,7 @@
 ### [CREATE WORKER] ###############################################
 #   Description:  Worker script that performs the new server tasks.
 #   Parameters:   1: (required) Server directory name
+#   Parameters:   2: (required) World name
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -13,11 +14,7 @@
 
 # KEY GUARD (to double-check user's agreement to EULA)
 
-if [ "$3" = "s3zujKM87FD56sxb" ]; then
-        sleep 0.005
-elif [ "$2" = "s3zujKM87FD56sxb" ]; then
-        sleep 0.005
-else
+if [ "$3" != "s3zujKM87FD56sxb" ]; then
         echo "create.sh: Incorrect key. This script is not meant to be directly executed by the user. Exiting."
         exit
 fi
@@ -59,11 +56,7 @@ touch /minecraft/servers/$SERVER/server.properties
 
 
 
-# SET WORLD NAME (if passed)
-
-if [ $WORLD != "" ]; then
-        echo "level-name=world-$WORLD" > /minecraft/servers/$SERVER/server.properties
-fi
+echo "level-name=world-$WORLD" > /minecraft/servers/$SERVER/server.properties
 
 
 
