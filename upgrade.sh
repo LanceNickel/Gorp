@@ -46,7 +46,6 @@ echo "upgrade.sh: Upgrading Gorp..."
 chmod +x /minecraft/tmp/updatefiles/action/*
 chmod +x /minecraft/tmp/updatefiles/worker/*
 chmod +x /minecraft/tmp/updatefiles/gorp
-chmod +x /minecraft/tmp/updatefiles/run.sh
 
 
 
@@ -123,7 +122,7 @@ do
     JAR_ORIG="$(cat /minecraft/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=')"
     RAM_ORIG="$(cat /minecraft/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'RAM=')"
 
-    cp /minecraft/tmp/updatefiles/run.sh /minecraft/servers/$SERVER/run.sh
+    cp /minecraft/tmp/updatefiles/worker/run.sh /minecraft/servers/$SERVER/run.sh
 
     sed -i "20s:.*:$JAR_ORIG:" /minecraft/servers/$SERVER/run.sh
     sed -i "29s:.*:$RAM_ORIG:" /minecraft/servers/$SERVER/run.sh

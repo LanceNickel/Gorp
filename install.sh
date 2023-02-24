@@ -82,7 +82,6 @@ echo -e "Installing..."
 chmod +x action/*
 chmod +x worker/*
 chmod +x gorp
-chmod +x run.sh
 
 
 
@@ -112,7 +111,6 @@ cp help.txt /usr/local/bin/gorputils/
 cp gorp /usr/local/bin/
 
 cp gorp.conf /minecraft/
-cp run.sh /minecraft/servers/server/run.sh
 
 echo "paper-0-000.jar" > /minecraft/jars/latest
 
