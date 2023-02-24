@@ -100,7 +100,6 @@ else
     mkdir /minecraft/backups
     mkdir /minecraft/jars
     mkdir /minecraft/servers
-    mkdir /minecraft/servers/server
 fi
 
 
@@ -116,14 +115,6 @@ cp gorp.conf /minecraft/
 cp run.sh /minecraft/servers/server/run.sh
 
 echo "paper-0-000.jar" > /minecraft/jars/latest
-
-
-
-# INDICATE USER'S AGREEMENT TO EULA
-# It is not possible to get to this part of code execution without first agreeing to the Minecraft EULA via a prompt.
-# Users who did not expressly agree to the EULA did not get here, as declining above would exit the script there.
-
-echo "eula=true" > /minecraft/servers/server/eula.txt
 
 
 
