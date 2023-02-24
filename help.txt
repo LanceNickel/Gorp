@@ -33,6 +33,8 @@ Commands:
 
     delete-world [server-name] <world-name>   -- Delete a world in a particular server instance
 
+    reset-world [server-name]                 -- Regenerate the currently set world in a directory. "Mulligan"
+
     archive-world [server-name] <world-name>  -- Archive and move a world out of a particular server instance
 
     switch-world [server-name] <world-name>   -- Switch the active world in a particular server instance
