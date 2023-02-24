@@ -11,6 +11,15 @@
 
 
 
+# KEY GUARD (to double-check user's agreement to EULA)
+
+if [ "$3" != "s3zujKM87FD56sxb" ]; then
+        echo "create.sh: Incorrect key. This script is not meant to be directly executed by the user. Exiting."
+        exit
+fi
+
+
+
 # PERMISSIONS GUARD
 
 if [[ "$EUID" != 0 ]]; then
@@ -30,47 +39,27 @@ WORLD=$2
 ####
 
 
-
-# TMP DIRECTORY
-
-rm -rf /minecraft/tmp
-mkdir /minecraft/tmp
-
-
-
-# GET LATEST RUN.SH
-
-echo "create.sh: Creating new server at '/minecraft/servers/$SERVER/'"
-
-wget -q https://raw.githubusercontent.com/LanceNickel/Gorp/main/run.sh -P /minecraft/tmp/
-
-
-
-# CREATE SERVER DIRECTORY AND MOVE RUN.SH
+# CREATE SERVER DIRECTORY AND COPY RUN.SH
 
 mkdir /minecraft/servers/$SERVER
-chmod +x /minecraft/tmp/run.sh
-cp /minecraft/tmp/run.sh /minecraft/servers/$SERVER/run.sh
+cp /usr/local/bin/gorputils/worker/run.sh /minecraft/servers/$SERVER/
 
 
 
-# INDICATE USER'S AGREEMENT TO EULA
+# PREPARE KEY FILES
 # It is not possible to get to this part of code execution without first agreeing to the Minecraft EULA via a prompt.
 # Users who did not expressly agree to the EULA did not get here, as they would not have been able to execute this script with the key.
 
 echo "eula=true" > /minecraft/servers/$SERVER/eula.txt
+touch /minecraft/servers/$SERVER/server.properties
 
 
 
-# SET WORLD NAME
+# SET WORLD NAME (if passed)
 
-echo "level-name=world-$WORLD" > /minecraft/servers/$SERVER/server.properties
-
-
-
-# CLEAN UP
-
-rm -rf /minecraft/tmp
+if [ $WORLD != "" ]; then
+        echo "level-name=world-$WORLD" > /minecraft/servers/$SERVER/server.properties
+fi
 
 
 

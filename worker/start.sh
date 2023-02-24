@@ -42,9 +42,8 @@ fi
 
 # DETECT IF THE FIRST TIME SETUP IS NEEDED
 
-if [[ $(ls /minecraft/servers/$SERVER/ | grep 'server.properties') = "" ]]; then
+if [[ $(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2) = "" ]]; then
     INITIAL_BACKUP=true
-    
     echo "level-name=world-default" >> /minecraft/sesrvers/$SERVER/server.properties
 fi
 
@@ -63,7 +62,8 @@ fi
 WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
 
 echo "start.sh: Starting instance of server '$SERVER', running world '$WORLD'..." 
-screen -d -m -S "$SERVER" /minecraft/servers/$SERVER/run.sh
+
+screen -d -m -S "$SERVER" /minecraft/servers/$SERVER/run.sh bjcisBOOMIN
 
 
 

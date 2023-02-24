@@ -74,4 +74,4 @@ fi
 
 # RUN THE CREATOR WORKER
 
-/usr/local/bin/gorputils/worker/createserver.sh $SERVER $WORLD
+/usr/local/bin/gorputils/worker/createserver.sh $SERVER $WORLD s3zujKM87FD56sxb

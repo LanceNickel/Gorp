@@ -34,6 +34,15 @@ RAM=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
 
 
 
+# KEY GUARD (to ensure a good, clean startup)
+
+if [ "$1" != "bjcisBOOMIN" ]; then
+        echo "run.sh: Incorrect key. This script is not meant to be directly executed by the user. Exiting."
+        exit
+fi
+
+
+
 ####
 
 
