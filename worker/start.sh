@@ -23,7 +23,7 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
-FIRST_TIME=false
+INITIAL_BACKUP=false
 
 
 
@@ -43,21 +43,17 @@ fi
 # DETECT IF THE FIRST TIME SETUP IS NEEDED
 
 if [[ $(ls /minecraft/servers/$SERVER/ | grep 'server.properties') = "" ]]; then
-    FIRST_TIME=true
-
-    echo "start.sh: Performing first-time instance setup... Server instance will restart several times (please do NOT join until this is done)."
-
-    screen -d -m -S "$SERVER" /minecraft/servers/$SERVER/run.sh
+    INITIAL_BACKUP=true
     
-    sleep 30
+    echo "level-name=world-default" >> /minecraft/sesrvers/$SERVER/server.properties
+fi
 
-    /usr/local/bin/gorputils/action/mcstop $SERVER now > /dev/null
 
-    sed -i "s/level-name=world/level-name=world-default/" /minecraft/servers/$SERVER/server.properties
 
-    rm -rf /minecraft/servers/$SERVER/world
-    rm -rf /minecraft/servers/$SERVER/world_nether
-    rm -rf /minecraft/servers/$SERVER/world_the_end
+# DETECT IF INITIAL BACKUP IS NEEDED
+
+if [[ $(cat /minecraft/servers/$SERVER/server.properties | wc -l) = "1" ]]; then
+    INITIAL_BACKUP=true
 fi
 
 
@@ -91,9 +87,9 @@ done
 
 
 
-# IF FIRST TIME, WAIT A FEW SECONS THEN TAKE AN INITIAL BACKUP (and also override the default end text)
+# IF FIRST TIME, WAIT A FEW SECONDS THEN TAKE AN INITIAL BACKUP (and also override the default end text)
 
-if [ $FIRST_TIME = true ]; then
+if [ $INITIAL_BACKUP = true ]; then
 
     echo "start.sh: Taking initial backup of world... (This will take ~30 seconds longer than a normal backup, don't worry!)"
 

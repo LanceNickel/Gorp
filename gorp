@@ -38,7 +38,7 @@ elif [ $ACTION = "get-jar" ]; then
     /usr/local/bin/gorputils/action/mcgetjar $ARG1
 
 elif [ $ACTION = "create-server" ]; then
-    /usr/local/bin/gorputils/action/mccreateserver $ARG1
+    /usr/local/bin/gorputils/action/mccreateserver $ARG1 $ARG2
 
 elif [ $ACTION = "delete-server" ]; then
     /usr/local/bin/gorputils/action/mcdeleteserver $ARG1
@@ -48,6 +48,9 @@ elif [ $ACTION = "create-world" ]; then
 
 elif [ $ACTION = "delete-world" ]; then
     /usr/local/bin/gorputils/action/mcdeleteworld $ARG1 $ARG2
+
+elif [ $ACTION = "reset-world" ]; then
+    /usr/local/bin/gorputils/action/mcresetworld $ARG1
 
 elif [ $ACTION = "archive-world" ]; then
     /usr/local/bin/gorputils/action/mcarchiveworld $ARG1 $ARG2
@@ -75,6 +78,9 @@ elif [ $ACTION = "upgrade" ]; then
 
 elif [ $ACTION = "-v" ]; then
     echo $(cat /minecraft/gorp.conf | grep 'Gorp version' | cut -d ':' -f2)
+
+elif [ $ACTION = "list-servers" ]; then
+    echo $(ls /minecraft/servers)
 
 else
     echo "Invalid parameters. Use gorp help for more information."

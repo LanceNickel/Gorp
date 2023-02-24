@@ -1,5 +1,16 @@
 # Gorp Changelog
 
+## 1.1.0 (23 Feb 2023)
+#### General
+* Fixes and updates to documentation site.
+
+#### Added
+* `reset-world`: Delete and regenerate the world files for a server. Good for wanting a world "mulligan" when joining a freshly generated world.
+* `list-servers`: List all server instances in the /minecraft/servers/ directory.
+
+#### Changed
+* `create-server` now accepts an optional paramter to override the default world name. To create a server named "public" with the world "base", run `gorp create-server public base`.
+
 ## 1.0.3 (20 Feb 2023)
 #### General
 * The documentation site has been overhauled. It's now much easier to navigate and now has an improved experience on mobile. [Check it out](https://gorp.lanickel.com/)!

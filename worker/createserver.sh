@@ -23,6 +23,7 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
+WORLD=$2
 
 
 
@@ -58,6 +59,12 @@ cp /minecraft/tmp/run.sh /minecraft/servers/$SERVER/run.sh
 # Users who did not expressly agree to the EULA did not get here, as they would not have been able to execute this script with the key.
 
 echo "eula=true" > /minecraft/servers/$SERVER/eula.txt
+
+
+
+# SET WORLD NAME
+
+echo "level-name=world-$WORLD" > /minecraft/servers/$SERVER/server.properties
 
 
 
