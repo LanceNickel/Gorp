@@ -1,5 +1,5 @@
 Gorp - Simple Minecraft CLI tools.
-v1.0.3
+v1.1.0
 
 Usage:      gorp command [options]...
 
@@ -44,6 +44,8 @@ Commands:
     get-jar [game-version]                    -- Download a Paper server JAR file to /minecraft/jars
 
     upgrade                                   -- Get the newest version of Gorp and install it
+
+    list-servers                              -- See a list of all servers in /minecraft/servers/
 
     help                                      -- View this help text
 
