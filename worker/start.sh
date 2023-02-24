@@ -25,12 +25,6 @@ fi
 SERVER=$1
 INITIAL_BACKUP=false
 
-if [[ $(cat /mineccraft/servers/$SERVER/server.properties | grep 'server-port=') = "" ]]; then
-    PORT=25565
-else
-    PORT=$(cat /mineccraft/servers/$SERVER/server.properties | grep 'server-port=' | cut -d '=' -f2)
-fi
-
 
 
 ####
@@ -74,6 +68,12 @@ screen -d -m -S "$SERVER" /minecraft/servers/$SERVER/run.sh
 
 
 # WAIT FOR PORT TO COME ALIVE
+
+if [[ $(cat /mineccraft/servers/$SERVER/server.properties | grep 'server-port=') = "" ]]; then
+    PORT=25565
+else
+    PORT=$(cat /mineccraft/servers/$SERVER/server.properties | grep 'server-port=' | cut -d '=' -f2)
+fi
 
 PORT_ALIVE=false
 
