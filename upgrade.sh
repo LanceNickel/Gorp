@@ -112,22 +112,26 @@ fi
 
 
 
-################### STAGE 3: DEAL WITH THE RUN SCRIPTS IN ALL SERVERS
+################### STAGE 3: DEAL WITH THE RUN SCRIPTS IN ALL SERVERS (if required)
 
-for d in "/minecraft/servers/"*
-do
+if [[ $(ls /minecraft/servers/) != "" ]]; then
 
-    SERVER=$(echo $(basename "$d"))
+    for d in "/minecraft/servers/"*
+    do
 
-    JAR_ORIG="$(cat /minecraft/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=')"
-    RAM_ORIG="$(cat /minecraft/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'RAM=')"
+        SERVER=$(echo $(basename "$d"))
 
-    cp /minecraft/tmp/updatefiles/worker/run.sh /minecraft/servers/$SERVER/run.sh
+        JAR_ORIG="$(cat /minecraft/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=')"
+        RAM_ORIG="$(cat /minecraft/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'RAM=')"
 
-    sed -i "20s:.*:$JAR_ORIG:" /minecraft/servers/$SERVER/run.sh
-    sed -i "29s:.*:$RAM_ORIG:" /minecraft/servers/$SERVER/run.sh
+        cp /minecraft/tmp/updatefiles/worker/run.sh /minecraft/servers/$SERVER/run.sh
 
-done
+        sed -i "20s:.*:$JAR_ORIG:" /minecraft/servers/$SERVER/run.sh
+        sed -i "29s:.*:$RAM_ORIG:" /minecraft/servers/$SERVER/run.sh
+
+    done
+
+fi
 
 
 
