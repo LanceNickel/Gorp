@@ -125,4 +125,4 @@ rm -rf /minecraft/tmp
 
 
 
-echo -e "getjar.sh: Download complete. Individual instances must be customized to use this JAR version over the globally set version.\nLearn more: https://gorp.lanickel.com/custom-jar.html"
+echo -e "getjar.sh: Download complete. Individual instances must be customized to use this JAR version over the globally set version.\nLearn more: https://gorp.lanickel.com/manage-instances/instance-settings/"
