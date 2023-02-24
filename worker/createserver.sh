@@ -13,10 +13,11 @@
 
 # KEY GUARD (to double-check user's agreement to EULA)
 
-if [ "$3" != "s3zujKM87FD56sxb" ]; then
-        echo "create.sh: Incorrect key. This script is not meant to be directly executed by the user. Exiting."
-        exit
-elif [ "$2" != "s3zujKM87FD56sxb" ]; then
+if [ "$3" = "s3zujKM87FD56sxb" ]; then
+        sleep 0.005
+elif [ "$2" = "s3zujKM87FD56sxb" ]; then
+        sleep 0.005
+else
         echo "create.sh: Incorrect key. This script is not meant to be directly executed by the user. Exiting."
         exit
 fi
