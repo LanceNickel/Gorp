@@ -16,6 +16,9 @@
 if [ "$3" != "s3zujKM87FD56sxb" ]; then
         echo "create.sh: Incorrect key. This script is not meant to be directly executed by the user. Exiting."
         exit
+elif [ "$2" != "s3zujKM87FD56sxb" ]; then
+        echo "create.sh: Incorrect key. This script is not meant to be directly executed by the user. Exiting."
+        exit
 fi
 
 
