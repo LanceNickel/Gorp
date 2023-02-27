@@ -16,7 +16,7 @@
 ### ROOT GUARD
 
 if [[ "$EUID" == 0 ]]; then
-    echo "Please do not run as root or with 'sudo'. Gorp will ask for sudo rights if it needs it. Exit (10)."
+    echo "Please don't run as root or with sudo. Exit (10)."
     exit 10
 fi
 
@@ -62,15 +62,15 @@ read -r -p "Do you agree to the Minecraft EULA? [y/n]: " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    echo "You did not agree to the Minecraft EULA. Exit (12)."
-    exit 12
+    echo "You answered the prompt wrong! Exit (16)."
+    exit 16
 fi
 
 read -r -p "Do you agree to use Gorp for personal use only? COMMERCIAL USE PROHIBITED. [y/n]: " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    echo "Gorp is for personal use. If you are an interested commercial entity, please reach out to gorp@lanickel.com. Exit (12)."
+    echo "You answered the prompt wrong! Exit (16)."
     exit 12
 fi
 
@@ -90,11 +90,17 @@ echo "Installing..."
 
 
 
-### MAKE SCRIPTS +X
+### MAKE SCRIPTS EXECUTABLE
 
 chmod +x action/*
 chmod +x worker/*
 chmod +x gorp
+
+
+
+### UPDATE HOMEDIR OPTIONS IN gorp.conf
+
+sed -i "s:BOBSBURGERS:$HOMEDIR/gorpmc:g" gorp.conf
 
 
 
@@ -153,7 +159,7 @@ sleep 1
 echo -e "\nPlease continue to follow the installation instructions.\n"
 
 if [ $WARN = true ]; then
-    echo -e "WARNING: '$HOMEDIR/' directory already exists. Refer to installation instructions for more info:\nhttps://gorp.lanickel.com/getting-started/install/"
+    echo -e "WARNING: '$HOMEDIR/gorpmc' directory already exists. Refer to installation instructions for more info:\nhttps://gorp.lanickel.com/getting-started/install/"
 fi
 
 
