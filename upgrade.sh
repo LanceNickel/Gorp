@@ -100,6 +100,7 @@ ARCHIVE_DEST_ORIG="$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'ARCHIV
 
 # Copy the new config over
 
+sudo rm /usr/local/etc/gorp.conf
 sudo cp $HOMEDIR/tmp/updatefiles/gorp.conf /usr/local/etc/gorp.conf
 
 
@@ -144,4 +145,3 @@ fi
 
 
 echo "upgrade.sh: Gorp upgrade complete."
-exit 0
