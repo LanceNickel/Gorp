@@ -79,8 +79,8 @@ fi
 ### APT-GET DEPENDENCIES
 
 echo -e "\nDownloading required software..."
-# sudo apt-get update
-# sudo apt-get install apt-transport-https curl wget jq screen -y
+sudo apt-get update
+sudo apt-get install apt-transport-https curl wget jq screen -y
 
 sleep 2
 
