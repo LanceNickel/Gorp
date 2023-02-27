@@ -12,19 +12,22 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "mcdeleteworld: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcdeleteworld: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-WORLD_TO_DELETE=$2
+SERVER=$2
+WORLD_TO_DELETE=$3
+HOMEDIR=$(getHomedir)
 
 
 
@@ -32,53 +35,53 @@ WORLD_TO_DELETE=$2
 
 
 
-# PARAM GUARD
+# PARAM RT-GUARD
 
-if [ "$SERVER" = "" ]; then
-    echo "mcdeleteworld: Server name missing. Expected command format: 'gorp delete-world [server-name] <world-name>'"
-    exit
+if [[ "$SERVER" = "" ]]; then
+    echo "mcdeleteworld: Bad input. Expected: gorp delete-world [server-name] <world-name>. Exit (14)."
+    exit 14
 fi
 
 
 
-# SERVER DIRECTORY GUARD
+# SERVER DIRECTORY RT-GUARD
 
-if [ -d "$HOMEDIR/servers/$SERVER" ]; then
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    echo "mcdeleteworld: Server doesn't exist. Exiting."
-    exit
+    echo "mcdeleteworld: Server not found. Exit (30)."
+    exit 30
 fi
 
 
 
-# NO WORLDS GUARD
+# NO WORLDS RT-GUARD
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') = "" ]]; then
-    echo -e "mcdeleteworld: No worlds exist on this server instance.\nRun 'gorp create-world $SERVER [name]' to create a new world. Exiting."
-    exit
+    echo -e "mcdeleteworld: No worlds exist on this server. Exit (42)."
+    exit 42
 fi
 
 
 
-# SCREEN GUARD
+# SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "mcdeleteworld: Server '$SERVER' is running. Stop the server and then delete the world. Exiting."
-        exit
+        echo "mcdeleteworld: Server cannot be running. Exit (34)."
+        exit 34
 fi
 
 
 
-# WORLD DIRECTORY GUARD (when world name passed as param)
+# WORLD DIRECTORY RT-GUARD (when world name passed as param)
 
-if [ "$WORLD_TO_DELETE" != "" ]; then
+if [[ "$WORLD_TO_DELETE" != "" ]]; then
 
     if [ -d "$HOMEDIR/servers/$SERVER/world-$WORLD_TO_DELETE" ]; then
         sleep 0.005
     else
-        echo "mcdeleteworld: A world with name '$WORLD_TO_DELETE' doesn't exist. Exiting."
-        exit
+        echo "mcdeleteworld: World not found. Exit (40)."
+        exit 40
     fi
 
 fi
@@ -87,4 +90,4 @@ fi
 
 # RUN THE WORLD DELETE WORKER
 
-/usr/local/bin/gorpmc/worker/deleteworld.sh $SERVER $WORLD_TO_DELETE
+/usr/local/bin/gorpmc/worker/deleteworld.sh pleasedontdothis $SERVER $WORLD_TO_DELETE

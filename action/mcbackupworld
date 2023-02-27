@@ -24,8 +24,8 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
-HOMEDIR=$(getHomedir)
 SERVER=$2
+HOMEDIR=$(getHomedir)
 
 
 
@@ -36,8 +36,8 @@ SERVER=$2
 # PARAM RT-GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "mcbackupworld: Please specify a server. Exiting."
-    exit
+    echo "mcbackupworld: Bad input. Expected: gorp backup-world [server-name]. Exit (14)."
+    exit 14
 fi
 
 
@@ -48,8 +48,8 @@ if [ -d "$HOMEDIR/servers/$SERVER" ]; then
     # we can continue
     sleep 0.005
 else
-    echo "mcbackupworld: Specified server doesn't exist. Exiting."
-    exit
+    echo "mcbackupworld: Server not found. Exit (30)."
+    exit 30
 fi
 
 
@@ -57,8 +57,8 @@ fi
 # NO WORLDS RT-GUARD
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') = "" ]]; then
-    echo -e "mcbackupworld: No worlds exist on this server instance.\nRun 'gorp create-world $SERVER [name]' to create a new world. Exiting."
-    exit
+    echo -e "mcbackupworld: No worlds exist on this server. Exit (42)."
+    exit 42
 fi
 
 

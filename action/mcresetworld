@@ -12,20 +12,22 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "mcresetworld: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcresetworld: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-WORLD_TO_DELETE=$2
-
+SERVER=$2
+WORLD_TO_DELETE=$3
+HOMEDIR=$(getHomedir)
 
 
 ####
@@ -34,20 +36,20 @@ WORLD_TO_DELETE=$2
 
 # PARAM GUARD
 
-if [ "$SERVER" = "" ]; then
-    echo "mcresetworld: Server name missing. Expected command format: 'gorp reset-world [server-name]'"
-    exit
+if [[ "$SERVER" = "" ]]; then
+    echo "mcresetworld: Bad input. Expected: gorp reset-world [server-name] <world-name>. Exit (14)."
+    exit 14
 fi
 
 
 
 # SERVER DIRECTORY GUARD
 
-if [ -d "$HOMEDIR/servers/$SERVER" ]; then
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    echo "mcresetworld: Server doesn't exist. Exiting."
-    exit
+    echo "mcresetworld: Server not found. Exit (30)."
+    exit 30
 fi
 
 
@@ -55,12 +57,12 @@ fi
 # NO WORLDS GUARD
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') = "" ]]; then
-    echo -e "mcresetworld: No worlds exist on this server instance.\nRun 'gorp create-world $SERVER [name]' to create a new world. Exiting."
-    exit
+    echo -e "mcresetworld: No worlds exist on this server. Exit (42)."
+    exit 42
 fi
 
 
 
 # RUN THE WORLD DELETE WORKER
 
-/usr/local/bin/gorpmc/worker/resetworld.sh $SERVER
+/usr/local/bin/gorpmc/worker/resetworld.sh pleasedontdothis $SERVER

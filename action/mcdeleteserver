@@ -24,8 +24,8 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
-HOMEDIR=$(getHomedir)
 SERVER=$2
+HOMEDIR=$(getHomedir)
 
 
 
@@ -36,17 +36,8 @@ SERVER=$2
 # PARAM RT-GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "mcdeleteserver: Please specify a server. Exit (14)."
+    echo "mcdeleteserver: Bad input. Expected: gorp delete-server [server-name]. Exit (14)."
     exit 14
-fi
-
-
-
-# NO SERVERS RT-GUARD
-
-if [[ $(ls $HOMEDIR/servers/) = "" ]]; then
-    echo -e "mcdeleteserver: No server instances exist..\nRun 'gorp create-server [name]' to create a new server. Exit (20)."
-    exit 20
 fi
 
 
@@ -56,8 +47,8 @@ fi
 if [ -d "$HOMEDIR/servers/$SERVER" ]; then
     cd $HOMEDIR/servers/$SERVER
 else
-    echo "mcdeleteserver: Specified server doesn't exist. Exit (20)."
-    exit 20
+    echo "mcdeleteserver: Server not found. Exit (30)."
+    exit 30
 fi
 
 
@@ -65,8 +56,8 @@ fi
 # SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "mcdeleteserver: Server cannot be running. Exit (32)."
-        exit 32
+        echo "mcdeleteserver: Server cannot be running. Exit (34)."
+        exit 34
 fi
 
 

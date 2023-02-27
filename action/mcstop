@@ -12,19 +12,22 @@
 
 
 
-# PERMISSION GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "mcstop: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcstop: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-ARG=$2
+SERVER=$2
+ARG=$3
+HOMEDIR=$(getHomedir)
 
 
 
@@ -32,56 +35,50 @@ ARG=$2
 
 
 
-# PARAM GUARD
+# PARAM RT-GUARD
 
-if [ "$SERVER" = "" ]; then
-    echo "mcstop: Please specify a server"
-    exit
-
-elif [ "$SERVER" == 'fast' ] || [ "$SERVER" == 'now' ] || [ "$SERVER" == 'power' ]; then
-    echo "mcstop: Malformed command. Expected form: 'mcstop <server> <argument>'"
+if [ "$SERVER" = "" ] || [ "$SERVER" == 'fast' ] || [ "$SERVER" == 'now' ] || [ "$SERVER" == 'power' ]; then
+    echo "mcstop: Bad input. Expected: gorp stop [server-name] <option>. Exit (14)."
     exit
 fi
 
 
 
-# SERVER DIRECTORY GUARD
+# SERVER DIRECTORY RT-GUARD
 
-if [ -d "$HOMEDIR/servers/$SERVER" ]; then
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     cd $HOMEDIR/servers/$SERVER
 else
-    echo "mcstop: Specified server doesn't exist. Exiting."
-    exit
+    echo "mcstop: Server not found. Exit (30)."
+    exit 30
 fi
 
 
 
-# NO SCREEN GUARD
+# NO SCREEN RT-GUARD
 if [[ $(screen -ls | grep "$SERVER")  = "" ]]; then
-        echo "mcstop: Server '$SERVER' is not running. Exiting."
-        exit
+        echo "mcstop: Server not running. Exit (32)."
+        exit 32
 fi
 
 
 
 # RUN WORKERS BASED ON PASSED PARAMS
 
-if [ -z "$ARG" ]; then
-    /usr/local/bin/gorpmc/worker/backupworld.sh $SERVER
-    /usr/local/bin/gorpmc/worker/warning.sh $SERVER stop
-    /usr/local/bin/gorpmc/worker/shutdown.sh $SERVER
+if [[ -z "$ARG" ]]; then
+    /usr/local/bin/gorpmc/worker/backupworld.sh pleasedontdothis $SERVER
+    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis $SERVER stop
+    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
 
-elif [ $ARG == "power" ]; then
-    /usr/local/bin/gorpmc/worker/warning.sh $SERVER power
-    /usr/local/bin/gorpmc/worker/shutdown.sh $SERVER
+elif [[ $ARG == "power" ]]; then
+    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis $SERVER power
+    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
 
-elif [ $ARG == "fast" ]; then
-    /usr/local/bin/gorpmc/worker/warning.sh $SERVER stop
-    /usr/local/bin/gorpmc/worker/shutdown.sh $SERVER
+elif [[ $ARG == "fast" ]]; then
+    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis $SERVER stop
+    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
 
-elif [ $ARG == "now" ]; then
-    /usr/local/bin/gorpmc/worker/shutdown.sh $SERVER
+elif [[ $ARG == "now" ]]; then
+    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
 
-else
-    echo "mcstop: Invalid second parameter. Exiting."
 fi

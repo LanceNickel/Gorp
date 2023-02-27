@@ -25,9 +25,9 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
-HOMEDIR=$(getHomedir)
 SERVER=$2
 NEW_WORLD=$3
+HOMEDIR=$(getHomedir)
 
 
 
@@ -49,8 +49,8 @@ fi
 if [ -d "$HOMEDIR/servers/$SERVER" ]; then
     sleep 0.05
 else
-    echo "mccreateworld: Server doesn't exist. Exit (20)."
-    exit 20
+    echo "mccreateworld: Server not found. Exit (30)."
+    exit 30
 fi
 
 
@@ -60,8 +60,8 @@ fi
 if [ "$NEW_WORLD" != "" ]; then
 
     if [ -d "$HOMEDIR/servers/$SERVER/world-$NEW_WORLD" ]; then
-        echo "mccreateworld: A world with name '$NEW_WORLD' already exists. Exit (21)."
-        exit 21
+        echo "mccreateworld: World already exists. Exit (41)."
+        exit 41
     fi
 
 fi
@@ -71,8 +71,8 @@ fi
 # SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "mccreateworld: Server cannot be running. Exit (32)."
-        exit 32
+        echo "mccreateworld: Server cannot be running. Exit (34)."
+        exit 34
 fi
 
 

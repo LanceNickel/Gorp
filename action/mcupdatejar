@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-### [MCUPDATE] ####################################################
+### [MCUPDATEJAR] #################################################
 #   Description:  Action script to setup update worker.
 #   Parameters:   None
 
@@ -11,11 +11,13 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "mcupdate: Insufficient priviliege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcupdatejar: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
@@ -26,4 +28,4 @@ fi
 
 # RUN UPDATE WORKER
 
-/usr/local/bin/gorpmc/worker/updatejar.sh $VERSION
+/usr/local/bin/gorpmc/worker/updatejar.sh pleasedontdothis $VERSION
