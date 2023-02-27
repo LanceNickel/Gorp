@@ -12,19 +12,21 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "warning.sh: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "warning.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIBLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-ACTION=$2
+SERVER=$2
+ACTION=$3
 
 
 
@@ -36,7 +38,7 @@ ACTION=$2
 
 echo "warning.sh: Sending $ACTION warning in the chat and waiting 30 seconds..."
 
-if [ $ACTION == "power" ]; then
+if [[ $ACTION == "power" ]]; then
         screen -S $SERVER -X stuff "say ATTENTION: Due to a power outage, this server must be shut down.\n"
         sleep 0.25
         screen -S $SERVER -X stuff "say ATTENTION: This server will shut down in 30 seconds.\n"
@@ -51,13 +53,12 @@ fi
 NOT30=true
 I=0
 
-while [ $NOT30 == true ];
-do
+while [ $NOT30 == true ]; do
         sleep 1
         ((I++))
         echo -ne "  ${I}s\r"
 
-        if [ $I -eq "30" ]; then
+        if [[ $I == "30" ]]; then
                 NOT30=false
         fi
 done

@@ -11,18 +11,22 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "mcbackupworld: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcbackupworld: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+SERVER=$2
 
 
 
@@ -30,36 +34,36 @@ SERVER=$1
 
 
 
-# PARAM GUARD
+# PARAM RT-GUARD
 
-if [ "$SERVER" = "" ]; then
-    echo "mcbackupworld: Please specify a server. Exiting."
-    exit
+if [[ "$SERVER" = "" ]]; then
+    echo "mcbackupworld: Bad input. Expected: gorp backup-world [server-name]. Exit (14)."
+    exit 14
 fi
 
 
 
-# SERVER DIRECTORY GUARD
+# SERVER DIRECTORY RT-GUARD
 
-if [ -d "/minecraft/servers/$SERVER" ]; then
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     # we can continue
     sleep 0.005
 else
-    echo "mcbackupworld: Specified server doesn't exist. Exiting."
-    exit
+    echo "mcbackupworld: Server not found. Exit (30)."
+    exit 30
 fi
 
 
 
-# NO WORLDS GUARD
+# NO WORLDS RT-GUARD
 
-if [[ $(ls /minecraft/servers/$SERVER/ | grep 'world') = "" ]]; then
-    echo -e "mcbackupworld: No worlds exist on this server instance.\nRun 'gorp create-world $SERVER [name]' to create a new world. Exiting."
-    exit
+if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') = "" ]]; then
+    echo -e "mcbackupworld: No worlds exist on this server. Exit (42)."
+    exit 42
 fi
 
 
 
 # RUN BACKUP WORKER
 
-/usr/local/bin/gorputils/worker/backupworld.sh $SERVER
+/usr/local/bin/gorpmc/worker/backupworld.sh pleasedontdothis $SERVER

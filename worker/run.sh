@@ -12,21 +12,23 @@
 
 
 
-######## Option: JAR #############################################################
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+######## Option: CUSTOM_JAR #########################################################
 # Description:     An (optional) custom JAR file to run as the server.
 # Expected value:  Absolute path to a JAR file
-# Default:         JAR=$(cat /minecraft/jars/latest)
+# Default:         CUSTOM_JAR=$LATEST_JAR
 
-JAR=$(cat /minecraft/jars/latest)
+CUSTOM_JAR=$LATEST_JAR
 
 
 
-######## Option: RAM #############################################################
+######## Option: CUSTOM_RAM #########################################################
 # Description:     An (optional) custom RAM allocation for this server.
 # Expected value:  Amount of RAM as an integer, followed immedately by "G" (ex: 4G)
-# Default:         RAM=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
+# Default:         CUSTOM_RAM=$RAM
 
-RAM=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
+CUSTOM_RAM=$RAM
 
 
 
@@ -36,9 +38,9 @@ RAM=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
 
 # KEY GUARD (to ensure a good, clean startup)
 
-if [ "$1" != "bjcisBOOMIN" ]; then
-        echo "run.sh: Incorrect key. This script is not meant to be directly executed by the user. Exiting."
-        exit
+if [ "$1" != "pleasedontdothis" ]; then
+        echo "run.sh: Not intended to be run directly. Exit (13)."
+        exit 13
 fi
 
 
@@ -50,7 +52,7 @@ fi
 # EXECUTE SERVER, WAIT FOR PROCESS TO DIE
 
 while [ true ]; do
-        java -Xmx$RAM -Xms$RAM -jar $JAR nogui
+        java -Xmx$CUSTOM_RAM -Xms$CUSTOM_RAM -jar $CUSTOM_JAR nogui
 
         echo -e "\n\nTHIS SERVER HAS STOPPED! Press any key to prevent restart."
 

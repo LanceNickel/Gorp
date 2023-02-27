@@ -11,19 +11,22 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "mcrestore: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcrestoreworld: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-BACKUP_DIR=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d '=' -f 2)
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+SERVER=$2
 
 
 
@@ -31,35 +34,35 @@ BACKUP_DIR=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d
 
 
 
-# PARAM GUARD
+# PARAM RT-GUARD
 
-if [ "$SERVER" = "" ]; then
-    echo "mcrestore: Please specify a server. Exiting."
-    exit
+if [[ "$SERVER" = "" ]]; then
+    echo "mcrestoreworld: Bad input. Expected: gorp restore-world [server-name]. Exit (14)."
+    exit 14
 fi
 
 
 
-# SERVER DIRECTORY GUARD
+# SERVER DIRECTORY RT-GUARD
 
-if [ -d "$BACKUP_DIR/$SERVER" ]; then
+if [[ -d "$BACKUP_DEST/$SERVER" ]]; then
     sleep 0.005
 else
-    echo "mcrestore: Specified server has no backups to restore from. Exiting."
-    exit
+    echo "mcrestoreworld: Server has no backups to restore from. Exit (54)."
+    exit 54
 fi
 
 
 
-# SCREEN GUARD
+# SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "mcrestore: Server '$SERVER' is running. Stop the server and then perform a restore. Exiting."
-        exit
+        echo "mcrestoreworld: Server cannot be running. Exit (34)."
+        exit 34
 fi
 
 
 
 # RUN RESTORE WORKER
 
-/usr/local/bin/gorputils/worker/restoreworld.sh $SERVER
+/usr/local/bin/gorpmc/worker/restoreworld.sh pleasedontdothis $SERVER

@@ -12,22 +12,25 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "archiveworld.sh: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "archiveworld.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-WORLD_TO_ARCHIVE=$2
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
-OPTIONS=$(ls /minecraft/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
-DEST=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'ARCHIVES=' | cut -d '=' -f2)
+SERVER=$2
+WORLD_TO_ARCHIVE=$3
+
+OPTIONS=$(worldOptions "$SERVER")
 
 
 
@@ -59,8 +62,8 @@ fi
 
 # CREATE TMP DIRECTORY
 
-rm -rf /minecraft/tmp
-mkdir -p /minecraft/tmp/$WORLD_TO_ARCHIVE
+rm -rf $HOMEDIR/tmp
+mkdir -p $HOMEDIR/tmp/$WORLD_TO_ARCHIVE
 
 
 
@@ -68,33 +71,33 @@ mkdir -p /minecraft/tmp/$WORLD_TO_ARCHIVE
 
 echo "archiveworld.sh: Archiving $WORLD_TO_ARCHIVE..."
 
-cp -r /minecraft/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ /minecraft/tmp/$WORLD_TO_ARCHIVE/
-cp -r /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ /minecraft/tmp/$WORLD_TO_ARCHIVE/
-cp -r /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /minecraft/tmp/$WORLD_TO_ARCHIVE/
+cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
 
-cd /minecraft/tmp
+cd $HOMEDIR/tmp
 tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null
 
 
 
 # MAKE SURE ARCHIVE DESTINATION EXISTS
 
-mkdir -p $DEST/$SERVER
+mkdir -p $ARCHIVE_DEST/$SERVER
 
 
 
 # COPY THE WORLD FILES TO DESTINATION
 
-echo "archiveworld.sh: Moving world to archive destination... ($DEST/$WORLD_TO_ARCHIVE.tar.gz)"
+echo "archiveworld.sh: Moving world to archive destination... ($ARCHIVE_DEST/$WORLD_TO_ARCHIVE.tar.gz)"
 
-cp /minecraft/tmp/$WORLD_TO_ARCHIVE.tar.gz $DEST/$SERVER/
+cp $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/
 
 
 
 # ARCHIVE INTEGRITY GUARD
 
-CHECKSUM=$(md5sum /minecraft/tmp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
-TESTSUM=$(md5sum $DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
+CHECKSUM=$(md5sum $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
+TESTSUM=$(md5sum $ARCHIVE_DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 
 if [ "$CHECKSUM" != "$TESTSUM" ]; then
     echo "archiveworld.sh: Checksum failed. Ensure the archive destination directory is correctly configured. Exiting."
@@ -105,11 +108,11 @@ fi
 
 # CLEAN UP
 
-rm -rf /minecraft/servers/$SERVER/world-$WORLD_TO_ARCHIVE
-rm -rf /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether
-rm -rf /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end
+rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE
+rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether
+rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end
 
-rm -rf /minecraft/tmp
+rm -rf $HOMEDIR/tmp
 
 
 

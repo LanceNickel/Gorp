@@ -11,12 +11,20 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "gorpupgrade: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcarchiveworld: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
+
+
+
+#### SCRIPT PARAMETERS ################
+
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 
 
@@ -24,28 +32,28 @@ fi
 
 
 
-# TEMP DIRECTORY
+### TEMP DIRECTORY
 
-rm -rf /minecraft/tmp
-mkdir /minecraft/tmp
+rm -rf $HOMEDIR/tmp/
+mkdir $HOMEDIR/tmp/
 
 
 
-# GIT CLONE LATEST C.U.M. FILES
+### GIT CLONE LATEST GORP FILES
 
 echo "gorpupgrade: Downloading newest scripts..."
 
-git clone --quiet https://github.com/LanceNickel/Gorp /minecraft/tmp/updatefiles
+git clone --quiet https://github.com/LanceNickel/Gorp $HOMEDIR/tmp/updatefiles
 
 
 
-# RUN UPDATE WORKER
+### RUN UPDATE WORKER
 
-chmod +x /minecraft/tmp/updatefiles/upgrade.sh
-/minecraft/tmp/updatefiles/upgrade.sh
+chmod +x $HOMEDIR/tmp/updatefiles/upgrade.sh
+$HOMEDIR/tmp/updatefiles/upgrade.sh pleasedontdothis
 
 
 
-# CLEAN UP
+### CLEAN UP
 
-rm -rf /minecraft/tmp
+rm -rf $HOMEDIR/tmp/

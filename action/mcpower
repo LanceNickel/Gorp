@@ -11,12 +11,20 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "mcpower: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcpower: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
+
+
+
+#### SCRIPT PARAMETERS ################
+
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 
 
@@ -26,8 +34,8 @@ fi
 
 # FOR EACH SERVER, RUN SHUTDOWN ACTION WITH POWER PARAM
 
-for d in "/minecraft/servers/"*
+for d in "$HOMEDIR/servers/"*
 do
         SERVER=$(echo $(basename "$d"))
-        /usr/local/bin/gorputils/action/mcstop $SERVER power
+        /usr/local/bin/gorpmc/action/mcstop $SERVER power
 done

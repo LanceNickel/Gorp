@@ -12,21 +12,25 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "createworld.sh: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "createworld.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-NEW_WORLD=$2
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
-OLD_WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
+SERVER=$2
+NEW_WORLD=$3
+
+OLD_WORLD=$(activeWorld "$SERVER")
 
 
 
@@ -36,13 +40,13 @@ OLD_WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=
 
 # IF NEW_WORLD NOT SPECIFIED THEN ASK USER
 
-if [ "$NEW_WORLD" == "" ]; then
+if [[ "$NEW_WORLD" == "" ]]; then
 
         while [ true ]
         do
                 read -r -p "Enter a new world name: " response
 
-                if [ -d "/minecraft/servers/$SERVER/world-$response" ]; then
+                if [[ -d "$HOMEDIR/servers/$SERVER/world-$response" ]]; then
                         echo "A world with this name already exists."
                 else
                         NEW_WORLD=$response
@@ -58,13 +62,13 @@ fi
 
 echo "createworld.sh: Updating server config and generating new world... (This will take ~1m)"
 
-sed -i "s/level-name=$OLD_WORLD/level-name=world-$NEW_WORLD/" /minecraft/servers/$SERVER/server.properties
+sed -i "s/level-name=$OLD_WORLD/level-name=world-$NEW_WORLD/" $HOMEDIR/servers/$SERVER/server.properties
 
-/usr/local/bin/gorputils/action/mcstart $SERVER > /dev/null
+/usr/local/bin/gorpmc/action/mcstart pleasedontdothis $SERVER > /dev/null
 
 sleep 30
 
-/usr/local/bin/gorputils/action/mcstop $SERVER now > /dev/null
+/usr/local/bin/gorpmc/action/mcstop pleasedontdothis $SERVER now > /dev/null
 
 
 
@@ -72,7 +76,7 @@ sleep 30
 
 echo "createworld.sh: Taking initial backup of the new world..."
 
-/usr/local/bin/gorputils/action/mcbackupworld $SERVER > /dev/null
+/usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER > /dev/null
 
 
 

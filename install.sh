@@ -11,12 +11,36 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "This installer must be run as root. Use 'sudo !!' to do this again as root."
-    exit
+### ROOT GUARD
+
+if [[ "$EUID" == 0 ]]; then
+    echo "Please don't run as root or with sudo. Exit (10)."
+    exit 10
 fi
+
+
+
+### GET SUDO PERMISSIONS
+
+echo "To do a few things for installation, Gorp needs sudo."
+sudo whoami > /dev/null
+
+
+
+### ALREADY INSTALLED GUARD
+
+if [[ -d "/usr/local/bin/gorp" ]]; then
+    echo -e "Gorp is already installed. To update, run 'sudo gorp upgrade'.\nRunning into problems? Open an issue: https://github.com/LanceNickel/Gorp/issues\nOr send me an email: gorp@lanickel.com"
+    exit 21
+fi
+
+
+
+#### SCRIPT PARAMETERS ################
+
+HOMEDIR=~
 
 
 
@@ -24,23 +48,13 @@ fi
 
 
 
-# ALREADY INSTALLED GUARD
-
-if [ -d "/usr/local/bin/gorputils" ]; then
-    echo -e "Gorp is already installed. To update, run 'sudo gorp upgrade'.\nRunning into problems? Open an issue: https://github.com/LanceNickel/Gorp/issues\nOr send me an email: gorp@lanickel.com"
-    exit
-fi
-
-
-
-# WELCOME
+### WELCOME
 
 echo -e "\nWelcome to Gorp!"
-sleep 0.5
 
 
 
-# USER EULA AND AGREEMENT GUARD
+### USER EULA AND AGREEMENT RT-GUARD
 
 echo -e "\n==== IMPORTANT! ====\nTo continue you must agree to the Minecraft EULA (https://aka.ms/MinecraftEULA).\nYou must also agree to use Gorp for PERSONAL USE ONLY."
 
@@ -48,36 +62,35 @@ read -r -p "Do you agree to the Minecraft EULA? [y/n]: " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    echo "You did not agree to the Minecraft EULA. Exiting."
-    exit
+    echo "You answered the prompt wrong! Exit (16)."
+    exit 16
 fi
 
 read -r -p "Do you agree to use Gorp for personal use only? COMMERCIAL USE PROHIBITED. [y/n]: " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    echo "Gorp is for personal use. If you are an interested commercial entity, please reach out to gorp@lanickel.com"
-    exit
+    echo "You answered the prompt wrong! Exit (16)."
+    exit 12
 fi
 
 
 
-# APT-GET DEPENDENCIES
+### APT-GET DEPENDENCIES
 
 echo -e "\nDownloading required software..."
-sleep 0.5
-apt-get update
-apt-get install apt-transport-https curl wget jq screen -y
+# sudo apt-get update
+# sudo apt-get install apt-transport-https curl wget jq screen -y
 
 sleep 2
 
 
 
-echo -e "Installing..."
+echo "Installing..."
 
 
 
-# MAKE SCRIPTS +X
+### MAKE SCRIPTS EXECUTABLE
 
 chmod +x action/*
 chmod +x worker/*
@@ -85,48 +98,53 @@ chmod +x gorp
 
 
 
-# CREATE REQUIRED DIRS
+### UPDATE HOMEDIR OPTIONS IN gorp.conf
 
-mkdir -p /usr/local/bin/gorputils
-mkdir -p /usr/local/bin/gorputils/action
-mkdir -p /usr/local/bin/gorputils/worker
+sed -i "s:BOBSBURGERS:$HOMEDIR/gorpmc:g" gorp.conf
 
-if [ -d "/minecraft" ]; then
+
+
+### CREATE REQUIRED DIRS
+
+sudo mkdir -p /usr/local/bin/gorpmc/
+sudo mkdir -p /usr/local/bin/gorpmc/action/
+sudo mkdir -p /usr/local/bin/gorpmc/worker/
+
+if [[ -d "$HOMEDIR/gorpmc" ]]; then
     WARN=true
 else
     WARN=false
-    mkdir /minecraft
-    mkdir /minecraft/backups
-    mkdir /minecraft/jars
-    mkdir /minecraft/servers
+    mkdir $HOMEDIR/gorpmc/
+    mkdir $HOMEDIR/gorpmc/backups
+    mkdir $HOMEDIR/gorpmc/jars
+    mkdir $HOMEDIR/gorpmc/servers
 fi
 
 
 
-# MOVE FILES
+### MOVE FILES
 
-cp action/* /usr/local/bin/gorputils/action/
-cp worker/* /usr/local/bin/gorputils/worker/
-cp help.txt /usr/local/bin/gorputils/
-cp gorp /usr/local/bin/
+sudo cp action/* /usr/local/bin/gorpmc/action/
+sudo cp worker/* /usr/local/bin/gorpmc/worker/
+sudo cp help.txt /usr/local/bin/gorpmc/
+sudo cp gorp /usr/local/bin/
 
-cp gorp.conf /minecraft/
+sudo mkdir -p /usr/local/etc/
+sudo cp gorp.conf /usr/local/etc/
 
-echo "paper-0-000.jar" > /minecraft/jars/latest
+echo "paper-0-000.jar" > $HOMEDIR/gorpmc/jars/latest
 
 
 
-# RUN UPDATE ACTION TO GET & SET JAR FILE
+### RUN UPDATE ACTION TO GET & SET JAR FILE
 
 echo -e "Getting latest Paper JAR file..."
 sleep 1
-/usr/local/bin/gorputils/action/mcupdatejar
-
-sleep 2
+/usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
 
 
 
-# FINISHED, SHOW WARNING
+### FINISHED, SHOW WARNING
 
 echo -e "\nINSTALLATION FINISHED!\nHowever,"
 sleep 1
@@ -141,5 +159,9 @@ sleep 1
 echo -e "\nPlease continue to follow the installation instructions.\n"
 
 if [ $WARN = true ]; then
-    echo -e "WARNING: '/minecraft' directory already exists. Refer to installation instructions for more info:\nhttps://gorp.lanickel.com/"
+    echo -e "WARNING: '$HOMEDIR/gorpmc' directory already exists. Refer to installation instructions for more info:\nhttps://gorp.lanickel.com/getting-started/install/"
 fi
+
+
+
+exit 0

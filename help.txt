@@ -43,11 +43,11 @@ Commands:
 
     update-jar                                -- Get the newest Minecraft server JAR file and install it
 
-    get-jar [game-version]                    -- Download a Paper server JAR file to /minecraft/jars
+    get-jar [game-version]                    -- Download a Paper server JAR file to $HOMEDIR/jars
 
     upgrade                                   -- Get the newest version of Gorp and install it
 
-    list-servers                              -- See a list of all servers in /minecraft/servers/
+    list-servers                              -- See a list of all servers in $HOMEDIR/servers/
 
     help                                      -- View this help text
 

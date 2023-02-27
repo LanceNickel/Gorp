@@ -11,21 +11,23 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "restoreworld.sh: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "restoreworld.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-BACKUP_DIR=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d '=' -f 2)
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
-CURRENT_LEVEL_NAME=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
+SERVER=$2
+CURRENT_LEVEL_NAME=$(activeWorld "$SERVER")
 
 
 
@@ -35,7 +37,7 @@ CURRENT_LEVEL_NAME=$(cat /minecraft/servers/$SERVER/server.properties | grep 'le
 
 # SELECT FROM AVAILABLE WORLD FILES
 
-cd $BACKUP_DIR/$SERVER
+cd $BACKUP_DEST/$SERVER
 
 echo -e "\nPlease select a world (level-name in server.properties)"
 
@@ -116,7 +118,7 @@ echo "restoreworld.sh: Backing up current world..."
 
 sleep 0.5
 
-/usr/local/bin/gorputils/action/mcbackupworld $SERVER
+/usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER
 
 
 
@@ -124,20 +126,20 @@ sleep 0.5
 
 echo "restoreworld.sh: Restoring selected files..."
 
-rm -rf /minecraft/servers/$SERVER/${CURRENT_LEVEL_NAME}*
+rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}*
 
 
 
 # RESTORE WORLD
 
-rm -rf /minecraft/tmp
-mkdir -p /minecraft/tmp/restore
+rm -rf $HOMEDIR/tmp
+mkdir -p $HOMEDIR/tmp/restore
 
-cp $BACKUP_DIR/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /minecraft/tmp/restore/
+cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE $HOMEDIR/tmp/restore/
 
-tar -xf /minecraft/tmp/restore/$FILE_TO_RESTORE -C /minecraft/tmp/restore/
+tar -xf $HOMEDIR/tmp/restore/$FILE_TO_RESTORE -C $HOMEDIR/tmp/restore/
 
-cp -r /minecraft/tmp/restore/$FOLDER_TO_RESTORE/* /minecraft/servers/$SERVER/
+cp -r $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/
 
 
 

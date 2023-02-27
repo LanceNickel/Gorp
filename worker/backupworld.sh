@@ -12,19 +12,23 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "backupworld.sh: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "backupworld.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep "level-name" | cut -d "=" -f2)
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+SERVER=$2
+WORLD=$(activeWorld "$SERVER")
 
 YEAR=$(date +"%Y")
 MONTH=$(date +"%m")
@@ -33,11 +37,10 @@ DATE_FILE=$(date +"%Y-%m-%d_%H%M-%S")
 
 BACKUP_NAME=$WORLD-$DATE_FILE
 
-SOURCE=/minecraft/servers/$SERVER/$WORLD
-DEST_ROOT=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d '=' -f2)
-DEST=$DEST_ROOT/$SERVER/$WORLD/$YEAR/$MONTH/$DAY
+SOURCE=$HOMEDIR/servers/$SERVER/$WORLD
+DEST=$BACKUP_DEST/$SERVER/$WORLD/$YEAR/$MONTH/$DAY
 
-TMP=/minecraft/tmp/backup
+TMP=$HOMEDIR/tmp/backup
 
 
 
@@ -45,18 +48,18 @@ TMP=/minecraft/tmp/backup
 
 
 
-# SOURCE DIRECTORY GUARD
+# SOURCE DIRECTORY RT-GUARD
 
-if [ -d "$SOURCE" ]; then
+if [[ -d "$SOURCE" ]]; then
         sleep 0.005
 else
-        echo "backupworld.sh: Source directory does not exist. Exiting."
-        exit
+        echo "backupworld.sh: Backup failed because the source cannot be found. Exit (52)."
+        exit 52
 fi
 
 
 
-# CHECK FOR (OR CREATE) DESTINATION DIRECTORY (GUARD)
+# CHECK FOR (OR CREATE) DESTINATION DIRECTORY (RT-GUARD)
 
 echo "backupworld.sh: Backing up $WORLD..."
 
@@ -66,7 +69,7 @@ mkdir -p $DEST
 
 # FLUSH TEMP DIRECTORY
 
-rm -rf /minecraft/tmp
+rm -rf $HOMEDIR/tmp
 mkdir -p $TMP/$BACKUP_NAME
 
 
@@ -83,14 +86,14 @@ fi
 
 # IF SERVER IS RUNNING, SAVE PROPERLY, THEN TURN OFF AUTOSAVE
 
-if [ $RUNNING = true ]; then
+if [[ $RUNNING = true ]]; then
         screen -S $SERVER -X stuff "save-all\n"
 
         while [ true ]
         do
                 sleep 0.2
 
-                if [[ $(tail /minecraft/servers/$SERVER/logs/latest.log -n1 | grep 'Saved the game') != "" ]]; then
+                if [[ $(tail $HOMEDIR/servers/$SERVER/logs/latest.log -n1 | grep 'Saved the game') != "" ]]; then
                         break
                 fi
         done
@@ -112,7 +115,7 @@ cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end
 
 # IF SERVER IS RUNNING, TURN AUTOSAVE BACK ON
 
-if [ $RUNNING = true ]; then
+if [[ $RUNNING = true ]]; then
         screen -S $SERVER -X stuff "save-on\n"
 fi
 
@@ -135,7 +138,7 @@ cp $TMP/$BACKUP_NAME.tar.gz $DEST/
 
 # CLEAN UP
 
-rm -rf /minecraft/tmp
+rm -rf $HOMEDIR/tmp
 
 
 

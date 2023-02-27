@@ -11,18 +11,22 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "mcstart: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcstart: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+SERVER=$2
 
 
 
@@ -32,20 +36,20 @@ SERVER=$1
 
 # PARAM GUARD
 
-if [ "$SERVER" = "" ]; then
-    echo "mcstart: Please specify a server. Exiting."
-    exit
+if [[ "$SERVER" = "" ]]; then
+    echo "mcstart: Bad input. Expected: gorp start [server-name]. Exit (14)."
+    exit 14
 fi
 
 
 
 # SERVER DIRECTORY GUARD
 
-if [ -d "/minecraft/servers/$SERVER" ]; then
-    cd /minecraft/servers/$SERVER
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
+    cd $HOMEDIR/servers/$SERVER
 else
-    echo "mcstart: Specified server doesn't exist. Exiting."
-    exit
+    echo "mcstart: Server not found. Exit (30)."
+    exit 30
 fi
 
 
@@ -53,12 +57,12 @@ fi
 # SCREEN GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "mcstart: Server '$SERVER' is already running. Exiting."
-        exit
+        echo "mcstart: Server already running. Exit (33)."
+        exit 33
 fi
 
 
 
 # RUN STARTUP WORKER
 
-/usr/local/bin/gorputils/worker/start.sh $SERVER
+/usr/local/bin/gorpmc/worker/start.sh pleasedontdothis $SERVER

@@ -11,23 +11,29 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "mccreate: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mccreateserver: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
-if [ "$2" = "" ]; then
+SERVER=$2
+
+# World name override
+
+if [[ "$3" = "" ]]; then
     WORLD=default
 else
-    WORLD=$2
+    WORLD=$3
 fi
 
 
@@ -36,25 +42,25 @@ fi
 
 
 
-# PARAM GUARD
+# PARAM RT-GUARD
 
-if [ "$SERVER" = "" ]; then
-    echo "mccreate: Please specify a server name to create. Exiting."
-    exit
+if [[ "$SERVER" = "" ]]; then
+    echo "mccreateserver: Bad input. Expected: gorp create-server [server-name] <world-name>. Exit (14)."
+    exit 14
 fi
 
 
 
-# SERVER DIRECTORY GUARD
+# SERVER DIRECTORY RT-GUARD
 
-if [ -d "/minecraft/servers/$SERVER" ]; then
-    echo "mccreate: Specified server already exists. Exiting."
-    exit
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
+    echo "mccreateserver: Server already exists. Exit (31)."
+    exit 31
 fi
 
 
 
-# USER EULA AND AGREEMENT GUARD
+# USER EULA AND AGREEMENT RT-GUARD
 
 echo -e "\n==== IMPORTANT! ====\nTo continue you must agree to the Minecraft EULA (https://aka.ms/MinecraftEULA).\nYou must also agree to use Gorp for PERSONAL USE ONLY."
 
@@ -62,16 +68,16 @@ read -r -p "Do you agree to the Minecraft EULA? [y/n]: " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    echo "You did not agree to the Minecraft EULA. Exiting."
-    exit
+    echo "You must agree to the EULA and Gorp terms. Exit (12)."
+    exit 12
 fi
 
 read -r -p "Do you agree to use Gorp for personal use only? COMMERCIAL USE PROHIBITED. [y/n]: " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    echo "Gorp is for personal use. If you are an interested commercial entity, please reach out to gorp@lanickel.com"
-    exit
+    echo "You must agree to the EULA and Gorp terms. Exit (12)."
+    exit 12
 fi
 
 
@@ -79,4 +85,4 @@ fi
 
 # RUN THE CREATOR WORKER
 
-/usr/local/bin/gorputils/worker/createserver.sh $SERVER $WORLD s3zujKM87FD56sxb
+/usr/local/bin/gorpmc/worker/createserver.sh s3zujKM87FD56sxb $SERVER $WORLD

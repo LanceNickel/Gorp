@@ -11,24 +11,30 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "start.sh: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "start.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+SERVER=$2
 INITIAL_BACKUP=false
 
-if [[ $(cat /minecraft/servers/$SERVER/server.properties | grep 'server-port=') = "" ]]; then
+# Server port
+
+if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'server-port=') = "" ]]; then
     PORT=25565
 else
-    PORT=$(cat /minecraft/servers/$SERVER/server.properties | grep 'server-port=' | cut -d '=' -f2)
+    PORT=$(serverPort "$SERVER")
 fi
 
 
@@ -48,16 +54,16 @@ fi
 
 # DETECT IF THE FIRST TIME SETUP IS NEEDED
 
-if [[ $(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2) = "" ]]; then
+if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2) = "" ]]; then
     INITIAL_BACKUP=true
-    echo "level-name=world-default" >> /minecraft/sesrvers/$SERVER/server.properties
+    echo "level-name=world-default" >> $HOMEDIR/sesrvers/$SERVER/server.properties
 fi
 
 
 
 # DETECT IF INITIAL BACKUP IS NEEDED
 
-if [[ $(cat /minecraft/servers/$SERVER/server.properties | wc -l) = "1" ]]; then
+if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | wc -l) = "1" ]]; then
     INITIAL_BACKUP=true
 fi
 
@@ -65,11 +71,11 @@ fi
 
 # CREATE NEW SCREEN, EXECUTE SERVER'S RUN SCRIPT INSIDE
 
-WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
+WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
 
 echo "start.sh: Starting instance of server '$SERVER', running world '$WORLD'..." 
 
-screen -d -m -S "$SERVER" /minecraft/servers/$SERVER/run.sh bjcisBOOMIN
+screen -d -m -S "$SERVER" $HOMEDIR/servers/$SERVER/run.sh pleasedontdothis
 
 
 
@@ -77,8 +83,7 @@ screen -d -m -S "$SERVER" /minecraft/servers/$SERVER/run.sh bjcisBOOMIN
 
 PORT_ALIVE=false
 
-while [ $PORT_ALIVE = false ]
-do
+while [ $PORT_ALIVE = false ]; do
         ((I++))
 
         if [[ $(lsof -i:$PORT) != "" ]]; then
@@ -93,13 +98,13 @@ done
 
 # IF FIRST TIME, WAIT A FEW SECONDS THEN TAKE AN INITIAL BACKUP (and also override the default end text)
 
-if [ $INITIAL_BACKUP = true ]; then
+if [[ $INITIAL_BACKUP == true ]]; then
 
     echo "start.sh: Taking initial backup of world... (This will take ~30 seconds longer than a normal backup, don't worry!)"
 
     sleep 30
 
-    /usr/local/bin/gorputils/action/mcbackupworld $SERVER > /dev/null
+    /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER > /dev/null
 
     echo "start.sh: The server instance first-time setup is complete. You may now join your new server instance. Happy exploring!"
 else

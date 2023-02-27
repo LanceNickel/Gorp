@@ -12,28 +12,23 @@
 
 
 
-# KEY GUARD (to double-check user's agreement to EULA)
+#### GUARDS ################
 
-if [ "$3" != "s3zujKM87FD56sxb" ]; then
-        echo "create.sh: Incorrect key. This script is not meant to be directly executed by the user. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "s3zujKM87FD56sxb" ]]; then
+    echo "createserver.sh: Cannot be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# PERMISSIONS GUARD
+#### SCRIPT PARAMETERS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "create.sh: Insufficient privilege. Exiting."
-        exit
-fi
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
-
-
-# SCRIPT VARIABLES
-
-SERVER=$1
-WORLD=$2
+SERVER=$2
+WORLD=$3
 
 
 
@@ -42,21 +37,21 @@ WORLD=$2
 
 # CREATE SERVER DIRECTORY AND COPY RUN.SH
 
-mkdir /minecraft/servers/$SERVER
-cp /usr/local/bin/gorputils/worker/run.sh /minecraft/servers/$SERVER/
+mkdir $HOMEDIR/servers/$SERVER
+cp /usr/local/bin/gorpmc/worker/run.sh $HOMEDIR/servers/$SERVER/
 
 
 
 # PREPARE KEY FILES
 # It is not possible to get to this part of code execution without first agreeing to the Minecraft EULA via a prompt.
-# Users who did not expressly agree to the EULA did not get here, as they would not have been able to execute this script with the key.
+# Users who did not expressly agree to the EULA did not get here, as they would not have been able to execute this script with the key (reasonably).
 
-echo "eula=true" > /minecraft/servers/$SERVER/eula.txt
-touch /minecraft/servers/$SERVER/server.properties
+echo "eula=true" > $HOMEDIR/servers/$SERVER/eula.txt
+touch $HOMEDIR/servers/$SERVER/server.properties
 
 
 
-echo "level-name=world-$WORLD" > /minecraft/servers/$SERVER/server.properties
+echo "level-name=world-$WORLD" > $HOMEDIR/servers/$SERVER/server.properties
 
 
 

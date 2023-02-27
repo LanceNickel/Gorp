@@ -12,77 +12,73 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "mcrestart: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcrestart: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-SPEED=$2
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
+SERVER=$2
+SPEED=$3
 
 
 ####
 
 
 
-# PARAM GUARD
+# PARAM RT-GUARD
 
-if [ "$SERVER" = "" ]; then
-    echo "mcrestart: Please specify a server"
-    exit
-
-elif [ "$SERVER" == 'fast' ] || [ "$SERVER" == 'now' ] || [ "$SERVER" == 'power' ]; then
-    echo -e "mcrestart: Bad command. Expected form: 'mcstop <server> <argument>'. Exiting.\nUse 'gorp help' for more information."
-    exit
+if [ "$SERVER" = "" ] || [ "$SERVER" == 'fast' ] || [ "$SERVER" == 'now' ] || [ "$SERVER" == 'power' ]; then
+    echo "mcrestart: Bad input. Expected: gorp stop [server-name] <option>. Exit (14)."
+    exit 14
 fi
 
 
 
-# SERVER DIRECTORY GUARD
+# SERVER DIRECTORY RT-GUARD
 
-if [ -d "/minecraft/servers/$SERVER" ]; then
-    cd /minecraft/servers/$SERVER
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
+    cd $HOMEDIR/servers/$SERVER
 else
-    echo "mcrestart: Specified server doesn't exist. Exiting."
-    exit
+    echo "mcrestart: Server not found. Exit (30)."
+    exit 30
 fi
 
 
 
-# NO SCREEN GUARD
+# NO SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  = "" ]]; then
-        echo "mcrestart: Server '$SERVER' is not running. Exiting."
-        exit
+        echo "mcrestart: Server not running. Exit (32)."
+        exit 32
 fi
 
 
 
 # RUN WORKERS BASED ON PASSED PARAMS
 
-if [ -z "$SPEED" ]; then
-    /usr/local/bin/gorputils/worker/backupworld.sh $SERVER
-    /usr/local/bin/gorputils/worker/warning.sh $SERVER restart
-    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
-    /usr/local/bin/gorputils/worker/start.sh $SERVER
+if [[ -z "$SPEED" ]]; then
+    /usr/local/bin/gorpmc/worker/backupworld.sh pleasedontdothis $SERVER
+    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis $SERVER restart
+    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
+    /usr/local/bin/gorpmc/worker/start.sh pleasedontdothis $SERVER
 
-elif [ $SPEED == "fast" ]; then
-    /usr/local/bin/gorputils/worker/warning.sh $SERVER stop
-    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
-    /usr/local/bin/gorputils/worker/start.sh $SERVER
+elif [[ $SPEED == "fast" ]]; then
+    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis $SERVER stop
+    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
+    /usr/local/bin/gorpmc/worker/start.sh pleasedontdothis $SERVER
 
-elif [ $SPEED == "now" ]; then
-    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
-    /usr/local/bin/gorputils/worker/start.sh $SERVER
-
-else
-    echo "mcrestart: Invalid second parameter. Exiting."
-    exit
+elif [[ $SPEED == "now" ]]; then
+    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
+    /usr/local/bin/gorpmc/worker/start.sh pleasedontdothis $SERVER
+    
 fi

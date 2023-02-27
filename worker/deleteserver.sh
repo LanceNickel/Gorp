@@ -11,18 +11,22 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "delete.sh: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "deleteserver.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+SERVER=$2
 
 
 
@@ -38,16 +42,16 @@ read -r -p "Did you back up the server? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    echo "PLEASE BACK UP YOUR WORLD FILES! Run 'mcbackup $SERVER' to take a back up first."
-    exit
+    echo "deleteserver.sh: You answered the prompt wrong! Exit (16)."
+    exit 16
 fi
 
 read -r -p "Enter '$SERVER' to confirm: " response
 if [[ "$response" == "$SERVER" ]]; then
     sleep 0.5
 else
-    echo "Incorrect response. Exiting."
-    exit
+    echo "deleteserver.sh: You answered the prompt wrong! Exit (16)."
+    exit 16
 fi
 
 
@@ -56,7 +60,7 @@ fi
 
 echo "delete.sh: Deleting server..."
 
-rm -rf /minecraft/servers/$SERVER
+rm -rf $HOMEDIR/servers/$SERVER
 
 
 

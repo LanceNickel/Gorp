@@ -12,19 +12,23 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "mcswitchworld: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcswitchworld: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-SWITCH_TO=$2
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+SERVER=$2
+SWITCH_TO=$3
 
 
 
@@ -32,59 +36,59 @@ SWITCH_TO=$2
 
 
 
-# PARAM GUARD
+# PARAM RT-GUARD
 
-if [ "$SERVER" = "" ]; then
-    echo "mcswitchworld: Server name missing. Expected command format: 'gorp switch-world [server-name] <world-name>'"
-    exit
+if [[ "$SERVER" = "" ]]; then
+    echo "mcswitchworld: Bad input. Expected: gorp switch-world [server-name] <world-name>. Exit (14)."
+    exit 14
 fi
 
 
 
-# SERVER DIRECTORY GUARD
+# SERVER DIRECTORY RT-GUARD
 
-if [ -d "/minecraft/servers/$SERVER" ]; then
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    echo "mcswitchworld: Server doesn't exist. Exiting."
+    echo "mcswitchworld: Server not found. Exit (30)."
+    exit 30
+fi
+
+
+
+# NO WORLDS RT-GUARD
+
+if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') = "" ]]; then
+    echo "mcswitchworld: No worlds exist on this server. Exit (42)."
     exit
 fi
 
 
 
-# NO WORLDS GUARD
+# WORLD DOESN'T EXIST RT-GUARD (when world name passed as param)
 
-if [[ $(ls /minecraft/servers/$SERVER/ | grep 'world') = "" ]]; then
-    echo -e "mcswitchworld: No worlds exist on this server instance.\nRun 'gorp create-world $SERVER [name]' to create a new world."
-    exit
-fi
+if [[ "$SWITCH_TO" != "" ]]; then
 
-
-
-# WORLD DOESN'T EXIST GUARD (when world name passed as param)
-
-if [ "$SWITCH_TO" != "" ]; then
-
-    if [ -d "/minecraft/servers/$SERVER/world-$SWITCH_TO" ]; then
+    if [[ -d "$HOMEDIR/servers/$SERVER/world-$SWITCH_TO" ]]; then
         sleep 0.005
     else
-        echo "mcswitchworld: Specified world does not exist. Exiting."
-        exit
+        echo "mcswitchworld: World not found. Exit (40)."
+        exit 40
     fi
 
 fi
 
 
 
-# SCREEN GUARD
+# SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "mcswitchworld: Server '$SERVER' is running. Stop the server and then switch worlds. Exiting."
-        exit
+        echo "mcswitchworld: Server cannot be running. Exit (34)."
+        exit 34
 fi
 
 
 
 # RUN THE WORLD CREATOR WORKER
 
-/usr/local/bin/gorputils/worker/switchworld.sh $SERVER $SWITCH_TO
+/usr/local/bin/gorpmc/worker/switchworld.sh pleasedontdothis $SERVER $SWITCH_TO

@@ -11,26 +11,20 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "shutdown.sh: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "shutdown.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCREEN NOT RUNNING GUARD
+#### SCRIPT PARAMETERS ################
 
-if [[ $(screen -ls | grep "$SERVER")  = "" ]]; then
-        echo "shutdown.sh: Server '$SERVER' is not running. Exiting."
-fi
-
-
-
-# SCRIPT VARIABLES
-
-SERVER=$1
+SERVER=$2
 
 
 
@@ -49,33 +43,26 @@ screen -S $SERVER -X stuff 'stop\n'
 
 I=0
 SCREEN=true
+FORCE_QUIT=false
+FROZEN=false
 
-while [ $SCREEN = true ];
-do
+while [ $SCREEN = true ]; do
         ((I++))
 
         if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
                 screen -S "$SERVER" -X stuff '\n'
-        fi
-
-        if [[ $(screen -ls | grep "$SERVER")  = "" ]]; then
+        else
                 SCREEN=false
         fi
 
-        if [ $I -eq "6" ]; then
-                echo "shutdown.sh: This is taking longer than expected..."
-        fi
-
-        if [ $I -eq "12" ]; then
-                echo "shutdown.sh: The server shutdown process has hung. The server will be force-quit."
-                sleep 0.05
-                echo "Please investigate this further in the server log: '/minecraft/servers/$SERVER/logs/latest.log'."
+        if [[ $I -eq "12" ]]; then
+                FORCE_QUIT=true
                 screen -X -S mc quit
         fi
 
-        if [ $I -eq "13" ]; then
-                echo "shutdown.sh: Cannot get screen $SERVER to quit. Shutdown will now exit. Please investigate, something is in a very broken state."
-                exit
+        if [[ $I -eq "14" ]]; then
+                FORCE_QUIT=false
+                FROZEN=true
         fi
 
         sleep 3
@@ -83,4 +70,15 @@ done
 
 
 
-echo "shutdown.sh: Shutdown complete."
+if [[ $FORCE_QUIT == true ]]; then
+        echo "shutdown.sh: The server encountered an error during shut down and was force quit. Exit (36)."
+        exit 36
+
+elif [[ $FROZEN == true ]]; then
+        echo "shutdown.sh: The server encountered an error during shut down and is now in an unknown state. Exit (37)."
+        exit 37
+
+else
+        echo "shutdown.sh: Shutdown complete."
+
+fi

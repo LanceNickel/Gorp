@@ -11,22 +11,26 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "switchworld.sh: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "switchworld.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-SWITCH_TO=$2
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
-OPTIONS=$(ls /minecraft/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
-CURRENT_WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
+SERVER=$2
+SWITCH_TO=$3
+
+OPTIONS=$(worldOptions "$SERVER")
+CURRENT_WORLD=$(activeWorld "$SERVER")
 
 
 
@@ -36,10 +40,9 @@ CURRENT_WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-n
 
 # GET USER INPUT (if user did not specify a world)
 
-if [ "$SWITCH_TO" == "" ]; then
+if [[ "$SWITCH_TO" == "" ]]; then
 
-    while [ true ]
-    do
+    while [ true ]; do
         echo -e "Options:\n$OPTIONS"
 
         read -r -p "Please enter a world to switch to: " response
@@ -60,7 +63,7 @@ fi
 
 # SWITCH THE VALUE IN 'server.properties'
 
-sed -i "s/level-name=$CURRENT_WORLD/level-name=world-$SWITCH_TO/" /minecraft/servers/$SERVER/server.properties
+sed -i "s/level-name=$CURRENT_WORLD/level-name=world-$SWITCH_TO/" $HOMEDIR/servers/$SERVER/server.properties
 
 
 

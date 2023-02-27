@@ -13,7 +13,20 @@
 
 
 
-# SCRIPT VARIABLES
+#### GUARDS ################
+
+### ROOT GUARD
+
+if [[ "$EUID" == 0 ]]; then
+    echo "Please don't run as root or with sudo. Exit (10)."
+    exit 10
+fi
+
+
+
+#### SCRIPT PARAMETERS
+
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 ACTION=$1
 ARG1=$2
@@ -25,62 +38,62 @@ ARG2=$3
 
 
 
-if [ $ACTION = "backup-world" ]; then
-    /usr/local/bin/gorputils/action/mcbackupworld $ARG1
+if [[ $ACTION = "backup-world" ]]; then
+    /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $ARG1
 
-elif [ $ACTION = "restore-world" ]; then
-    /usr/local/bin/gorputils/action/mcrestoreworld $ARG1
+elif [[ $ACTION = "restore-world" ]]; then
+    /usr/local/bin/gorpmc/action/mcrestoreworld pleasedontdothis $ARG1
 
-elif [ $ACTION = "update-jar" ]; then
-    /usr/local/bin/gorputils/action/mcupdatejar
+elif [[ $ACTION = "update-jar" ]]; then
+    /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
 
-elif [ $ACTION = "get-jar" ]; then
-    /usr/local/bin/gorputils/action/mcgetjar $ARG1
+elif [[ $ACTION = "get-jar" ]]; then
+    /usr/local/bin/gorpmc/action/mcgetjar pleasedontdothis $ARG1
 
-elif [ $ACTION = "create-server" ]; then
-    /usr/local/bin/gorputils/action/mccreateserver $ARG1 $ARG2
+elif [[ $ACTION = "create-server" ]]; then
+    /usr/local/bin/gorpmc/action/mccreateserver pleasedontdothis $ARG1 $ARG2
 
-elif [ $ACTION = "delete-server" ]; then
-    /usr/local/bin/gorputils/action/mcdeleteserver $ARG1
+elif [[ $ACTION = "delete-server" ]]; then
+    /usr/local/bin/gorpmc/action/mcdeleteserver pleasedontdothis $ARG1
 
-elif [ $ACTION = "create-world" ]; then
-    /usr/local/bin/gorputils/action/mccreateworld $ARG1 $ARG2
+elif [[ $ACTION = "create-world" ]]; then
+    /usr/local/bin/gorpmc/action/mccreateworld pleasedontdothis $ARG1 $ARG2
 
-elif [ $ACTION = "delete-world" ]; then
-    /usr/local/bin/gorputils/action/mcdeleteworld $ARG1 $ARG2
+elif [[ $ACTION = "delete-world" ]]; then
+    /usr/local/bin/gorpmc/action/mcdeleteworld pleasedontdothis $ARG1 $ARG2
 
-elif [ $ACTION = "reset-world" ]; then
-    /usr/local/bin/gorputils/action/mcresetworld $ARG1
+elif [[ $ACTION = "reset-world" ]]; then
+    /usr/local/bin/gorpmc/action/mcresetworld pleasedontdothis $ARG1
 
-elif [ $ACTION = "archive-world" ]; then
-    /usr/local/bin/gorputils/action/mcarchiveworld $ARG1 $ARG2
+elif [[ $ACTION = "archive-world" ]]; then
+    /usr/local/bin/gorpmc/action/mcarchiveworld pleasedontdothis $ARG1 $ARG2
 
-elif [ $ACTION = "switch-world" ]; then
-    /usr/local/bin/gorputils/action/mcswitchworld $ARG1 $ARG2
+elif [[ $ACTION = "switch-world" ]]; then
+    /usr/local/bin/gorpmc/action/mcswitchworld pleasedontdothis $ARG1 $ARG2
 
-elif [ $ACTION = "power" ]; then
-    /usr/local/bin/gorputils/action/mcpower
+elif [[ $ACTION = "power" ]]; then
+    /usr/local/bin/gorpmc/action/mcpower pleasedontdothis
 
-elif [ $ACTION = "start" ]; then
-    /usr/local/bin/gorputils/action/mcstart $ARG1
+elif [[ $ACTION = "start" ]]; then
+    /usr/local/bin/gorpmc/action/mcstart pleasedontdothis $ARG1
 
-elif [ $ACTION = "stop" ]; then
-    /usr/local/bin/gorputils/action/mcstop $ARG1 $ARG2
+elif [[ $ACTION = "stop" ]]; then
+    /usr/local/bin/gorpmc/action/mcstop pleasedontdothis $ARG1 $ARG2
 
-elif [ $ACTION = "restart" ]; then
-    /usr/local/bin/gorputils/action/mcrestart $ARG1 $ARG2
+elif [[ $ACTION = "restart" ]]; then
+    /usr/local/bin/gorpmc/action/mcrestart pleasedontdothis $ARG1 $ARG2
 
-elif [ $ACTION = "help" ]; then
-    /usr/local/bin/gorputils/action/gorphelp
+elif [[ $ACTION = "help" ]]; then
+    /usr/local/bin/gorpmc/action/gorphelp
 
-elif [ $ACTION = "upgrade" ]; then
-    /usr/local/bin/gorputils/action/gorpupgrade
+elif [[ $ACTION = "upgrade" ]]; then
+    /usr/local/bin/gorpmc/action/gorpupgrade pleasedontdothis
 
-elif [ $ACTION = "-v" ]; then
-    echo $(cat /minecraft/gorp.conf | grep 'Gorp version' | cut -d ':' -f2)
+elif [[ $ACTION = "-v" ]]; then
+    echo $(grep 'Gorp version' /usr/local/etc/gorp.conf | cut -d ':' -f2)
 
-elif [ $ACTION = "list-servers" ]; then
-    echo $(ls /minecraft/servers)
+elif [[ $ACTION = "list-servers" ]]; then
+    echo $(ls $HOMEDIR/servers)
 
 else
     echo "Invalid parameters. Use gorp help for more information."

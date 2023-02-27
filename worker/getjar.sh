@@ -11,18 +11,22 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "getjar.sh: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "getjar.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-VERSION=$1
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+VERSION=$2
 
 
 
@@ -32,8 +36,8 @@ VERSION=$1
 
 # CLEAR TMP DIRECTORY
 
-if [ -d "/minecraft/tmp" ]; then rm -rf /minecraft/tmp; fi
-mkdir /minecraft/tmp
+rm -rf $HOMEDIR/tmp
+mkdir $HOMEDIR/tmp
 
 
 
@@ -41,33 +45,32 @@ mkdir /minecraft/tmp
 
 echo "getjar.sh: Getting latest build information for $VERSION..."
 
-curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$VERSION/builds" -H 'accept: application/json' -o /minecraft/tmp/builds.json
+curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$VERSION/builds" -H 'accept: application/json' -o $HOMEDIR/tmp/builds.json
 
 
 
-# VERSION NOT FOUND GUARD
+# VERSION NOT FOUND RT-GUARD
 
-if [[ $(cat /minecraft/tmp/builds.json | grep 'Version not found.') != "" ]]; then
-    echo "getjar.sh: Specified game version not found. Exiting."
-    exit
+if [[ $(cat $HOMEDIR/tmp/builds.json | grep 'Version not found.') != "" ]]; then
+    echo "getjar.sh: Game version not found. Exit (60)."
+    exit 60
 fi
 
 
 
 # DETERMINE THE LATEST STABLE BUILD
 
-jq '.builds[-1] | {build, channel, downloads}' /minecraft/tmp/builds.json > /minecraft/tmp/latest.json
+jq '.builds[-1] | {build, channel, downloads}' $HOMEDIR/tmp/builds.json > $HOMEDIR/tmp/latest.json
 
 FOUND=false
 I=1
 
-while [ $FOUND = false ];
-do
+while [ $FOUND = false ]; do
         ((I++))
         # if the channel in latest.json is experimental...
-        if [[ $(jq '.channel' /minecraft/tmp/latest.json) != '"default"' ]]; then
+        if [[ $(jq '.channel' $HOMEDIR/tmp/latest.json) != '"default"' ]]; then
                 # get the second-oldest build version from builds.json and overwrite latest.json with it
-                jq ".builds[-$I] | {build, channel, downloads}" /minecraft/tmp/builds.json > /minecraft/tmp/latest.json
+                jq ".builds[-$I] | {build, channel, downloads}" $HOMEDIR/tmp/builds.json > $HOMEDIR/tmp/latest.json
         else
                 # if the channel in latest.json is NOT experimental, we found the latest stable (default channel) version
                 FOUND=true
@@ -78,9 +81,9 @@ done
 
 # STORE INFORMATION ABOUT BUILD TO DOWNLOAD
 
-BUILD=$(jq '.build' /minecraft/tmp/latest.json)
-NAME=$(jq '.downloads.application.name' /minecraft/tmp/latest.json | tail -c +2 | head -c -2)
-CHECKSUM=$(jq '.downloads.application.sha256' /minecraft/tmp/latest.json | tail -c +2 | head -c -2)
+BUILD=$(jq '.build' $HOMEDIR/tmp/latest.json)
+NAME=$(jq '.downloads.application.name' $HOMEDIR/tmp/latest.json | tail -c +2 | head -c -2)
+CHECKSUM=$(jq '.downloads.application.sha256' $HOMEDIR/tmp/latest.json | tail -c +2 | head -c -2)
 
 
 
@@ -88,40 +91,40 @@ CHECKSUM=$(jq '.downloads.application.sha256' /minecraft/tmp/latest.json | tail 
 
 echo "getjar.sh: Downloading latest stable jar file..."
 
-wget -q https://api.papermc.io/v2/projects/paper/versions/$VERSION/builds/$BUILD/downloads/$NAME -P /minecraft/tmp/
+wget -q https://api.papermc.io/v2/projects/paper/versions/$VERSION/builds/$BUILD/downloads/$NAME -P $HOMEDIR/tmp/
 
 
 
-# TEST THE CHECKSUM (GUARD)
+# TEST THE CHECKSUM (RT-GUARD)
 
-TESTSUM="$(sha256sum /minecraft/tmp/$NAME | cut -d " " -f 1)"
+TESTSUM="$(sha256sum $HOMEDIR/tmp/$NAME | cut -d " " -f 1)"
 
 if [ $TESTSUM != $CHECKSUM ]; then
-        echo "getjar.sh: Checksum comparison of download failed. This is a security risk. Exiting."
-        rm -rf /minecraft/tmp
-        exit
+        echo "getjar.sh: Downloaded JAR file failed checksum test. Exit (61)."
+        rm -rf $HOMEDIR/tmp
+        exit 61
 fi
 
 
 
-# MOVE THE JAR TO THE /minecraft/jars/ FOLDER AND MAKE IT EXECUTABLE
+# MOVE THE JAR TO THE $HOMEDIR/jars/ FOLDER AND MAKE IT EXECUTABLE
 
 echo "getjar.sh: Setting jar file as new global default..."
 
-mv /minecraft/tmp/$NAME /minecraft/jars/
-chmod +x /minecraft/jars/$NAME
+mv $HOMEDIR/tmp/$NAME $HOMEDIR/jars/
+chmod +x $HOMEDIR/jars/$NAME
 
 
 
 # UPDATE THE LATEST FILE FOR GLOBAL SERVER UPDATES
 
-echo "/minecraft/jars/$NAME" > /minecraft/jars/latest
+echo "$HOMEDIR/jars/$NAME" > $HOMEDIR/jars/latest
 
 
 
 # CLEAN UP
 
-rm -rf /minecraft/tmp
+rm -rf $HOMEDIR/tmp
 
 
 
