@@ -25,10 +25,12 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
 SERVER=$2
 WORLD_TO_ARCHIVE=$3
 
-OPTIONS=$(ls $HOMEDIR/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
+OPTIONS=$(worldOptions "$SERVER")
 
 
 

@@ -9,3 +9,17 @@ if [[ "$GAMEVER" == "" ]] || [[ "$RAM" == "" ]] || [[ "$HOMEDIR" == "" ]] || [[ 
     echo "One or more required options in gorp.conf not set. Exit (15)."
     exit 15
 fi
+
+
+
+worldOptions() {
+    echo $(ls $HOMEDIR/servers/$1/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
+}
+
+activeWorld() {
+    echo $(cat $HOMEDIR/servers/$1/server.properties | grep 'level-name=' | cut -d '=' -f2)
+}
+
+serverPort() {
+    echo $(cat $HOMEDIR/servers/$1/server.properties | grep 'server-port=' | cut -d '=' -f2)
+}

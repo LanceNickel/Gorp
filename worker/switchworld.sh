@@ -24,11 +24,13 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
 SERVER=$2
 SWITCH_TO=$3
 
-OPTIONS=$(ls $HOMEDIR/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
-CURRENT_WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
+OPTIONS=$(worldOptions "$SERVER")
+CURRENT_WORLD=$(activeWorld "$SERVER")
 
 
 

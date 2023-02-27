@@ -24,8 +24,10 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
 SERVER=$2
-CURRENT_LEVEL_NAME=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
+CURRENT_LEVEL_NAME=$(activeWorld "$SERVER")
 
 
 

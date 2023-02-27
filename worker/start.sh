@@ -24,6 +24,8 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
 SERVER=$2
 INITIAL_BACKUP=false
 
@@ -32,7 +34,7 @@ INITIAL_BACKUP=false
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'server-port=') = "" ]]; then
     PORT=25565
 else
-    PORT=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'server-port=' | cut -d '=' -f2)
+    PORT=$(serverPort "$SERVER")
 fi
 
 

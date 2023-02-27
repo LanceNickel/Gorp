@@ -25,6 +25,8 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
 SERVER=$2
 NEW_WORLD=$3
 
@@ -36,8 +38,8 @@ NEW_WORLD=$3
 
 # PARAM RT-GUARD
 
-if [ "$SERVER" = "" ]; then
-    echo "mccreateworld: Server name missing. Expected command format: 'gorp create-world [server-name] <world-name>'. Exit (14)."
+if [[ "$SERVER" = "" ]]; then
+    echo "mccreateworld: Bad input. Expected: gorp create-world [server-name] <world-name>. Exit (14)."
     exit 14
 fi
 
@@ -45,7 +47,7 @@ fi
 
 # SERVER DIRECTORY RT-GUARD
 
-if [ -d "$HOMEDIR/servers/$SERVER" ]; then
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
     echo "mccreateworld: Server not found. Exit (30)."
@@ -56,9 +58,9 @@ fi
 
 # WORLD DIRECTORY RT-GUARD (when world name passed as param)
 
-if [ "$NEW_WORLD" != "" ]; then
+if [[ "$NEW_WORLD" != "" ]]; then
 
-    if [ -d "$HOMEDIR/servers/$SERVER/world-$NEW_WORLD" ]; then
+    if [[ -d "$HOMEDIR/servers/$SERVER/world-$NEW_WORLD" ]]; then
         echo "mccreateworld: World already exists. Exit (41)."
         exit 41
     fi

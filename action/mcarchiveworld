@@ -25,6 +25,8 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
 SERVER=$2
 WORLD_TO_ARCHIVE=$3
 
@@ -74,9 +76,9 @@ fi
 
 # WORLD DIRECTORY RT-GUARD (when world name passed as param)
 
-if [ "$WORLD_TO_ARCHIVE" != "" ]; then
+if [[ "$WORLD_TO_ARCHIVE" != "" ]]; then
 
-    if [ -d "$HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE" ]; then
+    if [[ -d "$HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE" ]]; then
         sleep 0.005
     else
         echo "mcarchiveworld: World not found. Exit (40)."

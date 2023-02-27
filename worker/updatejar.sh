@@ -23,6 +23,12 @@ fi
 
 
 
+#### SCRIPT PARAMETERS ################
+
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+
+
 ####
 
 

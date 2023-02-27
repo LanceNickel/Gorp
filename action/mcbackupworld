@@ -24,6 +24,8 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
 SERVER=$2
 
 
@@ -34,7 +36,7 @@ SERVER=$2
 
 # PARAM RT-GUARD
 
-if [ "$SERVER" = "" ]; then
+if [[ "$SERVER" = "" ]]; then
     echo "mcbackupworld: Bad input. Expected: gorp backup-world [server-name]. Exit (14)."
     exit 14
 fi
@@ -43,7 +45,7 @@ fi
 
 # SERVER DIRECTORY RT-GUARD
 
-if [ -d "$HOMEDIR/servers/$SERVER" ]; then
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     # we can continue
     sleep 0.005
 else

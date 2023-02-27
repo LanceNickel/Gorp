@@ -24,6 +24,8 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
 SERVER=$2
 
 
@@ -32,7 +34,7 @@ SERVER=$2
 
 
 
-# PARAM GUARD
+# PARAM RT-GUARD
 
 if [[ "$SERVER" = "" ]]; then
     echo "mcrestoreworld: Bad input. Expected: gorp restore-world [server-name]. Exit (14)."
@@ -41,7 +43,7 @@ fi
 
 
 
-# SERVER DIRECTORY GUARD
+# SERVER DIRECTORY RT-GUARD
 
 if [[ -d "$BACKUP_DEST/$SERVER" ]]; then
     sleep 0.005
@@ -52,7 +54,7 @@ fi
 
 
 
-# SCREEN GUARD
+# SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
         echo "mcrestoreworld: Server cannot be running. Exit (34)."

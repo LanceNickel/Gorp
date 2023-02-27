@@ -25,8 +25,10 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
 SERVER=$2
-WORLD_TO_RESET=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
+WORLD_TO_RESET=$(activeWorld "$SERVER")
 
 # Is the server running?
 
