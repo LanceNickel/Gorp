@@ -26,61 +26,61 @@ ARG2=$3
 
 
 if [ $ACTION = "backup-world" ]; then
-    /usr/local/bin/gorputils/action/mcbackupworld $ARG1
+    /usr/local/bin/gorpmc/action/mcbackupworld $ARG1
 
 elif [ $ACTION = "restore-world" ]; then
-    /usr/local/bin/gorputils/action/mcrestoreworld $ARG1
+    /usr/local/bin/gorpmc/action/mcrestoreworld $ARG1
 
 elif [ $ACTION = "update-jar" ]; then
-    /usr/local/bin/gorputils/action/mcupdatejar
+    /usr/local/bin/gorpmc/action/mcupdatejar
 
 elif [ $ACTION = "get-jar" ]; then
-    /usr/local/bin/gorputils/action/mcgetjar $ARG1
+    /usr/local/bin/gorpmc/action/mcgetjar $ARG1
 
 elif [ $ACTION = "create-server" ]; then
-    /usr/local/bin/gorputils/action/mccreateserver $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mccreateserver $ARG1 $ARG2
 
 elif [ $ACTION = "delete-server" ]; then
-    /usr/local/bin/gorputils/action/mcdeleteserver $ARG1
+    /usr/local/bin/gorpmc/action/mcdeleteserver $ARG1
 
 elif [ $ACTION = "create-world" ]; then
-    /usr/local/bin/gorputils/action/mccreateworld $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mccreateworld $ARG1 $ARG2
 
 elif [ $ACTION = "delete-world" ]; then
-    /usr/local/bin/gorputils/action/mcdeleteworld $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mcdeleteworld $ARG1 $ARG2
 
 elif [ $ACTION = "reset-world" ]; then
-    /usr/local/bin/gorputils/action/mcresetworld $ARG1
+    /usr/local/bin/gorpmc/action/mcresetworld $ARG1
 
 elif [ $ACTION = "archive-world" ]; then
-    /usr/local/bin/gorputils/action/mcarchiveworld $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mcarchiveworld $ARG1 $ARG2
 
 elif [ $ACTION = "switch-world" ]; then
-    /usr/local/bin/gorputils/action/mcswitchworld $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mcswitchworld $ARG1 $ARG2
 
 elif [ $ACTION = "power" ]; then
-    /usr/local/bin/gorputils/action/mcpower
+    /usr/local/bin/gorpmc/action/mcpower
 
 elif [ $ACTION = "start" ]; then
-    /usr/local/bin/gorputils/action/mcstart $ARG1
+    /usr/local/bin/gorpmc/action/mcstart $ARG1
 
 elif [ $ACTION = "stop" ]; then
-    /usr/local/bin/gorputils/action/mcstop $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mcstop $ARG1 $ARG2
 
 elif [ $ACTION = "restart" ]; then
-    /usr/local/bin/gorputils/action/mcrestart $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mcrestart $ARG1 $ARG2
 
 elif [ $ACTION = "help" ]; then
-    /usr/local/bin/gorputils/action/gorphelp
+    /usr/local/bin/gorpmc/action/gorphelp
 
 elif [ $ACTION = "upgrade" ]; then
-    /usr/local/bin/gorputils/action/gorpupgrade
+    /usr/local/bin/gorpmc/action/gorpupgrade
 
 elif [ $ACTION = "-v" ]; then
-    echo $(cat /minecraft/gorp.conf | grep 'Gorp version' | cut -d ':' -f2)
+    echo $(cat $HOMEDIR/gorp.conf | grep 'Gorp version' | cut -d ':' -f2)
 
 elif [ $ACTION = "list-servers" ]; then
-    echo $(ls /minecraft/servers)
+    echo $(ls $HOMEDIR/servers)
 
 else
     echo "Invalid parameters. Use gorp help for more information."

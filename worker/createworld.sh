@@ -26,7 +26,7 @@ fi
 SERVER=$1
 NEW_WORLD=$2
 
-OLD_WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
+OLD_WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
 
 
 
@@ -42,7 +42,7 @@ if [ "$NEW_WORLD" == "" ]; then
         do
                 read -r -p "Enter a new world name: " response
 
-                if [ -d "/minecraft/servers/$SERVER/world-$response" ]; then
+                if [ -d "$HOMEDIR/servers/$SERVER/world-$response" ]; then
                         echo "A world with this name already exists."
                 else
                         NEW_WORLD=$response
@@ -58,13 +58,13 @@ fi
 
 echo "createworld.sh: Updating server config and generating new world... (This will take ~1m)"
 
-sed -i "s/level-name=$OLD_WORLD/level-name=world-$NEW_WORLD/" /minecraft/servers/$SERVER/server.properties
+sed -i "s/level-name=$OLD_WORLD/level-name=world-$NEW_WORLD/" $HOMEDIR/servers/$SERVER/server.properties
 
-/usr/local/bin/gorputils/action/mcstart $SERVER > /dev/null
+/usr/local/bin/gorpmc/action/mcstart $SERVER > /dev/null
 
 sleep 30
 
-/usr/local/bin/gorputils/action/mcstop $SERVER now > /dev/null
+/usr/local/bin/gorpmc/action/mcstop $SERVER now > /dev/null
 
 
 
@@ -72,7 +72,7 @@ sleep 30
 
 echo "createworld.sh: Taking initial backup of the new world..."
 
-/usr/local/bin/gorputils/action/mcbackupworld $SERVER > /dev/null
+/usr/local/bin/gorpmc/action/mcbackupworld $SERVER > /dev/null
 
 
 

@@ -11,12 +11,21 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "This uninstaller must be run as root. Use 'sudo !!' to do this again as root."
-    exit
+### ROOT GUARD
+
+if [[ "$EUID" == 0 ]]; then
+    echo "Please do not run as root or with 'sudo'. Gorp will ask for sudo rights if it needs it. Exit (10)."
+    exit 10
 fi
+
+
+
+### GET SUDO PERMISSIONS
+
+echo "To uninstall, Gorp needs sudo."
+sudo whoami > /dev/null
 
 
 
@@ -24,25 +33,20 @@ fi
 
 
 
-
-# WELCOME
-
-echo -e "Welcome to Gorp!"
-sleep 0.5
-
-
-
-echo -e "\nUninstalling..."
+echo -e "Uninstalling..."
 
 
 
 # REMOVE GORP FROM /usr/local/bin (/minecraft is never deleted to avoid catastrophic data loss)
 
-rm -rf /usr/local/bin/gorputils/
-rm /usr/local/bin/gorp
+sudo rm -rf /usr/local/bin/gorpmc/
+sudo rm /usr/local/bin/gorp
 
 
 
 sleep 1
 
+
+
 echo -e "Gorp has been uninstalled. Minecraft files have been preserved."
+exit 0

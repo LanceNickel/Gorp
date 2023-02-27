@@ -47,8 +47,8 @@ fi
 
 # SERVER DIRECTORY GUARD
 
-if [ -d "/minecraft/servers/$SERVER" ]; then
-    cd /minecraft/servers/$SERVER
+if [ -d "$HOMEDIR/servers/$SERVER" ]; then
+    cd $HOMEDIR/servers/$SERVER
 else
     echo "mcstop: Specified server doesn't exist. Exiting."
     exit
@@ -67,20 +67,20 @@ fi
 # RUN WORKERS BASED ON PASSED PARAMS
 
 if [ -z "$ARG" ]; then
-    /usr/local/bin/gorputils/worker/backupworld.sh $SERVER
-    /usr/local/bin/gorputils/worker/warning.sh $SERVER stop
-    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
+    /usr/local/bin/gorpmc/worker/backupworld.sh $SERVER
+    /usr/local/bin/gorpmc/worker/warning.sh $SERVER stop
+    /usr/local/bin/gorpmc/worker/shutdown.sh $SERVER
 
 elif [ $ARG == "power" ]; then
-    /usr/local/bin/gorputils/worker/warning.sh $SERVER power
-    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
+    /usr/local/bin/gorpmc/worker/warning.sh $SERVER power
+    /usr/local/bin/gorpmc/worker/shutdown.sh $SERVER
 
 elif [ $ARG == "fast" ]; then
-    /usr/local/bin/gorputils/worker/warning.sh $SERVER stop
-    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
+    /usr/local/bin/gorpmc/worker/warning.sh $SERVER stop
+    /usr/local/bin/gorpmc/worker/shutdown.sh $SERVER
 
 elif [ $ARG == "now" ]; then
-    /usr/local/bin/gorputils/worker/shutdown.sh $SERVER
+    /usr/local/bin/gorpmc/worker/shutdown.sh $SERVER
 
 else
     echo "mcstop: Invalid second parameter. Exiting."

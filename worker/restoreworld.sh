@@ -23,9 +23,9 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
-BACKUP_DIR=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d '=' -f 2)
+BACKUP_DIR=$(cat $HOMEDIR/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d '=' -f 2)
 
-CURRENT_LEVEL_NAME=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
+CURRENT_LEVEL_NAME=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
 
 
 
@@ -116,7 +116,7 @@ echo "restoreworld.sh: Backing up current world..."
 
 sleep 0.5
 
-/usr/local/bin/gorputils/action/mcbackupworld $SERVER
+/usr/local/bin/gorpmc/action/mcbackupworld $SERVER
 
 
 
@@ -124,20 +124,20 @@ sleep 0.5
 
 echo "restoreworld.sh: Restoring selected files..."
 
-rm -rf /minecraft/servers/$SERVER/${CURRENT_LEVEL_NAME}*
+rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}*
 
 
 
 # RESTORE WORLD
 
-rm -rf /minecraft/tmp
-mkdir -p /minecraft/tmp/restore
+rm -rf $HOMEDIR/tmp
+mkdir -p $HOMEDIR/tmp/restore
 
-cp $BACKUP_DIR/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /minecraft/tmp/restore/
+cp $BACKUP_DIR/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE $HOMEDIR/tmp/restore/
 
-tar -xf /minecraft/tmp/restore/$FILE_TO_RESTORE -C /minecraft/tmp/restore/
+tar -xf $HOMEDIR/tmp/restore/$FILE_TO_RESTORE -C $HOMEDIR/tmp/restore/
 
-cp -r /minecraft/tmp/restore/$FOLDER_TO_RESTORE/* /minecraft/servers/$SERVER/
+cp -r $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/
 
 
 

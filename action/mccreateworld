@@ -12,19 +12,22 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "mccreateworld: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mccreateworld: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-NEW_WORLD=$2
+HOMEDIR=$(getHomedir)
+SERVER=$2
+NEW_WORLD=$3
 
 
 
@@ -32,48 +35,48 @@ NEW_WORLD=$2
 
 
 
-# PARAM GUARD
+# PARAM RT-GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "mccreateworld: Server name missing. Expected command format: 'gorp create-world [server-name] <world-name>'"
-    exit
+    echo "mccreateworld: Server name missing. Expected command format: 'gorp create-world [server-name] <world-name>'. Exit (14)."
+    exit 14
 fi
 
 
 
-# SERVER DIRECTORY GUARD
+# SERVER DIRECTORY RT-GUARD
 
-if [ -d "/minecraft/servers/$SERVER" ]; then
+if [ -d "$HOMEDIR/servers/$SERVER" ]; then
     sleep 0.05
 else
-    echo "mccreateworld: Server doesn't exist. Exiting."
-    exit
+    echo "mccreateworld: Server doesn't exist. Exit (20)."
+    exit 20
 fi
 
 
 
-# WORLD DIRECTORY GUARD (when world name passed as param)
+# WORLD DIRECTORY RT-GUARD (when world name passed as param)
 
 if [ "$NEW_WORLD" != "" ]; then
 
-    if [ -d "/minecraft/servers/$SERVER/world-$NEW_WORLD" ]; then
-        echo "mccreateworld: A world with name '$NEW_WORLD' already exists. Exiting."
-        exit
+    if [ -d "$HOMEDIR/servers/$SERVER/world-$NEW_WORLD" ]; then
+        echo "mccreateworld: A world with name '$NEW_WORLD' already exists. Exit (21)."
+        exit 21
     fi
 
 fi
 
 
 
-# SCREEN GUARD
+# SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "mccreateworld: Server '$SERVER' is running. Stop the server and then create a new world. Exiting."
-        exit
+        echo "mccreateworld: Server cannot be running. Exit (32)."
+        exit 32
 fi
 
 
 
 # RUN THE WORLD CREATOR WORKER
 
-/usr/local/bin/gorputils/worker/createworld.sh $SERVER $NEW_WORLD
+/usr/local/bin/mc/worker/createworld.sh pleasedontdothis $SERVER $NEW_WORLD

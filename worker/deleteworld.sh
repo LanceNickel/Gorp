@@ -26,7 +26,7 @@ fi
 SERVER=$1
 WORLD_TO_DELETE=$2
 
-OPTIONS=$(ls /minecraft/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
+OPTIONS=$(ls $HOMEDIR/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
 
 
 
@@ -80,9 +80,9 @@ fi
 
 # DELETE THE WORLD
 
-rm -rf /minecraft/servers/$SERVER/world-$WORLD_TO_DELETE
-rm -rf /minecraft/servers/$SERVER/world-${WORLD_TO_DELETE}_nether
-rm -rf /minecraft/servers/$SERVER/world-${WORLD_TO_DELETE}_the_end
+rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_DELETE
+rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_DELETE}_nether
+rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_DELETE}_the_end
 
 
 

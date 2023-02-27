@@ -41,4 +41,4 @@ fi
 
 # RUN JAR DOWNLOADER
 
-/usr/local/bin/gorputils/worker/getjar.sh $VERSION
+/usr/local/bin/gorpmc/worker/getjar.sh $VERSION

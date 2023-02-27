@@ -11,23 +11,28 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "mccreate: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mccreateserver: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
+HOMEDIR=$(getHomedir)
+SERVER=$2
 
-if [ "$2" = "" ]; then
+# World name override
+
+if [ "$3" = "" ]; then
     WORLD=default
 else
-    WORLD=$2
+    WORLD=$3
 fi
 
 
@@ -39,7 +44,7 @@ fi
 # PARAM GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "mccreate: Please specify a server name to create. Exiting."
+    echo "mccreateserver: Please specify a server name to create. Exiting."
     exit
 fi
 
@@ -47,8 +52,8 @@ fi
 
 # SERVER DIRECTORY GUARD
 
-if [ -d "/minecraft/servers/$SERVER" ]; then
-    echo "mccreate: Specified server already exists. Exiting."
+if [ -d "$HOMEDIR/servers/$SERVER" ]; then
+    echo "mccreateserver: Specified server already exists. Exiting."
     exit
 fi
 
@@ -79,4 +84,4 @@ fi
 
 # RUN THE CREATOR WORKER
 
-/usr/local/bin/gorputils/worker/createserver.sh $SERVER $WORLD s3zujKM87FD56sxb
+/usr/local/bin/gorpmc/worker/createserver.sh $SERVER $WORLD s3zujKM87FD56sxb

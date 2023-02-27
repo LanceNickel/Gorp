@@ -26,8 +26,8 @@ fi
 SERVER=$1
 WORLD_TO_ARCHIVE=$2
 
-OPTIONS=$(ls /minecraft/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
-DEST=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'ARCHIVES=' | cut -d '=' -f2)
+OPTIONS=$(ls $HOMEDIR/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
+DEST=$(cat $HOMEDIR/gorp.conf | grep "^[^#;]" | grep 'ARCHIVES=' | cut -d '=' -f2)
 
 
 
@@ -59,8 +59,8 @@ fi
 
 # CREATE TMP DIRECTORY
 
-rm -rf /minecraft/tmp
-mkdir -p /minecraft/tmp/$WORLD_TO_ARCHIVE
+rm -rf $HOMEDIR/tmp
+mkdir -p $HOMEDIR/tmp/$WORLD_TO_ARCHIVE
 
 
 
@@ -68,11 +68,11 @@ mkdir -p /minecraft/tmp/$WORLD_TO_ARCHIVE
 
 echo "archiveworld.sh: Archiving $WORLD_TO_ARCHIVE..."
 
-cp -r /minecraft/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ /minecraft/tmp/$WORLD_TO_ARCHIVE/
-cp -r /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ /minecraft/tmp/$WORLD_TO_ARCHIVE/
-cp -r /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /minecraft/tmp/$WORLD_TO_ARCHIVE/
+cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
 
-cd /minecraft/tmp
+cd $HOMEDIR/tmp
 tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null
 
 
@@ -87,13 +87,13 @@ mkdir -p $DEST/$SERVER
 
 echo "archiveworld.sh: Moving world to archive destination... ($DEST/$WORLD_TO_ARCHIVE.tar.gz)"
 
-cp /minecraft/tmp/$WORLD_TO_ARCHIVE.tar.gz $DEST/$SERVER/
+cp $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz $DEST/$SERVER/
 
 
 
 # ARCHIVE INTEGRITY GUARD
 
-CHECKSUM=$(md5sum /minecraft/tmp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
+CHECKSUM=$(md5sum $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 TESTSUM=$(md5sum $DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 
 if [ "$CHECKSUM" != "$TESTSUM" ]; then
@@ -105,11 +105,11 @@ fi
 
 # CLEAN UP
 
-rm -rf /minecraft/servers/$SERVER/world-$WORLD_TO_ARCHIVE
-rm -rf /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether
-rm -rf /minecraft/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end
+rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE
+rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether
+rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end
 
-rm -rf /minecraft/tmp
+rm -rf $HOMEDIR/tmp
 
 
 

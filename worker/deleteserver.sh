@@ -56,7 +56,7 @@ fi
 
 echo "delete.sh: Deleting server..."
 
-rm -rf /minecraft/servers/$SERVER
+rm -rf $HOMEDIR/servers/$SERVER
 
 
 

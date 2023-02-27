@@ -43,7 +43,7 @@ fi
 
 # SERVER DIRECTORY GUARD
 
-if [ -d "/minecraft/servers/$SERVER" ]; then
+if [ -d "$HOMEDIR/servers/$SERVER" ]; then
     sleep 0.05
 else
     echo "mcdeleteworld: Server doesn't exist. Exiting."
@@ -54,7 +54,7 @@ fi
 
 # NO WORLDS GUARD
 
-if [[ $(ls /minecraft/servers/$SERVER/ | grep 'world') = "" ]]; then
+if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') = "" ]]; then
     echo -e "mcdeleteworld: No worlds exist on this server instance.\nRun 'gorp create-world $SERVER [name]' to create a new world. Exiting."
     exit
 fi
@@ -74,7 +74,7 @@ fi
 
 if [ "$WORLD_TO_DELETE" != "" ]; then
 
-    if [ -d "/minecraft/servers/$SERVER/world-$WORLD_TO_DELETE" ]; then
+    if [ -d "$HOMEDIR/servers/$SERVER/world-$WORLD_TO_DELETE" ]; then
         sleep 0.005
     else
         echo "mcdeleteworld: A world with name '$WORLD_TO_DELETE' doesn't exist. Exiting."
@@ -87,4 +87,4 @@ fi
 
 # RUN THE WORLD DELETE WORKER
 
-/usr/local/bin/gorputils/worker/deleteworld.sh $SERVER $WORLD_TO_DELETE
+/usr/local/bin/gorpmc/worker/deleteworld.sh $SERVER $WORLD_TO_DELETE

@@ -11,18 +11,21 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "mcdelete: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcdeleteserver: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
+HOMEDIR=$(getHomedir)
+SERVER=$2
 
 
 
@@ -30,44 +33,44 @@ SERVER=$1
 
 
 
-# PARAM GUARD
+# PARAM RT-GUARD
 
 if [ "$SERVER" = "" ]; then
-    echo "mcdelete: Please specify a server. Exiting"
-    exit
+    echo "mcdeleteserver: Please specify a server. Exit (14)."
+    exit 14
 fi
 
 
 
-# NO SERVERS GUARD
+# NO SERVERS RT-GUARD
 
-if [[ $(ls /minecraft/servers/) = "" ]]; then
-    echo -e "mcdeleteserver: No server instances exist..\nRun 'gorp create-server [name]' to create a new server."
-    exit
+if [[ $(ls $HOMEDIR/servers/) = "" ]]; then
+    echo -e "mcdeleteserver: No server instances exist..\nRun 'gorp create-server [name]' to create a new server. Exit (20)."
+    exit 20
 fi
 
 
 
-# SERVER DIRECTORY GUARD
+# SERVER DIRECTORY RT-GUARD
 
-if [ -d "/minecraft/servers/$SERVER" ]; then
-    cd /minecraft/servers/$SERVER
+if [ -d "$HOMEDIR/servers/$SERVER" ]; then
+    cd $HOMEDIR/servers/$SERVER
 else
-    echo "mcdelete: Specified server doesn't exist. Exiting."
-    exit
+    echo "mcdeleteserver: Specified server doesn't exist. Exit (20)."
+    exit 20
 fi
 
 
 
-# SCREEN GUARD
+# SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "mcdelete: Server '$SERVER' is still running. Please stop the server first. Exiting."
-        exit
+        echo "mcdeleteserver: Server cannot be running. Exit (32)."
+        exit 32
 fi
 
 
 
 # RUN DELETE WORKER
 
-/usr/local/bin/gorputils/worker/deleteserver.sh $SERVER
+/usr/local/bin/gorpmc/worker/deleteserver.sh pleasedontdothis $SERVER

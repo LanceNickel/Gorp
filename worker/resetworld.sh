@@ -24,7 +24,7 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
-WORLD_TO_RESET=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
+WORLD_TO_RESET=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
     RUNNING=true
@@ -65,9 +65,9 @@ fi
 
 echo "resetworld.sh: Regenerating $WORLD_TO_RESET... (~45 secs)"
 
-rm -rf /minecraft/servers/$SERVER/world-$WORLD_TO_RESET
-rm -rf /minecraft/servers/$SERVER/world-${WORLD_TO_RESET}_nether
-rm -rf /minecraft/servers/$SERVER/world-${WORLD_TO_RESET}_the_end
+rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_RESET
+rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_nether
+rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_the_end
 
 
 

@@ -12,19 +12,22 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "mcarchiveworld: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcarchiveworld: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-WORLD_TO_ARCHIVE=$2
+HOMEDIR=$(getHomedir)
+SERVER=$2
+WORLD_TO_ARCHIVE=$3
 
 
 
@@ -32,53 +35,53 @@ WORLD_TO_ARCHIVE=$2
 
 
 
-# PARAM GUARD
+# PARAM RT-GUARD
 
-if [ "$SERVER" = "" ]; then
-    echo "mcarchiveworld: Server name missing. Expected command format: 'gorp archive-world [server-name] <world-name>'"
-    exit
+if [[ "$SERVER" = "" ]]; then
+    echo "mcarchiveworld: Server name missing. Expected command format: 'gorp archive-world [server-name] <world-name>'. Exit (14)."
+    exit 14
 fi
 
 
 
-# SERVER DIRECTORY GUARD
+# SERVER DIRECTORY RT-GUARD
 
-if [ -d "/minecraft/servers/$SERVER" ]; then
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    echo "mcarchiveworld: Server doesn't exist. Exiting."
-    exit
+    echo "mcarchiveworld: Server doesn't exist. Exit (20)."
+    exit 20
 fi
 
 
 
-# NO WORLDS GUARD
+# NO WORLDS RT-GUARD
 
-if [[ $(ls /minecraft/servers/$SERVER/ | grep 'world') = "" ]]; then
-    echo -e "mcarchiveworld: No worlds exist on this server instance.\nRun 'gorp create-world $SERVER [name]' to create a new world. Exiting."
-    exit
+if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') = "" ]]; then
+    echo -e "mcarchiveworld: No worlds exist on this server instance.\nRun 'gorp create-world $SERVER [name]' to create a new world. Exit (20)."
+    exit 20
 fi
 
 
 
-# SCREEN GUARD
+# SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "mcarchiveworld: Server '$SERVER' is running. Stop the server and then archive the world. Exiting."
-        exit
+        echo "mcarchiveworld: Server cannot be running. Exit (32)."
+        exit 32
 fi
 
 
 
-# WORLD DIRECTORY GUARD (when world name passed as param)
+# WORLD DIRECTORY RT-GUARD (when world name passed as param)
 
 if [ "$WORLD_TO_ARCHIVE" != "" ]; then
 
-    if [ -d "/minecraft/servers/$SERVER/world-$WORLD_TO_ARCHIVE" ]; then
+    if [ -d "$HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE" ]; then
         sleep 0.005
     else
-        echo "mcarchiveworld: A world with name '$WORLD_TO_ARCHIVE' doesn't exist. Exiting."
-        exit
+        echo "mcarchiveworld: A world with name '$WORLD_TO_ARCHIVE' doesn't exist. Exit (42)."
+        exit 42
     fi
 
 fi
@@ -87,4 +90,4 @@ fi
 
 # RUN THE WORLD ARCHIVE WORKER
 
-/usr/local/bin/gorputils/worker/archiveworld.sh $SERVER $WORLD_TO_ARCHIVE
+/usr/local/bin/gorpmc/worker/archiveworld.sh pleasedontdothis $SERVER $WORLD_TO_ARCHIVE

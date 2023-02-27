@@ -69,7 +69,7 @@ do
         if [ $I -eq "12" ]; then
                 echo "shutdown.sh: The server shutdown process has hung. The server will be force-quit."
                 sleep 0.05
-                echo "Please investigate this further in the server log: '/minecraft/servers/$SERVER/logs/latest.log'."
+                echo "Please investigate this further in the server log: '$HOMEDIR/servers/$SERVER/logs/latest.log'."
                 screen -X -S mc quit
         fi
 

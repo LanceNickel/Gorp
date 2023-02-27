@@ -26,4 +26,4 @@ fi
 
 # RUN UPDATE WORKER
 
-/usr/local/bin/gorputils/worker/updatejar.sh $VERSION
+/usr/local/bin/gorpmc/worker/updatejar.sh $VERSION

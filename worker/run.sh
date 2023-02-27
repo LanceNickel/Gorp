@@ -15,18 +15,18 @@
 ######## Option: JAR #############################################################
 # Description:     An (optional) custom JAR file to run as the server.
 # Expected value:  Absolute path to a JAR file
-# Default:         JAR=$(cat /minecraft/jars/latest)
+# Default:         JAR=$(cat $HOMEDIR/jars/latest)
 
-JAR=$(cat /minecraft/jars/latest)
+JAR=$(cat $HOMEDIR/jars/latest)
 
 
 
 ######## Option: RAM #############################################################
 # Description:     An (optional) custom RAM allocation for this server.
 # Expected value:  Amount of RAM as an integer, followed immedately by "G" (ex: 4G)
-# Default:         RAM=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
+# Default:         RAM=$(cat $HOMEDIR/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
 
-RAM=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
+RAM=$(cat $HOMEDIR/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f 2)
 
 
 

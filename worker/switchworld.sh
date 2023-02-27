@@ -25,8 +25,8 @@ fi
 SERVER=$1
 SWITCH_TO=$2
 
-OPTIONS=$(ls /minecraft/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
-CURRENT_WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
+OPTIONS=$(ls $HOMEDIR/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
+CURRENT_WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
 
 
 
@@ -60,7 +60,7 @@ fi
 
 # SWITCH THE VALUE IN 'server.properties'
 
-sed -i "s/level-name=$CURRENT_WORLD/level-name=world-$SWITCH_TO/" /minecraft/servers/$SERVER/server.properties
+sed -i "s/level-name=$CURRENT_WORLD/level-name=world-$SWITCH_TO/" $HOMEDIR/servers/$SERVER/server.properties
 
 
 

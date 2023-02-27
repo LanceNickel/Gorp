@@ -23,7 +23,7 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
-BACKUP_DIR=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d '=' -f 2)
+BACKUP_DIR=$(cat $HOMEDIR/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d '=' -f 2)
 
 
 
@@ -62,4 +62,4 @@ fi
 
 # RUN RESTORE WORKER
 
-/usr/local/bin/gorputils/worker/restoreworld.sh $SERVER
+/usr/local/bin/gorpmc/worker/restoreworld.sh $SERVER

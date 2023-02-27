@@ -24,7 +24,7 @@ fi
 # SCRIPT VARIABLES
 
 SERVER=$1
-WORLD=$(cat /minecraft/servers/$SERVER/server.properties | grep "level-name" | cut -d "=" -f2)
+WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep "level-name" | cut -d "=" -f2)
 
 YEAR=$(date +"%Y")
 MONTH=$(date +"%m")
@@ -33,11 +33,11 @@ DATE_FILE=$(date +"%Y-%m-%d_%H%M-%S")
 
 BACKUP_NAME=$WORLD-$DATE_FILE
 
-SOURCE=/minecraft/servers/$SERVER/$WORLD
-DEST_ROOT=$(cat /minecraft/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d '=' -f2)
+SOURCE=$HOMEDIR/servers/$SERVER/$WORLD
+DEST_ROOT=$(cat $HOMEDIR/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d '=' -f2)
 DEST=$DEST_ROOT/$SERVER/$WORLD/$YEAR/$MONTH/$DAY
 
-TMP=/minecraft/tmp/backup
+TMP=$HOMEDIR/tmp/backup
 
 
 
@@ -66,7 +66,7 @@ mkdir -p $DEST
 
 # FLUSH TEMP DIRECTORY
 
-rm -rf /minecraft/tmp
+rm -rf $HOMEDIR/tmp
 mkdir -p $TMP/$BACKUP_NAME
 
 
@@ -90,7 +90,7 @@ if [ $RUNNING = true ]; then
         do
                 sleep 0.2
 
-                if [[ $(tail /minecraft/servers/$SERVER/logs/latest.log -n1 | grep 'Saved the game') != "" ]]; then
+                if [[ $(tail $HOMEDIR/servers/$SERVER/logs/latest.log -n1 | grep 'Saved the game') != "" ]]; then
                         break
                 fi
         done
@@ -135,7 +135,7 @@ cp $TMP/$BACKUP_NAME.tar.gz $DEST/
 
 # CLEAN UP
 
-rm -rf /minecraft/tmp
+rm -rf $HOMEDIR/tmp
 
 
 

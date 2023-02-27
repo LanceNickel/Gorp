@@ -41,8 +41,8 @@ fi
 
 # SERVER DIRECTORY GUARD
 
-if [ -d "/minecraft/servers/$SERVER" ]; then
-    cd /minecraft/servers/$SERVER
+if [ -d "$HOMEDIR/servers/$SERVER" ]; then
+    cd $HOMEDIR/servers/$SERVER
 else
     echo "mcstart: Specified server doesn't exist. Exiting."
     exit
@@ -61,4 +61,4 @@ fi
 
 # RUN STARTUP WORKER
 
-/usr/local/bin/gorputils/worker/start.sh $SERVER
+/usr/local/bin/gorpmc/worker/start.sh $SERVER

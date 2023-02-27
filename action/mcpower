@@ -26,8 +26,8 @@ fi
 
 # FOR EACH SERVER, RUN SHUTDOWN ACTION WITH POWER PARAM
 
-for d in "/minecraft/servers/"*
+for d in "$HOMEDIR/servers/"*
 do
         SERVER=$(echo $(basename "$d"))
-        /usr/local/bin/gorputils/action/mcstop $SERVER power
+        /usr/local/bin/gorpmc/action/mcstop $SERVER power
 done
