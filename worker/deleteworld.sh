@@ -12,19 +12,21 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "deleteworld.sh: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "deleteworld.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-WORLD_TO_DELETE=$2
+SERVER=$2
+WORLD_TO_DELETE=$3
 
 OPTIONS=$(ls $HOMEDIR/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
 
@@ -64,16 +66,16 @@ read -r -p "Did you back up the world? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.005
 else
-    echo "PLEASE BACK UP YOUR WORLD FILES! Run 'mcbackup $SERVER' to take a back up first."
-    exit
+    echo "deleteworld.sh: You answered the prompt wrong! Exit (16)."
+    exit 16
 fi
 
 read -r -p "Enter '$WORLD_TO_DELETE' to confirm: " response
 if [[ "$response" == "$WORLD_TO_DELETE" ]]; then
     sleep 0.5
 else
-    echo "Incorrect response. Exiting."
-    exit
+    echo "deleteworld.sh: You answered the prompt wrong! Exit (16)."
+    exit 16
 fi
 
 

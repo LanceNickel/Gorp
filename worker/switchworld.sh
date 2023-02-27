@@ -11,19 +11,21 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "switchworld.sh: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "switchworld.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-SWITCH_TO=$2
+SERVER=$2
+SWITCH_TO=$3
 
 OPTIONS=$(ls $HOMEDIR/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
 CURRENT_WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
@@ -36,10 +38,9 @@ CURRENT_WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-nam
 
 # GET USER INPUT (if user did not specify a world)
 
-if [ "$SWITCH_TO" == "" ]; then
+if [[ "$SWITCH_TO" == "" ]]; then
 
-    while [ true ]
-    do
+    while [ true ]; do
         echo -e "Options:\n$OPTIONS"
 
         read -r -p "Please enter a world to switch to: " response

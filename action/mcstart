@@ -25,7 +25,6 @@ fi
 #### SCRIPT PARAMETERS ################
 
 SERVER=$2
-HOMEDIR=$(getHomedir)
 
 
 

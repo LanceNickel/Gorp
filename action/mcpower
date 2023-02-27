@@ -22,11 +22,6 @@ fi
 
 
 
-#### SCRIPT PARAMETERS ################
-
-HOMEDIR=$(getHomedir)
-
-
 ####
 
 

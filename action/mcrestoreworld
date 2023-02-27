@@ -25,7 +25,7 @@ fi
 #### SCRIPT PARAMETERS ################
 
 SERVER=$2
-BACKUP_DIR=$(getBackupDest)
+
 
 
 ####
@@ -43,7 +43,7 @@ fi
 
 # SERVER DIRECTORY GUARD
 
-if [[ -d "$BACKUP_DIR/$SERVER" ]]; then
+if [[ -d "$BACKUP_DEST/$SERVER" ]]; then
     sleep 0.005
 else
     echo "mcrestoreworld: Server has no backups to restore from. Exit (54)."

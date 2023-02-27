@@ -25,7 +25,6 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
-HOMEDIR=$(getHomedir)
 SERVER=$2
 WORLD_TO_ARCHIVE=$3
 

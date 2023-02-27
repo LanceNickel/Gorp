@@ -27,7 +27,6 @@ fi
 
 SERVER=$2
 ARG=$3
-HOMEDIR=$(getHomedir)
 
 
 

@@ -27,7 +27,6 @@ fi
 
 SERVER=$2
 WORLD_TO_DELETE=$3
-HOMEDIR=$(getHomedir)
 
 
 ####

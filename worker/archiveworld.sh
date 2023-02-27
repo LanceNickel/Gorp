@@ -12,22 +12,23 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "archiveworld.sh: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "archiveworld.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
-WORLD_TO_ARCHIVE=$2
+SERVER=$2
+WORLD_TO_ARCHIVE=$3
 
 OPTIONS=$(ls $HOMEDIR/servers/$SERVER/ | grep '_nether' | cut -d '-' -f2 | cut -d '_' -f1)
-DEST=$(cat $HOMEDIR/gorp.conf | grep "^[^#;]" | grep 'ARCHIVES=' | cut -d '=' -f2)
 
 
 
@@ -79,22 +80,22 @@ tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null
 
 # MAKE SURE ARCHIVE DESTINATION EXISTS
 
-mkdir -p $DEST/$SERVER
+mkdir -p $ARCHIVE_DEST/$SERVER
 
 
 
 # COPY THE WORLD FILES TO DESTINATION
 
-echo "archiveworld.sh: Moving world to archive destination... ($DEST/$WORLD_TO_ARCHIVE.tar.gz)"
+echo "archiveworld.sh: Moving world to archive destination... ($ARCHIVE_DEST/$WORLD_TO_ARCHIVE.tar.gz)"
 
-cp $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz $DEST/$SERVER/
+cp $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/
 
 
 
 # ARCHIVE INTEGRITY GUARD
 
 CHECKSUM=$(md5sum $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
-TESTSUM=$(md5sum $DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
+TESTSUM=$(md5sum $ARCHIVE_DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 
 if [ "$CHECKSUM" != "$TESTSUM" ]; then
     echo "archiveworld.sh: Checksum failed. Ensure the archive destination directory is correctly configured. Exiting."

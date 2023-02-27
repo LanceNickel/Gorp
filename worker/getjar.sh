@@ -11,18 +11,20 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "getjar.sh: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "getjar.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-VERSION=$1
+VERSION=$2
 
 
 
@@ -32,7 +34,7 @@ VERSION=$1
 
 # CLEAR TMP DIRECTORY
 
-if [ -d "$HOMEDIR/tmp" ]; then rm -rf $HOMEDIR/tmp; fi
+rm -rf $HOMEDIR/tmp
 mkdir $HOMEDIR/tmp
 
 
@@ -45,11 +47,11 @@ curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$VERSION/bui
 
 
 
-# VERSION NOT FOUND GUARD
+# VERSION NOT FOUND RT-GUARD
 
 if [[ $(cat $HOMEDIR/tmp/builds.json | grep 'Version not found.') != "" ]]; then
-    echo "getjar.sh: Specified game version not found. Exiting."
-    exit
+    echo "getjar.sh: Game version not found. Exit (60)."
+    exit 60
 fi
 
 
@@ -61,8 +63,7 @@ jq '.builds[-1] | {build, channel, downloads}' $HOMEDIR/tmp/builds.json > $HOMED
 FOUND=false
 I=1
 
-while [ $FOUND = false ];
-do
+while [ $FOUND = false ]; do
         ((I++))
         # if the channel in latest.json is experimental...
         if [[ $(jq '.channel' $HOMEDIR/tmp/latest.json) != '"default"' ]]; then
@@ -92,14 +93,14 @@ wget -q https://api.papermc.io/v2/projects/paper/versions/$VERSION/builds/$BUILD
 
 
 
-# TEST THE CHECKSUM (GUARD)
+# TEST THE CHECKSUM (RT-GUARD)
 
 TESTSUM="$(sha256sum $HOMEDIR/tmp/$NAME | cut -d " " -f 1)"
 
 if [ $TESTSUM != $CHECKSUM ]; then
-        echo "getjar.sh: Checksum comparison of download failed. This is a security risk. Exiting."
+        echo "getjar.sh: Downloaded JAR file failed checksum test. Exit (61)."
         rm -rf $HOMEDIR/tmp
-        exit
+        exit 61
 fi
 
 

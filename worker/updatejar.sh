@@ -12,18 +12,14 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-    echo "updatejar.sh: Insufficient privilege. Exiting."
-    exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "updatejar.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
-
-
-
-# SCRIPT VARIABLES
-
-GAMEVER=$(cat $HOMEDIR/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f 2)
 
 
 
@@ -33,7 +29,7 @@ GAMEVER=$(cat $HOMEDIR/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' 
 
 # CLEAR TMP DIRECTORY
 
-if [ -d "$HOMEDIR/tmp" ]; then rm -rf $HOMEDIR/tmp; fi
+if [[ -d "$HOMEDIR/tmp" ]]; then rm -rf $HOMEDIR/tmp; fi
 mkdir $HOMEDIR/tmp
 
 
@@ -46,11 +42,11 @@ curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/bui
 
 
 
-# VERSION NOT FOUND GUARD
+# VERSION NOT FOUND RT-GUARD
 
 if [[ $(cat $HOMEDIR/tmp/builds.json | grep 'Version not found.') != "" ]]; then
-    echo "getjar.sh: Specified game version not found. Exiting."
-    exit
+    echo "getjar.sh: Game version not found. Exit (60)."
+    exit 60
 fi
 
 
@@ -96,14 +92,14 @@ echo "updatejar.sh: Installing build $BUILD over $INSTALLED..."
 
 
 
-# TEST THE CHECKSUM (GUARD)
+# TEST THE CHECKSUM (RT-GUARD)
 
 TESTSUM="$(sha256sum $HOMEDIR/tmp/$NAME | cut -d " " -f 1)"
 
-if [ $TESTSUM != $CHECKSUM ]; then
-        echo "updatejar.sh: Checksum comparison of download failed. This is a security risk. Exiting."
+if [[ $TESTSUM != $CHECKSUM ]]; then
+        echo "updatejar.sh: Downloaded JAR file failed checksum test. Exit (61)."
         rm -rf $HOMEDIR/tmp
-        exit
+        exit 61
 fi
 
 

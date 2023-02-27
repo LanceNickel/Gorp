@@ -42,8 +42,6 @@ sudo whoami > /dev/null
 
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
-HOMEDIR=$(getHomedir)
-
 
 
 ####
@@ -136,8 +134,8 @@ if [[ $(ls $HOMEDIR/servers/) != "" ]]; then
 
         cp $HOMEDIR/tmp/updatefiles/worker/run.sh $HOMEDIR/servers/$SERVER/run.sh
 
-        sed -i "20s:.*:$JAR_ORIG:" $HOMEDIR/servers/$SERVER/run.sh
-        sed -i "29s:.*:$RAM_ORIG:" $HOMEDIR/servers/$SERVER/run.sh
+        sed -i "22s:.*:$JAR_ORIG:" $HOMEDIR/servers/$SERVER/run.sh
+        sed -i "31s:.*:$RAM_ORIG:" $HOMEDIR/servers/$SERVER/run.sh
 
     done
 

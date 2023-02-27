@@ -12,18 +12,20 @@
 
 
 
-# PERMISSIONS GUARD
+#### GUARDS ################
 
-if [[ "$EUID" != 0 ]]; then
-        echo "backupworld.sh: Insufficient privilege. Exiting."
-        exit
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "backupworld.sh: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 
 
-# SCRIPT VARIABLES
+#### SCRIPT PARAMETERS ################
 
-SERVER=$1
+SERVER=$2
 WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep "level-name" | cut -d "=" -f2)
 
 YEAR=$(date +"%Y")
@@ -34,8 +36,7 @@ DATE_FILE=$(date +"%Y-%m-%d_%H%M-%S")
 BACKUP_NAME=$WORLD-$DATE_FILE
 
 SOURCE=$HOMEDIR/servers/$SERVER/$WORLD
-DEST_ROOT=$(cat $HOMEDIR/gorp.conf | grep "^[^#;]" | grep 'BACKUPS=' | cut -d '=' -f2)
-DEST=$DEST_ROOT/$SERVER/$WORLD/$YEAR/$MONTH/$DAY
+DEST=$BACKUP_DEST/$SERVER/$WORLD/$YEAR/$MONTH/$DAY
 
 TMP=$HOMEDIR/tmp/backup
 
@@ -45,18 +46,18 @@ TMP=$HOMEDIR/tmp/backup
 
 
 
-# SOURCE DIRECTORY GUARD
+# SOURCE DIRECTORY RT-GUARD
 
-if [ -d "$SOURCE" ]; then
+if [[ -d "$SOURCE" ]]; then
         sleep 0.005
 else
-        echo "backupworld.sh: Source directory does not exist. Exiting."
-        exit
+        echo "backupworld.sh: Backup failed because the source cannot be found. Exit (52)."
+        exit 52
 fi
 
 
 
-# CHECK FOR (OR CREATE) DESTINATION DIRECTORY (GUARD)
+# CHECK FOR (OR CREATE) DESTINATION DIRECTORY (RT-GUARD)
 
 echo "backupworld.sh: Backing up $WORLD..."
 
@@ -83,7 +84,7 @@ fi
 
 # IF SERVER IS RUNNING, SAVE PROPERLY, THEN TURN OFF AUTOSAVE
 
-if [ $RUNNING = true ]; then
+if [[ $RUNNING = true ]]; then
         screen -S $SERVER -X stuff "save-all\n"
 
         while [ true ]
@@ -112,7 +113,7 @@ cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end
 
 # IF SERVER IS RUNNING, TURN AUTOSAVE BACK ON
 
-if [ $RUNNING = true ]; then
+if [[ $RUNNING = true ]]; then
         screen -S $SERVER -X stuff "save-on\n"
 fi
 
