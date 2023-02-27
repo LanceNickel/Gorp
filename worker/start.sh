@@ -75,7 +75,7 @@ WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cu
 
 echo "start.sh: Starting instance of server '$SERVER', running world '$WORLD'..." 
 
-screen -d -m -S "$SERVER" $HOMEDIR/servers/$SERVER/run.sh bjcisBOOMIN
+screen -d -m -S "$SERVER" $HOMEDIR/servers/$SERVER/run.sh pleasedontdothis
 
 
 
@@ -104,7 +104,7 @@ if [[ $INITIAL_BACKUP == true ]]; then
 
     sleep 30
 
-    /usr/local/bin/gorpmc/action/mcbackupworld $SERVER > /dev/null
+    /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER > /dev/null
 
     echo "start.sh: The server instance first-time setup is complete. You may now join your new server instance. Happy exploring!"
 else

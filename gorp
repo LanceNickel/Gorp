@@ -90,7 +90,7 @@ elif [[ $ACTION = "upgrade" ]]; then
     /usr/local/bin/gorpmc/action/gorpupgrade pleasedontdothis
 
 elif [[ $ACTION = "-v" ]]; then
-    echo $(cat $HOMEDIR/gorp.conf | grep 'Gorp version' | cut -d ':' -f2)
+    echo $(grep 'Gorp version' /usr/local/etc/gorp.conf | cut -d ':' -f2)
 
 elif [[ $ACTION = "list-servers" ]]; then
     echo $(ls $HOMEDIR/servers)

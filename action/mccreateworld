@@ -80,4 +80,4 @@ fi
 
 # RUN THE WORLD CREATOR WORKER
 
-/usr/local/bin/mc/worker/createworld.sh pleasedontdothis $SERVER $NEW_WORLD
+/usr/local/bin/gorpmc/worker/createworld.sh pleasedontdothis $SERVER $NEW_WORLD

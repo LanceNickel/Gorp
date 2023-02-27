@@ -79,8 +79,8 @@ fi
 ### APT-GET DEPENDENCIES
 
 echo -e "\nDownloading required software..."
-sudo apt-get update
-sudo apt-get install apt-transport-https curl wget jq screen -y
+# sudo apt-get update
+# sudo apt-get install apt-transport-https curl wget jq screen -y
 
 sleep 2
 
@@ -114,10 +114,10 @@ if [[ -d "$HOMEDIR/gorpmc" ]]; then
     WARN=true
 else
     WARN=false
-    mkdir $HOMEDIR/
-    mkdir $HOMEDIR/backups
-    mkdir $HOMEDIR/jars
-    mkdir $HOMEDIR/servers
+    mkdir $HOMEDIR/gorpmc/
+    mkdir $HOMEDIR/gorpmc/backups
+    mkdir $HOMEDIR/gorpmc/jars
+    mkdir $HOMEDIR/gorpmc/servers
 fi
 
 
@@ -132,7 +132,7 @@ sudo cp gorp /usr/local/bin/
 sudo mkdir -p /usr/local/etc/
 sudo cp gorp.conf /usr/local/etc/
 
-echo "paper-0-000.jar" > $HOMEDIR/jars/latest
+echo "paper-0-000.jar" > $HOMEDIR/gorpmc/jars/latest
 
 
 

@@ -56,7 +56,7 @@ I=0
 while [ $NOT30 == true ]; do
         sleep 1
         ((I++))
-        echo -e "  ${I}s\r"
+        echo -ne "  ${I}s\r"
 
         if [[ $I == "30" ]]; then
                 NOT30=false
@@ -65,4 +65,4 @@ done
 
 
 
-echo -e "\n"
+echo -ne "\n"
