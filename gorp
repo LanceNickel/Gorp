@@ -45,7 +45,7 @@ elif [[ $ACTION = "restore-world" ]]; then
     /usr/local/bin/gorpmc/action/mcrestoreworld pleasedontdothis $ARG1
 
 elif [[ $ACTION = "update-jar" ]]; then
-    /usr/local/bin/gorpmc/action/mcupdatejar
+    /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
 
 elif [[ $ACTION = "get-jar" ]]; then
     /usr/local/bin/gorpmc/action/mcgetjar pleasedontdothis $ARG1
