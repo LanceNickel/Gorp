@@ -24,7 +24,7 @@ fi
 
 ### GET SUDO PERMISSIONS
 
-echo "To do a few things for installation, Gorp needs sudo."
+echo "To install, Gorp will use sudo."
 sudo whoami > /dev/null
 
 
@@ -56,33 +56,38 @@ echo -e "\nWelcome to Gorp!"
 
 ### USER EULA AND AGREEMENT RT-GUARD
 
-echo -e "\n==== IMPORTANT! ====\nTo continue you must agree to the Minecraft EULA (https://aka.ms/MinecraftEULA).\nYou must also agree to use Gorp for PERSONAL USE ONLY."
+if [[ "$1" != "testtesttest" ]]; then
 
-read -r -p "Do you agree to the Minecraft EULA? [y/n]: " response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    sleep 0.25
-else
-    echo "You answered the prompt wrong! Exit (16)."
-    exit 16
-fi
+    echo -e "\n==== IMPORTANT! ====\nTo continue you must agree to the Minecraft EULA (https://aka.ms/MinecraftEULA).\nYou must also agree to use Gorp for PERSONAL USE ONLY."
 
-read -r -p "Do you agree to use Gorp for personal use only? COMMERCIAL USE PROHIBITED. [y/n]: " response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    sleep 0.25
-else
-    echo "You answered the prompt wrong! Exit (16)."
-    exit 12
+    read -r -p "Do you agree to the Minecraft EULA? [y/n]: " response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        sleep 0.25
+    else
+        echo "You answered the prompt wrong! Exit (16)."
+        exit 16
+    fi
+
+    read -r -p "Do you agree to use Gorp for personal use only? COMMERCIAL USE PROHIBITED. [y/n]: " response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        sleep 0.25
+    else
+        echo "You answered the prompt wrong! Exit (16)."
+        exit 12
+    fi
+
 fi
 
 
 
 ### APT-GET DEPENDENCIES
 
-echo -e "\nDownloading required software..."
-sudo apt-get update
-sudo apt-get install apt-transport-https curl wget jq screen -y
-
-sleep 2
+if [[ "$1" != "testtesttest" ]]; then
+    echo -e "\nDownloading required software..."
+    
+    sudo apt-get update
+    sudo apt-get install apt-transport-https curl wget jq screen -y
+fi
 
 
 
@@ -139,27 +144,18 @@ echo "paper-0-000.jar" > $HOMEDIR/gorpmc/jars/latest
 ### RUN UPDATE ACTION TO GET & SET JAR FILE
 
 echo -e "Getting latest Paper JAR file..."
-sleep 1
+
 /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
 
 
 
 ### FINISHED, SHOW WARNING
 
-echo -e "\nINSTALLATION FINISHED!\nHowever,"
-sleep 1
-echo -e "\nYOU"
-sleep 0.5
-echo "AREN'T"
-sleep 0.5
-echo "DONE"
-sleep 0.5
-echo "YET"
-sleep 1
-echo -e "\nPlease continue to follow the installation instructions.\n"
+echo -e "\nINSTALLATION FINISHED\n\nCreate your first server with:    gorp create-server [server-name] <world-name>\nStart the server                  gorp start [server-name]\n\nRead more at https://gorp.lanickel.com/"
+
 
 if [ $WARN = true ]; then
-    echo -e "WARNING: '$HOMEDIR/gorpmc' directory already exists. Refer to installation instructions for more info:\nhttps://gorp.lanickel.com/getting-started/install/"
+    echo -e "\n\nWARNING:\n'$HOMEDIR/gorpmc' directory already exists. Refer to installation instructions for more info:\nhttps://gorp.lanickel.com/getting-started/install/"
 fi
 
 

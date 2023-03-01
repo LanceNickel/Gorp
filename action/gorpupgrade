@@ -22,9 +22,29 @@ fi
 
 
 
+### DO WE EVEN NEED TO UPGRADE?
+
+if [[ "$INSTALLED" == "$LATEST_VER" ]]; then
+    echo "Gorp is already on the latest version."
+    exit 0
+fi
+
+
+
+### GET SUDO PERMISSIONS
+
+echo "To upgrade, Gorp will use sudo."
+sudo whoami > /dev/null
+
+
+
 #### SCRIPT PARAMETERS ################
 
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+INSTALLED=$(gorp -v | cut -d ' ' -f3)
+LATEST_TAG=$(curl -s https://api.github.com/repos/LanceNickel/Gorp/releases/latest | jq -r .tag_name)
+LATEST_VER=$(echo $LATEST_TAG | cut -c 2-)
 
 
 
@@ -35,15 +55,23 @@ source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 ### TEMP DIRECTORY
 
 rm -rf $HOMEDIR/tmp/
-mkdir $HOMEDIR/tmp/
+mkdir -p $HOMEDIR/tmp/
 
 
 
-### GIT CLONE LATEST GORP FILES
+### DOWNLOAD THE LATEST RELEASE
 
-echo "gorpupgrade: Downloading newest scripts..."
+echo "Downloading latest release..."
 
-git clone --quiet https://github.com/LanceNickel/Gorp $HOMEDIR/tmp/updatefiles
+cd $HOMEDIR/tmp/
+wget -q https://github.com/LanceNickel/Gorp/archive/refs/tags/$LATEST_TAG.tar.gz
+
+tar -xf $LATEST_TAG.tar.gz > /dev/null
+
+mkdir -p ./updatefiles/
+mv ./Gorp-$LATEST_VER/* ./updatefiles/
+
+
 
 
 

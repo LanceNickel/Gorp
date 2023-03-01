@@ -16,7 +16,7 @@
 ### KEY GUARD
 
 if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcarchiveworld: Not intended to be run directly. Exit (13)."
+    echo "upgrade.sh: Not intended to be run directly. Exit (13)."
     exit 13
 fi
 
@@ -25,16 +25,9 @@ fi
 ### ROOT GUARD
 
 if [[ "$EUID" == 0 ]]; then
-    echo "Please do not run as root or with 'sudo'. Gorp will ask for sudo rights if it needs it. Exit (10)."
+    echo "upgrade.sh: Please do not run as root or with 'sudo'. Gorp will ask for sudo rights if it needs it. Exit (10)."
     exit 10
 fi
-
-
-
-### GET SUDO PERMISSIONS
-
-echo "To upgrade, Gorp needs sudo."
-sudo whoami > /dev/null
 
 
 
@@ -50,7 +43,7 @@ source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 ################### STAGE 1: INSTALL UPDATED SHELL SCRIPTS TO /usr/local/bin/
 
-echo "upgrade.sh: Upgrading Gorp..."
+echo "Upgrading Gorp..."
 
 
 
@@ -64,21 +57,21 @@ chmod +x $HOMEDIR/tmp/updatefiles/gorp
 
 ### REMOVE CURRENT INSTALLATION
 
-rm -rf /usr/local/bin/gorpmc/
-rm /usr/local/bin/gorp
+sudo rm -rf /usr/local/bin/gorpmc/
+sudo rm /usr/local/bin/gorp
 
 
 
 ### CREATE DIRECTORIES AND RE-INSTALL GORP
 
-mkdir -p /usr/local/bin/gorpmc/
-mkdir /usr/local/bin/gorpmc/action
-mkdir /usr/local/bin/gorpmc/worker
+sudo mkdir -p /usr/local/bin/gorpmc/
+sudo mkdir /usr/local/bin/gorpmc/action
+sudo mkdir /usr/local/bin/gorpmc/worker
 
-cp $HOMEDIR/tmp/updatefiles/action/* /usr/local/bin/gorpmc/action/
-cp $HOMEDIR/tmp/updatefiles/worker/* /usr/local/bin/gorpmc/worker/
-cp $HOMEDIR/tmp/updatefiles/help.txt /usr/local/bin/gorpmc/
-cp $HOMEDIR/tmp/updatefiles/gorp /usr/local/bin/
+sudo cp $HOMEDIR/tmp/updatefiles/action/* /usr/local/bin/gorpmc/action/
+sudo cp $HOMEDIR/tmp/updatefiles/worker/* /usr/local/bin/gorpmc/worker/
+sudo cp $HOMEDIR/tmp/updatefiles/help.txt /usr/local/bin/gorpmc/
+sudo cp $HOMEDIR/tmp/updatefiles/gorp /usr/local/bin/
 
 
 

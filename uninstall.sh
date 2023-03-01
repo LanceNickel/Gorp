@@ -24,7 +24,7 @@ fi
 
 ### GET SUDO PERMISSIONS
 
-echo "To uninstall, Gorp needs sudo."
+echo "To uninstall, Gorp will use sudo."
 sudo whoami > /dev/null
 
 
@@ -37,7 +37,7 @@ echo -e "Uninstalling..."
 
 
 
-# REMOVE GORP FROM /usr/local/bin (/minecraft is never deleted to avoid catastrophic data loss)
+# REMOVE GORP FROM /usr/local/bin (~/gorpmc is never deleted to avoid catastrophic data loss)
 
 sudo rm -rf /usr/local/bin/gorpmc/
 sudo rm /usr/local/bin/gorp
