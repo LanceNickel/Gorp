@@ -22,22 +22,6 @@ fi
 
 
 
-### DO WE EVEN NEED TO UPGRADE?
-
-if [[ "$INSTALLED" == "$LATEST_VER" ]]; then
-    echo "Gorp is already on the latest version."
-    exit 0
-fi
-
-
-
-### GET SUDO PERMISSIONS
-
-echo "To upgrade, Gorp will use sudo."
-sudo whoami > /dev/null
-
-
-
 #### SCRIPT PARAMETERS ################
 
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
@@ -49,6 +33,22 @@ LATEST_VER=$(echo $LATEST_TAG | cut -c 2-)
 
 
 ####
+
+
+
+### DO WE EVEN NEED TO UPGRADE?
+
+if [[ "$INSTALLED" == "$LATEST_VER" ]]; then
+    echo "Gorp is already on the latest version."
+    exit 0
+fi
+
+
+
+### GET SUDO PERMISSIONS RT-GUARD
+
+echo "To upgrade, Gorp will use sudo."
+sudo whoami > /dev/null
 
 
 
