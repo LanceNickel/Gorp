@@ -29,14 +29,6 @@ source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 SERVER=$2
 INITIAL_BACKUP=false
 
-# Server port
-
-if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'server-port=') = "" ]]; then
-    PORT=25565
-else
-    PORT=$(serverPort "$SERVER")
-fi
-
 
 
 ####
@@ -46,8 +38,8 @@ fi
 # SCREEN ALREADY EXISTS GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-    echo "start.sh: Server '$SERVER' is already running. Exiting."
-    exit
+    echo "start.sh: Server already running. Exit (33)."
+    exit 33
 fi
 
 
@@ -73,25 +65,34 @@ fi
 
 WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
 
-echo "start.sh: Starting instance of server '$SERVER', running world '$WORLD'..." 
+echo "Starting with $WORLD..." 
 
 screen -d -m -S "$SERVER" $HOMEDIR/servers/$SERVER/run.sh pleasedontdothis
 
 
 
-# WAIT FOR PORT TO COME ALIVE
+# GIVE THE SERVER 5 SECONDS, THEN WAIT FOR SERVER TO LOG "DONE!"
 
-PORT_ALIVE=false
+sleep 5
 
-while [ $PORT_ALIVE = false ]; do
-        ((I++))
+I=0
 
-        if [[ $(lsof -i:$PORT) != "" ]]; then
-                echo "start.sh: Port $PORT is alive."
-                PORT_ALIVE=true
-        fi
+while [ true ]; do
+    sleep 1
+    ((I++))
 
-        sleep 1
+    if [[ "$(grep 'INFO]: Done (' $HOMEDIR/servers/$SERVER/logs/latest.log)" != "" ]]; then
+        break
+    fi
+
+    if [[ "$I" == 30 ]]; then
+        echo -e "\n$(tail -n15 $HOMEDIR/servers/$SERVER/logs/latest.log)\n"
+
+        echo "Timeout reached. Above is the last 15 lines of latest.log."
+        echo "start.sh: Startup failure. Server never indicated "done!". Exit (38)."
+        exit 38
+    fi
+
 done
 
 
@@ -100,14 +101,14 @@ done
 
 if [[ $INITIAL_BACKUP == true ]]; then
 
-    echo "start.sh: Taking initial backup of world... (This will take ~30 seconds longer than a normal backup, don't worry!)"
+    echo "Taking initial backup of world..."
 
-    sleep 30
+    sleep 5
 
     /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER > /dev/null
 
-    echo "start.sh: The server instance first-time setup is complete. You may now join your new server instance. Happy exploring!"
+    echo "The server instance first-time setup is complete. You may now join your new server instance. Happy exploring!"
 else
 
-    echo "start.sh: Startup complete. Use 'screen -r $SERVER' to get to this server's console."
+    echo "Server started! Use 'screen -r $SERVER' to get to this server's console."
 fi

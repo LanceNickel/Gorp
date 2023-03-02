@@ -60,13 +60,13 @@ fi
 
 # UPDATE 'level-name' IN 'server.properties' AND START/STOP SERVER TO GENERATE WORLD FILES
 
-echo "createworld.sh: Updating server config and generating new world... (This will take ~1m)"
+echo "Generating new world..."
 
 sed -i "s/level-name=$OLD_WORLD/level-name=world-$NEW_WORLD/" $HOMEDIR/servers/$SERVER/server.properties
 
 /usr/local/bin/gorpmc/action/mcstart pleasedontdothis $SERVER > /dev/null
 
-sleep 30
+sleep 5
 
 /usr/local/bin/gorpmc/action/mcstop pleasedontdothis $SERVER now > /dev/null
 
@@ -74,10 +74,10 @@ sleep 30
 
 # TAKE INITIAL BACKUP OF WORLD...
 
-echo "createworld.sh: Taking initial backup of the new world..."
+echo "Taking initial backup of the new world..."
 
 /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER > /dev/null
 
 
 
-echo "createworld.sh: New world created. Start the server to begin exploring!"
+echo "New world created! Start the server to begin exploring."

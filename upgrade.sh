@@ -108,9 +108,7 @@ sudo sed -i "60s:.*:ARCHIVE_DEST=$BACKUP_DEST_ORIG:" /usr/local/etc/gorp.conf
 
 
 
-
-
-
+sleep 1
 
 
 
@@ -137,4 +135,4 @@ fi
 
 
 
-echo "upgrade.sh: Gorp upgrade complete."
+echo "Gorp upgraded!"

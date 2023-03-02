@@ -30,7 +30,7 @@ SERVER=$2
 
 # World name override
 
-if [[ "$3" = "" ]]; then
+if [[ "$3" == "" ]]; then
     WORLD=default
 else
     WORLD=$3
@@ -44,7 +44,7 @@ fi
 
 # PARAM RT-GUARD
 
-if [[ "$SERVER" = "" ]]; then
+if [[ "$SERVER" == "" ]]; then
     echo "mccreateserver: Bad input. Expected: gorp create-server [server-name] <world-name>. Exit (14)."
     exit 14
 fi
@@ -76,7 +76,7 @@ read -r -p "Do you agree to use Gorp for personal use only? COMMERCIAL USE PROHI
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    echo "You must agree to the EULA and Gorp terms. Exit (12)."
+    echo "mccreateserver: You must agree to the EULA and Gorp terms. Exit (12)."
     exit 12
 fi
 

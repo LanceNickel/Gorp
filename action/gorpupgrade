@@ -16,7 +16,7 @@
 ### KEY GUARD
 
 if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcarchiveworld: Not intended to be run directly. Exit (13)."
+    echo "gorpupgrade: Not intended to be run directly. Exit (13)."
     exit 13
 fi
 

@@ -42,7 +42,7 @@ mkdir $HOMEDIR/tmp
 
 # GET AND PROCESS JSON FOR LATEST STABLE PAPER BUILD
 
-echo "updatejar.sh: Getting latest build information for $GAMEVER..."
+echo "Getting latest build information for $GAMEVER..."
 
 curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds" -H 'accept: application/json' -o $HOMEDIR/tmp/builds.json
 
@@ -90,11 +90,11 @@ CHECKSUM=$(jq '.downloads.application.sha256' $HOMEDIR/tmp/latest.json | tail -c
 
 # DOWNLOAD THE LATEST JAR FILE
 
-echo "updatejar.sh: Downloading latest stable jar file..."
+echo "Downloading latest stable jar file..."
 
 wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME -P $HOMEDIR/tmp/
 
-echo "updatejar.sh: Installing build $BUILD over $INSTALLED..."
+echo "Installing build $BUILD over $INSTALLED..."
 
 
 
@@ -111,8 +111,6 @@ fi
 
 
 # MOVE THE JAR TO THE $HOMEDIR/jars/ FOLDER AND MAKE IT EXECUTABLE
-
-echo "updatejar.sh: Setting jar file as new global default..."
 
 mv $HOMEDIR/tmp/$NAME $HOMEDIR/jars/
 chmod +x $HOMEDIR/jars/$NAME
@@ -131,4 +129,4 @@ rm -rf $HOMEDIR/tmp
 
 
 
-echo "updatejar.sh: Update complete. Changes won't take effect until a server restart."
+echo "JAR updated! Changes won't take effect until a server restart."

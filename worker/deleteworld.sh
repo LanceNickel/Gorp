@@ -40,7 +40,7 @@ OPTIONS=$(worldOptions "$SERVER")
 
 # IF WORLD_TO_DELETE NOT SPECIFIED, ASK USER
 
-if [ "$WORLD_TO_DELETE" == "" ]; then
+if [[ "$WORLD_TO_DELETE" == "" ]]; then
     while [ true ]
     do
         echo -e "Options:\n$OPTIONS"
@@ -90,4 +90,4 @@ rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_DELETE}_the_end
 
 
 
-echo "deleteworld.sh: World deleted."
+echo "World deleted!"

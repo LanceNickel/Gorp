@@ -67,4 +67,4 @@ sed -i "s/level-name=$CURRENT_WORLD/level-name=world-$SWITCH_TO/" $HOMEDIR/serve
 
 
 
-echo "switchworld.sh: World switched."
+echo "World switched!"

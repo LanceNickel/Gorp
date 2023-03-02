@@ -36,7 +36,7 @@ SERVER=$2
 
 # PARAM RT-GUARD
 
-if [[ "$SERVER" = "" ]]; then
+if [[ "$SERVER" == "" ]]; then
     echo "mcbackupworld: Bad input. Expected: gorp backup-world [server-name]. Exit (14)."
     exit 14
 fi
@@ -57,7 +57,7 @@ fi
 
 # NO WORLDS RT-GUARD
 
-if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') = "" ]]; then
+if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
     echo -e "mcbackupworld: No worlds exist on this server. Exit (42)."
     exit 42
 fi

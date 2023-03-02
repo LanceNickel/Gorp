@@ -38,61 +38,72 @@ ARG2=$3
 
 
 
-if [[ $ACTION = "backup-world" ]]; then
+### PARAMS RT-GUARD
+
+if [[ "$GAMEVER" == "" ]] || [[ "$RAM" == "" ]] || [[ "$HOMEDIR" == "" ]] || [[ "$BACKUP_DEST" == "" ]] || [[ "$ARCHIVE_DEST" == "" ]] || [[ "$LATEST_JAR" == "" ]]; then
+    echo "gorp: One or more required options in gorp.conf not set. Exit (15)."
+    exit 15
+fi
+
+
+
+### ACTIONS
+
+if [[ "$ACTION" == "backup-world" ]]; then
     /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $ARG1
 
-elif [[ $ACTION = "restore-world" ]]; then
+elif [[ "$ACTION" == "restore-world" ]]; then
     /usr/local/bin/gorpmc/action/mcrestoreworld pleasedontdothis $ARG1
 
-elif [[ $ACTION = "update-jar" ]]; then
+elif [[ "$ACTION" == "update-jar" ]]; then
     /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
 
-elif [[ $ACTION = "get-jar" ]]; then
+elif [[ "$ACTION" == "get-jar" ]]; then
     /usr/local/bin/gorpmc/action/mcgetjar pleasedontdothis $ARG1
 
-elif [[ $ACTION = "create-server" ]]; then
+elif [[ "$ACTION" == "create-server" ]]; then
     /usr/local/bin/gorpmc/action/mccreateserver pleasedontdothis $ARG1 $ARG2
 
-elif [[ $ACTION = "delete-server" ]]; then
+elif [[ "$ACTION" == "delete-server" ]]; then
     /usr/local/bin/gorpmc/action/mcdeleteserver pleasedontdothis $ARG1
 
-elif [[ $ACTION = "create-world" ]]; then
+elif [[ "$ACTION" == "create-world" ]]; then
     /usr/local/bin/gorpmc/action/mccreateworld pleasedontdothis $ARG1 $ARG2
 
-elif [[ $ACTION = "delete-world" ]]; then
+elif [[ "$ACTION" == "delete-world" ]]; then
     /usr/local/bin/gorpmc/action/mcdeleteworld pleasedontdothis $ARG1 $ARG2
 
-elif [[ $ACTION = "reset-world" ]]; then
+elif [[ "$ACTION" == "reset-world" ]]; then
     /usr/local/bin/gorpmc/action/mcresetworld pleasedontdothis $ARG1
 
-elif [[ $ACTION = "archive-world" ]]; then
+elif [[ "$ACTION" == "archive-world" ]]; then
     /usr/local/bin/gorpmc/action/mcarchiveworld pleasedontdothis $ARG1 $ARG2
 
-elif [[ $ACTION = "switch-world" ]]; then
+elif [[ "$ACTION" == "switch-world" ]]; then
     /usr/local/bin/gorpmc/action/mcswitchworld pleasedontdothis $ARG1 $ARG2
 
-elif [[ $ACTION = "power" ]]; then
+elif [[ "$ACTION" == "power" ]]; then
     /usr/local/bin/gorpmc/action/mcpower pleasedontdothis
 
-elif [[ $ACTION = "start" ]]; then
+elif [[ "$ACTION" == "start" ]]; then
     /usr/local/bin/gorpmc/action/mcstart pleasedontdothis $ARG1
 
-elif [[ $ACTION = "stop" ]]; then
+elif [[ "$ACTION" == "stop" ]]; then
     /usr/local/bin/gorpmc/action/mcstop pleasedontdothis $ARG1 $ARG2
 
-elif [[ $ACTION = "restart" ]]; then
+elif [[ "$ACTION" == "restart" ]]; then
     /usr/local/bin/gorpmc/action/mcrestart pleasedontdothis $ARG1 $ARG2
 
-elif [[ $ACTION = "help" ]]; then
+elif [[ "$ACTION" == "help" ]]; then
     /usr/local/bin/gorpmc/action/gorphelp
 
-elif [[ $ACTION = "upgrade" ]]; then
+elif [[ "$ACTION" == "upgrade" ]]; then
     /usr/local/bin/gorpmc/action/gorpupgrade pleasedontdothis
 
-elif [[ $ACTION = "-v" ]]; then
+elif [[ "$ACTION" == "-v" ]]; then
     echo $(grep 'Gorp version' /usr/local/etc/gorp.conf | cut -d ':' -f2)
 
-elif [[ $ACTION = "list-servers" ]]; then
+elif [[ "$ACTION" == "list-servers" ]]; then
     echo $(ls $HOMEDIR/servers)
 
 else

@@ -58,10 +58,8 @@ fi
 
 # DELETE SERVER
 
-echo "delete.sh: Deleting server..."
-
 rm -rf $HOMEDIR/servers/$SERVER
 
 
 
-echo "delete.sh: Server deleted."
+echo "Server deleted!"

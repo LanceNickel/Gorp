@@ -37,7 +37,7 @@ WORLD_TO_DELETE=$3
 
 # PARAM GUARD
 
-if [[ "$SERVER" = "" ]]; then
+if [[ "$SERVER" == "" ]]; then
     echo "mcresetworld: Bad input. Expected: gorp reset-world [server-name] <world-name>. Exit (14)."
     exit 14
 fi
@@ -57,7 +57,7 @@ fi
 
 # NO WORLDS GUARD
 
-if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') = "" ]]; then
+if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
     echo -e "mcresetworld: No worlds exist on this server. Exit (42)."
     exit 42
 fi

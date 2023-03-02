@@ -40,7 +40,7 @@ OPTIONS=$(worldOptions "$SERVER")
 
 # IF WORLD_TO_ARCHIVE NOT SPECIFIED, ASK USER
 
-if [ "$WORLD_TO_ARCHIVE" == "" ]; then
+if [[ "$WORLD_TO_ARCHIVE" == "" ]]; then
     while [ true ]
     do
         echo -e "Options:\n$OPTIONS"
@@ -69,7 +69,7 @@ mkdir -p $HOMEDIR/tmp/$WORLD_TO_ARCHIVE
 
 # COMPRESS THE WORLD FILES
 
-echo "archiveworld.sh: Archiving $WORLD_TO_ARCHIVE..."
+echo "Archiving $WORLD_TO_ARCHIVE..."
 
 cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
 cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
@@ -88,7 +88,7 @@ mkdir -p $ARCHIVE_DEST/$SERVER
 
 # COPY THE WORLD FILES TO DESTINATION
 
-echo "archiveworld.sh: Moving world to archive destination... ($ARCHIVE_DEST/$WORLD_TO_ARCHIVE.tar.gz)"
+echo "Moving world to archive destination... ($ARCHIVE_DEST/$WORLD_TO_ARCHIVE.tar.gz)"
 
 cp $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/
 
@@ -99,9 +99,9 @@ cp $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/
 CHECKSUM=$(md5sum $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 TESTSUM=$(md5sum $ARCHIVE_DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 
-if [ "$CHECKSUM" != "$TESTSUM" ]; then
-    echo "archiveworld.sh: Checksum failed. Ensure the archive destination directory is correctly configured. Exiting."
-    exit
+if [[ "$CHECKSUM" != "$TESTSUM" ]]; then
+    echo "archiveworld.sh: Archived files in destination failed checksum test. Exit (61)."
+    exit 61
 fi
 
 
@@ -116,4 +116,4 @@ rm -rf $HOMEDIR/tmp
 
 
 
-echo "archiveworld.sh: World archived."
+echo "World archived!"

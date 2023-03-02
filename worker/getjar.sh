@@ -43,7 +43,7 @@ mkdir $HOMEDIR/tmp
 
 # GET AND PROCESS JSON FOR LATEST STABLE PAPER BUILD
 
-echo "getjar.sh: Getting latest build information for $VERSION..."
+echo "Getting latest build information for $VERSION..."
 
 curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$VERSION/builds" -H 'accept: application/json' -o $HOMEDIR/tmp/builds.json
 
@@ -89,7 +89,7 @@ CHECKSUM=$(jq '.downloads.application.sha256' $HOMEDIR/tmp/latest.json | tail -c
 
 # DOWNLOAD THE LATEST JAR FILE
 
-echo "getjar.sh: Downloading latest stable jar file..."
+echo "Downloading latest stable jar file..."
 
 wget -q https://api.papermc.io/v2/projects/paper/versions/$VERSION/builds/$BUILD/downloads/$NAME -P $HOMEDIR/tmp/
 
@@ -99,7 +99,7 @@ wget -q https://api.papermc.io/v2/projects/paper/versions/$VERSION/builds/$BUILD
 
 TESTSUM="$(sha256sum $HOMEDIR/tmp/$NAME | cut -d " " -f 1)"
 
-if [ $TESTSUM != $CHECKSUM ]; then
+if [[ $TESTSUM != $CHECKSUM ]]; then
         echo "getjar.sh: Downloaded JAR file failed checksum test. Exit (61)."
         rm -rf $HOMEDIR/tmp
         exit 61
@@ -107,18 +107,11 @@ fi
 
 
 
-# MOVE THE JAR TO THE $HOMEDIR/jars/ FOLDER AND MAKE IT EXECUTABLE
+# RENAME THE JAR, MOVE IT TO JARS, MAKE IT EXECUTABLE
 
-echo "getjar.sh: Setting jar file as new global default..."
-
-mv $HOMEDIR/tmp/$NAME $HOMEDIR/jars/
-chmod +x $HOMEDIR/jars/$NAME
-
-
-
-# UPDATE THE LATEST FILE FOR GLOBAL SERVER UPDATES
-
-echo "$HOMEDIR/jars/$NAME" > $HOMEDIR/jars/latest
+mv $HOMEDIR/tmp/$NAME /$HOMEDIR/tmp/$VERSION.jar
+cp -f $HOMEDIR/tmp/$VERSION.jar $HOMEDIR/jars/
+chmod +x $HOMEDIR/jars/$VERSION.jar
 
 
 
@@ -128,4 +121,4 @@ rm -rf $HOMEDIR/tmp
 
 
 
-echo -e "getjar.sh: Download complete. Individual instances must be customized to use this JAR version over the globally set version.\nLearn more: https://gorp.lanickel.com/manage-instances/instance-settings/"
+echo -e "JAR downloaded! Individual instances must be customized to use this JAR version over the globally set version.\nLearn more: https://gorp.lanickel.com/manage-instances/instance-settings/"

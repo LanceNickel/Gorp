@@ -61,7 +61,7 @@ fi
 
 # CHECK FOR (OR CREATE) DESTINATION DIRECTORY (RT-GUARD)
 
-echo "backupworld.sh: Backing up $WORLD..."
+echo "Backing up $WORLD..."
 
 mkdir -p $DEST
 
@@ -86,7 +86,7 @@ fi
 
 # IF SERVER IS RUNNING, SAVE PROPERLY, THEN TURN OFF AUTOSAVE
 
-if [[ $RUNNING = true ]]; then
+if [[ $RUNNING == true ]]; then
         screen -S $SERVER -X stuff "save-all\n"
 
         while [ true ]
@@ -105,7 +105,7 @@ fi
 
 # COPY WORLD DIRECTORIES TO TEMP
 
-echo "backupworld.sh: Copying files to temp directory..."
+echo "Copying files to temp directory..."
 
 cp -r $SOURCE $TMP/$BACKUP_NAME/$WORLD
 cp -r ${SOURCE}_nether $TMP/$BACKUP_NAME/${WORLD}_nether
@@ -115,7 +115,7 @@ cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end
 
 # IF SERVER IS RUNNING, TURN AUTOSAVE BACK ON
 
-if [[ $RUNNING = true ]]; then
+if [[ $RUNNING == true ]]; then
         screen -S $SERVER -X stuff "save-on\n"
 fi
 
@@ -123,7 +123,7 @@ fi
 
 # COMPRESS FILES IN TEMP DIRECTORY
 
-echo "backupworld.sh: Compressing files..."
+echo "Compressing files..."
 cd $TMP
 tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
 
@@ -131,7 +131,7 @@ tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
 
 # COPY THE COMPRESSED BACKUP TO THE DESTINATION
 
-echo "backupworld.sh: Copying files to backup directory..."
+echo "Copying files to backup directory..."
 cp $TMP/$BACKUP_NAME.tar.gz $DEST/
 
 
@@ -142,5 +142,5 @@ rm -rf $HOMEDIR/tmp
 
 
 
-echo "backupworld.sh: Backup complete."
-echo "backupworld.sh: Backup name: $BACKUP_NAME"
+echo "Backup name: $BACKUP_NAME"
+echo "World backup complete!"

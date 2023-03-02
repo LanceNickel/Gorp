@@ -50,7 +50,7 @@ echo "You are about to reset the world named '$WORLD_TO_RESET' in the '$SERVER' 
 
 read -r -p "Did you back up the world/don't care about it? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    echo "resetworld.sh: Resetting world..."
+    echo "Resetting world..."
 else
     echo "resetworld.sh: You answered the prompt wrong! Exit (16)."
     exit 16
@@ -61,7 +61,7 @@ fi
 # STOP SERVER (if already running)
 
 if [[ $RUNNING = true ]]; then
-    echo ("resetworld.sh: Stopping server...")
+    echo ("Stopping server...")
     /usr/local/bin/action/mcstop pleasedontdothis $SERVER now > /dev/null
 fi
 
@@ -69,7 +69,7 @@ fi
 
 # DELETE THE WORLD
 
-echo "resetworld.sh: Regenerating $WORLD_TO_RESET... (~45 secs)"
+echo "Regenerating $WORLD_TO_RESET..."
 
 rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_RESET
 rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_nether
@@ -83,4 +83,4 @@ rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_the_end
 
 
 
-echo "resetworld.sh: World reset. Server is running."
+echo "World reset! Server is running."

@@ -36,7 +36,7 @@ SERVER=$2
 
 # PARAM GUARD
 
-if [[ "$SERVER" = "" ]]; then
+if [[ "$SERVER" == "" ]]; then
     echo "mcstart: Bad input. Expected: gorp start [server-name]. Exit (14)."
     exit 14
 fi
@@ -56,7 +56,7 @@ fi
 
 # SCREEN GUARD
 
-if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
+if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
         echo "mcstart: Server already running. Exit (33)."
         exit 33
 fi

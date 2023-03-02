@@ -55,4 +55,4 @@ echo "level-name=world-$WORLD" > $HOMEDIR/servers/$SERVER/server.properties
 
 
 
-echo "create.sh: Creation complete."
+echo "Server created!"

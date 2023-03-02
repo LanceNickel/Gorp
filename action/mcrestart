@@ -37,7 +37,7 @@ SPEED=$3
 
 # PARAM RT-GUARD
 
-if [ "$SERVER" = "" ] || [ "$SERVER" == 'fast' ] || [ "$SERVER" == 'now' ] || [ "$SERVER" == 'power' ]; then
+if [[ "$SERVER" = "" ]] || [[ "$SERVER" == 'fast' ]] || [[ "$SERVER" == 'now' ]] || [[ "$SERVER" == 'power' ]]; then
     echo "mcrestart: Bad input. Expected: gorp stop [server-name] <option>. Exit (14)."
     exit 14
 fi
@@ -57,7 +57,7 @@ fi
 
 # NO SCREEN RT-GUARD
 
-if [[ $(screen -ls | grep "$SERVER")  = "" ]]; then
+if [[ $(screen -ls | grep "$SERVER") == "" ]]; then
         echo "mcrestart: Server not running. Exit (32)."
         exit 32
 fi

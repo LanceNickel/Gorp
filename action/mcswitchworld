@@ -58,7 +58,7 @@ fi
 
 # NO WORLDS RT-GUARD
 
-if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') = "" ]]; then
+if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
     echo "mcswitchworld: No worlds exist on this server. Exit (42)."
     exit
 fi

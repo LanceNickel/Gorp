@@ -34,7 +34,7 @@ SERVER=$2
 
 # STOP SERVER
 
-echo "shutdown.sh: Stopping server..."
+echo "Stopping server..."
 screen -S $SERVER -X stuff 'stop\n'
 
 
@@ -42,30 +42,29 @@ screen -S $SERVER -X stuff 'stop\n'
 # WAIT FOR SCREEN TO TERMINATE
 
 I=0
-SCREEN=true
 FORCE_QUIT=false
 FROZEN=false
 
-while [ $SCREEN = true ]; do
+while [ true ]; do
+        sleep 1
         ((I++))
 
         if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
                 screen -S "$SERVER" -X stuff '\n'
         else
-                SCREEN=false
+                break
         fi
 
-        if [[ $I -eq "12" ]]; then
+        if [[ $I -eq "30" ]]; then
                 FORCE_QUIT=true
                 screen -X -S mc quit
         fi
 
-        if [[ $I -eq "14" ]]; then
+        if [[ $I -eq "33" ]]; then
                 FORCE_QUIT=false
                 FROZEN=true
+                break
         fi
-
-        sleep 3
 done
 
 
@@ -79,6 +78,6 @@ elif [[ $FROZEN == true ]]; then
         exit 37
 
 else
-        echo "shutdown.sh: Shutdown complete."
-
+        echo "Server stopped!"
+        
 fi

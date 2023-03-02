@@ -33,7 +33,7 @@ VERSION=$2
 
 # PARAM GUARD
 
-if [ "$VERSION" = "" ]; then
+if [[ "$VERSION" == "" ]]; then
     echo "mcgetjar: Bad input. Expected: gorp get-jar [game-version]. Exit (14)."
     exit 14
 fi

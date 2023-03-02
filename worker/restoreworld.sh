@@ -114,9 +114,7 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 # BACKUP CURRENT WORLD
 
-echo "restoreworld.sh: Backing up current world..."
-
-sleep 0.5
+echo "Backing up current world..."
 
 /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER
 
@@ -124,7 +122,7 @@ sleep 0.5
 
 # FLUSH CURRENT WORLD
 
-echo "restoreworld.sh: Restoring selected files..."
+echo "Restoring selected files..."
 
 rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}*
 
@@ -143,4 +141,4 @@ cp -r $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/
 
 
 
-echo "restoreworld.sh: Restoration complete."
+echo "World restored from backup!"
