@@ -80,6 +80,10 @@ if [[ "$STATUS_RAM" == '$RAM' ]]; then
 fi
 
 
+# status.path
+STATUS_PATH=$HOMEDIR/servers/$SERVER
+
+
 
 ### WORLD ARRAY
 
@@ -127,20 +131,7 @@ PROPERTIES_PORT="$(grep 'server-port=' $HOMEDIR/servers/$SERVER/server.propertie
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#################### RETURN STATUS IN JSON
 
 
 
@@ -152,6 +143,7 @@ cat <<EOF
       "version": "$STATUS_VERSION",
       "jar_file": "$STATUS_JAR",
       "ram": "$STATUS_RAM"
+      "path": "$STATUS_PATH"
     }
   ],
   "world": [
