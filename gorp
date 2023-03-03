@@ -59,7 +59,7 @@ elif [[ "$ACTION" == "update-jar" ]]; then
     /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
 
 elif [[ "$ACTION" == "get-jar" ]]; then
-    /usr/local/bin/gorpmc/action/mcgetjar pleasedontdothis $ARG1
+    /usr/local/bin/gorpmc/action/mcgetjar pleasedontdothis $ARG1 $ARG2
 
 elif [[ "$ACTION" == "create-server" ]]; then
     /usr/local/bin/gorpmc/action/mccreateserver pleasedontdothis $ARG1 $ARG2
@@ -101,10 +101,13 @@ elif [[ "$ACTION" == "upgrade" ]]; then
     /usr/local/bin/gorpmc/action/gorpupgrade pleasedontdothis
 
 elif [[ "$ACTION" == "-v" ]]; then
-    echo $(grep 'Gorp version' /usr/local/etc/gorp.conf | cut -d ':' -f2)
+    /usr/local/bin/gorpmc/action/gorpversion
 
 elif [[ "$ACTION" == "list-servers" ]]; then
     echo $(ls $HOMEDIR/servers)
+
+elif [[ "$ACTION" == "move-home" ]]; then
+    /usr/local/bin/gorpmc/action/gorpmovehome pleasedontdothis $ARG1
 
 else
     echo "Invalid parameters. Use gorp help for more information."

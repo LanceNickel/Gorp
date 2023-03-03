@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# GORP MICRO-SCRIPT, does just a few tiny things.
+# GORP VERSION REPORTER
+
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+GORP_VERSION=$(grep 'Gorp version' /usr/local/etc/gorp.conf | cut -d ':' -f2)
+GORP_HOMEDIR=$HOMEDIR
+
+echo -e "$GORP_VERSION\nHOMEDIR: $HOMEDIR"

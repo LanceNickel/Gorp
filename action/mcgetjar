@@ -22,18 +22,40 @@ fi
 
 
 
-#### SCRIPT PARAMETERS ################
+#### SCRIPT OPTS ################
 
-VERSION=$2
+OPTIND=2
+while getopts ":u:v:" flag; do
+    case $flag in
+        u)
+            MODE="u"
+            ARG="$OPTARG"
+            ;;
+        v)
+                MODE="v"
+                ARG="$OPTARG"
+                ;;
+        \?)
+            echo "Bad input. Expected: gorp get-jar [-u | -v] [url | version]. Exit (14)."
+            exit 14
+            ;;
+        :)
+            echo "Bad input. Expected: gorp get-jar [-u | -v] [url | version]. Exit (14)."
+            exit 14
+            ;;
+    esac
+done
+        
+        
 
 
 ####
 
 
 
-# PARAM GUARD
+### PARAM RT-GUARD
 
-if [[ "$VERSION" == "" ]]; then
+if [[ "$MODE" == "" ]]; then
     echo "mcgetjar: Bad input. Expected: gorp get-jar [game-version]. Exit (14)."
     exit 14
 fi
@@ -42,4 +64,4 @@ fi
 
 # RUN JAR DOWNLOADER
 
-/usr/local/bin/gorpmc/worker/getjar.sh pleasedontdothis $VERSION
+/usr/local/bin/gorpmc/worker/getjar.sh pleasedontdothis "$MODE" "$ARG"

@@ -1,5 +1,5 @@
 Gorp - Simple Minecraft CLI tools.
-v1.2.2
+v1.3.0
 
 Usage:      gorp command [options]...
 

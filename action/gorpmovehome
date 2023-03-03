@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+### [GORPMOVEHOME] ################################################
+#   Description:  Action script to setup Gorp update worker.
+#   Parameters:   (required) Absolute path to new home directory
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+
+
+#### GUARDS ################
+
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "gorpmovehome: Not intended to be run directly. Exit (13)."
+    exit 13
+fi
+
+
+
+#### SCRIPT PARAMETERS ################
+
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+NEW_HOMEDIR=$2
+
+
+
+####
+
+
+
+### GET SUDO PERMISSIONS RT-GUARD
+
+echo "Gorp will use sudo to update the configuration file."
+sudo whoami > /dev/null
+
+
+
+### DOES DESTINATION EXIST/IS IT EMPTY? RT-GUARD
+
+if [[ -d $NEW_HOMEDIR ]]; then
+    echo "gorpmovehome: Destination directory already exists. Exit (21)."
+    exit 21
+fi
+
+
+
+### ARE ANY SERVERS RUNNING? RT-GUARD
+
+# for d in "$HOMEDIR/servers/"*
+# do
+#         SERVER=$(basename "$d")
+        
+#         if [[ $(gorp status $SERVER | jq .status[].running) == "true" ]]; then
+#             echo "gorpmovehome: Servers cannot be running. Exit (34)."
+#             exit 34
+#         fi
+# done
+
+
+
+### CALL THE WORKER
+
+/usr/local/bin/gorpmc/worker/movehome.sh pleasedontdothis $NEW_HOMEDIR
