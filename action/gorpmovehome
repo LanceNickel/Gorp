@@ -52,15 +52,15 @@ fi
 
 ### ARE ANY SERVERS RUNNING? RT-GUARD
 
-# for d in "$HOMEDIR/servers/"*
-# do
-#         SERVER=$(basename "$d")
+for d in "$HOMEDIR/servers/"*
+do
+        SERVER=$(basename "$d")
         
-#         if [[ $(gorp status $SERVER | jq .status[].running) == "true" ]]; then
-#             echo "gorpmovehome: Servers cannot be running. Exit (34)."
-#             exit 34
-#         fi
-# done
+        if [[ $(gorp -s $SERVER | jq .status[].running) == "true" ]]; then
+            echo "gorpmovehome: Servers cannot be running. Exit (34)."
+            exit 34
+        fi
+done
 
 
 

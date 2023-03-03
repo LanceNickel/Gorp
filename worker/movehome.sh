@@ -77,3 +77,7 @@ if [[ "$(grep "$HOMEDIR" $HOMEDIR/jars/latest)" == "" ]]; then
     echo "movehome.sh: Configuration update failed. Please manuall update the directory in $HOMEDIR/jars/latest. Exit (17)"
     exit 17
 fi
+
+
+
+echo "Gorp home directory moved!"

@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+### [MCBACKUPSERVER] ##############################################
+#   Description:  Action script to setup server backup worker.
+#   Parameters:   1: (required) Server directory name
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+
+
+#### GUARDS ################
+
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcbackupserver: Not intended to be run directly. Exit (13)."
+    exit 13
+fi
+
+
+
+#### SCRIPT PARAMETERS ################
+
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+SERVER=$2
+
+
+
+####
+
+
+
+# PARAM RT-GUARD
+
+if [[ "$SERVER" == "" ]]; then
+    echo "mcbackupserver: Bad input. Expected: gorp backup-server [server-name]. Exit (14)."
+    exit 14
+fi
+
+
+
+# SERVER DIRECTORY RT-GUARD
+
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
+    # we can continue
+    sleep 0.005
+else
+    echo "mcbackupserver: Server not found. Exit (30)."
+    exit 30
+fi
+
+
+
+# SCREEN RT-GUARD
+
+if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
+        echo "mcbackupserver: Server cannot be running. Exit (34)."
+        exit 34
+fi
+
+
+
+# RUN BACKUP WORKER
+
+/usr/local/bin/gorpmc/worker/backupserver.sh pleasedontdothis $SERVER

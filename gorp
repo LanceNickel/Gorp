@@ -52,8 +52,14 @@ fi
 if [[ "$ACTION" == "backup-world" ]]; then
     /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $ARG1
 
+elif [[ "$ACTION" == "backup-server" ]]; then
+    /usr/local/bin/gorpmc/action/mcbackupserver pleasedontdothis $ARG1
+
 elif [[ "$ACTION" == "restore-world" ]]; then
     /usr/local/bin/gorpmc/action/mcrestoreworld pleasedontdothis $ARG1
+
+elif [[ "$ACTION" == "restore-server" ]]; then
+    /usr/local/bin/gorpmc/action/mcrestoreserver pleasedontdothis $ARG1
 
 elif [[ "$ACTION" == "update-jar" ]]; then
     /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
@@ -102,6 +108,9 @@ elif [[ "$ACTION" == "upgrade" ]]; then
 
 elif [[ "$ACTION" == "-v" ]]; then
     /usr/local/bin/gorpmc/action/gorpversion
+
+elif [[ "$ACTION" == "-s" ]]; then
+    /usr/local/bin/gorpmc/action/mcserverstatus pleasedontdothis $ARG1
 
 elif [[ "$ACTION" == "list-servers" ]]; then
     echo $(ls $HOMEDIR/servers)

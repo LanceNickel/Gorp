@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+### [MCSERVERSTATUS] ##############################################
+#   Description:  Action script to setup world backup worker.
+#   Parameters:   1: (required) Server directory name
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+
+
+#### GUARDS ################
+
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcserverstatus: Not intended to be run directly. Exit (13)."
+    exit 13
+fi
+
+
+
+#### SCRIPT PARAMETERS ################
+
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+SERVER=$2
+
+
+
+####
+
+
+
+# PARAM RT-GUARD
+
+if [[ "$SERVER" == "" ]]; then
+    echo "mcserverstatus: Bad input. Expected: gorp -s [server-name]. Exit (14)."
+    exit 14
+fi
+
+
+
+# SERVER DIRECTORY RT-GUARD
+
+if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
+    # we can continue
+    sleep 0.005
+else
+    echo "mcserverstatus: Server not found. Exit (30)."
+    exit 30
+fi
+
+
+
+### NEVER RUN BEFORE RT-GUARDS
+
+# Server.properties has no world set
+if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2) = "" ]]; then
+    echo "mcserverstatus: The server must be run at least once. Exit (38)."
+    exit 38
+fi
+
+# Server.properties only one line (default)
+if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | wc -l) = "1" ]]; then
+    echo "mcserverstatus: The server must be run at least once. Exit (38)."
+    exit 38
+fi
+
+
+
+# RUN STATUS WORKER
+
+/usr/local/bin/gorpmc/worker/serverstatus.sh pleasedontdothis $SERVER

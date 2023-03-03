@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+### [MCRESTORESERVER] #############################################
+#   Description:  Action script to setup backup restore worker.
+#   Parameters:   1: (required) Server directory name
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+
+
+#### GUARDS ################
+
+### KEY GUARD
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    echo "mcrestoreserver: Not intended to be run directly. Exit (13)."
+    exit 13
+fi
+
+
+
+#### SCRIPT PARAMETERS ################
+
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
+SERVER=$2
+
+
+
+####
+
+
+
+# PARAM RT-GUARD
+
+if [[ "$SERVER" == "" ]]; then
+    echo "mcrestoreserver: Bad input. Expected: gorp restore-world [server-name]. Exit (14)."
+    exit 14
+fi
+
+
+
+# SERVER BACKUP DIRECTORY RT-GUARD
+
+if [[ -d "$BACKUP_DEST/$SERVER/server-backups/" ]]; then
+    if [[ "$(ls $BACKUP_DEST/$SERVER/server-backups/)" == "" ]]; then
+        echo "mcrestoreserver: Server has no backups to restore from. Exit (54)."
+        exit 54
+    fi
+else
+    echo "mcrestoreserver: Server has no backups to restore from. Exit (54)."
+    exit 54
+fi
+
+
+
+# SCREEN RT-GUARD
+
+if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
+        echo "mcrestoreserver: Server cannot be running. Exit (34)."
+        exit 34
+fi
+
+
+
+# RUN RESTORE WORKER
+
+/usr/local/bin/gorpmc/worker/restoreserver.sh pleasedontdothis $SERVER
