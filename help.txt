@@ -1,55 +1,52 @@
 Gorp - Simple Minecraft CLI tools.
 v1.3.0
 
-Usage:      gorp command [options]...
+Docs:       https://gorp.lanickel.com/
 
-Examples:   gorp start public     # Start a server named "public"
-            gorp create private   # Create a new server named "private"
-            gorp stop public now  # Shut down the server named "public" in the fastest way possible
-            gorp update           # Update the default JAR file to the latest stable version.
+Usage:      gorp action [options]...
 
 Commands:
-    [] = required
-    <> = optional
+  [] = required
+  <> = optional
+  |  = mutually exclusive
 
-    start [server-name]                 -- Start a server instance
+STARTING AND STOPPING:
+  start [server-name]                       -- Start a server.
+  stop [server-name] <fast|now>             -- Stop a server.
+  restart [server-name] <fast|now>          -- Restart a server.
 
-    stop [server-name] <argument>       -- Stop a server instance
-      valid arguments:
-        - fast: skip the backup and only give a warning
-        - now: shut down immediately (no warning)
-        - power: for use during a power outage
-    
-    restart [server-name] <argument>    -- Restart a server instance
-      valid arguments:
-        - fast: skip the backup and only give a warning
-        - now: restart immediately (no warning)
-    
-    create-server [server-name]               -- Create a new server instance
+MANAGE SERVERS:
+  create-server [server-name]               -- Create a new server instance.
+  delete-server [server-name]               -- Delete a server instance.
+  move-home [destination]                   -- Move Gorp's home files to a new location. Do !NOT! use a trailing slash.
 
-    delete-server [server-name]               -- Delete a server instance
+MANAGE WORLDS:
+  create-world [server-name] <world-name>   -- Create a new world in a particular server instance.
+  delete-world [server-name] <world-name>   -- Delete a world in a particular server instance.
+  switch-world [server-name] <world-name>   -- Switch the active world in a particular server instance.
+  reset-world [server-name]                 -- Regenerate the currently set world in a directory. "Mulligan".
+  archive-world [server-name] <world-name>  -- Archive and move a world out of a particular server instance.
 
-    create-world [server-name] <world-name>   -- Create a new world in a particular server instance
+MANAGE BACKUPS:
+  backup-world [server-name]                -- Backup a server instance's currently set world files.
+  restore-world [server-name]               -- Restore a world's files from backup.
+  backup-server [server-name]               -- Backup a server instance. This may take a while!
+  restore-server [server-name]              -- Restore a server instance's files from backup. This may take a while!
 
-    delete-world [server-name] <world-name>   -- Delete a world in a particular server instance
+JAR UTILITIES:
+  update-jar                                -- Get the newest Minecraft server JAR file and install it.
+  get-jar [game-version]                    -- Download a Paper server JAR file to ~/gorpmc/jars/.
 
-    reset-world [server-name]                 -- Regenerate the currently set world in a directory. "Mulligan"
+UPDATE, STATUS, ETC.:
+  upgrade                                   -- Get the newest version of Gorp and install it.
+  list-servers                              -- See a list of all servers in ~/gorpmc/servers/.
+  -s [server-name]                          -- See the status of a server in JSON format.
+  -v                                        -- Get the Gorp version and current home directory.
+  help                                      -- View this help text.
 
-    archive-world [server-name] <world-name>  -- Archive and move a world out of a particular server instance
-
-    switch-world [server-name] <world-name>   -- Switch the active world in a particular server instance
-
-    backup-world [server-name]                -- Backup a server instance's currently set world files
-
-    update-jar                                -- Get the newest Minecraft server JAR file and install it
-
-    get-jar [game-version]                    -- Download a Paper server JAR file to ~/gorpmc/jars/
-
-    upgrade                                   -- Get the newest version of Gorp and install it
-
-    list-servers                              -- See a list of all servers in ~/gorpmc/servers/
-
-    help                                      -- View this help text
-
-READ THE FULL DOCUMENTATION:
-https://gorp.lanickel.com/
+EXAMPLES:
+  gorp start public                         # Start a server named "public".
+  gorp create-server private                # Create a new server named "private".
+  gorp stop public now                      # Shut down the server named "public" in the fastest way possible.
+  gorp update                               # Update the default JAR file to the latest stable version.
+  gorp -s public                            # Get a status report of the "public" server instance.
