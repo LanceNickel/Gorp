@@ -142,7 +142,7 @@ cat <<EOF
       "running": $STATUS_RUNNING,
       "version": "$STATUS_VERSION",
       "jar_file": "$STATUS_JAR",
-      "ram": "$STATUS_RAM"
+      "ram": "$STATUS_RAM",
       "path": "$STATUS_PATH"
     }
   ],
