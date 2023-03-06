@@ -147,7 +147,7 @@ do
 done
 
 FILE_TO_RESTORE="$d"
-FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1); fi
+FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 
 

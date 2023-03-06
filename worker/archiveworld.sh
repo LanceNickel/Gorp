@@ -71,7 +71,7 @@ if [[ "$WORLD_TO_ARCHIVE" == "" ]]; then
 
         read -r -p "Please enter a world to archive: " response
 
-        TEST=$(echo $OPTIONS | grep -w $response); fi
+        TEST=$(echo $OPTIONS | grep -w $response)
 
         if [[ "$TEST" != "" ]]; then
             WORLD_TO_ARCHIVE=$response

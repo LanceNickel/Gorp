@@ -71,7 +71,7 @@ if [[ "$WORLD_TO_DELETE" == "" ]]; then
 
         read -r -p "Please enter a world to delete: " response
 
-        TEST=$(echo $OPTIONS | grep -w $response); fi
+        TEST=$(echo $OPTIONS | grep -w $response)
 
         if [[ "$TEST" != "" ]]; then
             WORLD_TO_DELETE=$response

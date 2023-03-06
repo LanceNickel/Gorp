@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 ### [RUN SERVER IN-DIRECTORY WORKER] ##############################
 #   Description:  Worker that actually executes a server JAR.
 #   Parameters:   None
@@ -12,7 +12,6 @@
 
 
 
-source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 ######## Option: CUSTOM_JAR #########################################################
 # Description:     An (optional) custom JAR file to run as the server.
@@ -32,11 +31,19 @@ CUSTOM_RAM=$RAM
 
 
 
+
+
+
+
 #### END OF OPTIONS! Please do not edit below this line.
 
 
 
-# KEY GUARD (to ensure a good, clean startup)
+
+
+
+
+### KEY GUARD (to ensure a good, clean startup)
 
 if [[ "$1" == "pleasedontdothis" ]]; then
     OUTPUT=true
@@ -57,11 +64,19 @@ fi
 
 
 
+
+
+
+
 ####
 
 
 
-# EXECUTE SERVER, WAIT FOR PROCESS TO DIE
+
+
+
+
+### EXECUTE SERVER, WAIT FOR PROCESS TO DIE
 
 while [ true ]; do
         java -Xmx$CUSTOM_RAM -Xms$CUSTOM_RAM -jar $CUSTOM_JAR nogui

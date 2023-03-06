@@ -71,7 +71,7 @@ if [[ "$SWITCH_TO" == "" ]]; then
 
         read -r -p "Please enter a world to switch to: " response
 
-        TEST=$(echo $OPTIONS | grep -w $response); fi
+        TEST=$(echo $OPTIONS | grep -w $response)
 
         if [[ "$TEST" != "" ]]; then
             SWITCH_TO=$response

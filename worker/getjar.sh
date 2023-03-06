@@ -104,7 +104,7 @@ if [[ "$MODE" == "u" ]]; then
 
         ### SUCCESS, COPY & PRINT PATH
 
-        FILENAME="$(echo $ARG | grep -o $(ls))"; fi
+        FILENAME="$(echo $ARG | grep -o $(ls))"
 
         chmod +x ./$FILENAME
         cp ./$FILENAME $HOMEDIR/jars/

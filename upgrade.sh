@@ -15,19 +15,39 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "upgrade.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "SCRIPTNAME: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
 ### ROOT GUARD
 
 if [[ "$EUID" == 0 ]]; then
-    echo "upgrade.sh: Please do not run as root or with 'sudo'. Gorp will ask for sudo rights if it needs it. Exit (10)."
+    if $ERRORS; then echo "upgrade.sh: Please do not run as root or with 'sudo'. Gorp will ask for sudo rights if it needs it. Exit (10)."; fi
     exit 10
 fi
+
+
+
+
 
 
 
@@ -37,13 +57,25 @@ source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 
 
+
+
+
+
 ####
+
+
+
+
 
 
 
 ################### STAGE 1: INSTALL UPDATED SHELL SCRIPTS TO /usr/local/bin/
 
-echo "Upgrading Gorp..."
+if $OUTPUT; then echo "Upgrading Gorp..."; fi
+
+
+
+
 
 
 
@@ -55,10 +87,18 @@ chmod +x $HOMEDIR/tmp/updatefiles/gorp
 
 
 
+
+
+
+
 ### REMOVE CURRENT INSTALLATION
 
 sudo rm -rf /usr/local/bin/gorpmc/
 sudo rm /usr/local/bin/gorp
+
+
+
+
 
 
 
@@ -75,7 +115,14 @@ sudo cp $HOMEDIR/tmp/updatefiles/gorp /usr/local/bin/
 
 
 
+
+
+
 sleep 1
+
+
+
+
 
 
 
@@ -108,7 +155,15 @@ sudo sed -i "60s:.*:ARCHIVE_DEST=$BACKUP_DEST_ORIG:" /usr/local/etc/gorp.conf
 
 
 
+
+
+
+
 sleep 1
+
+
+
+
 
 
 
@@ -126,8 +181,8 @@ if [[ $(ls $HOMEDIR/servers/) != "" ]]; then
 
         cp $HOMEDIR/tmp/updatefiles/worker/run.sh $HOMEDIR/servers/$SERVER/run.sh
 
-        sed -i "22s:.*:$JAR_ORIG:" $HOMEDIR/servers/$SERVER/run.sh
-        sed -i "31s:.*:$RAM_ORIG:" $HOMEDIR/servers/$SERVER/run.sh
+        sed -i "21s:.*:$JAR_ORIG:" $HOMEDIR/servers/$SERVER/run.sh
+        sed -i "30s:.*:$RAM_ORIG:" $HOMEDIR/servers/$SERVER/run.sh
 
     done
 
@@ -135,4 +190,8 @@ fi
 
 
 
-echo "Gorp upgraded!"
+
+
+
+
+if $OUTPUT; then echo "Gorp upgraded!"; fi
