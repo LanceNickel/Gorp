@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-### [MCRESTART] ###################################################
-#   Description:  Action script to setup restart worker.
+### [ACTION: RESTART] #############################################
+#   Description:  Restart a server instance.
 #   Parameters:   1: (required) Server directory name
-#                 2: (optional) <fast, now>
+#   Flags:        -f fast (skip backup)
+#                 -n now  (skip backup and warning)
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -16,10 +17,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcrestart: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mcrestart: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -28,23 +45,63 @@ fi
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 SERVER=$2
-SPEED=$3
+MODE="normal"
+
+OPTIND=2
+while getopts ":*" flag; do
+    case $flag in
+        \?)
+            if $ERRORS; then echo "Bad input. Expected: gorp restart [server] [-f|n]. Exit (14)."; fi
+            exit 14
+            ;;
+    esac
+done
+
+OPTIND=3
+while getopts ":fn" flag; do
+    case $flag in
+        f)
+            MODE="f"
+            ;;
+        n)
+            MODE="n"
+            ;;
+    esac
+done
+
+
+
+
+
 
 
 ####
 
 
 
-# PARAM RT-GUARD
 
-if [[ "$SERVER" = "" ]] || [[ "$SERVER" == 'fast' ]] || [[ "$SERVER" == 'now' ]] || [[ "$SERVER" == 'power' ]]; then
-    echo "mcrestart: Bad input. Expected: gorp stop [server-name] <option>. Exit (14)."
-    exit 14
+
+
+
+### PARAM RT-GUARD
+
+if [[ "$SERVER" = "" ]] || [[ "$SERVER" == "fast" ]] || [[ "$SERVER" == "now" ]]; then
+    if $ERRORS; then echo "mcstop: Bad input. Expected: gorp stop [server] [-f|n]. Exit (14)."; fi
+    exit
+fi
+
+if [[ "$MODE" == "fast" ]] || [[ "$MODE" == "now" ]] || [[ "$MODE" == "power" ]]; then
+    if $ERRORS; then echo "mcstop: Bad input. Expected: gorp stop [server] [-f|n]. Exit (14)."; fi
+    exit
 fi
 
 
 
-# SERVER DIRECTORY RT-GUARD
+
+
+
+
+### SERVER DIRECTORY RT-GUARD
 
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     cd $HOMEDIR/servers/$SERVER
@@ -55,7 +112,11 @@ fi
 
 
 
-# NO SCREEN RT-GUARD
+
+
+
+
+### NO SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER") == "" ]]; then
         echo "mcrestart: Server not running. Exit (32)."
@@ -64,21 +125,26 @@ fi
 
 
 
-# RUN WORKERS BASED ON PASSED PARAMS
 
-if [[ -z "$SPEED" ]]; then
-    /usr/local/bin/gorpmc/worker/backupworld.sh pleasedontdothis $SERVER
-    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis $SERVER restart
-    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
-    /usr/local/bin/gorpmc/worker/start.sh pleasedontdothis $SERVER
 
-elif [[ $SPEED == "fast" ]]; then
-    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis $SERVER stop
-    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
-    /usr/local/bin/gorpmc/worker/start.sh pleasedontdothis $SERVER
 
-elif [[ $SPEED == "now" ]]; then
-    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
-    /usr/local/bin/gorpmc/worker/start.sh pleasedontdothis $SERVER
-    
+
+### RUN WORKERS BASED ON PASSED PARAMS
+
+if [[ "$MODE" == "normal" ]]; then
+    /usr/local/bin/gorpmc/worker/backupworld.sh $1 $SERVER
+    /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER stop
+    /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER
+    /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER
+fi
+
+if [[ "$MODE" == "f" ]]; then
+    /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER stop
+    /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER
+    /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER
+fi
+
+if [[ "$MODE" == "n" ]]; then
+    /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER
+    /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER
 fi

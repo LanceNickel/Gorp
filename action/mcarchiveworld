@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-### [MCARCHIVEWORLD] ##############################################
-#   Description:  Action script to setup world archive worker.
+### [ACTION: ARCHIVE-WORLD] #######################################
+#   Description:  Compress and move world to $ARCHIVE_DEST.
 #   Parameters:   1: (required) Server directory name
-#                 2: (optional) World (level) name for directory
+#                 2: (optional) World (level) name to archive
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -16,10 +16,25 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcarchiveworld: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mcarchiveworld: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
 
 
 
@@ -32,56 +47,80 @@ WORLD_TO_ARCHIVE=$3
 
 
 
+
+
+
+
 ####
 
 
 
-# PARAM RT-GUARD
+
+
+
+
+### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    echo "mcarchiveworld: Bad input. Expected: 'gorp archive-world [server-name] <world-name>. Exit (14)."
+    if $ERRORS; then echo "mcarchiveworld: Bad input. Expected: 'gorp archive-world [server-name] <world-name>. Exit (14)."; fi
     exit 14
 fi
 
 
 
-# SERVER DIRECTORY RT-GUARD
+
+
+
+
+### SERVER DIRECTORY RT-GUARD
 
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    echo "mcarchiveworld: Server not found. Exit (30)."
+    if $ERRORS; then echo "mcarchiveworld: Server not found. Exit (30)."; fi
     exit 30
 fi
 
 
 
-# NO WORLDS RT-GUARD
+
+
+
+
+### NO WORLDS RT-GUARD
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
-    echo -e "mcarchiveworld: No worlds exist on this server. Exit (42)."
+    if $ERRORS; then echo -e "mcarchiveworld: No worlds exist on this server. Exit (42)."; fi
     exit 42
 fi
 
 
 
-# SCREEN RT-GUARD
+
+
+
+
+### SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        echo "mcarchiveworld: Server cannot be running. Exit (34)."
+        if $ERRORS; then echo "mcarchiveworld: Server cannot be running. Exit (34)."; fi
         exit 34
 fi
 
 
 
-# WORLD DIRECTORY RT-GUARD (when world name passed as param)
+
+
+
+
+### WORLD DIRECTORY RT-GUARD (when world name passed as param)
 
 if [[ "$WORLD_TO_ARCHIVE" != "" ]]; then
 
     if [[ -d "$HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE" ]]; then
         sleep 0.005
     else
-        echo "mcarchiveworld: World not found. Exit (40)."
+        if $ERRORS; then echo "mcarchiveworld: World not found. Exit (40)."; fi
         exit 42
     fi
 
@@ -89,6 +128,6 @@ fi
 
 
 
-# RUN THE WORLD ARCHIVE WORKER
+### RUN THE WORLD ARCHIVE WORKER
 
-/usr/local/bin/gorpmc/worker/archiveworld.sh pleasedontdothis $SERVER $WORLD_TO_ARCHIVE
+/usr/local/bin/gorpmc/worker/archiveworld.sh $1 $SERVER $WORLD_TO_ARCHIVE

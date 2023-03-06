@@ -15,8 +15,20 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "shutdown.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "shutdown.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
 
@@ -31,7 +43,6 @@ fi
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 SERVER=$2
-VERBOSE=$3
 
 
 
@@ -50,9 +61,9 @@ VERBOSE=$3
 ### STOP SERVER
 
 if [[ "$VERBOSE" == "v" ]]; then
-    echo "Stopping server in verbose mode... (Press CTRL+C in case server hangs)."
+    if $OUTPUT; then echo "Stopping server in verbose mode... (Press CTRL+C in case server hangs)."; fi
 else
-    echo "Stopping server..."
+    if $OUTPUT; then echo "Stopping server..."; fi
 fi
 
 
@@ -65,48 +76,35 @@ screen -S $SERVER -X stuff 'stop\n'
 
 
 
-### SHOW LOG (if set to verbose)
+### WAIT FOR LOG
 
-if [[ "$VERBOSE" == "v" ]]; then
+sleep 1
 
+I=0
+while true; do
     sleep 1
+    ((I++))
 
-    tail -f $HOMEDIR/servers/$SERVER/logs/latest.log | sed '/^INFO]: Closing Server$/ q'
+    if [[ "$(grep 'INFO]: Closing Server' $HOMEDIR/servers/$SERVER/logs/latest.log)" != "" ]]; then
+        
+        J=0
+        while [[ $J -le 5 ]]; do
+            sleep 1
+            ((J++))
+            screen -S $SERVER -X stuff '\n' > /dev/null
+        done
 
-fi
+        break
+    fi
 
+    if [[ $I -ge 30 ]]; then
+        if $OUTPUT; then echo -e "\n$(tail -n15 $HOMEDIR/servers/$SERVER/logs/latest.log)\n"; fi
 
-
-
-
-
-
-### WAIT FOR LOG (if not set to verbose)
-
-if [[ "$VERBOSE" != "v" ]]; then
-
-    sleep 1
-
-    I=0
-
-    while [ true ]; do
-        sleep 1
-        ((I++))
-
-        if [[ "$(grep 'INFO]: Closing Server' $HOMEDIR/servers/$SERVER/logs/latest.log)" != "" ]]; then
-            break
-        fi
-
-        if [[ $I -ge 30 ]]; then
-            echo -e "\n$(tail -n15 $HOMEDIR/servers/$SERVER/logs/latest.log)\n"
-
-            echo "Timeout reached. Above is the last 15 lines of latest.log."
-            echo "shutdown.sh: Shutdown failure. Server never indicated 'stopping'. Server is in an unknown state. Exit (37)."
-            exit 37
-        fi
-    done
-
-fi
+        if $OUTPUT; then echo "Timeout reached. Above is the last 15 lines of latest.log."; fi
+        if $ERRORS; then echo "shutdown.sh: Shutdown failure. Server never indicated 'stopping'. Server is in an unknown state. Exit (37)."; fi
+        exit 37
+    fi
+done
 
 
 
@@ -116,4 +114,4 @@ fi
 
 sleep 1
 
-echo "Server stopped!"
+if $OUTPUT; then echo "Server stopped!"; fi

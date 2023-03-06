@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [MCRESTORESERVER] #############################################
-#   Description:  Action script to setup backup restore worker.
+### [ACTION: RESTORE-SERVER] ######################################
+#   Description:  Restore server instance's files from backup.
 #   Parameters:   1: (required) Server directory name
 
 ############################ [WARNING] ############################
@@ -15,10 +15,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcrestoreserver: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mcrestoreserver: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -30,42 +46,62 @@ SERVER=$2
 
 
 
+
+
+
+
 ####
 
 
 
-# PARAM RT-GUARD
+
+
+
+
+### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    echo "mcrestoreserver: Bad input. Expected: gorp restore-world [server-name]. Exit (14)."
+    if $ERRORS; then echo "mcrestoreserver: Bad input. Expected: gorp restore-world [server-name]. Exit (14)."; fi
     exit 14
 fi
 
 
 
-# SERVER BACKUP DIRECTORY RT-GUARD
+
+
+
+
+### SERVER BACKUP DIRECTORY RT-GUARD
 
 if [[ -d "$BACKUP_DEST/$SERVER/server-backups/" ]]; then
     if [[ "$(ls $BACKUP_DEST/$SERVER/server-backups/)" == "" ]]; then
-        echo "mcrestoreserver: Server has no backups to restore from. Exit (54)."
+        if $ERRORS; then echo "mcrestoreserver: Server has no backups to restore from. Exit (54)."; fi
         exit 54
     fi
 else
-    echo "mcrestoreserver: Server has no backups to restore from. Exit (54)."
+    if $ERRORS; then echo "mcrestoreserver: Server has no backups to restore from. Exit (54)."; fi
     exit 54
 fi
 
 
 
-# SCREEN RT-GUARD
+
+
+
+
+### SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        echo "mcrestoreserver: Server cannot be running. Exit (34)."
+        if $ERRORS; then echo "mcrestoreserver: Server cannot be running. Exit (34)."; fi
         exit 34
 fi
 
 
 
-# RUN RESTORE WORKER
 
-/usr/local/bin/gorpmc/worker/restoreserver.sh pleasedontdothis $SERVER
+
+
+
+### RUN RESTORE WORKER
+
+/usr/local/bin/gorpmc/worker/restoreserver.sh $1 $SERVER

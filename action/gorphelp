@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [GORPHELP] #####################################################
-#   Description:  Action script that displays help text.
+### [ACTION: HELP] ################################################
+#   Description:  Open help text in less.
 #   Parameters:   None
 
 ############################ [WARNING] ############################

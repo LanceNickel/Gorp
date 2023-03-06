@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-### [MCDELETEWORLD] ###############################################
-#   Description:  Action script to setup world delete worker.
+### [ACTION: DELETE-WORLD] ########################################
+#   Description:  Delete world files from a server instance.
 #   Parameters:   1: (required) Server directory name
-#                 2: (optional) World (level) name for directory
+#                 2: (optional*) World (level) name
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -16,10 +16,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcdeleteworld: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mcdeleteworld: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -32,56 +48,80 @@ WORLD_TO_DELETE=$3
 
 
 
+
+
+
+
 ####
 
 
 
-# PARAM RT-GUARD
+
+
+
+
+### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    echo "mcdeleteworld: Bad input. Expected: gorp delete-world [server-name] <world-name>. Exit (14)."
+    if $ERRORS; then echo "mcdeleteworld: Bad input. Expected: gorp delete-world [server-name] <world-name>. Exit (14)."; fi
     exit 14
 fi
 
 
 
-# SERVER DIRECTORY RT-GUARD
+
+
+
+
+### SERVER DIRECTORY RT-GUARD
 
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    echo "mcdeleteworld: Server not found. Exit (30)."
+    if $ERRORS; then echo "mcdeleteworld: Server not found. Exit (30)."; fi
     exit 30
 fi
 
 
 
-# NO WORLDS RT-GUARD
+
+
+
+
+### NO WORLDS RT-GUARD
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
-    echo -e "mcdeleteworld: No worlds exist on this server. Exit (42)."
+    if $ERRORS; then echo -e "mcdeleteworld: No worlds exist on this server. Exit (42)."; fi
     exit 42
 fi
 
 
 
-# SCREEN RT-GUARD
+
+
+
+
+### SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "mcdeleteworld: Server cannot be running. Exit (34)."
+        if $ERRORS; then echo "mcdeleteworld: Server cannot be running. Exit (34)."; fi
         exit 34
 fi
 
 
 
-# WORLD DIRECTORY RT-GUARD (when world name passed as param)
+
+
+
+
+### WORLD DIRECTORY RT-GUARD (when world name passed as param)
 
 if [[ "$WORLD_TO_DELETE" != "" ]]; then
 
     if [ -d "$HOMEDIR/servers/$SERVER/world-$WORLD_TO_DELETE" ]; then
         sleep 0.005
     else
-        echo "mcdeleteworld: World not found. Exit (40)."
+        if $ERRORS; then echo "mcdeleteworld: World not found. Exit (40)."; fi
         exit 40
     fi
 
@@ -89,6 +129,10 @@ fi
 
 
 
-# RUN THE WORLD DELETE WORKER
 
-/usr/local/bin/gorpmc/worker/deleteworld.sh pleasedontdothis $SERVER $WORLD_TO_DELETE
+
+
+
+### RUN THE WORLD DELETE WORKER
+
+/usr/local/bin/gorpmc/worker/deleteworld.sh $1 $SERVER $WORLD_TO_DELETE

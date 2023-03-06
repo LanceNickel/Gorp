@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [MCCREATESERVER] ##############################################
-#   Description:  Action script to setup server creator worker.
+### [ACTION: CREATE-SERVER] #######################################
+#   Description:  Create a new server instance.
 #   Parameters:   1: (required) Server directory name
 
 ############################ [WARNING] ############################
@@ -15,10 +15,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mccreateserver: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mccreateserver: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -38,37 +54,53 @@ fi
 
 
 
+
+
+
+
 ####
 
 
 
-# PARAM RT-GUARD
+
+
+
+
+### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    echo "mccreateserver: Bad input. Expected: gorp create-server [server-name] <world-name>. Exit (14)."
+    if $ERRORS; then echo "mccreateserver: Bad input. Expected: gorp create-server [server-name] <world-name>. Exit (14)."; fi
     exit 14
 fi
 
 
 
-# SERVER DIRECTORY RT-GUARD
+
+
+
+
+### SERVER DIRECTORY RT-GUARD
 
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
-    echo "mccreateserver: Server already exists. Exit (31)."
+    if $ERRORS; then echo "mccreateserver: Server already exists. Exit (31)."; fi
     exit 31
 fi
 
 
 
-# USER EULA AND AGREEMENT RT-GUARD
 
-echo -e "\n==== IMPORTANT! ====\nTo continue you must agree to the Minecraft EULA (https://aka.ms/MinecraftEULA).\nYou must also agree to use Gorp for PERSONAL USE ONLY."
+
+
+
+### USER EULA AND AGREEMENT RT-GUARD
+
+if $OUTPUT; then echo -e "\n==== IMPORTANT! ====\nTo continue you must agree to the Minecraft EULA (https://aka.ms/; fiMinecraftEULA).\nYou must also agree to use Gorp for PERSONAL USE ONLY."
 
 read -r -p "Do you agree to the Minecraft EULA? [y/n]: " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    echo "You must agree to the EULA and Gorp terms. Exit (12)."
+    if $ERRORS; then echo "You must agree to the EULA and Gorp terms. Exit (12)."; fi
     exit 12
 fi
 
@@ -76,13 +108,17 @@ read -r -p "Do you agree to use Gorp for personal use only? COMMERCIAL USE PROHI
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    echo "mccreateserver: You must agree to the EULA and Gorp terms. Exit (12)."
+    if $ERRORS; then echo "mccreateserver: You must agree to the EULA and Gorp terms. Exit (12)."; fi
     exit 12
 fi
 
 
 
 
-# RUN THE CREATOR WORKER
 
-/usr/local/bin/gorpmc/worker/createserver.sh s3zujKM87FD56sxb $SERVER $WORLD
+
+
+
+### RUN THE CREATOR WORKER
+
+/usr/local/bin/gorpmc/worker/createserver.sh $1 $SERVER $WORLD

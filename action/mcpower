@@ -15,10 +15,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcpower: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mcpower: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -28,7 +44,15 @@ source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 
 
+
+
+
+
 ####
+
+
+
+
 
 
 
@@ -37,5 +61,5 @@ source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 for d in "$HOMEDIR/servers/"*
 do
         SERVER=$(echo $(basename "$d"))
-        /usr/local/bin/gorpmc/action/mcstop $SERVER -p
+        /usr/local/bin/gorpmc/action/mcstop $1 $SERVER
 done

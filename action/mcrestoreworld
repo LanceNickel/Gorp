@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [MCRESTORE] ###################################################
-#   Description:  Action script to setup backup restore worker.
+### [ACTION: RESTORE-WORLD] #######################################
+#   Description:  Restore world's files from backup to server.
 #   Parameters:   1: (required) Server directory name
 
 ############################ [WARNING] ############################
@@ -15,10 +15,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcrestoreworld: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mcrestoreworld: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -30,39 +46,59 @@ SERVER=$2
 
 
 
+
+
+
+
 ####
 
 
 
-# PARAM RT-GUARD
+
+
+
+
+### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    echo "mcrestoreworld: Bad input. Expected: gorp restore-world [server-name]. Exit (14)."
+    if $ERRORS; then echo "mcrestoreworld: Bad input. Expected: gorp restore-world [server-name]. Exit (14)."; fi
     exit 14
 fi
 
 
 
-# SERVER DIRECTORY RT-GUARD
+
+
+
+
+### SERVER DIRECTORY RT-GUARD
 
 if [[ -d "$BACKUP_DEST/$SERVER" ]]; then
     sleep 0.005
 else
-    echo "mcrestoreworld: Server has no backups to restore from. Exit (54)."
+    if $ERRORS; then echo "mcrestoreworld: Server has no backups to restore from. Exit (54)."; fi
     exit 54
 fi
 
 
 
-# SCREEN RT-GUARD
+
+
+
+
+### SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        echo "mcrestoreworld: Server cannot be running. Exit (34)."
+        if $ERRORS; then echo "mcrestoreworld: Server cannot be running. Exit (34)."; fi
         exit 34
 fi
 
 
 
-# RUN RESTORE WORKER
 
-/usr/local/bin/gorpmc/worker/restoreworld.sh pleasedontdothis $SERVER
+
+
+
+### RUN RESTORE WORKER
+
+/usr/local/bin/gorpmc/worker/restoreworld.sh $1 $SERVER

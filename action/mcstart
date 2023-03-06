@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [MCSTART] #####################################################
-#   Description:  Action script to setup startup worker.
+### [ACTION: START] ###############################################
+#   Description:  Start a server instance.
 #   Parameters:   1: (required) Server directory name
 
 ############################ [WARNING] ############################
@@ -15,10 +15,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcstart: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mcstart: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -30,39 +46,59 @@ SERVER=$2
 
 
 
+
+
+
+
 ####
 
 
 
-# PARAM GUARD
+
+
+
+
+### PARAM GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    echo "mcstart: Bad input. Expected: gorp start [server-name]. Exit (14)."
+    if $ERRORS; then echo "mcstart: Bad input. Expected: gorp start [server-name]. Exit (14)."; fi
     exit 14
 fi
 
 
 
-# SERVER DIRECTORY GUARD
+
+
+
+
+### SERVER DIRECTORY GUARD
 
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     cd $HOMEDIR/servers/$SERVER
 else
-    echo "mcstart: Server not found. Exit (30)."
+    if $ERRORS; then echo "mcstart: Server not found. Exit (30)."; fi
     exit 30
 fi
 
 
 
-# SCREEN GUARD
+
+
+
+
+### SCREEN GUARD
 
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        echo "mcstart: Server already running. Exit (33)."
+        if $ERRORS; then echo "mcstart: Server already running. Exit (33)."; fi
         exit 33
 fi
 
 
 
-# RUN STARTUP WORKER
 
-/usr/local/bin/gorpmc/worker/start.sh pleasedontdothis $SERVER
+
+
+
+### RUN STARTUP WORKER
+
+/usr/local/bin/gorpmc/worker/start.sh $1 $SERVER

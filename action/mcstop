@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-### [MCSTOP] ######################################################
-#   Description:  Action script to setup a shutdown worker.
+### [ACTION: STOP] ################################################
+#   Description:  Stop a server instance.
 #   Parameters:   1: (required) Server directory name
-#                 2: (optional) <fast, now, power>
+#   Flags:        -f fast (skip backup)
+#                 -n now  (skip backup and warning)
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -16,8 +17,20 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcstop: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mcstop: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
 
@@ -38,23 +51,20 @@ OPTIND=2
 while getopts ":*" flag; do
     case $flag in
         \?)
-            echo "Bad input. Expected: gorp stop [server] [-f|n|v]. Exit (14)."
+            if $ERRORS; then echo "Bad input. Expected: gorp stop [server] [-f|n]. Exit (14)."; fi
             exit 14
             ;;
     esac
 done
 
 OPTIND=3
-while getopts ":fnv" flag; do
+while getopts ":fn" flag; do
     case $flag in
         f)
             MODE="f"
             ;;
         n)
             MODE="n"
-            ;;
-        v)
-            VERBOSE="v"
             ;;
     esac
 done
@@ -76,13 +86,12 @@ done
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" = "" ]] || [[ "$SERVER" == "fast" ]] || [[ "$SERVER" == "now" ]] || [[ "$SERVER" == "power" ]]; then
-    echo "mcstop: Bad input. Expected: gorp stop [server] [-f|n|v]. Exit (14)."
+    if $ERRORS; then echo "mcstop: Bad input. Expected: gorp stop [server] [-f|n]. Exit (14)."; fi
     exit
 fi
 
 if [[ "$MODE" == "fast" ]] || [[ "$MODE" == "now" ]] || [[ "$MODE" == "power" ]]; then
-    echo "This command was updated in 1.4.0. See below for the new syntax:"
-    echo "mcstop: Bad input. Expected: gorp stop [server] [-f|n|v]. Exit (14)."
+    if $ERRORS; then echo "mcstop: Bad input. Expected: gorp stop [server] [-f|n]. Exit (14)."; fi
     exit
 fi
 
@@ -97,7 +106,7 @@ fi
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     cd $HOMEDIR/servers/$SERVER
 else
-    echo "mcstop: Server not found. Exit (30)."
+    if $ERRORS; then echo "mcstop: Server not found. Exit (30)."; fi
     exit 30
 fi
 
@@ -109,7 +118,7 @@ fi
 
 ### NO SCREEN RT-GUARD
 if [[ $(screen -ls | grep "$SERVER") == "" ]]; then
-        echo "mcstop: Server not running. Exit (32)."
+        if $ERRORS; then echo "mcstop: Server not running. Exit (32)."; fi
         exit 32
 fi
 
@@ -122,16 +131,16 @@ fi
 ### RUN WORKERS BASED ON PASSED PARAMS
 
 if [[ "$MODE" == "normal" ]]; then
-    /usr/local/bin/gorpmc/worker/backupworld.sh pleasedontdothis $SERVER
-    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis "shut down"
-    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER $VERBOSE
+    /usr/local/bin/gorpmc/worker/backupworld.sh $1 $SERVER
+    /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER stop
+    /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER
 fi
 
 if [[ "$MODE" == "f" ]]; then
-    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis "shut down"
-    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER $VERBOSE
+    /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER stop
+    /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER
 fi
 
 if [[ "$MODE" == "n" ]]; then
-    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER $VERBOSE
+    /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER
 fi

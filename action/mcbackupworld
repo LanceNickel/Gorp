@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [MCBACKUPWORLD] ################################################
-#   Description:  Action script to setup world backup worker.
+### [ACTION: BACKUP-WORLD] ########################################
+#   Description:  Backup server files to $BACKUP_DEST
 #   Parameters:   1: (required) Server directory name
 
 ############################ [WARNING] ############################
@@ -15,10 +15,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcbackupworld: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mcbackupworld: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -30,40 +46,60 @@ SERVER=$2
 
 
 
+
+
+
+
 ####
 
 
 
-# PARAM RT-GUARD
+
+
+
+
+### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    echo "mcbackupworld: Bad input. Expected: gorp backup-world [server-name]. Exit (14)."
+    if $ERRORS; then echo "mcbackupworld: Bad input. Expected: gorp backup-world [server-name]. Exit (14)."; fi
     exit 14
 fi
 
 
 
-# SERVER DIRECTORY RT-GUARD
+
+
+
+
+### SERVER DIRECTORY RT-GUARD
 
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     # we can continue
     sleep 0.005
 else
-    echo "mcbackupworld: Server not found. Exit (30)."
+    if $ERRORS; then echo "mcbackupworld: Server not found. Exit (30)."; fi
     exit 30
 fi
 
 
 
-# NO WORLDS RT-GUARD
+
+
+
+
+### NO WORLDS RT-GUARD
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
-    echo -e "mcbackupworld: No worlds exist on this server. Exit (42)."
+    if $ERRORS; then echo -e "mcbackupworld: No worlds exist on this server. Exit (42)."; fi
     exit 42
 fi
 
 
 
-# RUN BACKUP WORKER
 
-/usr/local/bin/gorpmc/worker/backupworld.sh pleasedontdothis $SERVER
+
+
+
+### RUN BACKUP WORKER
+
+/usr/local/bin/gorpmc/worker/backupworld.sh $1 $SERVER

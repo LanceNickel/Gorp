@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [GORPMOVEHOME] ################################################
-#   Description:  Action script to setup Gorp update worker.
+### [ACTION: MOVE-HOME] ###########################################
+#   Description:  Move $HOMEDIR to new location.
 #   Parameters:   (required) Absolute path to new home directory
 
 ############################ [WARNING] ############################
@@ -15,10 +15,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "gorpmovehome: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "SCRIPTNAME: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -30,23 +46,39 @@ NEW_HOMEDIR=$2
 
 
 
+
+
+
+
 ####
+
+
+
+
 
 
 
 ### GET SUDO PERMISSIONS RT-GUARD
 
-echo "Gorp will use sudo to update the configuration file."
+if $OUTPUT; then echo "Gorp will use sudo to update the configuration file."; fi
 sudo whoami > /dev/null
+
+
+
+
 
 
 
 ### DOES DESTINATION EXIST/IS IT EMPTY? RT-GUARD
 
 if [[ -d $NEW_HOMEDIR ]]; then
-    echo "gorpmovehome: Destination directory already exists. Exit (21)."
+    if $ERRORS; then echo "gorpmovehome: Destination directory already exists. Exit (21)."; fi
     exit 21
 fi
+
+
+
+
 
 
 
@@ -57,13 +89,17 @@ do
         SERVER=$(basename "$d")
         
         if [[ $(gorp -s $SERVER | jq .status[].running) == "true" ]]; then
-            echo "gorpmovehome: Servers cannot be running. Exit (34)."
+            if $ERRORS; then echo "gorpmovehome: Servers cannot be running. Exit (34)."; fi
             exit 34
         fi
 done
 
 
 
+
+
+
+
 ### CALL THE WORKER
 
-/usr/local/bin/gorpmc/worker/movehome.sh pleasedontdothis $NEW_HOMEDIR
+/usr/local/bin/gorpmc/worker/movehome.sh $1 $NEW_HOMEDIR

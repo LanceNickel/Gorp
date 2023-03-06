@@ -1,5 +1,5 @@
 Gorp - Simple Minecraft CLI tools.
-v1.4.0 beta
+v1.4.0
 
 Docs:       https://gorp.lanickel.com/
 

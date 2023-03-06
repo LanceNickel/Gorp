@@ -24,17 +24,44 @@ fi
 
 
 
+
+
+
+
 #### SCRIPT PARAMETERS
 
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
-ACTION=$1
-ARG1=$2
-ARG2=$3
+if [[ "$1" == "-q" ]]; then
+    TESTSTRING=pleaseshutup
+    ACTION=$2
+    ARG1=$3
+    ARG2=$4
+
+elif [[ "$1" == "-Q" ]]; then
+    TESTSTRING=pleasebesilent
+    ACTION=$2
+    ARG1=$3
+    ARG2=$4
+
+else
+    TESTSTRING=pleasedontdothis
+    ACTION=$1
+    ARG1=$2
+    ARG2=$3
+fi
+
+
+
+
 
 
 
 ####
+
+
+
+
 
 
 
@@ -47,70 +74,74 @@ fi
 
 
 
+
+
+
+
 ### ACTIONS
 
 if [[ "$ACTION" == "backup-world" ]]; then
-    /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $ARG1
+    /usr/local/bin/gorpmc/action/mcbackupworld $TESTSTRING $ARG1
 
 elif [[ "$ACTION" == "backup-server" ]]; then
-    /usr/local/bin/gorpmc/action/mcbackupserver pleasedontdothis $ARG1
+    /usr/local/bin/gorpmc/action/mcbackupserver $TESTSTRING $ARG1
 
 elif [[ "$ACTION" == "restore-world" ]]; then
-    /usr/local/bin/gorpmc/action/mcrestoreworld pleasedontdothis $ARG1
+    /usr/local/bin/gorpmc/action/mcrestoreworld $TESTSTRING $ARG1
 
 elif [[ "$ACTION" == "restore-server" ]]; then
-    /usr/local/bin/gorpmc/action/mcrestoreserver pleasedontdothis $ARG1
+    /usr/local/bin/gorpmc/action/mcrestoreserver $TESTSTRING $ARG1
 
 elif [[ "$ACTION" == "update-jar" ]]; then
-    /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
+    /usr/local/bin/gorpmc/action/mcupdatejar $TESTSTRING
 
 elif [[ "$ACTION" == "get-jar" ]]; then
-    /usr/local/bin/gorpmc/action/mcgetjar pleasedontdothis $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mcgetjar $TESTSTRING $ARG1 $ARG2
 
 elif [[ "$ACTION" == "create-server" ]]; then
-    /usr/local/bin/gorpmc/action/mccreateserver pleasedontdothis $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mccreateserver $TESTSTRING $ARG1 $ARG2
 
 elif [[ "$ACTION" == "delete-server" ]]; then
-    /usr/local/bin/gorpmc/action/mcdeleteserver pleasedontdothis $ARG1
+    /usr/local/bin/gorpmc/action/mcdeleteserver $TESTSTRING $ARG1
 
 elif [[ "$ACTION" == "create-world" ]]; then
-    /usr/local/bin/gorpmc/action/mccreateworld pleasedontdothis $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mccreateworld $TESTSTRING $ARG1 $ARG2
 
 elif [[ "$ACTION" == "delete-world" ]]; then
-    /usr/local/bin/gorpmc/action/mcdeleteworld pleasedontdothis $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mcdeleteworld $TESTSTRING $ARG1 $ARG2
 
 elif [[ "$ACTION" == "reset-world" ]]; then
-    /usr/local/bin/gorpmc/action/mcresetworld pleasedontdothis $ARG1
+    /usr/local/bin/gorpmc/action/mcresetworld $TESTSTRING $ARG1
 
 elif [[ "$ACTION" == "archive-world" ]]; then
-    /usr/local/bin/gorpmc/action/mcarchiveworld pleasedontdothis $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mcarchiveworld $TESTSTRING $ARG1 $ARG2
 
 elif [[ "$ACTION" == "switch-world" ]]; then
-    /usr/local/bin/gorpmc/action/mcswitchworld pleasedontdothis $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mcswitchworld $TESTSTRING $ARG1 $ARG2
 
 elif [[ "$ACTION" == "power" ]]; then
-    /usr/local/bin/gorpmc/action/mcpower pleasedontdothis
+    /usr/local/bin/gorpmc/action/mcpower $TESTSTRING
 
 elif [[ "$ACTION" == "start" ]]; then
-    /usr/local/bin/gorpmc/action/mcstart pleasedontdothis $ARG1
+    /usr/local/bin/gorpmc/action/mcstart $TESTSTRING $ARG1
 
 elif [[ "$ACTION" == "stop" ]]; then
-    /usr/local/bin/gorpmc/action/mcstop pleasedontdothis $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mcstop $TESTSTRING $ARG1 $ARG2
 
 elif [[ "$ACTION" == "restart" ]]; then
-    /usr/local/bin/gorpmc/action/mcrestart pleasedontdothis $ARG1 $ARG2
+    /usr/local/bin/gorpmc/action/mcrestart $TESTSTRING $ARG1 $ARG2
 
 elif [[ "$ACTION" == "help" ]]; then
     /usr/local/bin/gorpmc/action/gorphelp
 
 elif [[ "$ACTION" == "upgrade" ]]; then
-    /usr/local/bin/gorpmc/action/gorpupgrade pleasedontdothis
+    /usr/local/bin/gorpmc/action/gorpupgrade $TESTSTRING
 
 elif [[ "$ACTION" == "-v" ]]; then
     /usr/local/bin/gorpmc/action/gorpversion
 
 elif [[ "$ACTION" == "-s" ]]; then
-    /usr/local/bin/gorpmc/action/mcserverstatus pleasedontdothis $ARG1
+    /usr/local/bin/gorpmc/action/mcserverstatus $TESTSTRING $ARG1
 
 elif [[ "$ACTION" == "-f" ]]; then
     tail -f $HOMEDIR/servers/$ARG1/logs/latest.log
@@ -119,7 +150,7 @@ elif [[ "$ACTION" == "list-servers" ]]; then
     echo $(ls $HOMEDIR/servers)
 
 elif [[ "$ACTION" == "move-home" ]]; then
-    /usr/local/bin/gorpmc/action/gorpmovehome pleasedontdothis $ARG1
+    /usr/local/bin/gorpmc/action/gorpmovehome $TESTSTRING $ARG1
 
 else
     echo "Invalid parameters. Use gorp help for more information."

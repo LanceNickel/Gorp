@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [MCUPDATEJAR] #################################################
-#   Description:  Action script to setup update worker.
+### [ACTION: UPDATE-JAR] ##########################################
+#   Description:  Download and install the latest stable Paper JAR.
 #   Parameters:   None
 
 ############################ [WARNING] ############################
@@ -15,10 +15,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcupdatejar: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mcupdatejar: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -26,6 +42,10 @@ fi
 
 
 
-# RUN UPDATE WORKER
 
-/usr/local/bin/gorpmc/worker/updatejar.sh pleasedontdothis $VERSION
+
+
+
+### RUN UPDATE WORKER
+
+/usr/local/bin/gorpmc/worker/updatejar.sh $1 $VERSION

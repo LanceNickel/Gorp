@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-### [MCGETJAR] ####################################################
+### [ACTION: GET-JAR] #############################################
 #   Description:  Action script to setup jar download worker.
-#   Parameters:   1: (required) Game version
+#   Parameters:   None
+#   Flags:        -v [version] | -u [url]
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -15,10 +16,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcgetjar: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mcgetjar: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -36,11 +53,11 @@ while getopts ":u:v:" flag; do
                 ARG="$OPTARG"
                 ;;
         \?)
-            echo "Bad input. Expected: gorp get-jar [-u | -v] [url | version]. Exit (14)."
+            if $ERRORS; then echo "Bad input. Expected: gorp get-jar [-u | -v] [url | version]. Exit (14)."; fi
             exit 14
             ;;
         :)
-            echo "Bad input. Expected: gorp get-jar [-u | -v] [url | version]. Exit (14)."
+            if $ERRORS; then echo "Bad input. Expected: gorp get-jar [-u | -v] [url | version]. Exit (14)."; fi
             exit 14
             ;;
     esac
@@ -49,19 +66,31 @@ done
         
 
 
+
+
+
+
 ####
+
+
+
+
 
 
 
 ### PARAM RT-GUARD
 
 if [[ "$MODE" == "" ]]; then
-    echo "mcgetjar: Bad input. Expected: gorp get-jar [game-version]. Exit (14)."
+    if $ERRORS; then echo "mcgetjar: Bad input. Expected: gorp get-jar [game-version]. Exit (14)."; fi
     exit 14
 fi
 
 
 
-# RUN JAR DOWNLOADER
 
-/usr/local/bin/gorpmc/worker/getjar.sh pleasedontdothis "$MODE" "$ARG"
+
+
+
+### RUN JAR DOWNLOADER
+
+/usr/local/bin/gorpmc/worker/getjar.sh $1 "$MODE" "$ARG"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [GORPUPDATE] ##################################################
-#   Description:  Action script to setup Gorp update worker.
+### [ACTION: GORP UPGRADE] ########################################
+#   Description:  Upgrade Gorp.
 #   Parameters:   None
 
 ############################ [WARNING] ############################
@@ -15,10 +15,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "gorpupgrade: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "gorpupgrade: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -28,7 +44,11 @@ source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 INSTALLED=$(gorp -v | cut -d ' ' -f3)
 LATEST_TAG=$(curl -s https://api.github.com/repos/LanceNickel/Gorp/releases/latest | jq -r .tag_name)
-LATEST_VER=$(echo $LATEST_TAG | cut -c 2-)
+LATEST_VER=$(echo $LATEST_TAG | cut -c 2-); fi
+
+
+
+
 
 
 
@@ -36,19 +56,31 @@ LATEST_VER=$(echo $LATEST_TAG | cut -c 2-)
 
 
 
+
+
+
+
 ### DO WE EVEN NEED TO UPGRADE?
 
 if [[ "$INSTALLED" == "$LATEST_VER" ]]; then
-    echo "Gorp is already on the latest version."
+    if $OUTPUT; then echo "Gorp is already on the latest version."; fi
     exit 0
 fi
 
 
 
+
+
+
+
 ### GET SUDO PERMISSIONS RT-GUARD
 
-echo "To upgrade, Gorp will use sudo."
+if $OUTPUT; then echo "To upgrade, Gorp will use sudo."; fi
 sudo whoami > /dev/null
+
+
+
+
 
 
 
@@ -59,9 +91,13 @@ mkdir -p $HOMEDIR/tmp/
 
 
 
+
+
+
+
 ### DOWNLOAD THE LATEST RELEASE
 
-echo "Downloading latest release..."
+if $OUTPUT; then echo "Downloading latest release..."; fi
 
 cd $HOMEDIR/tmp/
 wget -q https://github.com/LanceNickel/Gorp/archive/refs/tags/$LATEST_TAG.tar.gz
@@ -75,10 +111,18 @@ mv ./Gorp-$LATEST_VER/* ./updatefiles/
 
 
 
+
+
+
+
 ### RUN UPDATE WORKER
 
 chmod +x $HOMEDIR/tmp/updatefiles/upgrade.sh
-$HOMEDIR/tmp/updatefiles/upgrade.sh pleasedontdothis
+$HOMEDIR/tmp/updatefiles/upgrade.sh $1
+
+
+
+
 
 
 

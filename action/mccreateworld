@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-### [MCCREATEWORLD] ###############################################
-#   Description:  Action script to setup world creator worker.
+### [ACTION: CREATE-WORLD] ########################################
+#   Description:  Generate a new world in a server instance.
 #   Parameters:   1: (required) Server directory name
-#                 2: (optional) World (level) name for directory
+#                 2: (optional*) World (level) name
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -16,10 +16,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mccreateworld: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mccreateworld: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -32,16 +48,28 @@ NEW_WORLD=$3
 
 
 
+
+
+
+
 ####
+
+
+
+
 
 
 
 # PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    echo "mccreateworld: Bad input. Expected: gorp create-world [server-name] <world-name>. Exit (14)."
+    if $ERRORS; then echo "mccreateworld: Bad input. Expected: gorp create-world [server-name] <world-name>. Exit (14)."; fi
     exit 14
 fi
+
+
+
+
 
 
 
@@ -50,9 +78,13 @@ fi
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    echo "mccreateworld: Server not found. Exit (30)."
+    if $ERRORS; then echo "mccreateworld: Server not found. Exit (30)."; fi
     exit 30
 fi
+
+
+
+
 
 
 
@@ -61,7 +93,7 @@ fi
 if [[ "$NEW_WORLD" != "" ]]; then
 
     if [[ -d "$HOMEDIR/servers/$SERVER/world-$NEW_WORLD" ]]; then
-        echo "mccreateworld: World already exists. Exit (41)."
+        if $ERRORS; then echo "mccreateworld: World already exists. Exit (41)."; fi
         exit 41
     fi
 
@@ -69,15 +101,23 @@ fi
 
 
 
+
+
+
+
 # SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        echo "mccreateworld: Server cannot be running. Exit (34)."
+        if $ERRORS; then echo "mccreateworld: Server cannot be running. Exit (34)."; fi
         exit 34
 fi
 
 
 
+
+
+
+
 # RUN THE WORLD CREATOR WORKER
 
-/usr/local/bin/gorpmc/worker/createworld.sh pleasedontdothis $SERVER $NEW_WORLD
+/usr/local/bin/gorpmc/worker/createworld.sh $1 $SERVER $NEW_WORLD

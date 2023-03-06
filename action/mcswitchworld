@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-### [MCSWITCHWORLD] ###############################################
-#   Description:  Action script to setup world switch worker.
+### [ACTION: SWITCH-WORLD] ########################################
+#   Description:  Switch a server instance's active world
 #   Parameters:   1: (required) Server directory name
-#                 2: (optional) Server world name
+#                 2: (optional*) World (level) name
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -16,10 +16,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "mcswitchworld: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "mcswitchworld: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -32,47 +48,67 @@ SWITCH_TO=$3
 
 
 
+
+
+
+
 ####
 
 
 
-# PARAM RT-GUARD
+
+
+
+
+### PARAM RT-GUARD
 
 if [[ "$SERVER" = "" ]]; then
-    echo "mcswitchworld: Bad input. Expected: gorp switch-world [server-name] <world-name>. Exit (14)."
+    if $ERRORS; then echo "mcswitchworld: Bad input. Expected: gorp switch-world [server-name] <world-name>. Exit (14)."; fi
     exit 14
 fi
 
 
 
-# SERVER DIRECTORY RT-GUARD
+
+
+
+
+### SERVER DIRECTORY RT-GUARD
 
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    echo "mcswitchworld: Server not found. Exit (30)."
+    if $ERRORS; then echo "mcswitchworld: Server not found. Exit (30)."; fi
     exit 30
 fi
 
 
 
-# NO WORLDS RT-GUARD
+
+
+
+
+### NO WORLDS RT-GUARD
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
-    echo "mcswitchworld: No worlds exist on this server. Exit (42)."
+    if $ERRORS; then echo "mcswitchworld: No worlds exist on this server. Exit (42)."; fi
     exit
 fi
 
 
 
-# WORLD DOESN'T EXIST RT-GUARD (when world name passed as param)
+
+
+
+
+### WORLD DOESN'T EXIST RT-GUARD (when world name passed as param)
 
 if [[ "$SWITCH_TO" != "" ]]; then
 
     if [[ -d "$HOMEDIR/servers/$SERVER/world-$SWITCH_TO" ]]; then
         sleep 0.005
     else
-        echo "mcswitchworld: World not found. Exit (40)."
+        if $ERRORS; then echo "mcswitchworld: World not found. Exit (40)."; fi
         exit 40
     fi
 
@@ -80,15 +116,23 @@ fi
 
 
 
-# SCREEN RT-GUARD
+
+
+
+
+### SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        echo "mcswitchworld: Server cannot be running. Exit (34)."
+        if $ERRORS; then echo "mcswitchworld: Server cannot be running. Exit (34)."; fi
         exit 34
 fi
 
 
 
-# RUN THE WORLD CREATOR WORKER
 
-/usr/local/bin/gorpmc/worker/switchworld.sh pleasedontdothis $SERVER $SWITCH_TO
+
+
+
+### RUN THE WORLD CREATOR WORKER
+
+/usr/local/bin/gorpmc/worker/switchworld.sh $1 $SERVER $SWITCH_TO
