@@ -28,6 +28,8 @@ fi
 
 #### SCRIPT PARAMETERS ################
 
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+
 SERVER=$2
 VERBOSE=$3
 
@@ -69,7 +71,7 @@ if [[ "$VERBOSE" == "v" ]]; then
 
     sleep 1
 
-    tail -f /path/to/file.log | sed '/^INFO]: Closing Server$/ q'
+    tail -f $HOMEDIR/servers/$SERVER/logs/latest.log | sed '/^INFO]: Closing Server$/ q'
 
 fi
 
