@@ -99,7 +99,7 @@ screen -d -m -S "$SERVER" $HOMEDIR/servers/$SERVER/run.sh pleasedontdothis
 
 
 
-# GIVE THE SERVER 5 SECONDS, THEN WAIT FOR SERVER TO LOG "DONE!"
+# WAIT FOR LOG
 
 sleep 5
 
@@ -117,8 +117,8 @@ while [ true ]; do
         echo -e "\n$(tail -n15 $HOMEDIR/servers/$SERVER/logs/latest.log)\n"
 
         echo "Timeout reached. Above is the last 15 lines of latest.log."
-        echo "start.sh: Startup failure. Server never indicated "done!". Exit (38)."
-        exit 38
+        echo "start.sh: Startup failure. Server never indicated 'done'. Server is in an unknown state. Exit (36)."
+        exit 36
     fi
 
 done

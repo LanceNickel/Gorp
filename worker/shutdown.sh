@@ -22,9 +22,18 @@ fi
 
 
 
+
+
+
+
 #### SCRIPT PARAMETERS ################
 
 SERVER=$2
+VERBOSE=$3
+
+
+
+
 
 
 
@@ -32,52 +41,77 @@ SERVER=$2
 
 
 
-# STOP SERVER
 
-echo "Stopping server..."
+
+
+
+### STOP SERVER
+
+if [[ "$VERBOSE" == "v" ]]; then
+    echo "Stopping server in verbose mode... (Press CTRL+C in case server hangs)."
+else
+    echo "Stopping server..."
+fi
+
+
+
 screen -S $SERVER -X stuff 'stop\n'
 
 
 
-# WAIT FOR SCREEN TO TERMINATE
 
-I=0
-FORCE_QUIT=false
-FROZEN=false
 
-while [ true ]; do
+
+
+### SHOW LOG (if set to verbose)
+
+if [[ "$VERBOSE" == "v" ]]; then
+
+    sleep 1
+
+    tail -f /path/to/file.log | sed '/^INFO]: Closing Server$/ q'
+
+fi
+
+
+
+
+
+
+
+### WAIT FOR LOG (if not set to verbose)
+
+if [[ "$VERBOSE" != "v" ]]; then
+
+    sleep 1
+
+    I=0
+
+    while [ true ]; do
         sleep 1
         ((I++))
 
-        if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-                screen -S "$SERVER" -X stuff '\n'
-        else
-                break
+        if [[ "$(grep 'INFO]: Closing Server' $HOMEDIR/servers/$SERVER/logs/latest.log)" != "" ]]; then
+            break
         fi
 
-        if [[ $I -eq "30" ]]; then
-                FORCE_QUIT=true
-                screen -X -S mc quit
+        if [[ $I -ge 30 ]]; then
+            echo -e "\n$(tail -n15 $HOMEDIR/servers/$SERVER/logs/latest.log)\n"
+
+            echo "Timeout reached. Above is the last 15 lines of latest.log."
+            echo "shutdown.sh: Shutdown failure. Server never indicated 'stopping'. Server is in an unknown state. Exit (37)."
+            exit 37
         fi
+    done
 
-        if [[ $I -eq "33" ]]; then
-                FORCE_QUIT=false
-                FROZEN=true
-                break
-        fi
-done
-
-
-
-if [[ $FORCE_QUIT == true ]]; then
-        echo "shutdown.sh: The server encountered an error during shut down and was force quit. Exit (36)."
-        exit 36
-
-elif [[ $FROZEN == true ]]; then
-        echo "shutdown.sh: The server encountered an error during shut down and is now in an unknown state. Exit (37)."
-        exit 37
-
-else
-        echo "Server stopped!"
-        
 fi
+
+
+
+
+
+
+
+sleep 1
+
+echo "Server stopped!"

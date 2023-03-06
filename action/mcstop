@@ -23,12 +23,45 @@ fi
 
 
 
+
+
+
+
 #### SCRIPT PARAMETERS ################
 
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 SERVER=$2
-ARG=$3
+MODE="normal"
+
+OPTIND=2
+while getopts ":*" flag; do
+    case $flag in
+        \?)
+            echo "Bad input. Expected: gorp stop [server] [-f|n|v]. Exit (14)."
+            exit 14
+            ;;
+    esac
+done
+
+OPTIND=3
+while getopts ":fnv" flag; do
+    case $flag in
+        f)
+            MODE="f"
+            ;;
+        n)
+            MODE="n"
+            ;;
+        v)
+            VERBOSE="v"
+            ;;
+    esac
+done
+
+
+
+
 
 
 
@@ -36,16 +69,30 @@ ARG=$3
 
 
 
-# PARAM RT-GUARD
 
-if [[ "$SERVER" = "" ]] || [[ "$SERVER" == 'fast' ]] || [[ "$SERVER" == 'now' ]] || [[ "$SERVER" == 'power' ]]; then
-    echo "mcstop: Bad input. Expected: gorp stop [server-name] <option>. Exit (14)."
+
+
+
+### PARAM RT-GUARD
+
+if [[ "$SERVER" = "" ]] || [[ "$SERVER" == "fast" ]] || [[ "$SERVER" == "now" ]] || [[ "$SERVER" == "power" ]]; then
+    echo "mcstop: Bad input. Expected: gorp stop [server] [-f|n|v]. Exit (14)."
+    exit
+fi
+
+if [[ "$MODE" == "fast" ]] || [[ "$MODE" == "now" ]] || [[ "$MODE" == "power" ]]; then
+    echo "This command was updated in 1.4.0. See below for the new syntax:"
+    echo "mcstop: Bad input. Expected: gorp stop [server] [-f|n|v]. Exit (14)."
     exit
 fi
 
 
 
-# SERVER DIRECTORY RT-GUARD
+
+
+
+
+### SERVER DIRECTORY RT-GUARD
 
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     cd $HOMEDIR/servers/$SERVER
@@ -56,7 +103,11 @@ fi
 
 
 
-# NO SCREEN RT-GUARD
+
+
+
+
+### NO SCREEN RT-GUARD
 if [[ $(screen -ls | grep "$SERVER") == "" ]]; then
         echo "mcstop: Server not running. Exit (32)."
         exit 32
@@ -64,22 +115,23 @@ fi
 
 
 
-# RUN WORKERS BASED ON PASSED PARAMS
 
-if [[ -z "$ARG" ]]; then
+
+
+
+### RUN WORKERS BASED ON PASSED PARAMS
+
+if [[ "$MODE" == "normal" ]]; then
     /usr/local/bin/gorpmc/worker/backupworld.sh pleasedontdothis $SERVER
-    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis $SERVER stop
-    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
+    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis "shut down"
+    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER $VERBOSE
+fi
 
-elif [[ $ARG == "power" ]]; then
-    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis $SERVER power
-    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
+if [[ "$MODE" == "f" ]]; then
+    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis "shut down"
+    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER $VERBOSE
+fi
 
-elif [[ $ARG == "fast" ]]; then
-    /usr/local/bin/gorpmc/worker/warning.sh pleasedontdothis $SERVER stop
-    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
-
-elif [[ $ARG == "now" ]]; then
-    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER
-
+if [[ "$MODE" == "n" ]]; then
+    /usr/local/bin/gorpmc/worker/shutdown.sh pleasedontdothis $SERVER $VERBOSE
 fi

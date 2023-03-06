@@ -37,5 +37,5 @@ source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 for d in "$HOMEDIR/servers/"*
 do
         SERVER=$(echo $(basename "$d"))
-        /usr/local/bin/gorpmc/action/mcstop $SERVER power
+        /usr/local/bin/gorpmc/action/mcstop $SERVER -p
 done
