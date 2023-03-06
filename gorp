@@ -112,6 +112,9 @@ elif [[ "$ACTION" == "-v" ]]; then
 elif [[ "$ACTION" == "-s" ]]; then
     /usr/local/bin/gorpmc/action/mcserverstatus pleasedontdothis $ARG1
 
+elif [[ "$ACTION" == "-f" ]]; then
+    tail -f $HOMEDIR/servers/$ARG1/logs/latest.log
+
 elif [[ "$ACTION" == "list-servers" ]]; then
     echo $(ls $HOMEDIR/servers)
 

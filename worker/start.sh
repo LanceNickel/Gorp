@@ -22,6 +22,10 @@ fi
 
 
 
+
+
+
+
 #### SCRIPT PARAMETERS ################
 
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
@@ -31,7 +35,15 @@ INITIAL_BACKUP=false
 
 
 
+
+
+
+
 ####
+
+
+
+
 
 
 
@@ -44,12 +56,20 @@ fi
 
 
 
+
+
+
+
 # DETECT IF THE FIRST TIME SETUP IS NEEDED
 
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2) = "" ]]; then
     INITIAL_BACKUP=true
     echo "level-name=world-default" >> $HOMEDIR/sesrvers/$SERVER/server.properties
 fi
+
+
+
+
 
 
 
@@ -61,6 +81,10 @@ fi
 
 
 
+
+
+
+
 # CREATE NEW SCREEN, EXECUTE SERVER'S RUN SCRIPT INSIDE
 
 WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
@@ -68,6 +92,10 @@ WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cu
 echo "Starting with $WORLD..." 
 
 screen -d -m -S "$SERVER" $HOMEDIR/servers/$SERVER/run.sh pleasedontdothis
+
+
+
+
 
 
 
@@ -85,7 +113,7 @@ while [ true ]; do
         break
     fi
 
-    if [[ "$I" == 30 ]]; then
+    if [[ $I -ge 30 ]]; then
         echo -e "\n$(tail -n15 $HOMEDIR/servers/$SERVER/logs/latest.log)\n"
 
         echo "Timeout reached. Above is the last 15 lines of latest.log."
@@ -94,6 +122,10 @@ while [ true ]; do
     fi
 
 done
+
+
+
+
 
 
 
