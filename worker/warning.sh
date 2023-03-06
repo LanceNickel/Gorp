@@ -16,10 +16,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "warning.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "warning.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -30,13 +46,21 @@ ACTION=$3
 
 
 
+
+
+
+
 ####
 
 
 
-# SEND WARNING MESSAGE
 
-echo "Giving a very polite heads up :) ..."
+
+
+
+### SEND WARNING MESSAGE
+
+if $OUTPUT; then echo "Giving a very polite heads up :) ..."; fi
 
 if [[ "$ACTION" == "power" ]]; then
         screen -S $SERVER -X stuff "say ATTENTION: Due to a power outage, this server must be shut down.\n"
@@ -48,20 +72,28 @@ fi
 
 
 
-# WAIT 30 SECONDS
+
+
+
+
+### WAIT 30 SECONDS
 
 I=0
 
 while [ true ]; do
         sleep 1
         ((I++))
-        echo -ne "  ${I}s\r"
+        if $OUTPUT; then echo -ne "  ${I}s\r"; fi
 
-        if [[ $I == "30" ]]; then
+        if [[ $I -ge 30 ]]; then
                 break
         fi
 done
 
 
 
-echo -ne "\n"
+
+
+
+
+if $OUTPUT; then echo -ne "\n"; fi

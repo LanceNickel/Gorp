@@ -16,10 +16,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "deleteworld.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "deleteworld.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -34,41 +50,53 @@ OPTIONS=$(worldOptions "$SERVER")
 
 
 
+
+
+
+
 ####
 
 
 
-# IF WORLD_TO_DELETE NOT SPECIFIED, ASK USER
+
+
+
+
+### IF WORLD_TO_DELETE NOT SPECIFIED, ASK USER
 
 if [[ "$WORLD_TO_DELETE" == "" ]]; then
     while [ true ]
     do
-        echo -e "Options:\n$OPTIONS"
+        if $OUTPUT; then echo -e "Options:\n$OPTIONS"; fi
 
         read -r -p "Please enter a world to delete: " response
 
-        TEST=$(echo $OPTIONS | grep -w $response)
+        TEST=$(echo $OPTIONS | grep -w $response); fi
 
         if [[ "$TEST" != "" ]]; then
             WORLD_TO_DELETE=$response
             break
         else
-            echo -e "\nSpecified world does not exist.\n"
+            if $OUTPUT; then echo -e "\nSpecified world does not exist.\n"; fi
         fi
     done
 fi
 
 
 
-# USER CONFIRMATION GUARDS
 
-echo "You are about to delete a world named '$WORLD_TO_DELETE' in the '$SERVER' server instance."
+
+
+
+### USER CONFIRMATION GUARDS
+
+if $OUTPUT; then echo "You are about to delete a world named '$WORLD_TO_DELETE' in the '$SERVER' server instance."; fi
 
 read -r -p "Did you back up the world? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.005
 else
-    echo "deleteworld.sh: You answered the prompt wrong! Exit (16)."
+    if $ERRORS; then echo "deleteworld.sh: You answered the prompt wrong! Exit (16)."; fi
     exit 16
 fi
 
@@ -76,13 +104,17 @@ read -r -p "Enter '$WORLD_TO_DELETE' to confirm: " response
 if [[ "$response" == "$WORLD_TO_DELETE" ]]; then
     sleep 0.5
 else
-    echo "deleteworld.sh: You answered the prompt wrong! Exit (16)."
+    if $ERRORS; then echo "deleteworld.sh: You answered the prompt wrong! Exit (16)."; fi
     exit 16
 fi
 
 
 
-# DELETE THE WORLD
+
+
+
+
+### DELETE THE WORLD
 
 rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_DELETE
 rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_DELETE}_nether
@@ -90,4 +122,8 @@ rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_DELETE}_the_end
 
 
 
-echo "World deleted!"
+
+
+
+
+if $OUTPUT; then echo "World deleted!"; fi

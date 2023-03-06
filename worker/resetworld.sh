@@ -16,10 +16,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "resetworld.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "resetworld.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -40,36 +56,52 @@ fi
 
 
 
+
+
+
+
 ####
 
 
 
-# USER CONFIRMATION GUARDS
 
-echo "You are about to reset the world named '$WORLD_TO_RESET' in the '$SERVER' server instance."
+
+
+
+### USER CONFIRMATION GUARDS
+
+if $OUTPUT; then echo "You are about to reset the world named '$WORLD_TO_RESET' in the '$SERVER' server instance."; fi
 
 read -r -p "Did you back up the world/don't care about it? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    echo "Resetting world..."
+    if $OUTPUT; then echo "Resetting world..."; fi
 else
-    echo "resetworld.sh: You answered the prompt wrong! Exit (16)."
+    if $ERRORS; then echo "resetworld.sh: You answered the prompt wrong! Exit (16)."; fi
     exit 16
 fi
 
 
 
-# STOP SERVER (if already running)
+
+
+
+
+### STOP SERVER (if already running)
 
 if [[ $RUNNING = true ]]; then
-    echo ("Stopping server...")
-    /usr/local/bin/action/mcstop pleasedontdothis $SERVER now > /dev/null
+    if $OUTPUT; then echo ("Stopping server..."); fi
+    /usr/local/bin/action/mcstop $1 $SERVER now > /dev/null
 fi
 
 
 
-# DELETE THE WORLD
 
-echo "Regenerating $WORLD_TO_RESET..."
+
+
+
+### DELETE THE WORLD
+
+if $OUTPUT; then echo "Regenerating $WORLD_TO_RESET..."; fi
 
 rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_RESET
 rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_nether
@@ -77,10 +109,18 @@ rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_the_end
 
 
 
-# START SERVER (to generate world)
-
-/usr/local/bin/action/mcstart pleasedontdothis $SERVER > /dev/null
 
 
 
-echo "World reset! Server is running."
+
+### START SERVER (to generate world)
+
+/usr/local/bin/action/mcstart $1 $SERVER > /dev/null
+
+
+
+
+
+
+
+if $OUTPUT; then echo "World reset! Server is running."; fi

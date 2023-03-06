@@ -15,10 +15,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "switchworld.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "switchworld.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -34,26 +50,34 @@ CURRENT_WORLD=$(activeWorld "$SERVER")
 
 
 
+
+
+
+
 ####
 
 
 
-# GET USER INPUT (if user did not specify a world)
+
+
+
+
+### GET USER INPUT (if user did not specify a world)
 
 if [[ "$SWITCH_TO" == "" ]]; then
 
     while [ true ]; do
-        echo -e "Options:\n$OPTIONS"
+        if $OUTPUT; then echo -e "Options:\n$OPTIONS"; fi
 
         read -r -p "Please enter a world to switch to: " response
 
-        TEST=$(echo $OPTIONS | grep -w $response)
+        TEST=$(echo $OPTIONS | grep -w $response); fi
 
         if [[ "$TEST" != "" ]]; then
             SWITCH_TO=$response
             break
         else
-            echo -e "\nSpecified world does not exist.\n"
+            if $OUTPUT; then echo -e "\nSpecified world does not exist.\n"; fi
         fi
     done
 
@@ -61,10 +85,18 @@ fi
 
 
 
-# SWITCH THE VALUE IN 'server.properties'
+
+
+
+
+### SWITCH THE VALUE IN 'server.properties'
 
 sed -i "s/level-name=$CURRENT_WORLD/level-name=world-$SWITCH_TO/" $HOMEDIR/servers/$SERVER/server.properties
 
 
 
-echo "World switched!"
+
+
+
+
+if $OUTPUT; then echo "World switched!"; fi

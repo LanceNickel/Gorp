@@ -15,8 +15,20 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "start.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "start.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
 
@@ -47,20 +59,7 @@ INITIAL_BACKUP=false
 
 
 
-# SCREEN ALREADY EXISTS GUARD
-
-if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-    echo "start.sh: Server already running. Exit (33)."
-    exit 33
-fi
-
-
-
-
-
-
-
-# DETECT IF THE FIRST TIME SETUP IS NEEDED
+### DETECT IF THE FIRST TIME SETUP IS NEEDED
 
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2) = "" ]]; then
     INITIAL_BACKUP=true
@@ -73,7 +72,7 @@ fi
 
 
 
-# DETECT IF INITIAL BACKUP IS NEEDED
+### DETECT IF INITIAL BACKUP IS NEEDED
 
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | wc -l) = "1" ]]; then
     INITIAL_BACKUP=true
@@ -85,21 +84,21 @@ fi
 
 
 
-# CREATE NEW SCREEN, EXECUTE SERVER'S RUN SCRIPT INSIDE
+### CREATE NEW SCREEN, EXECUTE SERVER'S RUN SCRIPT INSIDE
 
 WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
 
-echo "Starting with $WORLD..." 
+if $OUTPUT; then echo "Starting with $WORLD..."; fi
 
-screen -d -m -S "$SERVER" $HOMEDIR/servers/$SERVER/run.sh pleasedontdothis
-
-
+screen -d -m -S "$SERVER" $HOMEDIR/servers/$SERVER/run.sh $1
 
 
 
 
 
-# WAIT FOR LOG
+
+
+### WAIT FOR LOG
 
 sleep 5
 
@@ -114,10 +113,10 @@ while [ true ]; do
     fi
 
     if [[ $I -ge 30 ]]; then
-        echo -e "\n$(tail -n15 $HOMEDIR/servers/$SERVER/logs/latest.log)\n"
+        if $OUTPUT; then echo -e "\n$(tail -n15 $HOMEDIR/servers/$SERVER/logs/latest.log)\n"; fi
 
-        echo "Timeout reached. Above is the last 15 lines of latest.log."
-        echo "start.sh: Startup failure. Server never indicated 'done'. Server is in an unknown state. Exit (36)."
+        if $OUTPUT; then echo "Timeout reached. Above is the last 15 lines of latest.log."; fi
+        if $ERRORS; then echo "start.sh: Startup failure. Server never indicated 'done'. Server is in an unknown state. Exit (36)."; fi
         exit 36
     fi
 
@@ -133,14 +132,14 @@ done
 
 if [[ $INITIAL_BACKUP == true ]]; then
 
-    echo "Taking initial backup of world..."
+    if $OUTPUT; then echo "Taking initial backup of world..."; fi
 
     sleep 5
 
     /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER > /dev/null
 
-    echo "The server instance first-time setup is complete. You may now join your new server instance. Happy exploring!"
+    if $OUTPUT; then echo "The server instance first-time setup is complete. You may now join your new server instance. Happy exploring!"; fi
 else
 
-    echo "Server started! Use 'screen -r $SERVER' to get to this server's console."
+    if $OUTPUT; then echo "Server started! Use 'screen -r $SERVER' to get to this server's console."; fi
 fi

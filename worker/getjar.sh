@@ -15,10 +15,25 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "getjar.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "getjar.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
 
 
 
@@ -31,11 +46,23 @@ ARG=$3
 
 
 
+
+
+
+
 ####
 
 
 
+
+
+
+
 ####################    DOWNLOAD BY URL
+
+
+
+
 
 
 
@@ -50,30 +77,43 @@ if [[ "$MODE" == "u" ]]; then
 
 
 
+
+
+
+
         ### DOWNLOAD THE JAR
 
-        echo "Downloading JAR file from URL..."
+        if $OUTPUT; then echo "Downloading JAR file from URL..."; fi
 
         cd $HOMEDIR/tmp/
 
         wget -q $ARG
 
+
         # Verify download
         if [[ "$?" != "0" ]]; then
-                echo "getjar.sh: File download error, wget($?). Exit (62)."
+                if $ERRORS; then echo "getjar.sh: File download error, wget($?). Exit (62)."; fi
                 exit 62
         fi
 
 
 
+
+
+
+
         ### SUCCESS, COPY & PRINT PATH
 
-        FILENAME="$(echo $ARG | grep -o $(ls))"
+        FILENAME="$(echo $ARG | grep -o $(ls))"; fi
 
         chmod +x ./$FILENAME
         cp ./$FILENAME $HOMEDIR/jars/
 
-        echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$FILENAME"
+        if $OUTPUT; then echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$FILENAME"; fi
+
+
+
+
 
 
 
@@ -87,11 +127,23 @@ fi
 
 
 
+
+
+
+
 ####################    DOWNLOAD BY VERSION
 
 
 
+
+
+
+
 if [[ "$MODE" == "v" ]]; then
+
+
+
+
 
 
 
@@ -102,20 +154,32 @@ if [[ "$MODE" == "v" ]]; then
 
 
 
+
+
+
+
         ### GET AND PROCESS JSON FOR LATEST STABLE PAPER BUILD
 
-        echo "Downloading Paper $ARG..."
+        if $OUTPUT; then echo "Downloading Paper $ARG..."; fi
 
         curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$ARG/builds" -H 'accept: application/json' -o $HOMEDIR/tmp/builds.json
+
+
+
+
 
 
 
         ### VERSION NOT FOUND RT-GUARD
 
         if [[ $(cat $HOMEDIR/tmp/builds.json | grep 'Version not found.') != "" ]]; then
-        echo "getjar.sh: Game version not found. Exit (60)."
-        exit 60
+                if $ERRORS; then echo "getjar.sh: Game version not found. Exit (60)."; fi
+                exit 60
         fi
+
+
+
+
 
 
 
@@ -140,11 +204,19 @@ if [[ "$MODE" == "v" ]]; then
 
 
 
+
+
+
+
         ### STORE INFORMATION ABOUT BUILD TO DOWNLOAD
 
         BUILD=$(jq '.build' $HOMEDIR/tmp/latest.json)
         NAME=$(jq '.downloads.application.name' $HOMEDIR/tmp/latest.json | tail -c +2 | head -c -2)
         CHECKSUM=$(jq '.downloads.application.sha256' $HOMEDIR/tmp/latest.json | tail -c +2 | head -c -2)
+
+
+
+
 
 
 
@@ -154,15 +226,23 @@ if [[ "$MODE" == "v" ]]; then
 
 
 
+
+
+
+
         ### TEST THE CHECKSUM (RT-GUARD)
 
         TESTSUM="$(sha256sum $HOMEDIR/tmp/$NAME | cut -d " " -f 1)"
 
-        if [[ $TESTSUM != $CHECKSUM ]]; then
-                echo "getjar.sh: Downloaded JAR file failed checksum test. Exit (61)."
+        if [[ "$TESTSUM" != "$CHECKSUM" ]]; then
+                if $ERRORS; then echo "getjar.sh: Downloaded JAR file failed checksum test. Exit (61)."; fi
                 rm -rf $HOMEDIR/tmp
                 exit 61
         fi
+
+
+
+
 
 
 
@@ -174,14 +254,20 @@ if [[ "$MODE" == "v" ]]; then
 
 
 
+
+
+
+
         ### CLEAN UP
 
         rm -rf $HOMEDIR/tmp
 
 
 
-        echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$ARG.jar"
 
-        exit 0
+
+
+
+        if $OUTPUT; then echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$ARG.jar"; fi
 
 fi

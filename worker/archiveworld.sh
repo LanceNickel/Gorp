@@ -16,10 +16,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "archiveworld.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "archiveworld.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -34,42 +50,58 @@ OPTIONS=$(worldOptions "$SERVER")
 
 
 
+
+
+
+
 ####
 
 
 
-# IF WORLD_TO_ARCHIVE NOT SPECIFIED, ASK USER
+
+
+
+
+### IF WORLD_TO_ARCHIVE NOT SPECIFIED, ASK USER
 
 if [[ "$WORLD_TO_ARCHIVE" == "" ]]; then
     while [ true ]
     do
-        echo -e "Options:\n$OPTIONS"
+        if $OUTPUT; then echo -e "Options:\n$OPTIONS"; fi
 
         read -r -p "Please enter a world to archive: " response
 
-        TEST=$(echo $OPTIONS | grep -w $response)
+        TEST=$(echo $OPTIONS | grep -w $response); fi
 
         if [[ "$TEST" != "" ]]; then
             WORLD_TO_ARCHIVE=$response
             break
         else
-            echo -e "\nSpecified world does not exist.\n"
+            if $OUTPUT; then echo -e "\nSpecified world does not exist.\n"; fi
         fi
     done
 fi
 
 
 
-# CREATE TMP DIRECTORY
+
+
+
+
+### CREATE TMP DIRECTORY
 
 rm -rf $HOMEDIR/tmp
 mkdir -p $HOMEDIR/tmp/$WORLD_TO_ARCHIVE
 
 
 
-# COMPRESS THE WORLD FILES
 
-echo "Archiving $WORLD_TO_ARCHIVE..."
+
+
+
+### COMPRESS THE WORLD FILES
+
+if $OUTPUT; then echo "Archiving $WORLD_TO_ARCHIVE..."; fi
 
 cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
 cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
@@ -80,33 +112,49 @@ tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null
 
 
 
-# MAKE SURE ARCHIVE DESTINATION EXISTS
+
+
+
+
+### MAKE SURE ARCHIVE DESTINATION EXISTS
 
 mkdir -p $ARCHIVE_DEST/$SERVER
 
 
 
-# COPY THE WORLD FILES TO DESTINATION
 
-echo "Moving world to archive destination... ($ARCHIVE_DEST/$WORLD_TO_ARCHIVE.tar.gz)"
+
+
+
+### COPY THE WORLD FILES TO DESTINATION
+
+if $OUTPUT; then echo "Moving world to archive destination... ($ARCHIVE_DEST/$WORLD_TO_ARCHIVE.tar.gz)"; fi
 
 cp $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/
 
 
 
-# ARCHIVE INTEGRITY GUARD
+
+
+
+
+### ARCHIVE INTEGRITY GUARD
 
 CHECKSUM=$(md5sum $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 TESTSUM=$(md5sum $ARCHIVE_DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 
 if [[ "$CHECKSUM" != "$TESTSUM" ]]; then
-    echo "archiveworld.sh: Archived files in destination failed checksum test. Exit (61)."
+    if $ERRORS; then echo "archiveworld.sh: Archived files in destination failed checksum test. Exit (61)."; fi
     exit 61
 fi
 
 
 
-# CLEAN UP
+
+
+
+
+### CLEAN UP
 
 rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE
 rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether
@@ -116,4 +164,8 @@ rm -rf $HOMEDIR/tmp
 
 
 
-echo "World archived!"
+
+
+
+
+if $OUTPUT; then echo "World archived!"; fi

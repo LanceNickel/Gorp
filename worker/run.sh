@@ -38,9 +38,21 @@ CUSTOM_RAM=$RAM
 
 # KEY GUARD (to ensure a good, clean startup)
 
-if [ "$1" != "pleasedontdothis" ]; then
-        echo "run.sh: Not intended to be run directly. Exit (13)."
-        exit 13
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "SCRIPTNAME: Not intended to be run directly. Exit (13)."
+    exit 13
 fi
 
 

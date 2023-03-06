@@ -16,8 +16,20 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "backupserver.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "backupserver.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
 
@@ -43,64 +55,100 @@ TMP=$HOMEDIR/tmp/backup
 
 
 
+
+
+
+
 ####
 
 
 
-# SOURCE DIRECTORY RT-GUARD
+
+
+
+
+### SOURCE DIRECTORY RT-GUARD
 
 if [[ -d "$SOURCE/" ]]; then
         sleep 0.005
 else
-        echo "backupserver.sh: Backup failed because the source cannot be found. Exit (52)."
+        if $ERRORS; then echo "backupserver.sh: Backup failed because the source cannot be found. Exit (52)."; fi
         exit 52
 fi
 
 
 
-# CHECK FOR (OR CREATE) DESTINATION DIRECTORY (RT-GUARD)
 
-echo "Backing up $SERVER... (This may take a while!)"
+
+
+
+### CHECK FOR (OR CREATE) DESTINATION DIRECTORY (RT-GUARD)
+
+if $OUTPUT; then echo "Backing up $SERVER... (This may take a while!)"; fi
 
 mkdir -p $DEST/
 
 
 
-# FLUSH TEMP DIRECTORY
+
+
+
+
+### FLUSH TEMP DIRECTORY
 
 rm -rf $HOMEDIR/tmp/
 mkdir -p $TMP/$BACKUP_NAME/
 
 
 
-# COPY SERVER DIRECTORY TO TEMP
 
-echo "Copying files to temp directory..."
+
+
+
+### COPY SERVER DIRECTORY TO TEMP
+
+if $OUTPUT; then echo "Copying files to temp directory..."; fi
 
 cp -r $SOURCE $TMP/$BACKUP_NAME/
 
 
 
-# COMPRESS FILES IN TEMP DIRECTORY
 
-echo "Compressing files..."
+
+
+
+### COMPRESS FILES IN TEMP DIRECTORY
+
+if $OUTPUT; then echo "Compressing files..."; fi
 cd $TMP
 tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
 
 
 
-# COPY THE COMPRESSED BACKUP TO THE DESTINATION
 
-echo "Copying files to backup directory..."
+
+
+
+### COPY THE COMPRESSED BACKUP TO THE DESTINATION
+
+if $OUTPUT; then echo "Copying files to backup directory..."; fi
 cp $TMP/$BACKUP_NAME.tar.gz $DEST/
 
 
 
-# CLEAN UP
+
+
+
+
+### CLEAN UP
 
 rm -rf $HOMEDIR/tmp
 
 
 
-echo "Backup name: $BACKUP_NAME"
-echo "Server backup complete!"
+
+
+
+
+if $OUTPUT; then echo "Backup name: $BACKUP_NAME"; fi
+if $OUTPUT; then echo "Server backup complete!"; fi

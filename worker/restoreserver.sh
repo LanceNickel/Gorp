@@ -15,10 +15,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "restoreserver.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "restoreserver.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -30,24 +46,36 @@ SERVER=$2
 
 
 
+
+
+
+
 ####
 
 
 
-# SELECT FROM AVAILABLE WORLD FILES
+
+
+
+
+### SELECT FROM AVAILABLE WORLD FILES
 
 cd $BACKUP_DEST/$SERVER/server-backups
 
 
 
-# SELECT FROM AVAILABLE YEARS
+
+
+
+
+### SELECT FROM AVAILABLE YEARS
 
 echo -e "\nSelect year"
 
 select d in *;
 do
     test -n "$d" && break
-    echo ">>> Invalid selection"
+    if $OUTPUT; then echo ">>> Invalid selection"; fi
 done
 
 cd "$d"
@@ -55,14 +83,18 @@ YEAR=$d
 
 
 
-# SELECT FROM AVAILABLE MONTHS
+
+
+
+
+### SELECT FROM AVAILABLE MONTHS
 
 echo -e "\nSelect month"
 
 select d in *;
 do
     test -n "$d" && break
-    echo ">>> Invalid selection"
+    if $OUTPUT; then echo ">>> Invalid selection"; fi
 done
 
 cd "$d"
@@ -70,14 +102,18 @@ MONTH=$d
 
 
 
-# SELECT FROM AVAILABLE DAYS
+
+
+
+
+### SELECT FROM AVAILABLE DAYS
 
 echo -e "\nSelect day of month"
 
 select d in *;
 do
     test -n "$d" && break
-    echo ">>> Invalid selection"
+    if $OUTPUT; then echo ">>> Invalid selection"; fi
 done
 
 cd "$d"
@@ -85,38 +121,50 @@ DAY=$d
 
 
 
-# SELECT BACKUP FILE
+
+
+
+
+### SELECT BACKUP FILE
 
 echo -e "\nSelect backup to restore from\nDate format is YYYY-MM-DD_HHMM-SS"
 
 select d in *;
 do
     test -n "$d" && break
-    echo ">>> Invalid selection"
+    if $OUTPUT; then echo ">>> Invalid selection"; fi
 done
 
 FILE_TO_RESTORE="$d"
-FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
+FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1); fi
 
 
 
-# BACKUP CURRENT WORLD
-
-echo "Backing up current server..."
-
-/usr/local/bin/gorpmc/action/mcbackupserver pleasedontdothis $SERVER
 
 
 
-# FLUSH CURRENT SERVER
 
-echo "Restoring selected files..."
+### BACKUP CURRENT WORLD
+
+if $OUTPUT; then echo "Backing up current server..."; fi
+
+/usr/local/bin/gorpmc/action/mcbackupserver $1 $SERVER
+
+
+
+### FLUSH CURRENT SERVER
+
+if $OUTPUT; then echo "Restoring selected files..."; fi
 
 rm -rf $HOMEDIR/servers/$SERVER/
 
 
 
-# RESTORE WORLD
+
+
+
+
+### RESTORE WORLD
 
 rm -rf $HOMEDIR/tmp
 mkdir -p $HOMEDIR/tmp/restore
@@ -129,4 +177,8 @@ cp -r $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/
 
 
 
-echo "Server restored from backup!"
+
+
+
+
+if $OUTPUT; then echo "Server restored from backup!"; fi

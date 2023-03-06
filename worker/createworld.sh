@@ -16,10 +16,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "createworld.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "createworld.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -34,11 +50,19 @@ OLD_WORLD=$(activeWorld "$SERVER")
 
 
 
+
+
+
+
 ####
 
 
 
-# IF NEW_WORLD NOT SPECIFIED THEN ASK USER
+
+
+
+
+### IF NEW_WORLD NOT SPECIFIED THEN ASK USER
 
 if [[ "$NEW_WORLD" == "" ]]; then
 
@@ -47,7 +71,7 @@ if [[ "$NEW_WORLD" == "" ]]; then
                 read -r -p "Enter a new world name: " response
 
                 if [[ -d "$HOMEDIR/servers/$SERVER/world-$response" ]]; then
-                        echo "A world with this name already exists."
+                        if $OUTPUT; then echo "A world with this name already exists."; fi
                 else
                         NEW_WORLD=$response
                         break
@@ -58,26 +82,38 @@ fi
 
 
 
-# UPDATE 'level-name' IN 'server.properties' AND START/STOP SERVER TO GENERATE WORLD FILES
 
-echo "Generating new world..."
+
+
+
+### UPDATE 'level-name' IN 'server.properties' AND START/STOP SERVER TO GENERATE WORLD FILES
+
+if $OUTPUT; then echo "Generating new world..."; fi
 
 sed -i "s/level-name=$OLD_WORLD/level-name=world-$NEW_WORLD/" $HOMEDIR/servers/$SERVER/server.properties
 
-/usr/local/bin/gorpmc/action/mcstart pleasedontdothis $SERVER > /dev/null
+/usr/local/bin/gorpmc/action/mcstart $1 $SERVER > /dev/null
 
 sleep 5
 
-/usr/local/bin/gorpmc/action/mcstop pleasedontdothis $SERVER now > /dev/null
+/usr/local/bin/gorpmc/action/mcstop $1 $SERVER now > /dev/null
 
 
 
-# TAKE INITIAL BACKUP OF WORLD...
-
-echo "Taking initial backup of the new world..."
-
-/usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER > /dev/null
 
 
 
-echo "New world created! Start the server to begin exploring."
+
+### TAKE INITIAL BACKUP OF WORLD...
+
+if $OUTPUT; then echo "Taking initial backup of the new world..."; fi
+
+/usr/local/bin/gorpmc/action/mcbackupworld $1 $SERVER > /dev/null
+
+
+
+
+
+
+
+if $OUTPUT; then echo "New world created! Start the server to begin exploring."; fi

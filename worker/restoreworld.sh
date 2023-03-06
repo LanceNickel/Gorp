@@ -15,10 +15,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "pleasedontdothis" ]]; then
-    echo "restoreworld.sh: Not intended to be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "restoreworld.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -31,11 +47,19 @@ CURRENT_LEVEL_NAME=$(activeWorld "$SERVER")
 
 
 
+
+
+
+
 ####
 
 
 
-# SELECT FROM AVAILABLE WORLD FILES
+
+
+
+
+### SELECT FROM AVAILABLE WORLD FILES
 
 cd $BACKUP_DEST/$SERVER
 
@@ -44,7 +68,7 @@ echo -e "\nPlease select a world (level-name in server.properties)"
 select d in *;
 do
     test -n "$d" && break
-    echo ">>> Invalid selection"
+    if $OUTPUT; then echo ">>> Invalid selection"; fi
 done
 
 cd "$d"
@@ -52,14 +76,17 @@ RESTORE_LEVEL_NAME=$d
 
 
 
-# SELECT FROM AVAILABLE YEARS
 
+
+
+
+### SELECT FROM AVAILABLE YEARS
 echo -e "\nSelect year"
 
 select d in *;
 do
     test -n "$d" && break
-    echo ">>> Invalid selection"
+    if $OUTPUT; then echo ">>> Invalid selection"; fi
 done
 
 cd "$d"
@@ -67,14 +94,18 @@ YEAR=$d
 
 
 
-# SELECT FROM AVAILABLE MONTHS
+
+
+
+
+### SELECT FROM AVAILABLE MONTHS
 
 echo -e "\nSelect month"
 
 select d in *;
 do
     test -n "$d" && break
-    echo ">>> Invalid selection"
+    if $OUTPUT; then echo ">>> Invalid selection"; fi
 done
 
 cd "$d"
@@ -82,14 +113,18 @@ MONTH=$d
 
 
 
-# SELECT FROM AVAILABLE DAYS
+
+
+
+
+### SELECT FROM AVAILABLE DAYS
 
 echo -e "\nSelect day of month"
 
 select d in *;
 do
     test -n "$d" && break
-    echo ">>> Invalid selection"
+    if $OUTPUT; then echo ">>> Invalid selection"; fi
 done
 
 cd "$d"
@@ -97,38 +132,54 @@ DAY=$d
 
 
 
-# SELECT BACKUP FILE
+
+
+
+
+### SELECT BACKUP FILE
 
 echo -e "\nSelect backup to restore from\nDate format is YYYY-MM-DD_HHMM-SS"
 
 select d in *;
 do
     test -n "$d" && break
-    echo ">>> Invalid selection"
+    if $OUTPUT; then echo ">>> Invalid selection"; fi
 done
 
 FILE_TO_RESTORE="$d"
-FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
+FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1); fi
 
 
 
-# BACKUP CURRENT WORLD
 
-echo "Backing up current world..."
+
+
+
+### BACKUP CURRENT WORLD
+
+if $OUTPUT; then echo "Backing up current world..."; fi
 
 /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER
 
 
 
-# FLUSH CURRENT WORLD
 
-echo "Restoring selected files..."
+
+
+
+### FLUSH CURRENT WORLD
+
+if $OUTPUT; then echo "Restoring selected files..."; fi
 
 rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}*
 
 
 
-# RESTORE WORLD
+
+
+
+
+### RESTORE WORLD
 
 rm -rf $HOMEDIR/tmp
 mkdir -p $HOMEDIR/tmp/restore
@@ -141,4 +192,8 @@ cp -r $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/
 
 
 
-echo "World restored from backup!"
+
+
+
+
+if $OUTPUT; then echo "World restored from backup!"; fi

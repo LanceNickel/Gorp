@@ -16,10 +16,26 @@
 
 ### KEY GUARD
 
-if [[ "$1" != "s3zujKM87FD56sxb" ]]; then
-    echo "createserver.sh: Cannot be run directly. Exit (13)."
+if [[ "$1" == "pleasedontdothis" ]]; then
+    OUTPUT=true
+    ERRORS=true
+
+elif [[ "$1" == "pleaseshutup" ]]; then
+    OUTPUT=false
+    ERRORS=true
+
+elif [[ "$1" == "pleasebesilent" ]]; then
+    OUTPUT=false
+    ERRORS=false
+
+else
+    if $ERRORS; then echo "createserver.sh: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
+
+
+
+
 
 
 
@@ -32,19 +48,31 @@ WORLD=$3
 
 
 
+
+
+
+
 ####
 
 
-# CREATE SERVER DIRECTORY AND COPY RUN.SH
+
+
+
+
+### CREATE SERVER DIRECTORY AND COPY RUN.SH
 
 mkdir $HOMEDIR/servers/$SERVER
 cp /usr/local/bin/gorpmc/worker/run.sh $HOMEDIR/servers/$SERVER/
 
 
 
-# PREPARE KEY FILES
-# It is not possible to get to this part of code execution without first agreeing to the Minecraft EULA via a prompt.
-# Users who did not expressly agree to the EULA did not get here, as they would not have been able to execute this script with the key (reasonably).
+
+
+
+
+### PREPARE KEY FILES
+#   It is not possible to get to this part of code execution without first agreeing to the Minecraft EULA via a prompt.
+#   Users who did not expressly agree to the EULA did not get here, as they would not have been able to execute this script with the key (reasonably).
 
 echo "eula=true" > $HOMEDIR/servers/$SERVER/eula.txt
 touch $HOMEDIR/servers/$SERVER/server.properties
@@ -55,4 +83,4 @@ echo "level-name=world-$WORLD" > $HOMEDIR/servers/$SERVER/server.properties
 
 
 
-echo "Server created!"
+if $OUTPUT; then echo "Server created!"; fi
