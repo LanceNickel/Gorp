@@ -155,7 +155,7 @@ PROPERTIES_WHITELIST="$(grep 'enforce-whitelist=' $HOMEDIR/servers/$SERVER/serve
 
 
 # properties.gamemode
-PROPERTIES_GAMEMODE="$(grep 'force-gamemode=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
+PROPERTIES_GAMEMODE="$(grep 'gamemode=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
 
 
 
