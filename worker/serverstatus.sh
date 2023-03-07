@@ -89,7 +89,7 @@ fi
 
 
 # status.version
-STATUS_VERSION="$(echo $HOMEDIR/servers/$SERVER/lastrunversion)"
+STATUS_VERSION="$(cat $HOMEDIR/servers/$SERVER/lastrunversion)"
 
 if [[ "$STATUS_VERSION" == "" ]]; then
     STATUS_VERSION="none"
