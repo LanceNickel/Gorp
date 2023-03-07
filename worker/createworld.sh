@@ -92,11 +92,7 @@ if $OUTPUT; then echo "Generating new world..."; fi
 
 sed -i "s/level-name=$OLD_WORLD/level-name=world-$NEW_WORLD/" $HOMEDIR/servers/$SERVER/server.properties
 
-/usr/local/bin/gorpmc/action/mcstart $1 $SERVER > /dev/null
-
-sleep 5
-
-/usr/local/bin/gorpmc/action/mcstop $1 $SERVER now > /dev/null
+/usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null
 
 
 
@@ -104,16 +100,4 @@ sleep 5
 
 
 
-### TAKE INITIAL BACKUP OF WORLD...
-
-if $OUTPUT; then echo "Taking initial backup of the new world..."; fi
-
-/usr/local/bin/gorpmc/action/mcbackupworld $1 $SERVER > /dev/null
-
-
-
-
-
-
-
-if $OUTPUT; then echo "New world created! Start the server to begin exploring."; fi
+if $OUTPUT; then echo "New world created! Server is running."; fi

@@ -43,7 +43,10 @@ fi
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 SERVER=$2
-INITIAL_BACKUP=false
+GENERATE=$3
+
+ACTIVE_WORLD=$(activeWorld "$SERVER")
+WORLD_EXISTS=$(worldExists "$SERVER" "$ACTIVE_WORLD")
 
 
 
@@ -59,11 +62,17 @@ INITIAL_BACKUP=false
 
 
 
-### DETECT IF THE FIRST TIME SETUP IS NEEDED
+### DETECT IF FIRST-GENERATION REQUIRED
 
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2) = "" ]]; then
-    INITIAL_BACKUP=true
     echo "level-name=world-default" >> $HOMEDIR/sesrvers/$SERVER/server.properties
+    GENERATE="-y"
+fi
+
+
+
+if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | wc -l) == "1" ]]; then
+    GENERATE="-y"
 fi
 
 
@@ -72,10 +81,17 @@ fi
 
 
 
-### DETECT IF INITIAL BACKUP IS NEEDED
+### PROMPT TO GENERATE
 
-if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | wc -l) = "1" ]]; then
-    INITIAL_BACKUP=true
+if [[ "$WORLD_EXISTS" == "false" ]] && [[ "$GENERATE" != "-y" ]]; then
+    read -r -p "Active world ($ACTIVE_WORLD) doesn't exist. Generate new world? [y/n] " response
+
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        sleep 0.25
+    else
+        if $ERRORS; then echo "start.sh: User cancelled. Exit (19)."; fi
+        exit 19
+    fi
 fi
 
 
@@ -128,18 +144,15 @@ done
 
 
 
-# IF FIRST TIME, WAIT A FEW SECONDS THEN TAKE AN INITIAL BACKUP (and also override the default end text)
+### UPDATE VERSION INFORMATION
 
-if [[ $INITIAL_BACKUP == true ]]; then
+LOG_INDICATES_VERSION="$(grep 'Starting minecraft server version' $HOMEDIR/servers/$SERVER/logs/latest.log | cut -d ':' -f4 | cut -d ' ' -f6)"
+echo "$LOG_INDICATES_VERSION" > $HOMEDIR/servers/$SERVER/lastrunversion
 
-    if $OUTPUT; then echo "Taking initial backup of world..."; fi
 
-    sleep 5
 
-    /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER > /dev/null
 
-    if $OUTPUT; then echo "The server instance first-time setup is complete. You may now join your new server instance. Happy exploring!"; fi
-else
 
-    if $OUTPUT; then echo "Server started! Use 'screen -r $SERVER' to get to this server's console."; fi
-fi
+
+
+if $OUTPUT; then echo "Server started! Use 'screen -r $SERVER' to get to this server's console."; fi

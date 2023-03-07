@@ -42,16 +42,16 @@ fi
 #### SCRIPT OPTS ################
 
 OPTIND=2
-while getopts ":u:v:" flag; do
+while getopts ":g:u:" flag; do
     case $flag in
+        g)
+            MODE="g"
+            ARG="$OPTARG"
+            ;;
         u)
             MODE="u"
             ARG="$OPTARG"
             ;;
-        v)
-                MODE="v"
-                ARG="$OPTARG"
-                ;;
         \?)
             if $ERRORS; then echo "Bad input. Expected: gorp get-jar [-u | -v] [url | version]. Exit (14)."; fi
             exit 14

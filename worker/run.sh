@@ -58,7 +58,7 @@ elif [[ "$1" == "pleasebesilent" ]]; then
     ERRORS=false
 
 else
-    if $ERRORS; then echo "SCRIPTNAME: Not intended to be run directly. Exit (13)."
+    if $ERRORS; then echo "SCRIPTNAME: Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
 

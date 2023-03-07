@@ -89,7 +89,7 @@ fi
 
 
 # status.version
-STATUS_VERSION="$(grep 'Starting minecraft server version' $HOMEDIR/servers/$SERVER/logs/latest.log | cut -d ':' -f4 | cut -d ' ' -f6)"
+STATUS_VERSION="$(echo $HOMEDIR/servers/$SERVER/lastrunversion)"
 
 if [[ "$STATUS_VERSION" == "" ]]; then
     STATUS_VERSION="none"
@@ -131,23 +131,15 @@ WORLD_ACTIVE="$(grep 'level-name' $HOMEDIR/servers/$SERVER/server.properties | c
 
 
 
-# world.total_size
-WORLD_TOTAL=$(du -shc $HOMEDIR/servers/$SERVER/$WORLD_ACTIVE* | tail -n1 | cut -d$'\t' -f1)
+## WORLD SIZES (if exists)
 
 
 
-# world.o_size
-WORLD_O="$(du -sh $HOMEDIR/servers/$SERVER/$WORLD_ACTIVE/ | cut -d$'\t' -f1)"
 
-
-
-# world.n_size
-WORLD_N="$(du -sh $HOMEDIR/servers/$SERVER/${WORLD_ACTIVE}_nether/ | cut -d$'\t' -f1)"
-
-
-
-# world.e_size
-WORLD_E="$(du -sh $HOMEDIR/servers/$SERVER/${WORLD_ACTIVE}_the_end/ | cut -d$'\t' -f1)"
+WORLD_TOTAL=$(du -shc $HOMEDIR/servers/$SERVER/$WORLD_ACTIVE* 2> /dev/null | tail -n1 | cut -d$'\t' -f1)
+WORLD_O="$(du -shc $HOMEDIR/servers/$SERVER/$WORLD_ACTIVE/ 2> /dev/null | tail -n1 | cut -d$'\t' -f1)"
+WORLD_N="$(du -shc $HOMEDIR/servers/$SERVER/${WORLD_ACTIVE}_nether/ 2> /dev/null | tail -n1 | cut -d$'\t' -f1)"
+WORLD_E="$(du -shc $HOMEDIR/servers/$SERVER/${WORLD_ACTIVE}_the_end/ 2> /dev/null | tail -n1 | cut -d$'\t' -f1)"
 
 
 

@@ -89,8 +89,8 @@ fi
 ### STOP SERVER (if already running)
 
 if [[ $RUNNING = true ]]; then
-    if $OUTPUT; then echo ("Stopping server..."); fi
-    /usr/local/bin/action/mcstop $1 $SERVER now > /dev/null
+    if $OUTPUT; then echo "Stopping server..."; fi
+    /usr/local/bin/gorpmc/action/mcstop $1 $SERVER -n > /dev/null
 fi
 
 
@@ -103,9 +103,9 @@ fi
 
 if $OUTPUT; then echo "Regenerating $WORLD_TO_RESET..."; fi
 
-rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_RESET
-rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_nether
-rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_the_end
+rm -rf $HOMEDIR/servers/$SERVER/$WORLD_TO_RESET
+rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_nether
+rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_the_end
 
 
 
@@ -115,7 +115,7 @@ rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_the_end
 
 ### START SERVER (to generate world)
 
-/usr/local/bin/action/mcstart $1 $SERVER > /dev/null
+/usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null
 
 
 

@@ -139,7 +139,7 @@ fi
 
 
 
-if [[ "$MODE" == "v" ]]; then
+if [[ "$MODE" == "g" ]]; then
 
 
 
