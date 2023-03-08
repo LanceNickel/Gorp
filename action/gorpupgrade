@@ -44,7 +44,7 @@ source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 INSTALLED=$(gorp -v | cut -d ' ' -f3)
 LATEST_TAG=$(curl -s https://api.github.com/repos/LanceNickel/Gorp/releases/latest | jq -r .tag_name)
-LATEST_VER=$(echo $LATEST_TAG | cut -c 2-); fi
+LATEST_VER=$(echo $LATEST_TAG | cut -c 2-)
 
 
 
