@@ -1,7 +1,8 @@
 Gorp - Simple Minecraft CLI tools.
-v0.4.2
+v0.4.3
 
 Docs:       https://gorp.lanickel.com/
+License:    https://gorp.lanickel.com/license/
 
 Usage:      gorp action [options]...
 

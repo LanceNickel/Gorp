@@ -50,37 +50,7 @@ HOMEDIR=~
 
 ### WELCOME
 
-echo -e "\nWelcome to Gorp!"
-
-
-
-### USER EULA AND AGREEMENT RT-GUARD
-
-if [[ "$1" != "testtesttest" ]]; then
-
-    echo -e "\n==== IMPORTANT! ====\nTo continue you must agree to the Minecraft EULA (https://aka.ms/MinecraftEULA).\nYou must also agree to use Gorp for PERSONAL USE ONLY."
-
-    read -r -p "Do you agree to the Minecraft EULA? [y/n]: " response
-    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-        sleep 0.25
-    else
-        echo "You answered the prompt wrong! Exit (16)."
-        exit 16
-    fi
-
-    read -r -p "Do you agree to use Gorp for personal use only? COMMERCIAL USE PROHIBITED. [y/n]: " response
-    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-        sleep 0.25
-    else
-        echo "You answered the prompt wrong! Exit (16)."
-        exit 12
-    fi
-
-fi
-
-
-
-echo "Installing..."
+echo -e "\nInstalling Gorp..."
 
 
 
