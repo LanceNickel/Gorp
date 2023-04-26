@@ -28,7 +28,7 @@ elif [[ "$1" == "pleasebesilent" ]]; then
     ERRORS=false
 
 else
-    if $ERRORS; then echo "SCRIPTNAME: Not intended to be run directly. Exit (13)."; fi
+    if $ERRORS; then echo "Not intended to be run directly. Exit (13)."; fi
     exit 13
 fi
 
@@ -112,13 +112,6 @@ sudo cp $HOMEDIR/tmp/updatefiles/action/* /usr/local/bin/gorpmc/action/
 sudo cp $HOMEDIR/tmp/updatefiles/worker/* /usr/local/bin/gorpmc/worker/
 sudo cp $HOMEDIR/tmp/updatefiles/help.txt /usr/local/bin/gorpmc/
 sudo cp $HOMEDIR/tmp/updatefiles/gorp /usr/local/bin/
-
-
-
-
-
-
-sleep 1
 
 
 

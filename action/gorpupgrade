@@ -42,9 +42,7 @@ fi
 
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
-INSTALLED=$(gorp -v | cut -d ' ' -f3)
-LATEST_TAG=$(curl -s https://api.github.com/repos/LanceNickel/Gorp/releases/latest | jq -r .tag_name)
-LATEST_VER=$(echo $LATEST_TAG | cut -c 2-)
+I_VERSION=$(gorp -v | cut -d ' ' -f3)
 
 
 
@@ -60,9 +58,40 @@ LATEST_VER=$(echo $LATEST_TAG | cut -c 2-)
 
 
 
+### TEMP DIRECTORY
+
+rm -rf $HOMEDIR/tmp/
+mkdir -p $HOMEDIR/tmp/
+
+
+
+
+
+
+
+### GET & STORE RELEASE INFORMATION
+
+cd $HOMEDIR/tmp/
+wget -q https://raw.githubusercontent.com/LanceNickel/Gorp/main/release
+
+
+
+# Store
+
+R_SHA256=$(grep 'SHA256=' release | cut -d '=' -f2)
+R_MD5=$(grep 'MD5=' release | cut -d '=' -f2)
+R_VERSION=$(grep 'V=' release | cut -d '=' -f2)
+
+
+
+
+
+
+
+
 ### DO WE EVEN NEED TO UPGRADE?
 
-if [[ "$INSTALLED" == "$LATEST_VER" ]]; then
+if [[ "$I_VERSION" == "$R_VERSION" ]]; then
     if $OUTPUT; then echo "Gorp is already on the latest version."; fi
     exit 0
 fi
@@ -84,30 +113,56 @@ sudo whoami > /dev/null
 
 
 
-### TEMP DIRECTORY
-
-rm -rf $HOMEDIR/tmp/
-mkdir -p $HOMEDIR/tmp/
-
-
-
-
-
-
-
 ### DOWNLOAD THE LATEST RELEASE
 
 if $OUTPUT; then echo "Downloading latest release..."; fi
 
 cd $HOMEDIR/tmp/
-wget -q https://github.com/LanceNickel/Gorp/archive/refs/tags/$LATEST_TAG.tar.gz
-
-tar -xf $LATEST_TAG.tar.gz > /dev/null
-
-mkdir -p ./updatefiles/
-mv ./Gorp-$LATEST_VER/* ./updatefiles/
+wget -q https://gorp.lanickel.com/release.tar.gz
 
 
+
+# Checksums
+
+L_SHA256=$(sha256sum release.tar.gz)
+L_MD5=$(md5sum release.tar.gz)
+
+
+
+# sha256 comparison
+
+if [[ "$L_SHA256" != "$R_SHA256" ]]; then
+    if $ERRORS; then echo "Downloaded checksum does not match remote (sha256)."
+    exit 1
+fi
+
+
+
+# md5 comparison
+
+if [[ "$L_MD5" != "$R_MD5" ]]; then
+    if $ERRORS; then echo "Downloaded checksum does not match remote (md5)."
+    exit 1
+fi
+
+
+
+
+
+
+
+### UNPACK TAR
+
+tar -xf latest.tar.gz > /dev/null
+
+mv ./latest ./updatefiles
+
+
+
+
+
+
+exit
 
 
 
