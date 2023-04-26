@@ -44,6 +44,8 @@ source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 I_VERSION=$(gorp -v | cut -d ' ' -f3)
 
+echo "installed ver: $I_VERSION"
+
 
 
 
@@ -82,6 +84,10 @@ R_SHA256=$(grep 'SHA256=' release | cut -d '=' -f2)
 R_MD5=$(grep 'MD5=' release | cut -d '=' -f2)
 R_VERSION=$(grep 'V=' release | cut -d '=' -f2)
 
+echo "remote sha: $R_SHA256"
+echo "remote md5: $R_MD5"
+echo "remote ver: $R_VERSION"
+
 
 
 
@@ -113,26 +119,29 @@ sudo whoami > /dev/null
 
 
 
-### DOWNLOAD THE LATEST RELEASE
+### DOWNLOAD & VERIFY THE LATEST RELEASE
 
 if $OUTPUT; then echo "Downloading latest release..."; fi
 
 cd $HOMEDIR/tmp/
-wget -q https://gorp.lanickel.com/release.tar.gz
+wget -q https://gorp.lanickel.com/latest.tar.gz
 
 
 
 # Checksums
 
-L_SHA256=$(sha256sum release.tar.gz)
-L_MD5=$(md5sum release.tar.gz)
+L_SHA256=$(sha256sum latest.tar.gz)
+L_MD5=$(md5sum latest.tar.gz)
+
+echo "local (downloaded) sha: $L_SHA256"
+echo "local (downloaded) md5: $L_MD5"
 
 
 
 # sha256 comparison
 
 if [[ "$L_SHA256" != "$R_SHA256" ]]; then
-    if $ERRORS; then echo "Downloaded checksum does not match remote (sha256)."
+    if $ERRORS; then echo "Downloaded checksum does not match remote (sha256)."; fi
     exit 1
 fi
 
@@ -141,7 +150,7 @@ fi
 # md5 comparison
 
 if [[ "$L_MD5" != "$R_MD5" ]]; then
-    if $ERRORS; then echo "Downloaded checksum does not match remote (md5)."
+    if $ERRORS; then echo "Downloaded checksum does not match remote (md5)."; fi
     exit 1
 fi
 
@@ -155,14 +164,7 @@ fi
 
 tar -xf latest.tar.gz > /dev/null
 
-mv ./latest ./updatefiles
-
-
-
-
-
-
-exit
+mv ./latest/ ./updatefiles/
 
 
 
