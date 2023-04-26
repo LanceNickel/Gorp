@@ -1,0 +1,6 @@
+This file serves a vital function in the Gorp self-upgrade functionality. It will check this file for information on the latest Gorp release.
+
+SHA256=4f68efee494b573d602c8b6b2f2dddbd6533fa84b351bfe98f014a5d62521223
+MD5=7ece3b716c94eeb5b15a1cdafb8155be
+
+V=0.4.2
