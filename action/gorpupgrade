@@ -42,9 +42,7 @@ fi
 
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
-I_VERSION=$(gorp -v | cut -d ' ' -f3)
-
-echo "installed ver: $I_VERSION"
+I_VERSION=$(grep 'Gorp version' /usr/local/etc/gorp.conf | cut -d ':' -f2 | cut -d ' ' -f3)
 
 
 
@@ -83,10 +81,6 @@ wget -q https://raw.githubusercontent.com/LanceNickel/Gorp/main/release
 R_SHA256=$(grep 'SHA256=' release | cut -d '=' -f2)
 R_MD5=$(grep 'MD5=' release | cut -d '=' -f2)
 R_VERSION=$(grep 'V=' release | cut -d '=' -f2)
-
-echo "remote sha: $R_SHA256"
-echo "remote md5: $R_MD5"
-echo "remote ver: $R_VERSION"
 
 
 
@@ -132,9 +126,6 @@ wget -q https://gorp.lanickel.com/latest.tar.gz
 
 L_SHA256=$(sha256sum latest.tar.gz)
 L_MD5=$(md5sum latest.tar.gz)
-
-echo "local (downloaded) sha: $L_SHA256"
-echo "local (downloaded) md5: $L_MD5"
 
 
 

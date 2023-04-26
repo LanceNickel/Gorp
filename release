@@ -3,4 +3,4 @@ This file serves a vital function in the Gorp self-upgrade functionality. It wil
 SHA256=5eea270a86c06012ce3b147accaf0d332566e3016cadb9d1e6446ebf1068ecfe  latest.tar.gz
 MD5=6c686ef97a00368c96f2010ae78d0c69  latest.tar.gz
 
-V=0.4.2
+V=0.4.3
