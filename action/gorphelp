@@ -19,4 +19,4 @@
 
 
 
-less /usr/local/bin/gorpmc/help.txt
+less /usr/local/bin/gorpmc/help.txt || handle_error "Unable to open help text."
