@@ -128,9 +128,9 @@ fi
 
 echo "Copying files to temp directory..."
 
-cp -r $SOURCE $TMP/$BACKUP_NAME/$WORLD || handle_error "Failed to cp $SOURCE to $TMP/$BACKUP_NAME/$WORLD"
-cp -r ${SOURCE}_nether $TMP/$BACKUP_NAME/${WORLD}_nether || handle_error "Failed to cp ${SOURCE}_nether to $TMP/$BACKUP_NAME/${WORLD}_nether"
-cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end || handle_error "Failed to cp ${SOURCE}_the_end to $TMP/$BACKUP_NAME/${WORLD}_the_end"
+cp -r $SOURCE $TMP/$BACKUP_NAME/$WORLD || handle_error "Failed to copy overworld files to tmp directory"
+cp -r ${SOURCE}_nether $TMP/$BACKUP_NAME/${WORLD}_nether || handle_error "Failed to copy nether files to tmp directory"
+cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end || handle_error "Failed to copy end files to tmp directory"
 
 
 
@@ -154,7 +154,7 @@ fi
 
 echo "Compressing files..."
 cd $TMP || handle_error "Failed to cd to $TMP"
-tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null || handle_error "Failed to compress files."
+tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null || handle_error "Failed to compress files"
 
 
 
@@ -165,7 +165,7 @@ tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null || handle_error
 ### COPY THE COMPRESSED BACKUP TO THE DESTINATION
 
 echo "Copying files to backup directory..."
-cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to cp $TMP/$BACKUP_NAME.tar.gz to $DEST/"
+cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to copy tarball in tmp to destination"
 
 
 

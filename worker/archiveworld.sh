@@ -21,7 +21,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -81,14 +81,14 @@ fi
 
 echo "Copying files for $WORLD_TO_ARCHIVE..."
 
-cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ to /tmp/gorp/$WORLD_TO_ARCHIVE/"
-cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ to /tmp/gorp/$WORLD_TO_ARCHIVE/"
-cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ to /tmp/gorp/$WORLD_TO_ARCHIVE/"
+cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp overworld files to tmp"
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp nether files to tmp"
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp end files to tmp"
 
 echo "Compressing files..."
 
 cd /tmp/gorp || handle_error "Failed to cd to /tmp/gorp"
-tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null || handle_error "Failed to compress archive files in /tmp/gorp"
+tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null || handle_error "Failed to compress archive files"
 
 
 
@@ -98,7 +98,7 @@ tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null || ha
 
 ### MAKE SURE ARCHIVE DESTINATION EXISTS
 
-mkdir -p $ARCHIVE_DEST/$SERVER || handle_error "Failed to mkdir at $ARCHIVE_DEST/$SERVER"
+mkdir -p $ARCHIVE_DEST/$SERVER || handle_error "Failed to make destination folder"
 
 
 
@@ -110,7 +110,7 @@ mkdir -p $ARCHIVE_DEST/$SERVER || handle_error "Failed to mkdir at $ARCHIVE_DEST
 
 echo "Moving archive to destination..."
 
-cp /tmp/gorp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/ || handle_error "Failed to cp to $ARCHIVE_DEST/$SERVER/"
+cp /tmp/gorp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/ || handle_error "Failed to copy archive to destination"
 
 
 
@@ -124,7 +124,7 @@ CHECKSUM=$(md5sum /tmp/gorp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 TESTSUM=$(md5sum $ARCHIVE_DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 
 if [[ "$CHECKSUM" != "$TESTSUM" ]]; then
-    handle_error "Archived files in destination failed checksum test."
+    handle_error "Archived files in destination failed checksum test"
 fi
 
 

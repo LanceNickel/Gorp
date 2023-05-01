@@ -20,7 +20,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -49,8 +49,8 @@ NEW_HOMEDIR=$2
 
 ### GET SUDO PERMISSIONS RT-GUARD
 
-echo "Gorp will use sudo to update the configuration file."
-sudo whoami > /dev/null || handle_error "Failed to get sudo privileges."
+echo "Gorp will use sudo to update the configuration file"
+sudo whoami > /dev/null || handle_error "Failed to get sudo privileges"
 
 
 
@@ -61,7 +61,7 @@ sudo whoami > /dev/null || handle_error "Failed to get sudo privileges."
 ### DOES DESTINATION EXIST/IS IT EMPTY? RT-GUARD
 
 if [[ -d $NEW_HOMEDIR ]]; then
-    handle_error "This directory already exists."
+    handle_error "This directory already exists"
 fi
 
 
@@ -77,7 +77,7 @@ do
         SERVER=$(basename "$d")
         
         if [[ $(gorp -s $SERVER | jq .status[].running) == "true" ]]; then
-            handle_error "Servers cannot be running. Shut down all servers and try again."
+            handle_error "Servers cannot be running. Shut down all servers and try again"
         fi
 done
 
@@ -89,4 +89,4 @@ done
 
 ### CALL THE WORKER
 
-source /usr/local/bin/gorpmc/worker/movehome.sh $1 $NEW_HOMEDIR || handle_error "Unable to launch movehome.sh worker."
+source /usr/local/bin/gorpmc/worker/movehome.sh $1 $NEW_HOMEDIR || handle_error "Unable to launch movehome.sh worker"

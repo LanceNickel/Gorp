@@ -20,7 +20,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -70,7 +70,7 @@ R_VERSION=$(grep 'V=' release | cut -d '=' -f2)
 ### DO WE EVEN NEED TO UPGRADE?
 
 if [[ "$I_VERSION" == "$R_VERSION" ]]; then
-    echo "No need to upgrade, already on latest available version."
+    echo "No need to upgrade, already on latest available version"
     exit 0
 fi
 
@@ -82,8 +82,8 @@ fi
 
 ### GET SUDO PERMISSIONS RT-GUARD
 
-echo "To upgrade, Gorp will use sudo."
-sudo whoami > /dev/null || handle_error "Failed to get sudo privileges."
+echo "To upgrade, Gorp will use sudo"
+sudo whoami > /dev/null || handle_error "Failed to get sudo privileges"
 
 
 
@@ -110,7 +110,7 @@ L_MD5=$(md5sum latest.tar.gz)
 # sha256 comparison
 
 if [[ "$L_SHA256" != "$R_SHA256" ]] || [[ "$L_MD5" != "$R_MD5" ]]; then
-    handle_error "Downloaded checksum does not match remote."
+    handle_error "Downloaded checksum does not match remote"
 fi
 
 
@@ -121,9 +121,9 @@ fi
 
 ### UNPACK TAR
 
-tar -xf latest.tar.gz > /dev/null || handle_error "Failed to unarchive downloaded files."
+tar -xf latest.tar.gz > /dev/null || handle_error "Failed to unarchive downloaded files"
 
-mv ./latest/ ./updatefiles/ || handle_error "Failed move downloaded files."
+mv ./latest/ ./updatefiles/ || handle_error "Failed move downloaded files"
 
 
 
@@ -133,5 +133,5 @@ mv ./latest/ ./updatefiles/ || handle_error "Failed move downloaded files."
 
 ### RUN UPDATE WORKER
 
-chmod +x /tmp/gorp/updatefiles/upgrade.sh || handle_error "Unable to give +x upgrade.sh file."
-/tmp/gorp/updatefiles/upgrade.sh $1 || handle_error "Failed to run upgrade.sh file."
+chmod +x /tmp/gorp/updatefiles/upgrade.sh || handle_error "Unable to give +x upgrade.sh file"
+/tmp/gorp/updatefiles/upgrade.sh $1 || handle_error "Failed to run upgrade.sh file"

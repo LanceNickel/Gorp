@@ -160,7 +160,7 @@ source /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER || ha
 
 echo "Restoring selected files..."
 
-rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}* || handle_error "Failed to rm $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}*"
+rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}* || handle_error "Failed to delete existing world"
 
 
 
@@ -170,13 +170,13 @@ rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}* || handle_error "Failed t
 
 ### RESTORE WORLD
 
-mkdir -p /tmp/gorp/restore || handle_error "Failed to mkdir /tmp/gorp/restore "
+mkdir -p /tmp/gorp/restore || handle_error "Failed to make tmp directory"
 
-cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/"
+cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to copy backup archive to tmp"
 
-tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to compress files"
+tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to extract backup files"
 
-cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/ || handle_error "Failed to cp /tmp/gorp/restore/$FOLDER_TO_RESTORE/* to $HOMEDIR/servers/$SERVER/"
+cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/ || handle_error "Failed to copy restored files to server"
 
 
 

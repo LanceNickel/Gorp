@@ -21,7 +21,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -61,7 +61,7 @@ TMP=/tmp/gorp
 if [[ -d "$SOURCE/" ]]; then
         sleep 0.005
 else
-        handle_error "Backup failed because the source cannot be found."
+        handle_error "Backup failed because the source cannot be found"
 fi
 
 
@@ -86,7 +86,7 @@ mkdir -p $DEST/ || handle_error "Failed to mkdir $DEST/"
 
 echo "Copying files to temp directory..."
 
-cp -r $SOURCE $TMP/$BACKUP_NAME/ || handle_error "Failed to cp $SOURCE to $TMP/$BACKUP_NAME/"
+cp -r $SOURCE $TMP/$BACKUP_NAME/ || handle_error "Failed to copy server to tmp directory"
 
 
 
@@ -109,7 +109,7 @@ tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null || handle_error
 ### COPY THE COMPRESSED BACKUP TO THE DESTINATION
 
 echo "Copying files to backup directory..."
-cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to cp $TMP/$BACKUP_NAME.tar.gz to $DEST/"
+cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to copy tarball to destination"
 
 
 

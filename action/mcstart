@@ -20,7 +20,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -51,7 +51,7 @@ GENERATE=$3
 ### PARAM GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: gorp start [server-name]."
+    handle_error "Bad input. Expected: gorp start [server-name]"
 fi
 
 
@@ -76,7 +76,7 @@ SERVER_RUNNING=$(serverRunning "$SERVER")
 if [[ $SERVER_EXISTS == "true" ]]; then
     cd $HOMEDIR/servers/$SERVER
 else
-    handle_error "Server not found."
+    handle_error "Server not found"
 fi
 
 
@@ -88,7 +88,7 @@ fi
 ### SCREEN GUARD
 
 if [[ "$SERVER_RUNNING" == "true" ]]; then
-        handle_error "Server already running."
+        handle_error "Server already running"
 fi
 
 
@@ -100,4 +100,4 @@ fi
 
 ### RUN STARTUP WORKER
 
-source /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER $GENERATE || handle_error "Failed to run start.sh worker."
+source /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER $GENERATE || handle_error "Failed to run start.sh worker"

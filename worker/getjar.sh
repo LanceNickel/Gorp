@@ -69,7 +69,7 @@ if [[ "$MODE" == "u" ]]; then
 
         cd /tmp/gorp/ || handle_error "Failed to cd to /tmp/gorp"
 
-        wget -q $ARG || handle_error "Failed to wget $ARG"
+        wget -q $ARG || handle_error "Failed to download passed URL"
 
 
 
@@ -81,8 +81,7 @@ if [[ "$MODE" == "u" ]]; then
 
         FILENAME="$(echo $ARG | grep -o $(ls))"
 
-        chmod +x ./$FILENAME || handle_error "Failed to +x $FILENAME"
-        cp ./$FILENAME $HOMEDIR/jars/ || handle_error "Failed to cp $FILENAME to $HOMEDIR/jars/"
+        cp ./$FILENAME $HOMEDIR/jars/ || handle_error "Failed to copy downloaded file to jars directory"
 
         echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$FILENAME"
         
@@ -116,7 +115,7 @@ if [[ "$MODE" == "g" ]]; then
 
         echo "Downloading Paper $ARG..."
 
-        curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$ARG/builds" -H 'accept: application/json' -o /tmp/gorp/builds.json || handle_error "Failed to curl build info from https://api.papermc.io/v2/projects/paper/versions/$ARG/builds"
+        curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$ARG/builds" -H 'accept: application/json' -o /tmp/gorp/builds.json || handle_error "Failed to get latest build info"
 
 
 
@@ -155,7 +154,7 @@ if [[ "$MODE" == "g" ]]; then
                 fi
 
                 if [[ "$I" == "25" ]]; then
-                        handle_error "Stable version not found, timeout."
+                        handle_error "Stable version not found, timeout"
                 fi
         done
 
@@ -179,7 +178,7 @@ if [[ "$MODE" == "g" ]]; then
 
         ### DOWNLOAD THE LATEST JAR FILE
 
-        wget -q https://api.papermc.io/v2/projects/paper/versions/$ARG/builds/$BUILD/downloads/$NAME -P /tmp/gorp/ || handle_error "Failed to wget https://api.papermc.io/v2/projects/paper/versions/$ARG/builds/$BUILD/downloads/$NAME"
+        wget -q https://api.papermc.io/v2/projects/paper/versions/$ARG/builds/$BUILD/downloads/$NAME -P /tmp/gorp/ || handle_error "Failed to download JAR file"
 
 
 
@@ -192,7 +191,7 @@ if [[ "$MODE" == "g" ]]; then
         TESTSUM="$(sha256sum /tmp/gorp/$NAME | cut -d " " -f 1)"
 
         if [[ "$TESTSUM" != "$CHECKSUM" ]]; then
-                handle_error "Downloaded JAR file failed checksum test."
+                handle_error "Downloaded JAR file failed checksum test"
         fi
 
 
@@ -203,9 +202,8 @@ if [[ "$MODE" == "g" ]]; then
 
         ### RENAME THE JAR, MOVE IT TO JARS, MAKE IT EXECUTABLE
 
-        mv /tmp/gorp/$NAME /tmp/gorp/$ARG.jar || handle_error "Failed to mv /tmp/gorp/$NAME to //tmp/gorp/$ARG.jar"
-        cp -f /tmp/gorp/$ARG.jar $HOMEDIR/jars/ || handle_error "Failed to cp /tmp/gorp/$ARG.jar to $HOMEDIR/jars/"
-        chmod +x $HOMEDIR/jars/$ARG.jar || handle_error "Failed to +x $HOMEDIR/jars/$ARG.jar"
+        mv /tmp/gorp/$NAME /tmp/gorp/$ARG.jar || handle_error "Failed to rename JAR file"
+        cp -f /tmp/gorp/$ARG.jar $HOMEDIR/jars/ || handle_error "Failed to move JAR to jars directory"
 
 
 

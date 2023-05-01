@@ -20,7 +20,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -59,7 +59,7 @@ fi
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: gorp create-server [server-name] <world-name>."
+    handle_error "Bad input. Expected: gorp create-server [server-name] <world-name>"
 fi
 
 
@@ -71,7 +71,7 @@ fi
 ### SERVER DIRECTORY RT-GUARD
 
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
-    handle_error "Server already exists."
+    handle_error "Server already exists"
 fi
 
 
@@ -88,7 +88,7 @@ read -r -p "Do you agree to the Minecraft EULA? [y/n]: " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    handle_error "You must agree to the EULA."
+    handle_error "You must agree to the EULA"
 fi
 
 
@@ -100,4 +100,4 @@ fi
 
 ### RUN THE CREATOR WORKER
 
-source /usr/local/bin/gorpmc/worker/createserver.sh $1 $SERVER $WORLD || handle_error "Failed to run createserver.sh worker."
+source /usr/local/bin/gorpmc/worker/createserver.sh $1 $SERVER $WORLD || handle_error "Failed to run createserver.sh worker"

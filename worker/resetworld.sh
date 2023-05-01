@@ -91,9 +91,9 @@ fi
 
 echo "Regenerating $WORLD_TO_RESET..."
 
-rm -rf $HOMEDIR/servers/$SERVER/$WORLD_TO_RESET || handle_error "Failed to rm message$HOMEDIR/servers/$SERVER/$WORLD_TO_RESET"
-rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_nether || handle_error "Failed to rm $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_nether"
-rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_the_end || handle_error "Failed to rm $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_the_end"
+rm -rf $HOMEDIR/servers/$SERVER/$WORLD_TO_RESET || handle_error "Failed to delete overworld files"
+rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_nether || handle_error "Failed to delete nether files"
+rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_the_end || handle_error "Failed to delete end files"
 
 
 

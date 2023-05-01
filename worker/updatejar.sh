@@ -50,7 +50,7 @@ fi
 
 echo "Getting latest build information for $GAMEVER..."
 
-curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds" -H 'accept: application/json' -o /tmp/gorp/builds.json || handle_error "Failure to get build info from https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds"
+curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds" -H 'accept: application/json' -o /tmp/gorp/builds.json || handle_error "Failed to get build info"
 
 
 
@@ -61,7 +61,7 @@ curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/bui
 ### VERSION NOT FOUND RT-GUARD
 
 if [[ $(cat /tmp/gorp/builds.json | grep 'Version not found.') != "" ]]; then
-    handle_error "Game version not found."
+    handle_error "Game version not found"
 fi
 
 
@@ -135,7 +135,7 @@ CHECKSUM=$(jq '.downloads.application.sha256' /tmp/gorp/latest.json | tail -c +2
 
 echo "Downloading latest stable jar file..."
 
-wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME -P /tmp/gorp/ || handle_error "Failed to wget https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME"
+wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME -P /tmp/gorp/ || handle_error "Failed to download JAR file"
 
 echo "Installing build $BUILD over $INSTALLED..."
 
@@ -150,7 +150,7 @@ echo "Installing build $BUILD over $INSTALLED..."
 TESTSUM="$(sha256sum /tmp/gorp/$NAME | cut -d " " -f 1)"
 
 if [[ $TESTSUM != $CHECKSUM ]]; then
-        handle_error "updatejar.sh: Downloaded JAR file failed checksum test."
+        handle_error "Downloaded JAR file failed checksum test"
 fi
 
 
@@ -161,7 +161,7 @@ fi
 
 ### MOVE THE JAR TO THE $HOMEDIR/jars/ FOLDER AND MAKE IT EXECUTABLE
 
-mv /tmp/gorp/$NAME $HOMEDIR/jars/ || handle_error "Failed to mv /tmp/gorp/$NAME to $HOMEDIR/jars/"
+mv /tmp/gorp/$NAME $HOMEDIR/jars/ || handle_error "Failed to move JAR to jars folder"
 
 
 
@@ -171,7 +171,7 @@ mv /tmp/gorp/$NAME $HOMEDIR/jars/ || handle_error "Failed to mv /tmp/gorp/$NAME 
 
 ### UPDATE THE LATEST FILE FOR GLOBAL SERVER UPDATES
 
-echo "$HOMEDIR/jars/$NAME" > $HOMEDIR/jars/latest || handle_error "Failed to update latest JAR file."
+echo "$HOMEDIR/jars/$NAME" > $HOMEDIR/jars/latest || handle_error "Failed to update latest JAR file"
 
 
 

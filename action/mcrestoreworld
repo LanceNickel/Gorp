@@ -20,7 +20,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -50,7 +50,7 @@ SERVER=$2
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    handle_errors "Bad input. Expected: gorp restore-world [server-name]."
+    handle_errors "Bad input. Expected: gorp restore-world [server-name]"
 fi
 
 
@@ -64,7 +64,7 @@ fi
 if [[ -d "$BACKUP_DEST/$SERVER" ]]; then
     sleep 0.005
 else
-    handle_errors "Server has no backups to restore from."
+    handle_errors "Server has no backups to restore from"
 fi
 
 
@@ -76,7 +76,7 @@ fi
 ### SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        handle_errors "Server cannot be running."
+        handle_errors "Server cannot be running"
 fi
 
 
@@ -87,4 +87,4 @@ fi
 
 ### RUN RESTORE WORKER
 
-source /usr/local/bin/gorpmc/worker/restoreworld.sh $1 $SERVER || handle_error "Failed to run restoreworld.sh worker."
+source /usr/local/bin/gorpmc/worker/restoreworld.sh $1 $SERVER || handle_error "Failed to run restoreworld.sh worker"

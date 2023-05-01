@@ -20,7 +20,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -50,7 +50,7 @@ SERVER=$2
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: gorp backup-server [server-name].";
+    handle_error "Bad input. Expected: gorp backup-server [server-name]"
 fi
 
 
@@ -65,7 +65,7 @@ if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     # we can continue
     sleep 0.005
 else
-    handle_error "Server not found.";
+    handle_error "Server not found"
 fi
 
 
@@ -77,7 +77,7 @@ fi
 ### SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        handle_error "Server cannot be running.";
+        handle_error "Server cannot be running"
 fi
 
 
@@ -88,4 +88,4 @@ fi
 
 ### RUN BACKUP WORKER
 
-source /usr/local/bin/gorpmc/worker/backupserver.sh $1 $SERVER || handle_error "Failed to run backupserver.sh worker."
+source /usr/local/bin/gorpmc/worker/backupserver.sh $1 $SERVER || handle_error "Failed to run backupserver.sh worker"

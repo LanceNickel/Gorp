@@ -20,7 +20,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -49,7 +49,7 @@ SERVER=$2
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: 'gorp -s [server-name]'."
+    handle_error "Bad input. Expected: gorp -s [server-name]"
 fi
 
 

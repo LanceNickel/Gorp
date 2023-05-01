@@ -21,7 +21,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -51,7 +51,7 @@ WORLD_TO_ARCHIVE=$3
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: 'gorp archive-world [server-name] <world-name>."
+    handle_error "Bad input. Expected: 'gorp archive-world [server-name] <world-name>"
 fi
 
 
@@ -65,7 +65,7 @@ fi
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    handle_error "Server not found."
+    handle_error "Server not found"
 fi
 
 
@@ -77,7 +77,7 @@ fi
 ### NO WORLDS RT-GUARD
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
-    handle_error "No worlds exist on this server."
+    handle_error "No worlds exist on this server"
 fi
 
 
@@ -89,7 +89,7 @@ fi
 ### SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        handle_error "Server cannot be running."
+        handle_error "Server cannot be running"
 fi
 
 
@@ -105,7 +105,7 @@ if [[ "$WORLD_TO_ARCHIVE" != "" ]]; then
     if [[ -d "$HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE" ]]; then
         sleep 0.005
     else
-        handle_error "World not found."
+        handle_error "World not found"
     fi
 
 fi
@@ -114,4 +114,4 @@ fi
 
 ### RUN THE WORLD ARCHIVE WORKER
 
-source /usr/local/bin/gorpmc/worker/archiveworld.sh $1 $SERVER $WORLD_TO_ARCHIVE || handle_error "Failed to run archiveworld.sh worker."
+source /usr/local/bin/gorpmc/worker/archiveworld.sh $1 $SERVER $WORLD_TO_ARCHIVE || handle_error "Failed to run archiveworld.sh worker"

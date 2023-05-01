@@ -49,14 +49,7 @@ NEW_HOMEDIR=$2
 
 ### ATTEMPT TO CREATE DESTINATION
 
-mkdir -p $NEW_HOMEDIR/ > /dev/null || handle_error "Failed to mkdir $NEW_HOMEDIR"
-
-
-
-# Check for errors (rt-guard)
-if [[ "$?" != "0" ]]; then
-    handle_error "Failed to create destination directory. Check permissions."
-fi
+mkdir -p $NEW_HOMEDIR/ > /dev/null || handle_error "Failed to make new home directory"
 
 
 

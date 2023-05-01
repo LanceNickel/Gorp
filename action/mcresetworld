@@ -20,7 +20,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -49,7 +49,7 @@ SERVER=$2
 ### PARAM GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: gorp reset-world [server-name]."
+    handle_error "Bad input. Expected: gorp reset-world [server-name]"
 fi
 
 
@@ -63,7 +63,7 @@ fi
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    handle_error "Server not found."
+    handle_error "Server not found"
 fi
 
 
@@ -75,7 +75,7 @@ fi
 ### NO WORLDS GUARD
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
-    handle_error "No worlds exist on this server."
+    handle_error "No worlds exist on this server"
 fi
 
 
@@ -86,4 +86,4 @@ fi
 
 ### RUN THE WORLD DELETE WORKER
 
-source /usr/local/bin/gorpmc/worker/resetworld.sh $1 $SERVER || handle_error "Failed to run resetworld.sh worker."
+source /usr/local/bin/gorpmc/worker/resetworld.sh $1 $SERVER || handle_error "Failed to run resetworld.sh worker"

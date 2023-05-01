@@ -51,7 +51,7 @@ WORLD=$3
 ### CREATE SERVER DIRECTORY AND COPY RUN.SH
 
 mkdir $HOMEDIR/servers/$SERVER || handle_error "Failed to mkdir $HOMEDIR/servers/$SERVER"
-cp /usr/local/bin/gorpmc/worker/run.sh $HOMEDIR/servers/$SERVER/ || handle_error "Failed to cp /usr/local/bin/gorpmc/worker/run.sh to $HOMEDIR/servers/$SERVER/"
+cp /usr/local/bin/gorpmc/worker/run.sh $HOMEDIR/servers/$SERVER/ || handle_error "Failed to copy run.sh file to new server directory"
 
 
 

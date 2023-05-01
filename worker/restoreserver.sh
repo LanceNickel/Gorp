@@ -20,7 +20,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -137,7 +137,7 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 echo "Backing up current server..."
 
-source /usr/local/bin/gorpmc/action/mcbackupserver $1 $SERVER || handle_error "Failed to back up server."
+source /usr/local/bin/gorpmc/action/mcbackupserver $1 $SERVER || handle_error "Failed to back up server"
 
 
 
@@ -145,7 +145,7 @@ source /usr/local/bin/gorpmc/action/mcbackupserver $1 $SERVER || handle_error "F
 
 echo "Restoring selected files..."
 
-rm -rf $HOMEDIR/servers/$SERVER/ || handle_error "$HOMEDIR/servers/$SERVER/"
+rm -rf $HOMEDIR/servers/$SERVER/ || handle_error "Failed to delete existing server"
 
 
 
@@ -155,13 +155,13 @@ rm -rf $HOMEDIR/servers/$SERVER/ || handle_error "$HOMEDIR/servers/$SERVER/"
 
 ### RESTORE WORLD
 
-mkdir -p /tmp/gorp/restore || handle_error "Failed to mkdir /tmp/gorp/restore"
+mkdir -p /tmp/gorp/restore || handle_error "Failed to make tmp directory"
 
-cp $BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to cp $BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE to /tmp/gorp/restore/"
+cp $BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to copy archive to tmp directory"
 
-tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to compress files"
+tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to extract server backup files"
 
-cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/ || handle_error "Failed to cp /tmp/gorp/restore/$FOLDER_TO_RESTORE/* to $HOMEDIR/servers/"
+cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/ || handle_error "Failed to copy restored files to server"
 
 
 

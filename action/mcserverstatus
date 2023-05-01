@@ -20,7 +20,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -46,7 +46,7 @@ SERVER=$2
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: gorp -s [server-name]."
+    handle_error "Bad input. Expected: gorp -s [server-name]"
 fi
 
 
@@ -61,7 +61,7 @@ if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     # we can continue
     sleep 0.005
 else
-    handle_error "Server not found."
+    handle_error "Server not found"
 fi
 
 
@@ -74,12 +74,12 @@ fi
 
 # Server.properties has no world set
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2) = "" ]]; then
-    handle_error "The server must be run at least once."
+    handle_error "The server must be run at least once"
 fi
 
 # Server.properties only one line (default)
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | wc -l) = "1" ]]; then
-    handle_error "The server must be run at least once."
+    handle_error "The server must be run at least once"
 fi
 
 
@@ -90,4 +90,4 @@ fi
 
 ### RUN STATUS WORKER
 
-source /usr/local/bin/gorpmc/worker/serverstatus.sh $1 $SERVER || handle_error "Failed to run serverstatus.sh worker."
+source /usr/local/bin/gorpmc/worker/serverstatus.sh $1 $SERVER || handle_error "Failed to run serverstatus.sh worker"

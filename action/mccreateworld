@@ -21,7 +21,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -52,7 +52,7 @@ NEW_WORLD=$3
 # PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: gorp create-world [server-name] <world-name>."
+    handle_error "Bad input. Expected: gorp create-world [server-name] <world-name>"
 fi
 
 
@@ -66,7 +66,7 @@ fi
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    handle_error "Server not found."
+    handle_error "Server not found"
 fi
 
 
@@ -80,7 +80,7 @@ fi
 if [[ "$NEW_WORLD" != "" ]]; then
 
     if [[ -d "$HOMEDIR/servers/$SERVER/world-$NEW_WORLD" ]]; then
-        handle_error "World already exists."
+        handle_error "World already exists"
     fi
 
 fi
@@ -94,7 +94,7 @@ fi
 # SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        handle_error "Server cannot be running."
+        handle_error "Server cannot be running"
 fi
 
 
@@ -105,4 +105,4 @@ fi
 
 # RUN THE WORLD CREATOR WORKER
 
-source /usr/local/bin/gorpmc/worker/createworld.sh $1 $SERVER $NEW_WORLD || handle_error "Failed to run createworld.sh worker."
+source /usr/local/bin/gorpmc/worker/createworld.sh $1 $SERVER $NEW_WORLD || handle_error "Failed to run createworld.sh worker"
