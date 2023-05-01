@@ -55,8 +55,7 @@ mkdir -p $NEW_HOMEDIR/ > /dev/null
 
 # Check for errors (rt-guard)
 if [[ "$?" != "0" ]]; then
-    if $ERRORS; then echo "movehome.sh: Failed to create destination directory. Check permissions. Exit (23)."; fi
-    exit 23
+    handle_error "Failed to create destination directory. Check permissions."
 fi
 
 
@@ -67,7 +66,7 @@ fi
 
 ### COPY THE FILES OVER
 
-if $OUTPUT; then echo "Copying files to new home..."; fi
+echo "Copying files to new home..."
 
 cp -r $HOMEDIR/* $NEW_HOMEDIR/
 
@@ -75,8 +74,7 @@ cp -r $HOMEDIR/* $NEW_HOMEDIR/
 
 # Check for errors (rt-guard)
 if [[ "$?" != "0" ]]; then
-    if $ERRORS; then echo "movehome.sh: Failed to copy files. Exit (24)."; fi
-    exit 24
+    handle_error "Failed to copy files."
 fi
 
 
@@ -96,13 +94,11 @@ sed -i "s:$HOMEDIR:$NEW_HOMEDIR:" $NEW_HOMEDIR/jars/latest
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 if [[ "$HOMEDIR" != "$NEW_HOMEDIR" ]]; then
-    if $ERRORS; then echo "movehome.sh: Configuration update failed. Please manually update HOMEDIR to $NEW_HOMEDIR in /usr/local/etc/gorp.conf. Exit (17)."; fi
-    exit 17
+    handle_error "Configuration update failed. Please manually update HOMEDIR to $NEW_HOMEDIR in /usr/local/etc/gorp.conf."
 fi
 
 if [[ "$(grep "$HOMEDIR" $HOMEDIR/jars/latest)" == "" ]]; then
-    if $ERRORS; then echo "movehome.sh: Configuration update failed. Please manuall update the directory in $HOMEDIR/jars/latest. Exit (17)"; fi
-    exit 17
+    handle_error "Configuration update failed. Please manuall update the directory in $HOMEDIR/jars/latest"
 fi
 
 
@@ -111,4 +107,4 @@ fi
 
 
 
-if $OUTPUT; then echo "Gorp home directory moved!"; fi
+echo "Gorp home directory moved!"

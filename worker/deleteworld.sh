@@ -56,7 +56,7 @@ OPTIONS=$(worldOptions "$SERVER")
 if [[ "$WORLD_TO_DELETE" == "" ]]; then
     while [ true ]
     do
-        if $OUTPUT; then echo -e "Options:\n$OPTIONS"; fi
+        echo -e "Options:\n$OPTIONS"
 
         read -r -p "Please enter a world to delete: " response
 
@@ -66,7 +66,7 @@ if [[ "$WORLD_TO_DELETE" == "" ]]; then
             WORLD_TO_DELETE=$response
             break
         else
-            if $OUTPUT; then echo -e "\nSpecified world does not exist.\n"; fi
+            echo -e "\nSpecified world does not exist.\n"
         fi
     done
 fi
@@ -79,22 +79,20 @@ fi
 
 ### USER CONFIRMATION GUARDS
 
-if $OUTPUT; then echo "You are about to delete a world named '$WORLD_TO_DELETE' in the '$SERVER' server instance."; fi
+echo "You are about to delete a world named '$WORLD_TO_DELETE' in the '$SERVER' server instance."
 
 read -r -p "Did you back up the world? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.005
 else
-    if $ERRORS; then echo "deleteworld.sh: You answered the prompt wrong! Exit (16)."; fi
-    exit 16
+    echo "You answered the prompt wrong!"
 fi
 
 read -r -p "Enter '$WORLD_TO_DELETE' to confirm: " response
 if [[ "$response" == "$WORLD_TO_DELETE" ]]; then
     sleep 0.5
 else
-    if $ERRORS; then echo "deleteworld.sh: You answered the prompt wrong! Exit (16)."; fi
-    exit 16
+    echo "You answered the prompt wrong!"
 fi
 
 
@@ -115,4 +113,4 @@ rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_DELETE}_the_end
 
 
 
-if $OUTPUT; then echo "World deleted!"; fi
+echo "World deleted!"

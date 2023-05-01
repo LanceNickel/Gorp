@@ -51,7 +51,7 @@ ACTION=$3
 
 ### SEND WARNING MESSAGE
 
-if $OUTPUT; then echo "Giving a very polite heads up :) ..."; fi
+echo "Giving a very polite heads up :) ..."
 
 if [[ "$ACTION" == "power" ]]; then
         screen -S $SERVER -X stuff "say ATTENTION: Due to a power outage, this server must be shut down.\n"
@@ -74,7 +74,7 @@ I=0
 while [ true ]; do
         sleep 1
         ((I++))
-        if $OUTPUT; then echo -ne "  ${I}s\r"; fi
+        echo -ne "  ${I}s\r"
 
         if [[ $I -ge 30 ]]; then
                 break
@@ -87,4 +87,4 @@ done
 
 
 
-if $OUTPUT; then echo -ne "\n"; fi
+echo -ne "\n"

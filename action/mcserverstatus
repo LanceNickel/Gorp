@@ -46,8 +46,7 @@ SERVER=$2
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    if $ERRORS; then echo "mcserverstatus: Bad input. Expected: gorp -s [server-name]. Exit (14)."; fi
-    exit 14
+    handle_error "Bad input. Expected: gorp -s [server-name]."
 fi
 
 
@@ -62,8 +61,7 @@ if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     # we can continue
     sleep 0.005
 else
-    if $ERRORS; then echo "mcserverstatus: Server not found. Exit (30)."; fi
-    exit 30
+    handle_error "Server not found."
 fi
 
 
@@ -76,14 +74,12 @@ fi
 
 # Server.properties has no world set
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2) = "" ]]; then
-    if $ERRORS; then echo "mcserverstatus: The server must be run at least once. Exit (38)."; fi
-    exit 38
+    handle_error "The server must be run at least once."
 fi
 
 # Server.properties only one line (default)
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | wc -l) = "1" ]]; then
-    if $ERRORS; then echo "mcserverstatus: The server must be run at least once. Exit (38)."; fi
-    exit 38
+    handle_error "The server must be run at least once."
 fi
 
 

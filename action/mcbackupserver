@@ -50,8 +50,7 @@ SERVER=$2
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    if $ERRORS; then echo "mcbackupserver: Bad input. Expected: gorp backup-server [server-name]. Exit (14)."; fi
-    exit 14
+    handle_error "Bad input. Expected: gorp backup-server [server-name].";
 fi
 
 
@@ -66,8 +65,7 @@ if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     # we can continue
     sleep 0.005
 else
-    if $ERRORS; then echo "mcbackupserver: Server not found. Exit (30)."; fi
-    exit 30
+    handle_error "Server not found.";
 fi
 
 
@@ -79,8 +77,7 @@ fi
 ### SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        if $ERRORS; then echo "mcbackupserver: Server cannot be running. Exit (34)."; fi
-        exit 34
+        handle_error "Server cannot be running.";
 fi
 
 

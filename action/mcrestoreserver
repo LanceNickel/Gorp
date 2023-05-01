@@ -50,8 +50,7 @@ SERVER=$2
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    if $ERRORS; then echo "mcrestoreserver: Bad input. Expected: gorp restore-world [server-name]. Exit (14)."; fi
-    exit 14
+    handle_error "Bad input. Expected: gorp restore-world [server-name]."
 fi
 
 
@@ -64,12 +63,10 @@ fi
 
 if [[ -d "$BACKUP_DEST/$SERVER/server-backups/" ]]; then
     if [[ "$(ls $BACKUP_DEST/$SERVER/server-backups/)" == "" ]]; then
-        if $ERRORS; then echo "mcrestoreserver: Server has no backups to restore from. Exit (54)."; fi
-        exit 54
+        handle_error "Server has no backups to restore from."
     fi
 else
-    if $ERRORS; then echo "mcrestoreserver: Server has no backups to restore from. Exit (54)."; fi
-    exit 54
+    handle_error "Server has no backups to restore from."
 fi
 
 
@@ -81,8 +78,7 @@ fi
 ### SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        if $ERRORS; then echo "mcrestoreserver: Server cannot be running. Exit (34)."; fi
-        exit 34
+        handle_error "Server cannot be running."
 fi
 
 

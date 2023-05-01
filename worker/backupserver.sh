@@ -61,8 +61,7 @@ TMP=$HOMEDIR/tmp/backup
 if [[ -d "$SOURCE/" ]]; then
         sleep 0.005
 else
-        if $ERRORS; then echo "backupserver.sh: Backup failed because the source cannot be found. Exit (52)."; fi
-        exit 52
+        handle_error "Backup failed because the source cannot be found."
 fi
 
 
@@ -73,7 +72,7 @@ fi
 
 ### CHECK FOR (OR CREATE) DESTINATION DIRECTORY (RT-GUARD)
 
-if $OUTPUT; then echo "Backing up $SERVER... (This may take a while!)"; fi
+echo "Backing up $SERVER... (This may take a while!)"
 
 mkdir -p $DEST/
 
@@ -96,7 +95,7 @@ mkdir -p $TMP/$BACKUP_NAME/
 
 ### COPY SERVER DIRECTORY TO TEMP
 
-if $OUTPUT; then echo "Copying files to temp directory..."; fi
+echo "Copying files to temp directory..."
 
 cp -r $SOURCE $TMP/$BACKUP_NAME/
 
@@ -108,7 +107,7 @@ cp -r $SOURCE $TMP/$BACKUP_NAME/
 
 ### COMPRESS FILES IN TEMP DIRECTORY
 
-if $OUTPUT; then echo "Compressing files..."; fi
+echo "Compressing files..."
 cd $TMP
 tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
 
@@ -120,7 +119,7 @@ tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
 
 ### COPY THE COMPRESSED BACKUP TO THE DESTINATION
 
-if $OUTPUT; then echo "Copying files to backup directory..."; fi
+echo "Copying files to backup directory..."
 cp $TMP/$BACKUP_NAME.tar.gz $DEST/
 
 
@@ -139,5 +138,5 @@ rm -rf $HOMEDIR/tmp
 
 
 
-if $OUTPUT; then echo "Backup name: $BACKUP_NAME"; fi
-if $OUTPUT; then echo "Server backup complete!"; fi
+echo "Backup name: $BACKUP_NAME"
+echo "Server backup complete!"

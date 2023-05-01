@@ -56,7 +56,7 @@ CURRENT_WORLD=$(activeWorld "$SERVER")
 if [[ "$SWITCH_TO" == "" ]]; then
 
     while [ true ]; do
-        if $OUTPUT; then echo -e "Options:\n$OPTIONS"; fi
+        echo -e "Options:\n$OPTIONS"
 
         read -r -p "Please enter a world to switch to: " response
 
@@ -66,7 +66,7 @@ if [[ "$SWITCH_TO" == "" ]]; then
             SWITCH_TO=$response
             break
         else
-            if $OUTPUT; then echo -e "\nSpecified world does not exist.\n"; fi
+            echo -e "\nSpecified world does not exist.\n"
         fi
     done
 
@@ -88,4 +88,4 @@ sed -i "s/level-name=$CURRENT_WORLD/level-name=world-$SWITCH_TO/" $HOMEDIR/serve
 
 
 
-if $OUTPUT; then echo "World switched!"; fi
+echo "World switched!"

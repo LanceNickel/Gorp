@@ -49,8 +49,7 @@ SERVER=$2
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    if $ERRORS; then echo "serverstatus.sh: Bad input. Expected: 'gorp -s [server-name]'. Exit (14)."; fi
-    exit 14
+    handle_error "Bad input. Expected: 'gorp -s [server-name]'."
 fi
 
 

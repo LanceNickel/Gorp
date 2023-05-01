@@ -51,8 +51,7 @@ GENERATE=$3
 ### PARAM GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    if $ERRORS; then echo "mcstart: Bad input. Expected: gorp start [server-name]. Exit (14)."; fi
-    exit 14
+    handle_error "Bad input. Expected: gorp start [server-name]."
 fi
 
 
@@ -77,8 +76,7 @@ SERVER_RUNNING=$(serverRunning "$SERVER")
 if [[ $SERVER_EXISTS == "true" ]]; then
     cd $HOMEDIR/servers/$SERVER
 else
-    if $ERRORS; then echo "mcstart: Server not found. Exit (30)."; fi
-    exit 30
+    handle_error "Server not found."
 fi
 
 
@@ -90,8 +88,7 @@ fi
 ### SCREEN GUARD
 
 if [[ "$SERVER_RUNNING" == "true" ]]; then
-        if $ERRORS; then echo "mcstart: Server already running. Exit (33)."; fi
-        exit 33
+        handle_error "Server already running."
 fi
 
 

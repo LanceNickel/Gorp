@@ -66,8 +66,7 @@ TMP=$HOMEDIR/tmp/backup
 if [[ -d "$SOURCE" ]]; then
         sleep 0.005
 else
-        if $ERRORS; then echo "backupworld.sh: Backup failed because the source cannot be found. Exit (52)."; fi
-        exit 52
+        handle_error "Backup failed because the source cannot be found."
 fi
 
 
@@ -78,7 +77,7 @@ fi
 
 ### CHECK FOR (OR CREATE) DESTINATION DIRECTORY (RT-GUARD)
 
-if $OUTPUT; then echo "Backing up $WORLD..."; fi
+echo "Backing up $WORLD..."
 
 mkdir -p $DEST
 
@@ -138,7 +137,7 @@ fi
 
 ### COPY WORLD DIRECTORIES TO TEMP
 
-if $OUTPUT; then echo "Copying files to temp directory..."; fi
+echo "Copying files to temp directory..."
 
 cp -r $SOURCE $TMP/$BACKUP_NAME/$WORLD
 cp -r ${SOURCE}_nether $TMP/$BACKUP_NAME/${WORLD}_nether
@@ -164,7 +163,7 @@ fi
 
 ### COMPRESS FILES IN TEMP DIRECTORY
 
-if $OUTPUT; then echo "Compressing files..."; fi
+echo "Compressing files..."
 cd $TMP
 tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
 
@@ -176,7 +175,7 @@ tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
 
 ### COPY THE COMPRESSED BACKUP TO THE DESTINATION
 
-if $OUTPUT; then echo "Copying files to backup directory..."; fi
+echo "Copying files to backup directory..."
 cp $TMP/$BACKUP_NAME.tar.gz $DEST/
 
 
@@ -195,5 +194,5 @@ rm -rf $HOMEDIR/tmp
 
 
 
-if $OUTPUT; then echo "Backup name: $BACKUP_NAME"; fi
-if $OUTPUT; then echo "World backup complete!"; fi
+echo "Backup name: $BACKUP_NAME"
+echo "World backup complete!"

@@ -59,14 +59,13 @@ fi
 
 ### USER CONFIRMATION GUARDS
 
-if $OUTPUT; then echo "You are about to reset the world named '$WORLD_TO_RESET' in the '$SERVER' server instance."; fi
+echo "You are about to reset the world named '$WORLD_TO_RESET' in the '$SERVER' server instance."
 
 read -r -p "Did you back up the world/don't care about it? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    if $OUTPUT; then echo "Resetting world..."; fi
+    echo "Resetting world..."
 else
-    if $ERRORS; then echo "resetworld.sh: You answered the prompt wrong! Exit (16)."; fi
-    exit 16
+    handle_error "resetworld.sh: You answered the prompt wrong!"
 fi
 
 
@@ -78,7 +77,7 @@ fi
 ### STOP SERVER (if already running)
 
 if [[ $RUNNING = true ]]; then
-    if $OUTPUT; then echo "Stopping server..."; fi
+    echo "Stopping server..."
     /usr/local/bin/gorpmc/action/mcstop $1 $SERVER -n > /dev/null
 fi
 
@@ -90,7 +89,7 @@ fi
 
 ### DELETE THE WORLD
 
-if $OUTPUT; then echo "Regenerating $WORLD_TO_RESET..."; fi
+echo "Regenerating $WORLD_TO_RESET..."
 
 rm -rf $HOMEDIR/servers/$SERVER/$WORLD_TO_RESET
 rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_nether
@@ -112,4 +111,4 @@ rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_the_end
 
 
 
-if $OUTPUT; then echo "World reset! Server is running."; fi
+echo "World reset! Server is running."

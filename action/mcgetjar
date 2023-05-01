@@ -44,12 +44,10 @@ while getopts ":g:u:" flag; do
             ARG="$OPTARG"
             ;;
         \?)
-            if $ERRORS; then echo "Bad input. Expected: gorp get-jar [-u | -v] [url | version]. Exit (14)."; fi
-            exit 14
+            handle_error "Bad input. Expected: gorp get-jar [-u | -v] [url | version]."
             ;;
         :)
-            if $ERRORS; then echo "Bad input. Expected: gorp get-jar [-u | -v] [url | version]. Exit (14)."; fi
-            exit 14
+            handle_error "Bad input. Expected: gorp get-jar [-u | -v] [url | version]."
             ;;
     esac
 done
@@ -72,8 +70,7 @@ done
 ### PARAM RT-GUARD
 
 if [[ "$MODE" == "" ]]; then
-    if $ERRORS; then echo "mcgetjar: Bad input. Expected: gorp get-jar [game-version]. Exit (14)."; fi
-    exit 14
+    handle_error "mcgetjar: Bad input. Expected: gorp get-jar [game-version]."
 fi
 
 

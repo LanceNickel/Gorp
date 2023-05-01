@@ -59,8 +59,7 @@ fi
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    if $ERRORS; then echo "mccreateserver: Bad input. Expected: gorp create-server [server-name] <world-name>. Exit (14)."; fi
-    exit 14
+    handle_error "Bad input. Expected: gorp create-server [server-name] <world-name>."
 fi
 
 
@@ -72,8 +71,7 @@ fi
 ### SERVER DIRECTORY RT-GUARD
 
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
-    if $ERRORS; then echo "mccreateserver: Server already exists. Exit (31)."; fi
-    exit 31
+    handle_error "Server already exists."
 fi
 
 
@@ -90,8 +88,7 @@ read -r -p "Do you agree to the Minecraft EULA? [y/n]: " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    if $ERRORS; then echo "You must agree to the EULA. Exit (12)."; fi
-    exit 12
+    handle_error "You must agree to the EULA."
 fi
 
 

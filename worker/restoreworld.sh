@@ -57,7 +57,7 @@ echo -e "\nPlease select a world (level-name in server.properties)"
 select d in *;
 do
     test -n "$d" && break
-    if $OUTPUT; then echo ">>> Invalid selection"; fi
+    echo ">>> Invalid selection"
 done
 
 cd "$d"
@@ -75,7 +75,7 @@ echo -e "\nSelect year"
 select d in *;
 do
     test -n "$d" && break
-    if $OUTPUT; then echo ">>> Invalid selection"; fi
+    echo ">>> Invalid selection"
 done
 
 cd "$d"
@@ -94,7 +94,7 @@ echo -e "\nSelect month"
 select d in *;
 do
     test -n "$d" && break
-    if $OUTPUT; then echo ">>> Invalid selection"; fi
+    echo ">>> Invalid selection"
 done
 
 cd "$d"
@@ -113,7 +113,7 @@ echo -e "\nSelect day of month"
 select d in *;
 do
     test -n "$d" && break
-    if $OUTPUT; then echo ">>> Invalid selection"; fi
+    echo ">>> Invalid selection"
 done
 
 cd "$d"
@@ -132,7 +132,7 @@ echo -e "\nSelect backup to restore from\nDate format is YYYY-MM-DD_HHMM-SS"
 select d in *;
 do
     test -n "$d" && break
-    if $OUTPUT; then echo ">>> Invalid selection"; fi
+    echo ">>> Invalid selection"
 done
 
 FILE_TO_RESTORE="$d"
@@ -146,7 +146,7 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 ### BACKUP CURRENT WORLD
 
-if $OUTPUT; then echo "Backing up current world..."; fi
+echo "Backing up current world..."
 
 /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER
 
@@ -158,7 +158,7 @@ if $OUTPUT; then echo "Backing up current world..."; fi
 
 ### FLUSH CURRENT WORLD
 
-if $OUTPUT; then echo "Restoring selected files..."; fi
+echo "Restoring selected files..."
 
 rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}*
 
@@ -185,4 +185,4 @@ cp -r $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/
 
 
 
-if $OUTPUT; then echo "World restored from backup!"; fi
+echo "World restored from backup!"

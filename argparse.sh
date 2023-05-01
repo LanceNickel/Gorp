@@ -95,8 +95,7 @@ while getopts ":fg:hnqQs:t:u:vy" flag; do
         
         # UNKNOWN FLAGS (all other entries)
         *)
-            echo "gorp: Invalid or unknown flags. Exit."
-            exit 1
+            echo "Invalid or unknown flags. Exit."
             ;;
     esac
 done
@@ -118,8 +117,7 @@ done
 ### PARAMS RT-GUARD
 
 if [[ "$GAMEVER" == "" ]] || [[ "$RAM" == "" ]] || [[ "$HOMEDIR" == "" ]] || [[ "$BACKUP_DEST" == "" ]] || [[ "$ARCHIVE_DEST" == "" ]] || [[ "$LATEST_JAR" == "" ]]; then
-    if $ERRORS; then echo "gorp: One or more required options in gorp.conf not set. Exit (15)."; fi
-    exit 15
+    echo "One or more required options in gorp.conf not set."
 fi
 
 

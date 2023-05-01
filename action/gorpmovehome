@@ -49,7 +49,7 @@ NEW_HOMEDIR=$2
 
 ### GET SUDO PERMISSIONS RT-GUARD
 
-if $OUTPUT; then echo "Gorp will use sudo to update the configuration file."; fi
+echo "Gorp will use sudo to update the configuration file."
 sudo whoami > /dev/null
 
 
@@ -61,8 +61,7 @@ sudo whoami > /dev/null
 ### DOES DESTINATION EXIST/IS IT EMPTY? RT-GUARD
 
 if [[ -d $NEW_HOMEDIR ]]; then
-    if $ERRORS; then echo "gorpmovehome: Destination directory already exists. Exit (21)."; fi
-    exit 21
+    handle_error "This directory already exists."
 fi
 
 
@@ -78,8 +77,7 @@ do
         SERVER=$(basename "$d")
         
         if [[ $(gorp -s $SERVER | jq .status[].running) == "true" ]]; then
-            if $ERRORS; then echo "gorpmovehome: Servers cannot be running. Exit (34)."; fi
-            exit 34
+            handle_error "Servers cannot be running. Shut down all servers and try again."
         fi
 done
 
@@ -91,4 +89,4 @@ done
 
 ### CALL THE WORKER
 
-/usr/local/bin/gorpmc/worker/movehome.sh $1 $NEW_HOMEDIR
+source /usr/local/bin/gorpmc/worker/movehome.sh $1 $NEW_HOMEDIR

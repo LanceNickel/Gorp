@@ -40,8 +40,7 @@ OPTIND=2
 while getopts ":*" flag; do
     case $flag in
         \?)
-            if $ERRORS; then echo "Bad input. Expected: gorp stop [server] [-f|n]. Exit (14)."; fi
-            exit 14
+            handle_error "Bad input. Expected: gorp stop [server] [-f|n]."
             ;;
     esac
 done
@@ -75,13 +74,11 @@ done
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" = "" ]] || [[ "$SERVER" == "fast" ]] || [[ "$SERVER" == "now" ]] || [[ "$SERVER" == "power" ]]; then
-    if $ERRORS; then echo "mcstop: Bad input. Expected: gorp stop [server] [-f|n]. Exit (14)."; fi
-    exit
+    handle_error "Bad input. Expected: gorp stop [server] [-f|n]."
 fi
 
 if [[ "$MODE" == "fast" ]] || [[ "$MODE" == "now" ]] || [[ "$MODE" == "power" ]]; then
-    if $ERRORS; then echo "mcstop: Bad input. Expected: gorp stop [server] [-f|n]. Exit (14)."; fi
-    exit
+    handle_error "Bad input. Expected: gorp stop [server] [-f|n]."
 fi
 
 
@@ -95,8 +92,7 @@ fi
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     cd $HOMEDIR/servers/$SERVER
 else
-    if $ERRORS; then echo "mcstop: Server not found. Exit (30)."; fi
-    exit 30
+    handle_error "Server not found."
 fi
 
 
@@ -107,8 +103,7 @@ fi
 
 ### NO SCREEN RT-GUARD
 if [[ $(screen -ls | grep "$SERVER") == "" ]]; then
-        if $ERRORS; then echo "mcstop: Server not running. Exit (32)."; fi
-        exit 32
+        handle_error "Server not running."
 fi
 
 

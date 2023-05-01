@@ -59,7 +59,7 @@ mkdir $HOMEDIR/tmp
 
 ### GET AND PROCESS JSON FOR LATEST STABLE PAPER BUILD
 
-if $OUTPUT; then echo "Getting latest build information for $GAMEVER..."; fi
+echo "Getting latest build information for $GAMEVER..."
 
 curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds" -H 'accept: application/json' -o $HOMEDIR/tmp/builds.json
 
@@ -72,8 +72,7 @@ curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/bui
 ### VERSION NOT FOUND RT-GUARD
 
 if [[ $(cat $HOMEDIR/tmp/builds.json | grep 'Version not found.') != "" ]]; then
-    if $ERRORS; then echo "getjar.sh: Game version not found. Exit (60)."; fi
-    exit 60
+    handle_error "Game version not found."
 fi
 
 
@@ -123,11 +122,11 @@ CHECKSUM=$(jq '.downloads.application.sha256' $HOMEDIR/tmp/latest.json | tail -c
 
 ### DOWNLOAD THE LATEST JAR FILE
 
-if $OUTPUT; then echo "Downloading latest stable jar file..."; fi
+echo "Downloading latest stable jar file..."
 
 wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME -P $HOMEDIR/tmp/
 
-if $OUTPUT; then echo "Installing build $BUILD over $INSTALLED..."; fi
+echo "Installing build $BUILD over $INSTALLED..."
 
 
 
@@ -140,9 +139,7 @@ if $OUTPUT; then echo "Installing build $BUILD over $INSTALLED..."; fi
 TESTSUM="$(sha256sum $HOMEDIR/tmp/$NAME | cut -d " " -f 1)"
 
 if [[ $TESTSUM != $CHECKSUM ]]; then
-        if $ERRORS; then echo "updatejar.sh: Downloaded JAR file failed checksum test. Exit (61)."; fi
-        rm -rf $HOMEDIR/tmp
-        exit 61
+        handle_error "updatejar.sh: Downloaded JAR file failed checksum test."
 fi
 
 
@@ -182,4 +179,4 @@ rm -rf $HOMEDIR/tmp
 
 
 
-if $OUTPUT; then echo "JAR updated! Changes won't take effect until a server restart."; fi
+echo "JAR updated! Changes won't take effect until a server restart."

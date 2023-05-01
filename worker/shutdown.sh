@@ -50,9 +50,9 @@ SERVER=$2
 ### STOP SERVER
 
 if [[ "$VERBOSE" == "v" ]]; then
-    if $OUTPUT; then echo "Stopping server in verbose mode... (Press CTRL+C in case server hangs)."; fi
+    echo "Stopping server in verbose mode... (Press CTRL+C in case server hangs)."
 else
-    if $OUTPUT; then echo "Stopping server..."; fi
+    echo "Stopping server..."
 fi
 
 
@@ -87,11 +87,10 @@ while true; do
     fi
 
     if [[ $I -ge 30 ]]; then
-        if $OUTPUT; then echo -e "\n$(tail -n15 $HOMEDIR/servers/$SERVER/logs/latest.log)\n"; fi
+        echo -e "\n$(tail -n15 $HOMEDIR/servers/$SERVER/logs/latest.log)\n"
 
-        if $OUTPUT; then echo "Timeout reached. Above is the last 15 lines of latest.log."; fi
-        if $ERRORS; then echo "shutdown.sh: Shutdown failure. Server never indicated 'stopping'. Server is in an unknown state. Exit (37)."; fi
-        exit 37
+        echo "Timeout reached. Above is the last 15 lines of latest.log."
+        handle_error "Shutdown failure. Server never indicated 'stopping'. Server is in an unknown state."
     fi
 done
 
@@ -103,4 +102,4 @@ done
 
 sleep 1
 
-if $OUTPUT; then echo "Server stopped!"; fi
+echo "Server stopped!"

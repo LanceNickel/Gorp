@@ -52,8 +52,7 @@ WORLD_TO_DELETE=$3
 ### PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    if $ERRORS; then echo "mcdeleteworld: Bad input. Expected: gorp delete-world [server-name] <world-name>. Exit (14)."; fi
-    exit 14
+    handle_error "Bad input. Expected: gorp delete-world [server-name] <world-name>."
 fi
 
 
@@ -67,8 +66,7 @@ fi
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    if $ERRORS; then echo "mcdeleteworld: Server not found. Exit (30)."; fi
-    exit 30
+    handle_error "Server not found."
 fi
 
 
@@ -80,8 +78,7 @@ fi
 ### NO WORLDS RT-GUARD
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
-    if $ERRORS; then echo -e "mcdeleteworld: No worlds exist on this server. Exit (42)."; fi
-    exit 42
+    handle_error -e "No worlds exist on this server."
 fi
 
 
@@ -93,8 +90,7 @@ fi
 ### SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        if $ERRORS; then echo "mcdeleteworld: Server cannot be running. Exit (34)."; fi
-        exit 34
+        handle_error "Server cannot be running."
 fi
 
 
@@ -110,8 +106,7 @@ if [[ "$WORLD_TO_DELETE" != "" ]]; then
     if [ -d "$HOMEDIR/servers/$SERVER/world-$WORLD_TO_DELETE" ]; then
         sleep 0.005
     else
-        if $ERRORS; then echo "mcdeleteworld: World not found. Exit (40)."; fi
-        exit 40
+        handle_error "World not found."
     fi
 
 fi

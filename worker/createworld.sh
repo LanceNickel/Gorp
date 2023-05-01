@@ -60,7 +60,7 @@ if [[ "$NEW_WORLD" == "" ]]; then
                 read -r -p "Enter a new world name: " response
 
                 if [[ -d "$HOMEDIR/servers/$SERVER/world-$response" ]]; then
-                        if $OUTPUT; then echo "A world with this name already exists."; fi
+                        echo "A world with this name already exists."
                 else
                         NEW_WORLD=$response
                         break
@@ -77,7 +77,7 @@ fi
 
 ### UPDATE 'level-name' IN 'server.properties' AND START/STOP SERVER TO GENERATE WORLD FILES
 
-if $OUTPUT; then echo "Generating new world..."; fi
+echo "Generating new world..."
 
 sed -i "s/level-name=$OLD_WORLD/level-name=world-$NEW_WORLD/" $HOMEDIR/servers/$SERVER/server.properties
 
@@ -89,4 +89,4 @@ sed -i "s/level-name=$OLD_WORLD/level-name=world-$NEW_WORLD/" $HOMEDIR/servers/$
 
 
 
-if $OUTPUT; then echo "New world created! Server is running."; fi
+echo "New world created! Server is running."

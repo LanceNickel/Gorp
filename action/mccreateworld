@@ -52,8 +52,7 @@ NEW_WORLD=$3
 # PARAM RT-GUARD
 
 if [[ "$SERVER" == "" ]]; then
-    if $ERRORS; then echo "mccreateworld: Bad input. Expected: gorp create-world [server-name] <world-name>. Exit (14)."; fi
-    exit 14
+    handle_error "Bad input. Expected: gorp create-world [server-name] <world-name>."
 fi
 
 
@@ -67,8 +66,7 @@ fi
 if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
     sleep 0.05
 else
-    if $ERRORS; then echo "mccreateworld: Server not found. Exit (30)."; fi
-    exit 30
+    handle_error "Server not found."
 fi
 
 
@@ -82,8 +80,7 @@ fi
 if [[ "$NEW_WORLD" != "" ]]; then
 
     if [[ -d "$HOMEDIR/servers/$SERVER/world-$NEW_WORLD" ]]; then
-        if $ERRORS; then echo "mccreateworld: World already exists. Exit (41)."; fi
-        exit 41
+        handle_error "World already exists."
     fi
 
 fi
@@ -97,8 +94,7 @@ fi
 # SCREEN RT-GUARD
 
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        if $ERRORS; then echo "mccreateworld: Server cannot be running. Exit (34)."; fi
-        exit 34
+        handle_error "Server cannot be running."
 fi
 
 

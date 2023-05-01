@@ -72,7 +72,7 @@ if [[ "$MODE" == "u" ]]; then
 
         ### DOWNLOAD THE JAR
 
-        if $OUTPUT; then echo "Downloading JAR file from URL..."; fi
+        echo "Downloading JAR file from URL..."
 
         cd $HOMEDIR/tmp/
 
@@ -81,8 +81,7 @@ if [[ "$MODE" == "u" ]]; then
 
         # Verify download
         if [[ "$?" != "0" ]]; then
-                if $ERRORS; then echo "getjar.sh: File download error, wget($?). Exit (62)."; fi
-                exit 62
+                handle_error "File download error, wget($?)."
         fi
 
 
@@ -98,7 +97,7 @@ if [[ "$MODE" == "u" ]]; then
         chmod +x ./$FILENAME
         cp ./$FILENAME $HOMEDIR/jars/
 
-        if $OUTPUT; then echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$FILENAME"; fi
+        echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$FILENAME"
 
 
 
@@ -149,7 +148,7 @@ if [[ "$MODE" == "g" ]]; then
 
         ### GET AND PROCESS JSON FOR LATEST STABLE PAPER BUILD
 
-        if $OUTPUT; then echo "Downloading Paper $ARG..."; fi
+        echo "Downloading Paper $ARG..."
 
         curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$ARG/builds" -H 'accept: application/json' -o $HOMEDIR/tmp/builds.json
 
@@ -162,8 +161,7 @@ if [[ "$MODE" == "g" ]]; then
         ### VERSION NOT FOUND RT-GUARD
 
         if [[ $(cat $HOMEDIR/tmp/builds.json | grep 'Version not found.') != "" ]]; then
-                if $ERRORS; then echo "getjar.sh: Game version not found. Exit (60)."; fi
-                exit 60
+                handle_error "Game version not found."
         fi
 
 
@@ -224,9 +222,7 @@ if [[ "$MODE" == "g" ]]; then
         TESTSUM="$(sha256sum $HOMEDIR/tmp/$NAME | cut -d " " -f 1)"
 
         if [[ "$TESTSUM" != "$CHECKSUM" ]]; then
-                if $ERRORS; then echo "getjar.sh: Downloaded JAR file failed checksum test. Exit (61)."; fi
-                rm -rf $HOMEDIR/tmp
-                exit 61
+                handle_error "Downloaded JAR file failed checksum test."
         fi
 
 
@@ -257,6 +253,6 @@ if [[ "$MODE" == "g" ]]; then
 
 
 
-        if $OUTPUT; then echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$ARG.jar"; fi
+        echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$ARG.jar"
 
 fi

@@ -49,22 +49,20 @@ SERVER=$2
 
 ### USER CONFIRMATION GUARD
 
-if $OUTPUT; then echo "You are going to DELETE a server. There is no way back."; fi
+echo "You are going to DELETE a server. There is no way back."
 
 read -r -p "Did you back up the server? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    if $ERRORS; then echo "deleteserver.sh: You answered the prompt wrong! Exit (16)."; fi
-    exit 16
+    handle_error "deleteserver.sh: You answered the prompt wrong!"
 fi
 
 read -r -p "Enter '$SERVER' to confirm: " response
 if [[ "$response" == "$SERVER" ]]; then
     sleep 0.5
 else
-    if $ERRORS; then echo "deleteserver.sh: You answered the prompt wrong! Exit (16)."; fi
-    exit 16
+    handle_error "deleteserver.sh: You answered the prompt wrong!"
 fi
 
 
@@ -83,4 +81,4 @@ rm -rf $HOMEDIR/servers/$SERVER
 
 
 
-if $OUTPUT; then echo "Server deleted!"; fi
+echo "Server deleted!"

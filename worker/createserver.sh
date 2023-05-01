@@ -72,4 +72,4 @@ echo "level-name=world-$WORLD" > $HOMEDIR/servers/$SERVER/server.properties
 
 
 
-if $OUTPUT; then echo "Server created!"; fi
+ echo "Server created!"

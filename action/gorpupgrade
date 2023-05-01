@@ -81,7 +81,7 @@ R_VERSION=$(grep 'V=' release | cut -d '=' -f2)
 ### DO WE EVEN NEED TO UPGRADE?
 
 if [[ "$I_VERSION" == "$R_VERSION" ]]; then
-    if $OUTPUT; then echo "Gorp is already on the latest version."; fi
+    echo "No need to upgrade, already on latest available version."
     exit 0
 fi
 
@@ -93,7 +93,7 @@ fi
 
 ### GET SUDO PERMISSIONS RT-GUARD
 
-if $OUTPUT; then echo "To upgrade, Gorp will use sudo."; fi
+echo "To upgrade, Gorp will use sudo."
 sudo whoami > /dev/null
 
 
@@ -104,7 +104,7 @@ sudo whoami > /dev/null
 
 ### DOWNLOAD & VERIFY THE LATEST RELEASE
 
-if $OUTPUT; then echo "Downloading latest release..."; fi
+echo "Downloading latest release..."
 
 cd $HOMEDIR/tmp/
 wget -q https://gorp.lanickel.com/latest.tar.gz
@@ -120,18 +120,8 @@ L_MD5=$(md5sum latest.tar.gz)
 
 # sha256 comparison
 
-if [[ "$L_SHA256" != "$R_SHA256" ]]; then
-    if $ERRORS; then echo "Downloaded checksum does not match remote (sha256)."; fi
-    exit 1
-fi
-
-
-
-# md5 comparison
-
-if [[ "$L_MD5" != "$R_MD5" ]]; then
-    if $ERRORS; then echo "Downloaded checksum does not match remote (md5)."; fi
-    exit 1
+if [[ "$L_SHA256" != "$R_SHA256" ]] || [[ "$L_MD5" != "$R_MD5" ]]; then
+    handle_error "Downloaded checksum does not match remote."
 fi
 
 
@@ -142,7 +132,7 @@ fi
 
 ### UNPACK TAR
 
-tar -xf latest.tar.gz > /dev/null
+tar -xf latest.tar.gz > /dev/null || handle_error "Unable to unarchive downloaded files."
 
 mv ./latest/ ./updatefiles/
 
@@ -154,8 +144,8 @@ mv ./latest/ ./updatefiles/
 
 ### RUN UPDATE WORKER
 
-chmod +x $HOMEDIR/tmp/updatefiles/upgrade.sh
-$HOMEDIR/tmp/updatefiles/upgrade.sh $1
+chmod +x $HOMEDIR/tmp/updatefiles/upgrade.sh || handle_error "Unable to give +x upgrade.sh file."
+$HOMEDIR/tmp/updatefiles/upgrade.sh $1 || handle_error "Unable to run upgrade.sh file."
 
 
 

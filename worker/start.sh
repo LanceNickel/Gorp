@@ -78,8 +78,7 @@ if [[ "$WORLD_EXISTS" == "false" ]] && [[ "$GENERATE" != "-y" ]]; then
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
         sleep 0.25
     else
-        if $ERRORS; then echo "start.sh: User cancelled. Exit (19)."; fi
-        exit 19
+        handle_error "start.sh: User cancelled."
     fi
 fi
 
@@ -93,7 +92,7 @@ fi
 
 WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2)
 
-if $OUTPUT; then echo "Starting with $WORLD..."; fi
+echo "Starting with $WORLD..."
 
 screen -d -m -S "$SERVER" $HOMEDIR/servers/$SERVER/run.sh $1
 
@@ -118,11 +117,10 @@ while [ true ]; do
     fi
 
     if [[ $I -ge 30 ]]; then
-        if $OUTPUT; then echo -e "\n$(tail -n15 $HOMEDIR/servers/$SERVER/logs/latest.log)\n"; fi
+        echo -e "\n$(tail -n15 $HOMEDIR/servers/$SERVER/logs/latest.log)\n"
 
-        if $OUTPUT; then echo "Timeout reached. Above is the last 15 lines of latest.log."; fi
-        if $ERRORS; then echo "start.sh: Startup failure. Server never indicated 'done'. Server is in an unknown state. Exit (36)."; fi
-        exit 36
+        echo "Timeout reached. Above is the last 15 lines of latest.log."
+        handle_error "start.sh: Startup failure. Server never indicated 'done'. Server is in an unknown state."
     fi
 
 done
@@ -144,4 +142,4 @@ echo "$LOG_INDICATES_VERSION" > $HOMEDIR/servers/$SERVER/lastrunversion
 
 
 
-if $OUTPUT; then echo "Server started! Use 'screen -r $SERVER' to get to this server's console."; fi
+echo "Server started! Use 'screen -r $SERVER' to get to this server's console."
