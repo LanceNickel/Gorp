@@ -11,6 +11,10 @@
 ##   This script is OVERWRITTEN any time a Gorp update is run.   ##
 ###################################################################
 
+# Copyright (C) Lance Nickel 2023.
+# Distributed under GNU GPL v3.
+# <https://gorp.lanickel.com/license/>
+
 # Yes, I am aware this file is an absoluate abomination. Counterpoint: It works.
 # I'll get around to cleaning it up sometime in late-beta.
 

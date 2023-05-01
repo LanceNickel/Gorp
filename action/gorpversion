@@ -3,6 +3,10 @@
 # GORP MICRO-SCRIPT, does just a few tiny things.
 # GORP VERSION REPORTER
 
+# Copyright (C) Lance Nickel 2023.
+# Distributed under GNU GPL v3.
+# <https://gorp.lanickel.com/license/>
+
 source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 GORP_VERSION=$(grep 'Gorp version' /usr/local/etc/gorp.conf | cut -d ':' -f2)

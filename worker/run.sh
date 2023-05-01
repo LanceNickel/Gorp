@@ -10,6 +10,10 @@ source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 ##     All other parts are OVERWRITTEN during a Gorp update.     ##
 ###################################################################
 
+# Copyright (C) Lance Nickel 2023.
+# Distributed under GNU GPL v3.
+# <https://gorp.lanickel.com/license/>
+
 
 
 
