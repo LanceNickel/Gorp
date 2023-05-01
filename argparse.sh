@@ -129,76 +129,76 @@ fi
 ### ACTIONS
 
 if [[ "$ACTION" == "backup-world" ]]; then
-    /usr/local/bin/gorpmc/action/mcbackupworld $TESTSTRING $ARG1
+    source /usr/local/bin/gorpmc/action/mcbackupworld $TESTSTRING $ARG1 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "backup-server" ]]; then
-    /usr/local/bin/gorpmc/action/mcbackupserver $TESTSTRING $ARG1
+    source /usr/local/bin/gorpmc/action/mcbackupserver $TESTSTRING $ARG1 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "restore-world" ]]; then
-    /usr/local/bin/gorpmc/action/mcrestoreworld $TESTSTRING $ARG1
+    source /usr/local/bin/gorpmc/action/mcrestoreworld $TESTSTRING $ARG1 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "restore-server" ]]; then
-    /usr/local/bin/gorpmc/action/mcrestoreserver $TESTSTRING $ARG1
+    source /usr/local/bin/gorpmc/action/mcrestoreserver $TESTSTRING $ARG1 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "update-jar" ]]; then
-    /usr/local/bin/gorpmc/action/mcupdatejar $TESTSTRING
+    source /usr/local/bin/gorpmc/action/mcupdatejar $TESTSTRING || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "get-jar" ]]; then
-    /usr/local/bin/gorpmc/action/mcgetjar $TESTSTRING $ARG1 $ARG2
+    source /usr/local/bin/gorpmc/action/mcgetjar $TESTSTRING $ARG1 $ARG2 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "create-server" ]]; then
-    /usr/local/bin/gorpmc/action/mccreateserver $TESTSTRING $ARG1 $ARG2
+    source /usr/local/bin/gorpmc/action/mccreateserver $TESTSTRING $ARG1 $ARG2 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "delete-server" ]]; then
-    /usr/local/bin/gorpmc/action/mcdeleteserver $TESTSTRING $ARG1
+    source /usr/local/bin/gorpmc/action/mcdeleteserver $TESTSTRING $ARG1 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "create-world" ]]; then
-    /usr/local/bin/gorpmc/action/mccreateworld $TESTSTRING $ARG1 $ARG2
+    source /usr/local/bin/gorpmc/action/mccreateworld $TESTSTRING $ARG1 $ARG2 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "delete-world" ]]; then
-    /usr/local/bin/gorpmc/action/mcdeleteworld $TESTSTRING $ARG1 $ARG2
+    source /usr/local/bin/gorpmc/action/mcdeleteworld $TESTSTRING $ARG1 $ARG2 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "reset-world" ]]; then
-    /usr/local/bin/gorpmc/action/mcresetworld $TESTSTRING $ARG1
+    source /usr/local/bin/gorpmc/action/mcresetworld $TESTSTRING $ARG1 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "archive-world" ]]; then
-    /usr/local/bin/gorpmc/action/mcarchiveworld $TESTSTRING $ARG1 $ARG2
+    source /usr/local/bin/gorpmc/action/mcarchiveworld $TESTSTRING $ARG1 $ARG2 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "switch-world" ]]; then
-    /usr/local/bin/gorpmc/action/mcswitchworld $TESTSTRING $ARG1 $ARG2
+    source /usr/local/bin/gorpmc/action/mcswitchworld $TESTSTRING $ARG1 $ARG2 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "power" ]]; then
-    /usr/local/bin/gorpmc/action/mcpower $TESTSTRING
+    source /usr/local/bin/gorpmc/action/mcpower $TESTSTRING || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "start" ]]; then
-    /usr/local/bin/gorpmc/action/mcstart $TESTSTRING $ARG1 $ARG2
+    source /usr/local/bin/gorpmc/action/mcstart $TESTSTRING $ARG1 $ARG2 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "stop" ]]; then
-    /usr/local/bin/gorpmc/action/mcstop $TESTSTRING $ARG1 $ARG2
+    source /usr/local/bin/gorpmc/action/mcstop $TESTSTRING $ARG1 $ARG2 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "restart" ]]; then
-    /usr/local/bin/gorpmc/action/mcrestart $TESTSTRING $ARG1 $ARG2
+    source /usr/local/bin/gorpmc/action/mcrestart $TESTSTRING $ARG1 $ARG2 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "help" ]]; then
-    /usr/local/bin/gorpmc/action/gorphelp
+    source /usr/local/bin/gorpmc/action/gorphelp || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "upgrade" ]]; then
-    /usr/local/bin/gorpmc/action/gorpupgrade $TESTSTRING
+    source /usr/local/bin/gorpmc/action/gorpupgrade $TESTSTRING || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "version" ]]; then
-    /usr/local/bin/gorpmc/action/gorpversion
+    source /usr/local/bin/gorpmc/action/gorpversion || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "status" ]]; then
-    /usr/local/bin/gorpmc/action/mcserverstatus $TESTSTRING $ARG1
+    source /usr/local/bin/gorpmc/action/mcserverstatus $TESTSTRING $ARG1 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "tail" ]]; then
-    tail -f $HOMEDIR/servers/$ARG1/logs/latest.log
+    tail -f $HOMEDIR/servers/$ARG1/logs/latest.log || handle_error "Failed to tail latest.log"
 
 elif [[ "$ACTION" == "ls" ]]; then
     echo $(ls $HOMEDIR/servers)
 
 elif [[ "$ACTION" == "move-home" ]]; then
-    /usr/local/bin/gorpmc/action/gorpmovehome $TESTSTRING $ARG1
+    source /usr/local/bin/gorpmc/action/gorpmovehome $TESTSTRING $ARG1 || handle_error "Failed to run action."
 
 else
     echo "Invalid parameters. Use gorp help for more information."

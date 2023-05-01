@@ -49,7 +49,7 @@ NEW_HOMEDIR=$2
 
 ### ATTEMPT TO CREATE DESTINATION
 
-mkdir -p $NEW_HOMEDIR/ > /dev/null
+mkdir -p $NEW_HOMEDIR/ > /dev/null || handle_error "message"
 
 
 
@@ -68,7 +68,7 @@ fi
 
 echo "Copying files to new home..."
 
-cp -r $HOMEDIR/* $NEW_HOMEDIR/
+cp -r $HOMEDIR/* $NEW_HOMEDIR/ || handle_error "message"
 
 
 
@@ -85,8 +85,8 @@ fi
 
 ### UPDATE CONFIGURATION AND JAR FILE
 
-sudo sed -i "40s:.*:HOMEDIR=$NEW_HOMEDIR:" /usr/local/etc/gorp.conf
-sed -i "s:$HOMEDIR:$NEW_HOMEDIR:" $NEW_HOMEDIR/jars/latest
+sudo sed -i "40s:.*:HOMEDIR=$NEW_HOMEDIR:" /usr/local/etc/gorp.conf || handle_error "message"
+sed -i "s:$HOMEDIR:$NEW_HOMEDIR:" $NEW_HOMEDIR/jars/latest || handle_error "message"
 
 
 
@@ -98,7 +98,7 @@ if [[ "$HOMEDIR" != "$NEW_HOMEDIR" ]]; then
 fi
 
 if [[ "$(grep "$HOMEDIR" $HOMEDIR/jars/latest)" == "" ]]; then
-    handle_error "Configuration update failed. Please manuall update the directory in $HOMEDIR/jars/latest"
+    handle_error "Configuration update failed. Please manually update the directory in $HOMEDIR/jars/latest"
 fi
 
 

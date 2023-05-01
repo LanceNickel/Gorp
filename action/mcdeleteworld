@@ -119,4 +119,4 @@ fi
 
 ### RUN THE WORLD DELETE WORKER
 
-/usr/local/bin/gorpmc/worker/deleteworld.sh $1 $SERVER $WORLD_TO_DELETE
+source /usr/local/bin/gorpmc/worker/deleteworld.sh $1 $SERVER $WORLD_TO_DELETE || handle_error "Failed to run deleteworld.sh worker."

@@ -77,27 +77,18 @@ fi
 
 
 
-### CREATE TMP DIRECTORY
-
-rm -rf $HOMEDIR/tmp
-mkdir -p $HOMEDIR/tmp/$WORLD_TO_ARCHIVE
-
-
-
-
-
-
-
 ### COMPRESS THE WORLD FILES
 
-echo "Archiving $WORLD_TO_ARCHIVE..."
+echo "Copying files for $WORLD_TO_ARCHIVE..."
 
-cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
-cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
-cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/
+cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ to $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/"
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ to $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/"
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ to $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/"
 
-cd $HOMEDIR/tmp
-tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null
+echo "Compressing files..."
+
+cd $HOMEDIR/tmp || handle_error "Failed to cd to $HOMEDIR/tmp"
+tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null || handle_error "Failed to compress archive files in $HOMEDIR/tmp"
 
 
 
@@ -107,7 +98,7 @@ tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null
 
 ### MAKE SURE ARCHIVE DESTINATION EXISTS
 
-mkdir -p $ARCHIVE_DEST/$SERVER
+mkdir -p $ARCHIVE_DEST/$SERVER || handle_error "Failed to mkdir at $ARCHIVE_DEST/$SERVER"
 
 
 
@@ -117,9 +108,9 @@ mkdir -p $ARCHIVE_DEST/$SERVER
 
 ### COPY THE WORLD FILES TO DESTINATION
 
-echo "Moving world to archive destination... ($ARCHIVE_DEST/$WORLD_TO_ARCHIVE.tar.gz)"
+echo "Moving archive to destination..."
 
-cp $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/
+cp $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/ || handle_error "Failed to cp to $ARCHIVE_DEST/$SERVER/"
 
 
 
@@ -135,20 +126,6 @@ TESTSUM=$(md5sum $ARCHIVE_DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1
 if [[ "$CHECKSUM" != "$TESTSUM" ]]; then
     handle_error "Archived files in destination failed checksum test."
 fi
-
-
-
-
-
-
-
-### CLEAN UP
-
-rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE
-rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether
-rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end
-
-rm -rf $HOMEDIR/tmp
 
 
 

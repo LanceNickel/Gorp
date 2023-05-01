@@ -79,18 +79,7 @@ fi
 
 echo "Backing up $WORLD..."
 
-mkdir -p $DEST
-
-
-
-
-
-
-
-### FLUSH TEMP DIRECTORY
-
-rm -rf $HOMEDIR/tmp
-mkdir -p $TMP/$BACKUP_NAME
+mkdir -p $DEST || handle_error "message"
 
 
 
@@ -115,7 +104,7 @@ fi
 ### IF SERVER IS RUNNING, SAVE PROPERLY, THEN TURN OFF AUTOSAVE
 
 if [[ $RUNNING == true ]]; then
-        screen -S $SERVER -X stuff "save-all\n"
+        screen -S $SERVER -X stuff "save-all\n" || handle_error "Failed to stuff 'save-all' to $SERVER"
 
         while [ true ]
         do
@@ -126,7 +115,7 @@ if [[ $RUNNING == true ]]; then
                 fi
         done
 
-        screen -S $SERVER -X stuff "save-off\n"
+        screen -S $SERVER -X stuff "save-off\n" || handle_error "Failed to stuff 'save-off' to $SERVER"
 fi
 
 
@@ -139,9 +128,9 @@ fi
 
 echo "Copying files to temp directory..."
 
-cp -r $SOURCE $TMP/$BACKUP_NAME/$WORLD
-cp -r ${SOURCE}_nether $TMP/$BACKUP_NAME/${WORLD}_nether
-cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end
+cp -r $SOURCE $TMP/$BACKUP_NAME/$WORLD || handle_error "Failed to cp $SOURCE to $TMP/$BACKUP_NAME/$WORLD"
+cp -r ${SOURCE}_nether $TMP/$BACKUP_NAME/${WORLD}_nether || handle_error "Failed to cp ${SOURCE}_nether to $TMP/$BACKUP_NAME/${WORLD}_nether"
+cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end || handle_error "Failed to cp ${SOURCE}_the_end to $TMP/$BACKUP_NAME/${WORLD}_the_end"
 
 
 
@@ -152,7 +141,7 @@ cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end
 ### IF SERVER IS RUNNING, TURN AUTOSAVE BACK ON
 
 if [[ $RUNNING == true ]]; then
-        screen -S $SERVER -X stuff "save-on\n"
+        screen -S $SERVER -X stuff "save-on\n" || handle_error "Failed to stuff 'save-on' to $SERVER"
 fi
 
 
@@ -164,8 +153,8 @@ fi
 ### COMPRESS FILES IN TEMP DIRECTORY
 
 echo "Compressing files..."
-cd $TMP
-tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
+cd $TMP || handle_error "Failed to cd to $TMP"
+tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null || handle_error "Failed to compress files."
 
 
 
@@ -176,17 +165,7 @@ tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
 ### COPY THE COMPRESSED BACKUP TO THE DESTINATION
 
 echo "Copying files to backup directory..."
-cp $TMP/$BACKUP_NAME.tar.gz $DEST/
-
-
-
-
-
-
-
-### CLEAN UP
-
-rm -rf $HOMEDIR/tmp
+cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to cp $TMP/$BACKUP_NAME.tar.gz to $DEST/"
 
 
 

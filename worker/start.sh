@@ -54,7 +54,7 @@ WORLD_EXISTS=$(worldExists "$SERVER" "$ACTIVE_WORLD")
 ### DETECT IF FIRST-GENERATION REQUIRED
 
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2) = "" ]]; then
-    echo "level-name=world-default" >> $HOMEDIR/sesrvers/$SERVER/server.properties
+    echo "level-name=world-default" >> $HOMEDIR/sesrvers/$SERVER/server.properties || handle_error "Failed to update level-name in server.properties"
     GENERATE="-y"
 fi
 
@@ -94,7 +94,7 @@ WORLD=$(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cu
 
 echo "Starting with $WORLD..."
 
-screen -d -m -S "$SERVER" $HOMEDIR/servers/$SERVER/run.sh $1
+screen -d -m -S "$SERVER" $HOMEDIR/servers/$SERVER/run.sh $1 || handle_error "Failed to start screen"
 
 
 

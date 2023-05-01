@@ -50,8 +50,8 @@ WORLD=$3
 
 ### CREATE SERVER DIRECTORY AND COPY RUN.SH
 
-mkdir $HOMEDIR/servers/$SERVER
-cp /usr/local/bin/gorpmc/worker/run.sh $HOMEDIR/servers/$SERVER/
+mkdir $HOMEDIR/servers/$SERVER || handle_error "Failed to mkdir $HOMEDIR/servers/$SERVER"
+cp /usr/local/bin/gorpmc/worker/run.sh $HOMEDIR/servers/$SERVER/ || handle_error "Failed to cp /usr/local/bin/gorpmc/worker/run.sh to $HOMEDIR/servers/$SERVER/"
 
 
 
@@ -63,13 +63,13 @@ cp /usr/local/bin/gorpmc/worker/run.sh $HOMEDIR/servers/$SERVER/
 #   It is not possible to get to this part of code execution without first agreeing to the Minecraft EULA via a prompt.
 #   Users who did not expressly agree to the EULA did not get here, as they would not have been able to execute this script with the key (reasonably).
 
-echo "eula=true" > $HOMEDIR/servers/$SERVER/eula.txt
-touch $HOMEDIR/servers/$SERVER/server.properties
+echo "eula=true" > $HOMEDIR/servers/$SERVER/eula.txt || handle_error "Failed to echo eula accept to eula.txt"
+touch $HOMEDIR/servers/$SERVER/server.properties || handle_error "Failed to touch server.properties"
 
 
 
-echo "level-name=world-$WORLD" > $HOMEDIR/servers/$SERVER/server.properties
+echo "level-name=world-$WORLD" > $HOMEDIR/servers/$SERVER/server.properties || handle_error "Failed to echo to server.properties"
 
 
 
- echo "Server created!"
+echo "Server created!"

@@ -49,7 +49,7 @@ SERVER=$2
 
 ### SELECT FROM AVAILABLE WORLD FILES
 
-cd $BACKUP_DEST/$SERVER/server-backups
+cd $BACKUP_DEST/$SERVER/server-backups || handle_error "Failed to cd to $BACKUP_DEST/$SERVER/server-backups"
 
 
 
@@ -67,7 +67,7 @@ do
     echo ">>> Invalid selection"
 done
 
-cd "$d"
+cd "$d" || handle_error "Failed to cd to $d"
 YEAR=$d
 
 
@@ -86,7 +86,7 @@ do
     echo ">>> Invalid selection"
 done
 
-cd "$d"
+cd "$d" || handle_error "Failed to cd to $d"
 MONTH=$d
 
 
@@ -105,7 +105,7 @@ do
     echo ">>> Invalid selection"
 done
 
-cd "$d"
+cd "$d" || handle_error "Failed to cd to $d"
 DAY=$d
 
 
@@ -137,7 +137,7 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 echo "Backing up current server..."
 
-/usr/local/bin/gorpmc/action/mcbackupserver $1 $SERVER
+source /usr/local/bin/gorpmc/action/mcbackupserver $1 $SERVER || handle_error "Failed to back up server."
 
 
 
@@ -145,7 +145,7 @@ echo "Backing up current server..."
 
 echo "Restoring selected files..."
 
-rm -rf $HOMEDIR/servers/$SERVER/
+rm -rf $HOMEDIR/servers/$SERVER/ || handle_error "$HOMEDIR/servers/$SERVER/"
 
 
 
@@ -155,14 +155,14 @@ rm -rf $HOMEDIR/servers/$SERVER/
 
 ### RESTORE WORLD
 
-rm -rf $HOMEDIR/tmp
-mkdir -p $HOMEDIR/tmp/restore
+rm -rf $HOMEDIR/tmp || handle_error "Failed to rm $HOMEDIR/tmp"
+mkdir -p $HOMEDIR/tmp/restore || handle_error "Failed to mkdir $HOMEDIR/tmp/restore"
 
-cp $BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE $HOMEDIR/tmp/restore/
+cp $BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE $HOMEDIR/tmp/restore/ || handle_error "Failed to cp $BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE to $HOMEDIR/tmp/restore/"
 
-tar -xf $HOMEDIR/tmp/restore/$FILE_TO_RESTORE -C $HOMEDIR/tmp/restore/
+tar -xf $HOMEDIR/tmp/restore/$FILE_TO_RESTORE -C $HOMEDIR/tmp/restore/ || handle_error "Failed to compress files"
 
-cp -r $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/
+cp -r $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/ || handle_error "Failed to cp $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* to $HOMEDIR/servers/"
 
 
 

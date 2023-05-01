@@ -100,4 +100,4 @@ fi
 
 ### RUN STARTUP WORKER
 
-/usr/local/bin/gorpmc/worker/start.sh $1 $SERVER $GENERATE
+source /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER $GENERATE || handle_error "Failed to run start.sh worker."

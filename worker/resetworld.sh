@@ -65,7 +65,7 @@ read -r -p "Did you back up the world/don't care about it? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo "Resetting world..."
 else
-    handle_error "resetworld.sh: You answered the prompt wrong!"
+    handle_error "You answered the prompt wrong!"
 fi
 
 
@@ -78,7 +78,7 @@ fi
 
 if [[ $RUNNING = true ]]; then
     echo "Stopping server..."
-    /usr/local/bin/gorpmc/action/mcstop $1 $SERVER -n > /dev/null
+    source /usr/local/bin/gorpmc/action/mcstop $1 $SERVER -n > /dev/null || handle_error "Failed to stop server"
 fi
 
 
@@ -91,9 +91,9 @@ fi
 
 echo "Regenerating $WORLD_TO_RESET..."
 
-rm -rf $HOMEDIR/servers/$SERVER/$WORLD_TO_RESET
-rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_nether
-rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_the_end
+rm -rf $HOMEDIR/servers/$SERVER/$WORLD_TO_RESET || handle_error "Failed to rm message$HOMEDIR/servers/$SERVER/$WORLD_TO_RESET"
+rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_nether || handle_error "Failed to rm $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_nether"
+rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_the_end || handle_error "Failed to rm $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_the_end"
 
 
 
@@ -103,7 +103,7 @@ rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_the_end
 
 ### START SERVER (to generate world)
 
-/usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null
+source /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_error "Failed to start server"
 
 
 

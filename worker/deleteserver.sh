@@ -73,7 +73,7 @@ fi
 
 ### DELETE SERVER
 
-rm -rf $HOMEDIR/servers/$SERVER
+rm -rf $HOMEDIR/servers/$SERVER || handle_error "Failed to rm $HOMEDIR/servers/$SERVER"
 
 
 

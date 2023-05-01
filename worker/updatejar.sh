@@ -46,22 +46,11 @@ fi
 
 
 
-### CLEAR TMP DIRECTORY
-
-if [[ -d "$HOMEDIR/tmp" ]]; then rm -rf $HOMEDIR/tmp; fi
-mkdir $HOMEDIR/tmp
-
-
-
-
-
-
-
 ### GET AND PROCESS JSON FOR LATEST STABLE PAPER BUILD
 
 echo "Getting latest build information for $GAMEVER..."
 
-curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds" -H 'accept: application/json' -o $HOMEDIR/tmp/builds.json
+curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds" -H 'accept: application/json' -o $HOMEDIR/tmp/builds.json || handle_error "Failure to get build info from https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds"
 
 
 
@@ -99,6 +88,28 @@ do
                 # if the channel in latest.json is NOT experimental, we found the latest stable (default channel) version
                 FOUND=true
         fi
+
+        # pull from other
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 done
 
 
@@ -124,7 +135,7 @@ CHECKSUM=$(jq '.downloads.application.sha256' $HOMEDIR/tmp/latest.json | tail -c
 
 echo "Downloading latest stable jar file..."
 
-wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME -P $HOMEDIR/tmp/
+wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME -P $HOMEDIR/tmp/ || handle_error "Failed to wget https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME"
 
 echo "Installing build $BUILD over $INSTALLED..."
 
@@ -150,8 +161,7 @@ fi
 
 ### MOVE THE JAR TO THE $HOMEDIR/jars/ FOLDER AND MAKE IT EXECUTABLE
 
-mv $HOMEDIR/tmp/$NAME $HOMEDIR/jars/
-chmod +x $HOMEDIR/jars/$NAME
+mv $HOMEDIR/tmp/$NAME $HOMEDIR/jars/ || handle_error "Failed to mv $HOMEDIR/tmp/$NAME to $HOMEDIR/jars/"
 
 
 
@@ -161,17 +171,7 @@ chmod +x $HOMEDIR/jars/$NAME
 
 ### UPDATE THE LATEST FILE FOR GLOBAL SERVER UPDATES
 
-echo "$HOMEDIR/jars/$NAME" > $HOMEDIR/jars/latest
-
-
-
-
-
-
-
-### CLEAN UP
-
-rm -rf $HOMEDIR/tmp
+echo "$HOMEDIR/jars/$NAME" > $HOMEDIR/jars/latest || handle_error "Failed to update latest JAR file."
 
 
 

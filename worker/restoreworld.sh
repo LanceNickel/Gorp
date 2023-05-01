@@ -60,7 +60,7 @@ do
     echo ">>> Invalid selection"
 done
 
-cd "$d"
+cd "$d" || handle_error "Failed to cd to $d"
 RESTORE_LEVEL_NAME=$d
 
 
@@ -78,7 +78,7 @@ do
     echo ">>> Invalid selection"
 done
 
-cd "$d"
+cd "$d" || handle_error "Failed to cd to $d"
 YEAR=$d
 
 
@@ -97,7 +97,7 @@ do
     echo ">>> Invalid selection"
 done
 
-cd "$d"
+cd "$d" || handle_error "Failed to cd to $d"
 MONTH=$d
 
 
@@ -116,7 +116,7 @@ do
     echo ">>> Invalid selection"
 done
 
-cd "$d"
+cd "$d" || handle_error "Failed to cd to $d"
 DAY=$d
 
 
@@ -148,7 +148,7 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 echo "Backing up current world..."
 
-/usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER
+/usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER || handle_error "Failed to back up world"
 
 
 
@@ -160,7 +160,7 @@ echo "Backing up current world..."
 
 echo "Restoring selected files..."
 
-rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}*
+rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}* || handle_error "Failed to rm $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}*"
 
 
 
@@ -170,14 +170,14 @@ rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}*
 
 ### RESTORE WORLD
 
-rm -rf $HOMEDIR/tmp
-mkdir -p $HOMEDIR/tmp/restore
+rm -rf $HOMEDIR/tmp || handle_error "Failed to rm $HOMEDIR/tmp"
+mkdir -p $HOMEDIR/tmp/restore || handle_error "Failed to mkdir $HOMEDIR/tmp/restore "
 
-cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE $HOMEDIR/tmp/restore/
+cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE $HOMEDIR/tmp/restore/ || handle_error "Failed to cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE $HOMEDIR/tmp/restore/"
 
-tar -xf $HOMEDIR/tmp/restore/$FILE_TO_RESTORE -C $HOMEDIR/tmp/restore/
+tar -xf $HOMEDIR/tmp/restore/$FILE_TO_RESTORE -C $HOMEDIR/tmp/restore/ || handle_error "Failed to compress files"
 
-cp -r $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/
+cp -r $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/ || handle_error "Failed to cp $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* to $HOMEDIR/servers/$SERVER/"
 
 
 

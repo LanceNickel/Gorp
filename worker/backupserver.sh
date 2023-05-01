@@ -74,18 +74,7 @@ fi
 
 echo "Backing up $SERVER... (This may take a while!)"
 
-mkdir -p $DEST/
-
-
-
-
-
-
-
-### FLUSH TEMP DIRECTORY
-
-rm -rf $HOMEDIR/tmp/
-mkdir -p $TMP/$BACKUP_NAME/
+mkdir -p $DEST/ || handle_error "Failed to mkdir $DEST/"
 
 
 
@@ -97,7 +86,7 @@ mkdir -p $TMP/$BACKUP_NAME/
 
 echo "Copying files to temp directory..."
 
-cp -r $SOURCE $TMP/$BACKUP_NAME/
+cp -r $SOURCE $TMP/$BACKUP_NAME/ || handle_error "Failed to cp $SOURCE to $TMP/$BACKUP_NAME/"
 
 
 
@@ -108,8 +97,8 @@ cp -r $SOURCE $TMP/$BACKUP_NAME/
 ### COMPRESS FILES IN TEMP DIRECTORY
 
 echo "Compressing files..."
-cd $TMP
-tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
+cd $TMP || handle_error "Failed to cd to $TMP"
+tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null || handle_error "Failed to compress files"
 
 
 
@@ -120,17 +109,7 @@ tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null
 ### COPY THE COMPRESSED BACKUP TO THE DESTINATION
 
 echo "Copying files to backup directory..."
-cp $TMP/$BACKUP_NAME.tar.gz $DEST/
-
-
-
-
-
-
-
-### CLEAN UP
-
-rm -rf $HOMEDIR/tmp
+cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to cp $TMP/$BACKUP_NAME.tar.gz to $DEST/"
 
 
 

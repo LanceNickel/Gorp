@@ -81,4 +81,4 @@ fi
 
 ### RUN JAR DOWNLOADER
 
-/usr/local/bin/gorpmc/worker/getjar.sh $1 "$MODE" "$ARG"
+source /usr/local/bin/gorpmc/worker/getjar.sh $1 "$MODE" "$ARG" || handle_error "Failed to run getjar.sh worker."

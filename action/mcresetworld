@@ -75,7 +75,7 @@ fi
 ### NO WORLDS GUARD
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
-    handle_error -e "No worlds exist on this server."
+    handle_error "No worlds exist on this server."
 fi
 
 
@@ -86,4 +86,4 @@ fi
 
 ### RUN THE WORLD DELETE WORKER
 
-/usr/local/bin/gorpmc/worker/resetworld.sh $1 $SERVER
+source /usr/local/bin/gorpmc/worker/resetworld.sh $1 $SERVER || handle_error "Failed to run resetworld.sh worker."

@@ -100,4 +100,4 @@ fi
 
 ### RUN THE CREATOR WORKER
 
-/usr/local/bin/gorpmc/worker/createserver.sh $1 $SERVER $WORLD
+source /usr/local/bin/gorpmc/worker/createserver.sh $1 $SERVER $WORLD || handle_error "Failed to run createserver.sh worker."

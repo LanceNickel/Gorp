@@ -57,7 +57,7 @@ fi
 
 
 
-screen -S $SERVER -X stuff 'stop\n'
+screen -S $SERVER -X stuff 'stop\n' || handle_error "Failed to stuff 'stop' into $SERVER"
 
 
 
@@ -80,7 +80,7 @@ while true; do
         while [[ $J -le 5 ]]; do
             sleep 1
             ((J++))
-            screen -S $SERVER -X stuff '\n' > /dev/null
+            screen -S $SERVER -X stuff '\n' > /dev/null || handle_error "Failed to stuff '\n' into $SERVER"
         done
 
         break

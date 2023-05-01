@@ -59,13 +59,6 @@ if [[ "$MODE" == "u" ]]; then
 
 
 
-        ### CLEAR TMP DIRECTORY
-
-        rm -rf $HOMEDIR/tmp/
-        mkdir $HOMEDIR/tmp/
-
-
-
 
 
 
@@ -74,15 +67,9 @@ if [[ "$MODE" == "u" ]]; then
 
         echo "Downloading JAR file from URL..."
 
-        cd $HOMEDIR/tmp/
+        cd $HOMEDIR/tmp/ || handle_error "Failed to cd to $HOMEDIR/tmp"
 
-        wget -q $ARG
-
-
-        # Verify download
-        if [[ "$?" != "0" ]]; then
-                handle_error "File download error, wget($?)."
-        fi
+        wget -q $ARG || handle_error "Failed to wget $ARG"
 
 
 
@@ -94,20 +81,10 @@ if [[ "$MODE" == "u" ]]; then
 
         FILENAME="$(echo $ARG | grep -o $(ls))"
 
-        chmod +x ./$FILENAME
-        cp ./$FILENAME $HOMEDIR/jars/
+        chmod +x ./$FILENAME || handle_error "Failed to +x $FILENAME"
+        cp ./$FILENAME $HOMEDIR/jars/ || handle_error "Failed to cp $FILENAME to $HOMEDIR/jars/"
 
         echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$FILENAME"
-
-
-
-
-
-
-
-        ### CLEAN UP
-
-        rm -rf $HOMEDIR/tmp/
         
         
         
@@ -135,22 +112,11 @@ if [[ "$MODE" == "g" ]]; then
 
 
 
-        ### CLEAR TMP DIRECTORY
-
-        rm -rf $HOMEDIR/tmp/
-        mkdir $HOMEDIR/tmp/
-
-
-
-
-
-
-
         ### GET AND PROCESS JSON FOR LATEST STABLE PAPER BUILD
 
         echo "Downloading Paper $ARG..."
 
-        curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$ARG/builds" -H 'accept: application/json' -o $HOMEDIR/tmp/builds.json
+        curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$ARG/builds" -H 'accept: application/json' -o $HOMEDIR/tmp/builds.json || handle_error "Failed to curl build info from https://api.papermc.io/v2/projects/paper/versions/$ARG/builds"
 
 
 
@@ -187,6 +153,10 @@ if [[ "$MODE" == "g" ]]; then
                         # if the channel in latest.json is NOT experimental, we found the latest stable (default channel) version
                         FOUND=true
                 fi
+
+                if [[ "$I" == "25" ]]; then
+                        handle_error "Stable version not found, timeout."
+                fi
         done
 
 
@@ -209,7 +179,7 @@ if [[ "$MODE" == "g" ]]; then
 
         ### DOWNLOAD THE LATEST JAR FILE
 
-        wget -q https://api.papermc.io/v2/projects/paper/versions/$ARG/builds/$BUILD/downloads/$NAME -P $HOMEDIR/tmp/
+        wget -q https://api.papermc.io/v2/projects/paper/versions/$ARG/builds/$BUILD/downloads/$NAME -P $HOMEDIR/tmp/ || handle_error "Failed to wget https://api.papermc.io/v2/projects/paper/versions/$ARG/builds/$BUILD/downloads/$NAME"
 
 
 
@@ -233,19 +203,9 @@ if [[ "$MODE" == "g" ]]; then
 
         ### RENAME THE JAR, MOVE IT TO JARS, MAKE IT EXECUTABLE
 
-        mv $HOMEDIR/tmp/$NAME /$HOMEDIR/tmp/$ARG.jar
-        cp -f $HOMEDIR/tmp/$ARG.jar $HOMEDIR/jars/
-        chmod +x $HOMEDIR/jars/$ARG.jar
-
-
-
-
-
-
-
-        ### CLEAN UP
-
-        rm -rf $HOMEDIR/tmp
+        mv $HOMEDIR/tmp/$NAME /$HOMEDIR/tmp/$ARG.jar || handle_error "Failed to mv $HOMEDIR/tmp/$NAME to /$HOMEDIR/tmp/$ARG.jar"
+        cp -f $HOMEDIR/tmp/$ARG.jar $HOMEDIR/jars/ || handle_error "Failed to cp $HOMEDIR/tmp/$ARG.jar to $HOMEDIR/jars/"
+        chmod +x $HOMEDIR/jars/$ARG.jar || handle_error "Failed to +x $HOMEDIR/jars/$ARG.jar"
 
 
 

@@ -50,7 +50,7 @@ NEW_HOMEDIR=$2
 ### GET SUDO PERMISSIONS RT-GUARD
 
 echo "Gorp will use sudo to update the configuration file."
-sudo whoami > /dev/null
+sudo whoami > /dev/null || handle_error "Failed to get sudo privileges."
 
 
 
@@ -89,4 +89,4 @@ done
 
 ### CALL THE WORKER
 
-source /usr/local/bin/gorpmc/worker/movehome.sh $1 $NEW_HOMEDIR
+source /usr/local/bin/gorpmc/worker/movehome.sh $1 $NEW_HOMEDIR || handle_error "Unable to launch movehome.sh worker."

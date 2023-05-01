@@ -106,7 +106,6 @@ if [[ "$WORLD_TO_ARCHIVE" != "" ]]; then
         sleep 0.005
     else
         handle_error "World not found."
-        exit 42
     fi
 
 fi
@@ -115,4 +114,4 @@ fi
 
 ### RUN THE WORLD ARCHIVE WORKER
 
-/usr/local/bin/gorpmc/worker/archiveworld.sh $1 $SERVER $WORLD_TO_ARCHIVE
+source /usr/local/bin/gorpmc/worker/archiveworld.sh $1 $SERVER $WORLD_TO_ARCHIVE || handle_error "Failed to run archiveworld.sh worker."
