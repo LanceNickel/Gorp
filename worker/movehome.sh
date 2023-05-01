@@ -49,7 +49,7 @@ NEW_HOMEDIR=$2
 
 ### ATTEMPT TO CREATE DESTINATION
 
-mkdir -p $NEW_HOMEDIR/ > /dev/null || handle_error "message"
+mkdir -p $NEW_HOMEDIR/ > /dev/null || handle_error "Failed to mkdir $NEW_HOMEDIR"
 
 
 
@@ -68,7 +68,7 @@ fi
 
 echo "Copying files to new home..."
 
-cp -r $HOMEDIR/* $NEW_HOMEDIR/ || handle_error "message"
+cp -r $HOMEDIR/* $NEW_HOMEDIR/ || handle_error "Failed to copy homedir to new location"
 
 
 
@@ -85,8 +85,8 @@ fi
 
 ### UPDATE CONFIGURATION AND JAR FILE
 
-sudo sed -i "40s:.*:HOMEDIR=$NEW_HOMEDIR:" /usr/local/etc/gorp.conf || handle_error "message"
-sed -i "s:$HOMEDIR:$NEW_HOMEDIR:" $NEW_HOMEDIR/jars/latest || handle_error "message"
+sudo sed -i "40s:.*:HOMEDIR=$NEW_HOMEDIR:" /usr/local/etc/gorp.conf || handle_error "Failed to update HOMEDIR in config file"
+sed -i "s:$HOMEDIR:$NEW_HOMEDIR:" $NEW_HOMEDIR/jars/latest || handle_error "Failed to update homedir path in latest JAR file"
 
 
 

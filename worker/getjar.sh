@@ -67,7 +67,7 @@ if [[ "$MODE" == "u" ]]; then
 
         echo "Downloading JAR file from URL..."
 
-        cd $HOMEDIR/tmp/ || handle_error "Failed to cd to $HOMEDIR/tmp"
+        cd /tmp/gorp/ || handle_error "Failed to cd to /tmp/gorp"
 
         wget -q $ARG || handle_error "Failed to wget $ARG"
 
@@ -116,7 +116,7 @@ if [[ "$MODE" == "g" ]]; then
 
         echo "Downloading Paper $ARG..."
 
-        curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$ARG/builds" -H 'accept: application/json' -o $HOMEDIR/tmp/builds.json || handle_error "Failed to curl build info from https://api.papermc.io/v2/projects/paper/versions/$ARG/builds"
+        curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$ARG/builds" -H 'accept: application/json' -o /tmp/gorp/builds.json || handle_error "Failed to curl build info from https://api.papermc.io/v2/projects/paper/versions/$ARG/builds"
 
 
 
@@ -126,7 +126,7 @@ if [[ "$MODE" == "g" ]]; then
 
         ### VERSION NOT FOUND RT-GUARD
 
-        if [[ $(cat $HOMEDIR/tmp/builds.json | grep 'Version not found.') != "" ]]; then
+        if [[ $(cat /tmp/gorp/builds.json | grep 'Version not found.') != "" ]]; then
                 handle_error "Game version not found."
         fi
 
@@ -138,7 +138,7 @@ if [[ "$MODE" == "g" ]]; then
 
         ### DETERMINE THE LATEST STABLE BUILD
 
-        jq '.builds[-1] | {build, channel, downloads}' $HOMEDIR/tmp/builds.json > $HOMEDIR/tmp/latest.json
+        jq '.builds[-1] | {build, channel, downloads}' /tmp/gorp/builds.json > /tmp/gorp/latest.json
 
         FOUND=false
         I=1
@@ -146,9 +146,9 @@ if [[ "$MODE" == "g" ]]; then
         while [ $FOUND = false ]; do
                 ((I++))
                 # if the channel in latest.json is experimental...
-                if [[ $(jq '.channel' $HOMEDIR/tmp/latest.json) != '"default"' ]]; then
+                if [[ $(jq '.channel' /tmp/gorp/latest.json) != '"default"' ]]; then
                         # get the second-oldest build version from builds.json and overwrite latest.json with it
-                        jq ".builds[-$I] | {build, channel, downloads}" $HOMEDIR/tmp/builds.json > $HOMEDIR/tmp/latest.json
+                        jq ".builds[-$I] | {build, channel, downloads}" /tmp/gorp/builds.json > /tmp/gorp/latest.json
                 else
                         # if the channel in latest.json is NOT experimental, we found the latest stable (default channel) version
                         FOUND=true
@@ -167,9 +167,9 @@ if [[ "$MODE" == "g" ]]; then
 
         ### STORE INFORMATION ABOUT BUILD TO DOWNLOAD
 
-        BUILD=$(jq '.build' $HOMEDIR/tmp/latest.json)
-        NAME=$(jq '.downloads.application.name' $HOMEDIR/tmp/latest.json | tail -c +2 | head -c -2)
-        CHECKSUM=$(jq '.downloads.application.sha256' $HOMEDIR/tmp/latest.json | tail -c +2 | head -c -2)
+        BUILD=$(jq '.build' /tmp/gorp/latest.json)
+        NAME=$(jq '.downloads.application.name' /tmp/gorp/latest.json | tail -c +2 | head -c -2)
+        CHECKSUM=$(jq '.downloads.application.sha256' /tmp/gorp/latest.json | tail -c +2 | head -c -2)
 
 
 
@@ -179,7 +179,7 @@ if [[ "$MODE" == "g" ]]; then
 
         ### DOWNLOAD THE LATEST JAR FILE
 
-        wget -q https://api.papermc.io/v2/projects/paper/versions/$ARG/builds/$BUILD/downloads/$NAME -P $HOMEDIR/tmp/ || handle_error "Failed to wget https://api.papermc.io/v2/projects/paper/versions/$ARG/builds/$BUILD/downloads/$NAME"
+        wget -q https://api.papermc.io/v2/projects/paper/versions/$ARG/builds/$BUILD/downloads/$NAME -P /tmp/gorp/ || handle_error "Failed to wget https://api.papermc.io/v2/projects/paper/versions/$ARG/builds/$BUILD/downloads/$NAME"
 
 
 
@@ -189,7 +189,7 @@ if [[ "$MODE" == "g" ]]; then
 
         ### TEST THE CHECKSUM (RT-GUARD)
 
-        TESTSUM="$(sha256sum $HOMEDIR/tmp/$NAME | cut -d " " -f 1)"
+        TESTSUM="$(sha256sum /tmp/gorp/$NAME | cut -d " " -f 1)"
 
         if [[ "$TESTSUM" != "$CHECKSUM" ]]; then
                 handle_error "Downloaded JAR file failed checksum test."
@@ -203,8 +203,8 @@ if [[ "$MODE" == "g" ]]; then
 
         ### RENAME THE JAR, MOVE IT TO JARS, MAKE IT EXECUTABLE
 
-        mv $HOMEDIR/tmp/$NAME /$HOMEDIR/tmp/$ARG.jar || handle_error "Failed to mv $HOMEDIR/tmp/$NAME to /$HOMEDIR/tmp/$ARG.jar"
-        cp -f $HOMEDIR/tmp/$ARG.jar $HOMEDIR/jars/ || handle_error "Failed to cp $HOMEDIR/tmp/$ARG.jar to $HOMEDIR/jars/"
+        mv /tmp/gorp/$NAME /tmp/gorp/$ARG.jar || handle_error "Failed to mv /tmp/gorp/$NAME to //tmp/gorp/$ARG.jar"
+        cp -f /tmp/gorp/$ARG.jar $HOMEDIR/jars/ || handle_error "Failed to cp /tmp/gorp/$ARG.jar to $HOMEDIR/jars/"
         chmod +x $HOMEDIR/jars/$ARG.jar || handle_error "Failed to +x $HOMEDIR/jars/$ARG.jar"
 
 

@@ -155,14 +155,13 @@ rm -rf $HOMEDIR/servers/$SERVER/ || handle_error "$HOMEDIR/servers/$SERVER/"
 
 ### RESTORE WORLD
 
-rm -rf $HOMEDIR/tmp || handle_error "Failed to rm $HOMEDIR/tmp"
-mkdir -p $HOMEDIR/tmp/restore || handle_error "Failed to mkdir $HOMEDIR/tmp/restore"
+mkdir -p /tmp/gorp/restore || handle_error "Failed to mkdir /tmp/gorp/restore"
 
-cp $BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE $HOMEDIR/tmp/restore/ || handle_error "Failed to cp $BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE to $HOMEDIR/tmp/restore/"
+cp $BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to cp $BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE to /tmp/gorp/restore/"
 
-tar -xf $HOMEDIR/tmp/restore/$FILE_TO_RESTORE -C $HOMEDIR/tmp/restore/ || handle_error "Failed to compress files"
+tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to compress files"
 
-cp -r $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/ || handle_error "Failed to cp $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* to $HOMEDIR/servers/"
+cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/ || handle_error "Failed to cp /tmp/gorp/restore/$FOLDER_TO_RESTORE/* to $HOMEDIR/servers/"
 
 
 

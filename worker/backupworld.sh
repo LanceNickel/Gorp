@@ -45,7 +45,7 @@ BACKUP_NAME=$WORLD-$DATE_FILE
 SOURCE=$HOMEDIR/servers/$SERVER/$WORLD
 DEST=$BACKUP_DEST/$SERVER/$WORLD/$YEAR/$MONTH/$DAY
 
-TMP=$HOMEDIR/tmp/backup
+TMP=/tmp/gorp
 
 
 
@@ -79,7 +79,7 @@ fi
 
 echo "Backing up $WORLD..."
 
-mkdir -p $DEST || handle_error "message"
+mkdir -p $DEST || handle_error "Failed to mkdir $DEST"
 
 
 

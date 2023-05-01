@@ -81,14 +81,14 @@ fi
 
 echo "Copying files for $WORLD_TO_ARCHIVE..."
 
-cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ to $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/"
-cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ to $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/"
-cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ to $HOMEDIR/tmp/$WORLD_TO_ARCHIVE/"
+cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ to /tmp/gorp/$WORLD_TO_ARCHIVE/"
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ to /tmp/gorp/$WORLD_TO_ARCHIVE/"
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ to /tmp/gorp/$WORLD_TO_ARCHIVE/"
 
 echo "Compressing files..."
 
-cd $HOMEDIR/tmp || handle_error "Failed to cd to $HOMEDIR/tmp"
-tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null || handle_error "Failed to compress archive files in $HOMEDIR/tmp"
+cd /tmp/gorp || handle_error "Failed to cd to /tmp/gorp"
+tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null || handle_error "Failed to compress archive files in /tmp/gorp"
 
 
 
@@ -110,7 +110,7 @@ mkdir -p $ARCHIVE_DEST/$SERVER || handle_error "Failed to mkdir at $ARCHIVE_DEST
 
 echo "Moving archive to destination..."
 
-cp $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/ || handle_error "Failed to cp to $ARCHIVE_DEST/$SERVER/"
+cp /tmp/gorp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/ || handle_error "Failed to cp to $ARCHIVE_DEST/$SERVER/"
 
 
 
@@ -120,7 +120,7 @@ cp $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/ || handle_error 
 
 ### ARCHIVE INTEGRITY GUARD
 
-CHECKSUM=$(md5sum $HOMEDIR/tmp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
+CHECKSUM=$(md5sum /tmp/gorp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 TESTSUM=$(md5sum $ARCHIVE_DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 
 if [[ "$CHECKSUM" != "$TESTSUM" ]]; then

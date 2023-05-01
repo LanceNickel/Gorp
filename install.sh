@@ -108,7 +108,9 @@ echo "paper-0-000.jar" > $HOMEDIR/gorpmc/jars/latest
 
 echo -e "Getting latest Paper JAR file..."
 
-/usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
+source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh || echo "Installation error -- Failed to get new config paremeters. Please uninstall Gorp and try again. If this issue persists, open an issue." && exit 1
+
+source /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
 
 
 

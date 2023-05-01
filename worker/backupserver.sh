@@ -40,7 +40,7 @@ BACKUP_NAME=$SERVER-$DATE_FILE
 SOURCE=$HOMEDIR/servers/$SERVER
 DEST=$BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY
 
-TMP=$HOMEDIR/tmp/backup
+TMP=/tmp/gorp
 
 
 

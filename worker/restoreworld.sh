@@ -148,7 +148,7 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 echo "Backing up current world..."
 
-/usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER || handle_error "Failed to back up world"
+source /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER || handle_error "Failed to back up world"
 
 
 
@@ -170,14 +170,13 @@ rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}* || handle_error "Failed t
 
 ### RESTORE WORLD
 
-rm -rf $HOMEDIR/tmp || handle_error "Failed to rm $HOMEDIR/tmp"
-mkdir -p $HOMEDIR/tmp/restore || handle_error "Failed to mkdir $HOMEDIR/tmp/restore "
+mkdir -p /tmp/gorp/restore || handle_error "Failed to mkdir /tmp/gorp/restore "
 
-cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE $HOMEDIR/tmp/restore/ || handle_error "Failed to cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE $HOMEDIR/tmp/restore/"
+cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/"
 
-tar -xf $HOMEDIR/tmp/restore/$FILE_TO_RESTORE -C $HOMEDIR/tmp/restore/ || handle_error "Failed to compress files"
+tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to compress files"
 
-cp -r $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/ || handle_error "Failed to cp $HOMEDIR/tmp/restore/$FOLDER_TO_RESTORE/* to $HOMEDIR/servers/$SERVER/"
+cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/ || handle_error "Failed to cp /tmp/gorp/restore/$FOLDER_TO_RESTORE/* to $HOMEDIR/servers/$SERVER/"
 
 
 

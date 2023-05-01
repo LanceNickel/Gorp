@@ -49,7 +49,7 @@ I_VERSION=$(grep 'Gorp version' /usr/local/etc/gorp.conf | cut -d ':' -f2 | cut 
 
 ### GET & STORE RELEASE INFORMATION
 
-cd $HOMEDIR/tmp/
+cd /tmp/gorp/
 wget -q https://raw.githubusercontent.com/LanceNickel/Gorp/main/release || handle_error "Unable to wget https://raw.githubusercontent.com/LanceNickel/Gorp/main/release"
 
 
@@ -95,7 +95,7 @@ sudo whoami > /dev/null || handle_error "Failed to get sudo privileges."
 
 echo "Downloading latest release..."
 
-cd $HOMEDIR/tmp/
+cd /tmp/gorp/
 wget -q https://gorp.lanickel.com/latest.tar.gz || handle_error "Failed to wget https://gorp.lanickel.com/latest.tar.gz"
 
 
@@ -133,5 +133,5 @@ mv ./latest/ ./updatefiles/ || handle_error "Failed move downloaded files."
 
 ### RUN UPDATE WORKER
 
-chmod +x $HOMEDIR/tmp/updatefiles/upgrade.sh || handle_error "Unable to give +x upgrade.sh file."
-$HOMEDIR/tmp/updatefiles/upgrade.sh $1 || handle_error "Failed to run upgrade.sh file."
+chmod +x /tmp/gorp/updatefiles/upgrade.sh || handle_error "Unable to give +x upgrade.sh file."
+/tmp/gorp/updatefiles/upgrade.sh $1 || handle_error "Failed to run upgrade.sh file."
