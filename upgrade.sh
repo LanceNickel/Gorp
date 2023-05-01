@@ -32,8 +32,7 @@ fi
 ### ROOT GUARD
 
 if [[ "$EUID" == 0 ]]; then
-    if $ERRORS; then echo "upgrade.sh: Please do not run as root or with 'sudo'. Gorp will ask for sudo rights if it needs it. Exit (10)."; fi
-    exit 10
+    handle_error "upgrade.sh: Please do not run as root or with 'sudo'. Gorp will ask for sudo rights if it needs it."
 fi
 
 
@@ -60,7 +59,7 @@ fi
 
 ################### STAGE 1: INSTALL UPDATED SHELL SCRIPTS TO /usr/local/bin/
 
-if $OUTPUT; then echo "Upgrading Gorp..."; fi
+echo "Upgrading Gorp..."; fi
 
 
 
@@ -70,9 +69,9 @@ if $OUTPUT; then echo "Upgrading Gorp..."; fi
 
 ### MAKE SCRIPT FILES EXECUTABLE
 
-chmod +x $HOMEDIR/tmp/updatefiles/action/*
-chmod +x $HOMEDIR/tmp/updatefiles/worker/*
-chmod +x $HOMEDIR/tmp/updatefiles/gorp
+chmod +x $HOMEDIR/tmp/updatefiles/action/* || handle_error "Failed to +x actions"
+chmod +x $HOMEDIR/tmp/updatefiles/worker/* || handle_error "Failed to +x workers"
+chmod +x $HOMEDIR/tmp/updatefiles/gorp || handle_error "Failed to +x gorp"
 
 
 
@@ -82,8 +81,8 @@ chmod +x $HOMEDIR/tmp/updatefiles/gorp
 
 ### REMOVE CURRENT INSTALLATION
 
-sudo rm -rf /usr/local/bin/gorpmc/
-sudo rm /usr/local/bin/gorp
+sudo rm -rf /usr/local/bin/gorpmc/ || handle_error "Failed to rm /usr/local/bin/gorpmc/"
+sudo rm /usr/local/bin/gorp || handle_error "Failed to rm /usr/local/bin/gorp"
 
 
 
@@ -93,14 +92,14 @@ sudo rm /usr/local/bin/gorp
 
 ### CREATE DIRECTORIES AND RE-INSTALL GORP
 
-sudo mkdir -p /usr/local/bin/gorpmc/
-sudo mkdir /usr/local/bin/gorpmc/action
-sudo mkdir /usr/local/bin/gorpmc/worker
+sudo mkdir -p /usr/local/bin/gorpmc/ || handle_error "Failed to mkdir /usr/local/bin/gorpmc/"
+sudo mkdir /usr/local/bin/gorpmc/action/ || handle_error "Failed to mkdir /usr/local/bin/gorpmc/action/"
+sudo mkdir /usr/local/bin/gorpmc/worker/ || handle_error "Failed to mkdir /usr/local/bin/gorpmc/worker/"
 
-sudo cp $HOMEDIR/tmp/updatefiles/action/* /usr/local/bin/gorpmc/action/
-sudo cp $HOMEDIR/tmp/updatefiles/worker/* /usr/local/bin/gorpmc/worker/
-sudo cp $HOMEDIR/tmp/updatefiles/help.txt /usr/local/bin/gorpmc/
-sudo cp $HOMEDIR/tmp/updatefiles/gorp /usr/local/bin/
+sudo cp $HOMEDIR/tmp/updatefiles/action/* /usr/local/bin/gorpmc/action/ || handle_error "Failed to cp $HOMEDIR/tmp/updatefiles/action/* to /usr/local/bin/gorpmc/action/"
+sudo cp $HOMEDIR/tmp/updatefiles/worker/* /usr/local/bin/gorpmc/worker/ || handle_error "Failed to cp $HOMEDIR/tmp/updatefiles/worker/* to /usr/local/bin/gorpmc/worker/"
+sudo cp $HOMEDIR/tmp/updatefiles/help.txt /usr/local/bin/gorpmc/ || handle_error "Failed to cp $HOMEDIR/tmp/updatefiles/help.txt to /usr/local/bin/gorpmc/"
+sudo cp $HOMEDIR/tmp/updatefiles/gorp /usr/local/bin/ || handle_error "Failed to cp $HOMEDIR/tmp/updatefiles/gorp to /usr/local/bin/"
 
 
 
@@ -122,18 +121,18 @@ ARCHIVE_DEST_ORIG="$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'ARCHIV
 
 # Copy the new config over
 
-sudo rm /usr/local/etc/gorp.conf
-sudo cp $HOMEDIR/tmp/updatefiles/gorp.conf /usr/local/etc/gorp.conf
+sudo rm /usr/local/etc/gorp.conf || handle_error "Failed to rm /usr/local/etc/gorp.conf "
+sudo cp $HOMEDIR/tmp/updatefiles/gorp.conf /usr/local/etc/gorp.conf || handle_error "Failed to cp $HOMEDIR/tmp/updatefiles/gorp.conf to /usr/local/etc/gorp.conf"
 
 
 
 # Deal with the options
 
-sudo sed -i "20s:.*:GAMEVER=$GAMEVER_ORIG:" /usr/local/etc/gorp.conf
-sudo sed -i "30s:.*:RAM=$RAM_ORIG:" /usr/local/etc/gorp.conf
-sudo sed -i "40s:.*:HOMEDIR=$HOMEDIR_ORIG:" /usr/local/etc/gorp.conf
-sudo sed -i "50s:.*:BACKUP_DEST=$BACKUP_DEST_ORIG:" /usr/local/etc/gorp.conf
-sudo sed -i "60s:.*:ARCHIVE_DEST=$BACKUP_DEST_ORIG:" /usr/local/etc/gorp.conf
+sudo sed -i "20s:.*:GAMEVER=$GAMEVER_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update GAMEVER in config"
+sudo sed -i "30s:.*:RAM=$RAM_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update RAM in config"
+sudo sed -i "40s:.*:HOMEDIR=$HOMEDIR_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update HOMEDIR in config"
+sudo sed -i "50s:.*:BACKUP_DEST=$BACKUP_DEST_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update BACKUP_DEST in config"
+sudo sed -i "60s:.*:ARCHIVE_DEST=$ARCHIVE_DEST_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update ARCHIVE_DEST in config"
 
 
 
@@ -161,10 +160,10 @@ if [[ $(ls $HOMEDIR/servers/) != "" ]]; then
         JAR_ORIG="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=')"
         RAM_ORIG="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'RAM=')"
 
-        cp $HOMEDIR/tmp/updatefiles/worker/run.sh $HOMEDIR/servers/$SERVER/run.sh
+        cp $HOMEDIR/tmp/updatefiles/worker/run.sh $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to cp $HOMEDIR/tmp/updatefiles/worker/run.sh to $HOMEDIR/servers/$SERVER/run.sh"
 
-        sed -i "21s:.*:$JAR_ORIG:" $HOMEDIR/servers/$SERVER/run.sh
-        sed -i "30s:.*:$RAM_ORIG:" $HOMEDIR/servers/$SERVER/run.sh
+        sed -i "21s:.*:$JAR_ORIG:" $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to update JAR in run.sh for $SERVER"
+        sed -i "30s:.*:$RAM_ORIG:" $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to update RAM in run.sh for $SERVER"
 
     done
 
@@ -176,4 +175,4 @@ fi
 
 
 
-if $OUTPUT; then echo "Gorp upgraded!"; fi
+echo "Gorp upgraded!"; fi
