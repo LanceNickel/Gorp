@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+### [GORP] ########################################################
+#   Description:  The Gorp top-level entry-caller. Highest level.
+#   Parameters:   1: (required) Action to pass to arg-int.
+#                 2: (optional) Argument 1
+#                 3: (optional) Argument 2
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+# Copyright (C) Lance Nickel 2023.
+# Distributed under GNU GPL v3.
+# <https://gorp.lanickel.com/license/>
+
+
+
+
+
+
+
+################ SEND TO ENTRY ################
+
+source /usr/local/bin/gorpsrc/entry.sh $1 $2 $3

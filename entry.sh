@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-### [GORP] ########################################################
+### [GORP ENTRY POINT] ############################################
 #   Description:  The Gorp entry-point file. Set's up execution.
 #   Parameters:   1: (required) Action to pass to arg-int.
 #                 2: (optional) Argument 1
@@ -59,6 +59,12 @@ source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh || handle_error "Unable
 
 
 
+######## Create tmp directory
+
+mkdir -p /tmp/gorp/ || handle_error "Unable to create tmp directory at /tmp/gorp/"
+
+
+
 ######## Handle lock file.
 
 if [[ -f "/tmp/gorp/gorp.lock" ]]; then
@@ -66,12 +72,6 @@ if [[ -f "/tmp/gorp/gorp.lock" ]]; then
 else
     touch /tmp/gorp/gorp.lock || handle_error "Unable to create lock file."
 fi
-
-
-
-######## Create tmp directory
-
-mkdir -p /tmp/gorp/ || handle_error "Unable to create tmp directory at /tmp/gorp/"
 
 
 
@@ -106,6 +106,12 @@ source /usr/local/bin/gorpsrc/argparse.sh $1 $2 $3
 ####### Delete tmp dir.
 
 rm -rf /tmp/gorp/ || handle_error "Unable to delete tmp directory at /tmp/gorp/"
+
+
+
+####### Release lock file
+
+rm /tmp/gorp/gorp.lock
 
 
 
