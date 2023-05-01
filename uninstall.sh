@@ -20,8 +20,8 @@
 ### ROOT GUARD
 
 if [[ "$EUID" == 0 ]]; then
-    echo "Please do not run as root or with 'sudo'. Gorp will ask for sudo rights if it needs it. Exit (10)."
-    exit 10
+    echo "Please do not run as root or with 'sudo'"
+    exit 1
 fi
 
 

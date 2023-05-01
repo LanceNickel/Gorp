@@ -20,8 +20,8 @@
 ### ROOT GUARD
 
 if [[ "$EUID" == 0 ]]; then
-    echo "Please don't run as root or with sudo. Exit (10)."
-    exit 10
+    echo "Please don't run as root or with sudo."
+    exit 1
 fi
 
 
@@ -37,7 +37,7 @@ sudo whoami > /dev/null
 
 if [[ -d "/usr/local/bin/gorp" ]]; then
     echo -e "Gorp is already installed. To update, run 'sudo gorp upgrade'.\nRunning into problems? Open an issue: https://github.com/LanceNickel/Gorp/issues\nOr send me an email: gorp@lanickel.com"
-    exit 21
+    exit 1
 fi
 
 
