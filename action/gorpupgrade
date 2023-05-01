@@ -134,4 +134,4 @@ mv ./latest/ ./updatefiles/ || handle_error "Failed move downloaded files"
 ### RUN UPDATE WORKER
 
 chmod +x /tmp/gorp/updatefiles/upgrade.sh || handle_error "Unable to give +x upgrade.sh file"
-/tmp/gorp/updatefiles/upgrade.sh $1 || handle_error "Failed to run upgrade.sh file"
+source /tmp/gorp/updatefiles/upgrade.sh $1 || handle_error "Failed to run upgrade.sh file"
