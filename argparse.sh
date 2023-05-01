@@ -16,35 +16,12 @@
 
 
 
-#### GUARDS ################
-
-### ROOT GUARD
-
-if [[ "$EUID" == 0 ]]; then
-    echo "Please don't run as root or with sudo. Exit (10)."
-    exit 10
-fi
-
-
-
-
-
-
-
-#### SCRIPT PARAMETERS
-
-source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
-
-
-
 ### SET DEFAULT PARAMS FOR NO FLAGS
 
 TESTSTRING=pleasedontdothis
 ACTION=$1
 ARG1=$2
 ARG2=$3
-OUTPUT=true
-ERRORS=true
 
 
 
