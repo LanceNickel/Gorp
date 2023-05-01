@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-### [GORP] ########################################################
-#   Description:  Main Gorp launcher.
+### [ARG-INT] #####################################################
+#   Description:  The argument interpreter. Called ONLY by entry.
 #   Parameters:   1: (required) Action
 #                 2: (optional) Argument 1
 #                 3: (optional) Argument 2
@@ -10,6 +10,9 @@
 ##    No part of this script is designed to be user-editable.    ##
 ##   This script is OVERWRITTEN any time a Gorp update is run.   ##
 ###################################################################
+
+# Yes, I am aware this file is an absoluate abomination. Counterpoint: It works.
+# I'll get around to cleaning it up sometime in late-beta.
 
 
 
