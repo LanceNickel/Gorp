@@ -62,6 +62,8 @@ echo -e "\nInstalling Gorp..."
 
 chmod +x action/*
 chmod +x worker/*
+chmod +x entry.sh
+chmod +x argparse.sh
 chmod +x gorp
 
 
@@ -95,6 +97,8 @@ fi
 sudo cp action/* /usr/local/bin/gorpmc/action/
 sudo cp worker/* /usr/local/bin/gorpmc/worker/
 sudo cp help.txt /usr/local/bin/gorpmc/
+sudo cp argparse.sh /usr/local/bin/gorpmc/
+sudo cp entry.sh /usr/local/bin/gorpmc/
 sudo cp gorp /usr/local/bin/
 
 sudo mkdir -p /usr/local/etc/

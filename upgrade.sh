@@ -20,7 +20,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
+    handle_error "Script not meant to be run directly"
 fi
 
 
@@ -32,7 +32,7 @@ fi
 ### ROOT GUARD
 
 if [[ "$EUID" == 0 ]]; then
-    handle_error "upgrade.sh: Please do not run as root or with 'sudo'. Gorp will ask for sudo rights if it needs it."
+    handle_error "upgrade.sh: Please do not run as root or with 'sudo'"
 fi
 
 
@@ -69,9 +69,11 @@ echo "Upgrading Gorp..."; fi
 
 ### MAKE SCRIPT FILES EXECUTABLE
 
-chmod +x $HOMEDIR/tmp/updatefiles/action/* || handle_error "Failed to +x actions"
-chmod +x $HOMEDIR/tmp/updatefiles/worker/* || handle_error "Failed to +x workers"
-chmod +x $HOMEDIR/tmp/updatefiles/gorp || handle_error "Failed to +x gorp"
+chmod +x /tmp/gorp/updatefiles/action/* || handle_error "Failed to +x actions"
+chmod +x /tmp/gorp/updatefiles/worker/* || handle_error "Failed to +x workers"
+chmod +x /tmp/gorp/updatefiles/entry.sh || handle_error "Failed to +x entry"
+chmod +x /tmp/gorp/updatefiles/argparse.sh || handle_error "Failed to +x argparse"
+chmod +x /tmp/gorp/updatefiles/gorp || handle_error "Failed to +x gorp"
 
 
 
@@ -96,10 +98,12 @@ sudo mkdir -p /usr/local/bin/gorpmc/ || handle_error "Failed to mkdir /usr/local
 sudo mkdir /usr/local/bin/gorpmc/action/ || handle_error "Failed to mkdir /usr/local/bin/gorpmc/action/"
 sudo mkdir /usr/local/bin/gorpmc/worker/ || handle_error "Failed to mkdir /usr/local/bin/gorpmc/worker/"
 
-sudo cp $HOMEDIR/tmp/updatefiles/action/* /usr/local/bin/gorpmc/action/ || handle_error "Failed to cp $HOMEDIR/tmp/updatefiles/action/* to /usr/local/bin/gorpmc/action/"
-sudo cp $HOMEDIR/tmp/updatefiles/worker/* /usr/local/bin/gorpmc/worker/ || handle_error "Failed to cp $HOMEDIR/tmp/updatefiles/worker/* to /usr/local/bin/gorpmc/worker/"
-sudo cp $HOMEDIR/tmp/updatefiles/help.txt /usr/local/bin/gorpmc/ || handle_error "Failed to cp $HOMEDIR/tmp/updatefiles/help.txt to /usr/local/bin/gorpmc/"
-sudo cp $HOMEDIR/tmp/updatefiles/gorp /usr/local/bin/ || handle_error "Failed to cp $HOMEDIR/tmp/updatefiles/gorp to /usr/local/bin/"
+sudo cp /tmp/gorp/updatefiles/action/* /usr/local/bin/gorpmc/action/ || handle_error "Failed to cp /tmp/gorp/updatefiles/action/* to /usr/local/bin/gorpmc/action/"
+sudo cp /tmp/gorp/updatefiles/worker/* /usr/local/bin/gorpmc/worker/ || handle_error "Failed to cp /tmp/gorp/updatefiles/worker/* to /usr/local/bin/gorpmc/worker/"
+sudo cp /tmp/gorp/updatefiles/help.txt /usr/local/bin/gorpmc/ || handle_error "Failed to cp /tmp/gorp/updatefiles/help.txt to /usr/local/bin/gorpmc/"
+sudo cp /tmp/gorp/updatefiles/argparse.sh /usr/local/bin/gorpmc/ || handle_error "Failed to cp /tmp/gorp/updatefiles/argparse.sh to /usr/local/bin/gorpmc/"
+sudo cp /tmp/gorp/updatefiles/entry.sh /usr/local/bin/gorpmc/ || handle_error "Failed to cp /tmp/gorp/updatefiles/entry.sh to /usr/local/bin/gorpmc/"
+sudo cp /tmp/gorp/updatefiles/gorp /usr/local/bin/ || handle_error "Failed to cp /tmp/gorp/updatefiles/gorp to /usr/local/bin/"
 
 
 
@@ -122,7 +126,7 @@ ARCHIVE_DEST_ORIG="$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'ARCHIV
 # Copy the new config over
 
 sudo rm /usr/local/etc/gorp.conf || handle_error "Failed to rm /usr/local/etc/gorp.conf "
-sudo cp $HOMEDIR/tmp/updatefiles/gorp.conf /usr/local/etc/gorp.conf || handle_error "Failed to cp $HOMEDIR/tmp/updatefiles/gorp.conf to /usr/local/etc/gorp.conf"
+sudo cp /tmp/gorp/updatefiles/gorp.conf /usr/local/etc/gorp.conf || handle_error "Failed to cp /tmp/gorp/updatefiles/gorp.conf to /usr/local/etc/gorp.conf"
 
 
 
@@ -160,7 +164,7 @@ if [[ $(ls $HOMEDIR/servers/) != "" ]]; then
         JAR_ORIG="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=')"
         RAM_ORIG="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'RAM=')"
 
-        cp $HOMEDIR/tmp/updatefiles/worker/run.sh $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to cp $HOMEDIR/tmp/updatefiles/worker/run.sh to $HOMEDIR/servers/$SERVER/run.sh"
+        cp /tmp/gorp/updatefiles/worker/run.sh $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to cp /tmp/gorp/updatefiles/worker/run.sh to $HOMEDIR/servers/$SERVER/run.sh"
 
         sed -i "21s:.*:$JAR_ORIG:" $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to update JAR in run.sh for $SERVER"
         sed -i "30s:.*:$RAM_ORIG:" $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to update RAM in run.sh for $SERVER"
