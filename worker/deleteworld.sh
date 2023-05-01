@@ -21,20 +21,7 @@
 ### KEY GUARD
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    OUTPUT=true
-    ERRORS=true
-
-elif [[ "$1" == "pleaseshutup" ]]; then
-    OUTPUT=false
-    ERRORS=true
-
-elif [[ "$1" == "pleasebesilent" ]]; then
-    OUTPUT=false
-    ERRORS=false
-
-else
-    if $ERRORS; then echo "deleteworld.sh: Not intended to be run directly. Exit (13)."; fi
-    exit 13
+    handle_error "Script not meant to be run directly."
 fi
 
 
@@ -44,8 +31,6 @@ fi
 
 
 #### SCRIPT PARAMETERS ################
-
-source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 SERVER=$2
 WORLD_TO_DELETE=$3
