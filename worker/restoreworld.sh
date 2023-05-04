@@ -151,13 +151,6 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 #### RESTORE WORLD ############
 
-#### Backup current world
-
-echo "Backing up current world..."
-bash /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER || handle_error "Failed to back up world"
-
-
-
 #### Delete current world (if it exists)
 
 if [[ -d "$HOMEDIR/servers/$SERVER/$RESTORE_LEVEL_NAME/" ]]; then
