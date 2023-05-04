@@ -16,19 +16,19 @@ COMMANDS:
   |  = mutually exclusive
 
 Start & Stop:
-  start [server-name]                       -- Start a server.
-  stop [server-name] <-f | -n>              -- Stop a server.
+  --start [server-name]                       -- Start a server.
+  --stop [server-name] <-f | -n>              -- Stop a server.
   restart [server-name] <-f | -n>           -- Restart a server.
 
 Manage Servers:
-  create-server [server-name]               -- Create a new server instance.
-  delete-server [server-name]               -- Delete a server instance.
+  --create-server [server-name]               -- Create a new server instance.
+  --delete-server [server-name]               -- Delete a server instance.
   move-home [destination]                   -- Move Gorp's home files to a new location. Do !NOT! use a trailing slash.
 
 Manage Worlds:
-  create-world [server-name] <world-name>   -- Create a new world in a particular server instance.
+  --create-world [server-name] <world-name>   -- Create a new world in a particular server instance.
   delete-world [server-name] <world-name>   -- Delete a world in a particular server instance.
-  switch-world [server-name] <world-name>   -- Switch the active world in a particular server instance.
+  --switch-world [server-name] <world-name>   -- Switch the active world in a particular server instance.
   reset-world [server-name]                 -- Regenerate the currently set world in a directory. "Mulligan".
   archive-world [server-name] <world-name>  -- Archive and move a world out of a particular server instance.
 

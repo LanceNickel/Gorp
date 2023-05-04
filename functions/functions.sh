@@ -33,7 +33,7 @@ list_worlds() {
 #### Check if world exists (server name, world name)
 
 does_world_exist() {
-    if [[ -d "$HOMEDIR/servers/$1/$2" ]]; then
+    if [[ -d "$HOMEDIR/servers/$1/world-$2" ]]; then
         echo "true"
     else
         echo "false"
