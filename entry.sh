@@ -19,9 +19,9 @@
 
 #### GUARDS ############
 
-bash /usr/local/bin/gorpmc/functions/exit.sh
-bash /usr/local/bin/gorpmc/functions/params.sh
-bash /usr/local/bin/gorpmc/functions/common.sh
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
