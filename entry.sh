@@ -51,13 +51,13 @@ mkdir -p /tmp/gorp/ || handle_error "Unable to create tmp directory at /tmp/gorp
 
 
 
-#### Handle lock file.
+# #### Handle lock file.
 
-if [[ -f "/tmp/gorp/gorp.lock" ]]; then
-    handle_error "Gorp is already running."
-else
-    touch /tmp/gorp/gorp.lock || handle_error "Unable to create lock file."
-fi
+# if [[ -f "/tmp/gorp/gorp.lock" ]]; then
+#     handle_error "Gorp is already running."
+# else
+#     touch /tmp/gorp/gorp.lock || handle_error "Unable to create lock file."
+# fi
 
 
 
@@ -79,7 +79,7 @@ bash /usr/local/bin/gorpmc/argparse.sh $ACTION $ARG1 $ARG2
 
 #### Delete tmp dir (by extension, releasing lock)
 
-rm -rf /tmp/gorp/ || handle_error "Unable to delete tmp directory at /tmp/gorp/"
+# rm -rf /tmp/gorp/ || handle_error "Unable to delete tmp directory at /tmp/gorp/"
 
 
 

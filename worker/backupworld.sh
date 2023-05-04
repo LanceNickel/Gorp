@@ -46,7 +46,7 @@ DATE_FILE=$(date +"%Y-%m-%d_%H%M-%S")
 
 BACKUP_NAME=$WORLD-$DATE_FILE
 
-SOURCE=$HOMEDIR/servers/$SERVER/$WORLD
+SOURCE=$HOMEDIR/servers/$SERVER/world-$WORLD
 DEST=$BACKUP_DEST/$SERVER/$WORLD/$YEAR/$MONTH/$DAY
 
 TMP=/tmp/gorp
@@ -70,7 +70,7 @@ TMP=/tmp/gorp
 #### Source not found
 
 if [[ ! -d "$SOURCE" ]]; then
-        handle_error "Backup failed because the . cannot be found."
+        handle_error "Backup failed because the source cannot be found."
 fi
 
 
@@ -98,7 +98,7 @@ if [[ "$RUNNING" == "true" ]]; then
 
                 ((I++))
 
-                if [[ "$I" >= 300 ]]; then
+                if [[ $I -ge 300 ]]; then
                         handle_error "Reached time out for world save."
                 fi
         done
