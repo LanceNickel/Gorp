@@ -19,9 +19,9 @@
 
 #### Globals
 
-source /usr/local/bin/gorpmc/functions/exit.sh
-source /usr/local/bin/gorpmc/functions/params.sh
-source /usr/local/bin/gorpmc/functions/functions.sh
+. /usr/local/bin/gorpmc/functions/exit.sh
+. /usr/local/bin/gorpmc/functions/params.sh
+. /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
@@ -78,9 +78,9 @@ sed -i "s:$HOMEDIR:$NEW_HOMEDIR:" $NEW_HOMEDIR/jars/latest || handle_error "Fail
 
 
 
-#### Re-source the params and make sure they're updated
+#### Re-. the params and make sure they're updated
 
-source /usr/local/bin/gorpmc/functions/params.sh
+. /usr/local/bin/gorpmc/functions/params.sh
 
 if [[ "$HOMEDIR" != "$NEW_HOMEDIR" ]]; then
     handle_error "Configuration update failed. Please manually update HOMEDIR to $NEW_HOMEDIR in /usr/local/etc/gorp.conf."

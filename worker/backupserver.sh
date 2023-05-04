@@ -20,9 +20,9 @@
 
 #### Globals
 
-source /usr/local/bin/gorpmc/functions/exit.sh
-source /usr/local/bin/gorpmc/functions/params.sh
-source /usr/local/bin/gorpmc/functions/functions.sh
+. /usr/local/bin/gorpmc/functions/exit.sh
+. /usr/local/bin/gorpmc/functions/params.sh
+. /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
@@ -45,7 +45,7 @@ DATE_FILE=$(date +"%Y-%m-%d_%H%M-%S")
 
 BACKUP_NAME=$SERVER-$DATE_FILE
 
-SOURCE=$HOMEDIR/servers/$SERVER
+.=$HOMEDIR/servers/$SERVER
 DEST=$BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY
 
 TMP=/tmp/gorp
@@ -66,10 +66,10 @@ TMP=/tmp/gorp
 
 #### GUARDS ############
 
-#### Source not found
+#### . not found
 
-if [[ ! -d "$SOURCE/" ]]; then
-        handle_error "Backup failed because the source cannot be found."
+if [[ ! -d "$./" ]]; then
+        handle_error "Backup failed because the . cannot be found."
 fi
 
 
@@ -90,7 +90,7 @@ mkdir -p $DEST/ || handle_error "Failed to mkdir $DEST/"
 #### Copy files to tmp
 
 echo "Copying files..."
-cp -r $SOURCE $TMP/$BACKUP_NAME/ || handle_error "Failed to copy server to tmp directory"
+cp -r $. $TMP/$BACKUP_NAME/ || handle_error "Failed to copy server to tmp directory"
 
 
 
