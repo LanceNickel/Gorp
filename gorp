@@ -17,6 +17,27 @@
 
 
 
+#### HANDLE USER INTERRUPT ############
+
+user_interrupted() {
+    echo "User interrupted"
+
+    if [[ -d "/tmp/gorp/" ]]; then
+        rm -rf /tmp/gorp/
+    fi
+
+    exit 1
+}
+
+trap user_interrupted SIGINT
+trap user_interrupted SIGSTOP
+
+
+
+
+
+
+
 #### GO TO ENTRY ############
 
 bash /usr/local/bin/gorpmc/entry.sh $1 $2 $3
