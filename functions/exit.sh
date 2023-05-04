@@ -17,9 +17,9 @@
 handle_error() {
     message=$1
 
-    if [[ -d "/tmp/gorp/" ]]; then
-        rm -rf /tmp/gorp/
-    fi
+    # if [[ -d "/tmp/gorp/" ]]; then
+    #     rm -rf /tmp/gorp/
+    # fi
 
     if [[ "$message" == "" ]]; then
         message="Gorp encoutered a problem and needed to exit."
