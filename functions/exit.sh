@@ -25,7 +25,7 @@ handle_error() {
         message="Gorp encoutered a problem and needed to exit."
     fi
 
-    echo "ERROR: $message"
+    echo "TRACE: $message"
 
     exit 1
 }
