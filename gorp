@@ -17,10 +17,6 @@
 
 
 
-
-
-
-
-################ SEND TO ENTRY ################
+#### GO TO ENTRY ############
 
 bash /usr/local/bin/gorpmc/entry.sh

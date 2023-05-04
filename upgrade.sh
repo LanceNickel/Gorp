@@ -15,33 +15,21 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
 
-
-
-
-### ROOT GUARD
-
-if [[ "$EUID" == 0 ]]; then
-    handle_error "upgrade.sh: Please do not run as root or with 'sudo'"
-fi
-
-
-
-
-
-
-
-#### SCRIPT PARAMETERS ################
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
@@ -57,53 +45,44 @@ fi
 
 
 
-################### STAGE 1: INSTALL UPDATED SHELL SCRIPTS TO /usr/local/bin/
+#### STAGE 1: INSTALL NEW FILES ############
 
-echo "Upgrading Gorp..."; fi
-
-
+echo "Upgrading Gorp..."
 
 
 
-
-
-### MAKE SCRIPT FILES EXECUTABLE
+#### Make scripts executable
 
 chmod +x /tmp/gorp/updatefiles/action/* || handle_error "Failed to +x actions"
+chmod +x /tmp/gorp/updatefiles/functions/* || handle_error "Failed to +x functions"
 chmod +x /tmp/gorp/updatefiles/worker/* || handle_error "Failed to +x workers"
-chmod +x /tmp/gorp/updatefiles/entry.sh || handle_error "Failed to +x entry"
 chmod +x /tmp/gorp/updatefiles/argparse.sh || handle_error "Failed to +x argparse"
+chmod +x /tmp/gorp/updatefiles/entry.sh || handle_error "Failed to +x entry"
 chmod +x /tmp/gorp/updatefiles/gorp || handle_error "Failed to +x gorp"
 
 
 
-
-
-
-
-### REMOVE CURRENT INSTALLATION
+#### Delete current installation
 
 sudo rm -rf /usr/local/bin/gorpmc/ || handle_error "Failed to rm /usr/local/bin/gorpmc/"
 sudo rm /usr/local/bin/gorp || handle_error "Failed to rm /usr/local/bin/gorp"
 
 
 
-
-
-
-
-### CREATE DIRECTORIES AND RE-INSTALL GORP
+#### Create directories & install new files
 
 sudo mkdir -p /usr/local/bin/gorpmc/ || handle_error "Failed to mkdir /usr/local/bin/gorpmc/"
 sudo mkdir /usr/local/bin/gorpmc/action/ || handle_error "Failed to mkdir /usr/local/bin/gorpmc/action/"
+sudo mkdir /usr/local/bin/gorpmc/functions/ || handle_error "Failed to mkdir /usr/local/bin/gorpmc/functions/"
 sudo mkdir /usr/local/bin/gorpmc/worker/ || handle_error "Failed to mkdir /usr/local/bin/gorpmc/worker/"
 
 sudo cp /tmp/gorp/updatefiles/action/* /usr/local/bin/gorpmc/action/ || handle_error "Failed to cp /tmp/gorp/updatefiles/action/* to /usr/local/bin/gorpmc/action/"
+sudo cp /tmp/gorp/updatefiles/functions/* /usr/local/bin/gorpmc/functions/ || handle_error "Failed to cp /tmp/gorp/updatefiles/action/* to /usr/local/bin/gorpmc/action/"
 sudo cp /tmp/gorp/updatefiles/worker/* /usr/local/bin/gorpmc/worker/ || handle_error "Failed to cp /tmp/gorp/updatefiles/worker/* to /usr/local/bin/gorpmc/worker/"
-sudo cp /tmp/gorp/updatefiles/help.txt /usr/local/bin/gorpmc/ || handle_error "Failed to cp /tmp/gorp/updatefiles/help.txt to /usr/local/bin/gorpmc/"
 sudo cp /tmp/gorp/updatefiles/argparse.sh /usr/local/bin/gorpmc/ || handle_error "Failed to cp /tmp/gorp/updatefiles/argparse.sh to /usr/local/bin/gorpmc/"
 sudo cp /tmp/gorp/updatefiles/entry.sh /usr/local/bin/gorpmc/ || handle_error "Failed to cp /tmp/gorp/updatefiles/entry.sh to /usr/local/bin/gorpmc/"
 sudo cp /tmp/gorp/updatefiles/gorp /usr/local/bin/ || handle_error "Failed to cp /tmp/gorp/updatefiles/gorp to /usr/local/bin/"
+sudo cp /tmp/gorp/updatefiles/help.txt /usr/local/bin/gorpmc/ || handle_error "Failed to cp /tmp/gorp/updatefiles/help.txt to /usr/local/bin/gorpmc/"
 
 
 
@@ -111,9 +90,9 @@ sudo cp /tmp/gorp/updatefiles/gorp /usr/local/bin/ || handle_error "Failed to cp
 
 
 
-### DEAL WITH THE CONFIGURATION FILE
+#### STAGE 2: HANDLE CONFIG FILES ############
 
-# Store currently set values in config
+#### Store current config
 
 GAMEVER_ORIG="$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f2)"
 RAM_ORIG="$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f2)"
@@ -123,14 +102,14 @@ ARCHIVE_DEST_ORIG="$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'ARCHIV
 
 
 
-# Copy the new config over
+#### Copy new config file over
 
 sudo rm /usr/local/etc/gorp.conf || handle_error "Failed to rm /usr/local/etc/gorp.conf "
 sudo cp /tmp/gorp/updatefiles/gorp.conf /usr/local/etc/gorp.conf || handle_error "Failed to cp /tmp/gorp/updatefiles/gorp.conf to /usr/local/etc/gorp.conf"
 
 
 
-# Deal with the options
+#### Replace defaults with stored values
 
 sudo sed -i "20s:.*:GAMEVER=$GAMEVER_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update GAMEVER in config"
 sudo sed -i "30s:.*:RAM=$RAM_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update RAM in config"
@@ -144,15 +123,7 @@ sudo sed -i "60s:.*:ARCHIVE_DEST=$ARCHIVE_DEST_ORIG:" /usr/local/etc/gorp.conf |
 
 
 
-sleep 1
-
-
-
-
-
-
-
-### DEAL WITH THE RUN SCRIPTS IN ALL SERVERS (if required)
+#### STAGE 3: DEAL WITH RUN.SH FILES IN ALL SERVERS ############
 
 if [[ $(ls $HOMEDIR/servers/) != "" ]]; then
 
@@ -179,4 +150,6 @@ fi
 
 
 
-echo "Gorp upgraded!"; fi
+#### WE MADE IT ############
+
+echo "Gorp upgraded!"

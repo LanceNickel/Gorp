@@ -17,7 +17,7 @@
 
 
 
-######## SOURCES/IMPORTS
+#### GUARDS ############
 
 bash /usr/local/bin/gorpmc/functions/exit.sh
 bash /usr/local/bin/gorpmc/functions/params.sh
@@ -29,7 +29,7 @@ bash /usr/local/bin/gorpmc/functions/common.sh
 
 
 
-################ SETUP ################
+#### SETUP ############
 
 ACTION=$1
 ARG1=$2
@@ -37,7 +37,7 @@ ARG2=$3
 
 
 
-######## No root/sudo.
+#### No root/sudo.
 
 if [[ "$EUID" == 0 ]]; then
     handle_error "Gorp cannot be run as root or with sudo."
@@ -45,13 +45,13 @@ fi
 
 
 
-######## Create tmp directory
+#### Create tmp directory
 
 mkdir -p /tmp/gorp/ || handle_error "Unable to create tmp directory at /tmp/gorp/"
 
 
 
-######## Handle lock file.
+#### Handle lock file.
 
 if [[ -f "/tmp/gorp/gorp.lock" ]]; then
     handle_error "Gorp is already running."
@@ -65,13 +65,7 @@ fi
 
 
 
-################ EXECUTE ################
-
-
-
-
-
-
+#### EXECUTE ############
 
 bash /usr/local/bin/gorpmc/argparse.sh $ACTION $ARG1 $ARG2
 
@@ -81,15 +75,9 @@ bash /usr/local/bin/gorpmc/argparse.sh $ACTION $ARG1 $ARG2
 
 
 
-################ CLEAN UP ################
+#### CLEAN UP ############
 
-
-
-
-
-
-
-####### Delete tmp dir (by extension, releasing lock)
+#### Delete tmp dir (by extension, releasing lock)
 
 rm -rf /tmp/gorp/ || handle_error "Unable to delete tmp directory at /tmp/gorp/"
 
@@ -99,14 +87,6 @@ rm -rf /tmp/gorp/ || handle_error "Unable to delete tmp directory at /tmp/gorp/"
 
 
 
-################ EXIT ################
-
-
-
-
-
-
-
-######## We made it!
+#### WE MADE IT ############
 
 exit 0

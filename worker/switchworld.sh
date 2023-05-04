@@ -15,27 +15,31 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 SWITCH_TO=$3
 
-OPTIONS=$(worldOptions "$SERVER")
-CURRENT_WORLD=$(activeWorld "$SERVER")
+OPTIONS=$(list_worlds "$SERVER")
+CURRENT_WORLD=$(get_active_world "$SERVER")
 
 
 
@@ -51,7 +55,7 @@ CURRENT_WORLD=$(activeWorld "$SERVER")
 
 
 
-### GET USER INPUT (if user did not specify a world)
+#### GET USER INPUT (if they didn't specify a world) ############
 
 if [[ "$SWITCH_TO" == "" ]]; then
 
@@ -78,7 +82,7 @@ fi
 
 
 
-### SWITCH THE VALUE IN 'server.properties'
+#### SWITCH VALUE IN SERVER PROPERTIES ############
 
 sed -i "s/level-name=$CURRENT_WORLD/level-name=world-$SWITCH_TO/" $HOMEDIR/servers/$SERVER/server.properties || handle_error "Failed to update level-name in server.properties"
 
@@ -87,5 +91,7 @@ sed -i "s/level-name=$CURRENT_WORLD/level-name=world-$SWITCH_TO/" $HOMEDIR/serve
 
 
 
+
+#### WE MADE IT ############
 
 echo "World switched!"

@@ -15,21 +15,25 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 
@@ -47,16 +51,9 @@ SERVER=$2
 
 
 
-### STOP SERVER
+#### STOP THE SERVER ############
 
-if [[ "$VERBOSE" == "v" ]]; then
-    echo "Stopping server in verbose mode... (Press CTRL+C in case server hangs)."
-else
-    echo "Stopping server..."
-fi
-
-
-
+echo "Stopping server..."
 screen -S $SERVER -X stuff 'stop\n' || handle_error "Failed to stuff 'stop' into $SERVER"
 
 
@@ -65,7 +62,7 @@ screen -S $SERVER -X stuff 'stop\n' || handle_error "Failed to stuff 'stop' into
 
 
 
-### WAIT FOR LOG
+#### WAIT FOR LOG ############
 
 sleep 1
 
@@ -100,6 +97,6 @@ done
 
 
 
-sleep 1
+#### WE MADE IT ############
 
 echo "Server stopped!"

@@ -17,45 +17,28 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
-MODE="normal"
-
-OPTIND=2
-while getopts ":*" flag; do
-    case $flag in
-        \?)
-            handle_error "Bad input. Expected: gorp restart [server] [-f|n]"
-            ;;
-    esac
-done
-
-OPTIND=3
-while getopts ":fn" flag; do
-    case $flag in
-        f)
-            MODE="f"
-            ;;
-        n)
-            MODE="n"
-            ;;
-    esac
-done
+MODE=$3
 
 
 
@@ -71,14 +54,32 @@ done
 
 
 
-### PARAM RT-GUARD
+#### GUARDS ############
+
+#### Bad user input
 
 if [[ "$SERVER" = "" ]] || [[ "$SERVER" == "fast" ]] || [[ "$SERVER" == "now" ]]; then
-    handle_error "Bad input. Expected: gorp stop [server] [-f|n]"
+    handle_error "Bad input. Expected: gorp restart [server] <fast|now>"
 fi
 
-if [[ "$MODE" == "fast" ]] || [[ "$MODE" == "now" ]] || [[ "$MODE" == "power" ]]; then
-    handle_error "Bad input. Expected: gorp stop [server] [-f|n]"
+if [[ "$MODE" != "fast" ]] && [[ "$MODE" != "now" ]]; then
+    handle_error "Bad input. Expected: gorp restart [server] <fast|now>"
+fi
+
+
+
+#### Server not found
+
+if [[ "$(does_server_exist)" == "false" ]]; then
+    handle_error "Server not found."
+fi
+
+
+
+#### Server is not running
+
+if [[ "$(is_server_running)" == "false" ]]; then
+        handle_error "Server is not running."
 fi
 
 
@@ -87,48 +88,30 @@ fi
 
 
 
-### SERVER DIRECTORY RT-GUARD
+#### COORDINATE WORKERS ############
 
-if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
-    cd $HOMEDIR/servers/$SERVER
+#### Fast restart (no backup)
+
+if [[ "$MODE" == "fast" ]]; then
+    bash /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "restart" || handle_error "Failed to run warning.sh worker"
+    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
+    bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER || handle_error "Failed to run start.sh worker"
+
+
+
+#### Now restart (no warning or backup)
+
+elif [[ "$MODE" == "now" ]]; then
+    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
+    bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER || handle_error "Failed to run start.sh worker"
+
+
+
+#### Normal restart (no/unrecognized param)
+
 else
-    handle_error "Server not found"
-fi
-
-
-
-
-
-
-
-### NO SCREEN RT-GUARD
-
-if [[ $(screen -ls | grep "$SERVER") == "" ]]; then
-        handle_error "Server not running"
-fi
-
-
-
-
-
-
-
-### RUN WORKERS BASED ON PASSED PARAMS
-
-if [[ "$MODE" == "normal" ]]; then
     bash /usr/local/bin/gorpmc/worker/backupworld.sh $1 $SERVER || handle_error "Failed to run backupworld.sh worker"
-    bash /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "stop" || handle_error "Failed to run warning.sh worker"
-    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
-    bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER || handle_error "Failed to run start.sh worker"
-fi
-
-if [[ "$MODE" == "f" ]]; then
-    bash /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "stop" || handle_error "Failed to run warning.sh worker"
-    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
-    bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER || handle_error "Failed to run start.sh worker"
-fi
-
-if [[ "$MODE" == "n" ]]; then
+    bash /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "restart" || handle_error "Failed to run warning.sh worker"
     bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
     bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER || handle_error "Failed to run start.sh worker"
 fi

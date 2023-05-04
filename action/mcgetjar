@@ -3,7 +3,7 @@
 ### [ACTION: GET-JAR] #############################################
 #   Description:  Action script to setup jar download worker.
 #   Parameters:   None
-#   Flags:        -v [version] | -u [url]
+#   Flags:        -g [gamever] | -u [url]
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -16,43 +16,29 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
+#### Collect arguments & additional variables
 
-#### SCRIPT OPTS ################
+MODE=$2
+ARG=$3
 
-OPTIND=2
-while getopts ":g:u:" flag; do
-    case $flag in
-        g)
-            MODE="g"
-            ARG="$OPTARG"
-            ;;
-        u)
-            MODE="u"
-            ARG="$OPTARG"
-            ;;
-        \?)
-            handle_error "Bad input. Expected: gorp get-jar [-u | -v] [url | version]"
-            ;;
-        :)
-            handle_error "Bad input. Expected: gorp get-jar [-u | -v] [url | version]"
-            ;;
-    esac
-done
-        
-        
 
 
 
@@ -67,10 +53,16 @@ done
 
 
 
-### PARAM RT-GUARD
+#### GUARDS ############
 
-if [[ "$MODE" == "" ]]; then
-    handle_error "mcgetjar: Bad input. Expected: gorp get-jar [game-version]."
+#### Bad user input
+
+if [[ "$MODE" != "-g" ]] && [[ "$MODE" != "-u" ]]; then
+    handle_error "Bad input. Expected: gorp get-jar [-g|-u] [gamever | url]."
+fi
+
+if [[ "$ARG" == "" ]]; then
+    handle_error "Bad input. Expected: gorp get-jar [-g|-u] [gamever | url]."
 fi
 
 
@@ -79,6 +71,6 @@ fi
 
 
 
-### RUN JAR DOWNLOADER
+#### RUN GET-JAR WORKER ############
 
-bash /usr/local/bin/gorpmc/worker/getjar.sh $1 "$MODE" "$ARG" || handle_error "Failed to run getjar.sh worker."
+bash /usr/local/bin/gorpmc/worker/getjar.sh $1 $MODE $ARG || handle_error "Failed to run getjar.sh worker."

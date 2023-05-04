@@ -15,9 +15,9 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
     handle_error "Script not meant to be run directly."
@@ -25,11 +25,15 @@ fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 NEW_HOMEDIR=$2
 
@@ -47,17 +51,15 @@ NEW_HOMEDIR=$2
 
 
 
-### ATTEMPT TO CREATE DESTINATION
+#### MOVE THE FILES ############
+
+#### Create new homedir
 
 mkdir -p $NEW_HOMEDIR/ > /dev/null || handle_error "Failed to make new home directory"
 
 
 
-
-
-
-
-### COPY THE FILES OVER
+#### Copy current homedir to new homedir
 
 echo "Copying files to new home..."
 
@@ -65,26 +67,20 @@ cp -r $HOMEDIR/* $NEW_HOMEDIR/ || handle_error "Failed to copy homedir to new lo
 
 
 
-# Check for errors (rt-guard)
-if [[ "$?" != "0" ]]; then
-    handle_error "Failed to copy files."
-fi
 
 
 
 
-
-
-
-### UPDATE CONFIGURATION AND JAR FILE
+#### UPDATE CONFIGS ############
 
 sudo sed -i "40s:.*:HOMEDIR=$NEW_HOMEDIR:" /usr/local/etc/gorp.conf || handle_error "Failed to update HOMEDIR in config file"
 sed -i "s:$HOMEDIR:$NEW_HOMEDIR:" $NEW_HOMEDIR/jars/latest || handle_error "Failed to update homedir path in latest JAR file"
 
 
 
-# Validate these
-bash /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+#### Re-source the params and make sure they're updated
+
+source /usr/local/bin/gorpmc/functions/params.sh
 
 if [[ "$HOMEDIR" != "$NEW_HOMEDIR" ]]; then
     handle_error "Configuration update failed. Please manually update HOMEDIR to $NEW_HOMEDIR in /usr/local/etc/gorp.conf."
@@ -99,5 +95,7 @@ fi
 
 
 
+
+#### WE MADE IT ############
 
 echo "Gorp home directory moved!"

@@ -16,26 +16,30 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 WORLD_TO_ARCHIVE=$3
 
-OPTIONS=$(worldOptions "$SERVER")
+OPTIONS=$(list_worlds "$SERVER")
 
 
 
@@ -51,7 +55,7 @@ OPTIONS=$(worldOptions "$SERVER")
 
 
 
-### IF WORLD_TO_ARCHIVE NOT SPECIFIED, ASK USER
+#### IF WORLD_TO_ARCHIVE NOT SPECIFIED, ASK USER ############
 
 if [[ "$WORLD_TO_ARCHIVE" == "" ]]; then
     while [ true ]
@@ -77,51 +81,42 @@ fi
 
 
 
-### COMPRESS THE WORLD FILES
+#### HANDLE WORLD FILES ############
 
-echo "Copying files for $WORLD_TO_ARCHIVE..."
-
-cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp overworld files to tmp"
-cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp nether files to tmp"
-cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp end files to tmp"
-
-echo "Compressing files..."
-
-cd /tmp/gorp || handle_error "Failed to cd to /tmp/gorp"
-tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null || handle_error "Failed to compress archive files"
-
-
-
-
-
-
-
-### MAKE SURE ARCHIVE DESTINATION EXISTS
+#### Create destination
 
 mkdir -p $ARCHIVE_DEST/$SERVER || handle_error "Failed to make destination folder"
 
 
 
+#### Copy files to tmp
+
+echo "Copying files for $WORLD_TO_ARCHIVE..."
+cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp overworld files to tmp"
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp nether files to tmp"
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp end files to tmp"
 
 
 
+#### Tarball files in tmp
 
-### COPY THE WORLD FILES TO DESTINATION
+echo "Compressing files..."
+cd /tmp/gorp || handle_error "Failed to cd to /tmp/gorp"
+tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null || handle_error "Failed to compress archive files"
+
+
+
+#### Copy tarball to destination
 
 echo "Moving archive to destination..."
-
 cp /tmp/gorp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/ || handle_error "Failed to copy archive to destination"
 
 
 
+#### Make sure the files made it via checksum
 
-
-
-
-### ARCHIVE INTEGRITY GUARD
-
-CHECKSUM=$(md5sum /tmp/gorp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
-TESTSUM=$(md5sum $ARCHIVE_DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
+CHECKSUM=$(sha256sum /tmp/gorp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
+TESTSUM=$(sha256sum $ARCHIVE_DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 
 if [[ "$CHECKSUM" != "$TESTSUM" ]]; then
     handle_error "Archived files in destination failed checksum test"
@@ -132,5 +127,7 @@ fi
 
 
 
+
+#### WE MADE IT ############
 
 echo "World archived!"

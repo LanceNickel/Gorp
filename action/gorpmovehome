@@ -15,21 +15,25 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 NEW_HOMEDIR=$2
 
@@ -47,18 +51,14 @@ NEW_HOMEDIR=$2
 
 
 
-### GET SUDO PERMISSIONS RT-GUARD
+#### Get sudo
 
 echo "Gorp will use sudo to update the configuration file"
 sudo whoami > /dev/null || handle_error "Failed to get sudo privileges"
 
 
 
-
-
-
-
-### DOES DESTINATION EXIST/IS IT EMPTY? RT-GUARD
+#### Check for conflicting destination (already exists)
 
 if [[ -d $NEW_HOMEDIR ]]; then
     handle_error "This directory already exists"
@@ -66,11 +66,7 @@ fi
 
 
 
-
-
-
-
-### ARE ANY SERVERS RUNNING? RT-GUARD
+#### Make sure no servers are running
 
 for d in "$HOMEDIR/servers/"*
 do
@@ -87,6 +83,6 @@ done
 
 
 
-### CALL THE WORKER
+#### CALL THE WORKER ############
 
 bash /usr/local/bin/gorpmc/worker/movehome.sh $1 $NEW_HOMEDIR || handle_error "Unable to launch movehome.sh worker"

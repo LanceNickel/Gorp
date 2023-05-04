@@ -16,9 +16,9 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
     handle_error "Script not meant to be run directly."
@@ -26,16 +26,20 @@ fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 WORLD_TO_DELETE=$3
 
-OPTIONS=$(worldOptions "$SERVER")
+OPTIONS=$(list_worlds "$SERVER")
 
 
 
@@ -51,7 +55,7 @@ OPTIONS=$(worldOptions "$SERVER")
 
 
 
-### IF WORLD_TO_DELETE NOT SPECIFIED, ASK USER
+#### IF WORLD_TO_DELETE NOT SPECIFIED, ASK USER ############
 
 if [[ "$WORLD_TO_DELETE" == "" ]]; then
     while [ true ]
@@ -77,7 +81,7 @@ fi
 
 
 
-### USER CONFIRMATION GUARDS
+#### USER CONFIRMATION ############
 
 echo "You are about to delete a world named '$WORLD_TO_DELETE' in the '$SERVER' server instance."
 
@@ -90,7 +94,7 @@ fi
 
 read -r -p "Enter '$WORLD_TO_DELETE' to confirm: " response
 if [[ "$response" == "$WORLD_TO_DELETE" ]]; then
-    sleep 0.5
+    sleep 0.005
 else
     echo "You answered the prompt wrong!"
 fi
@@ -101,7 +105,7 @@ fi
 
 
 
-### DELETE THE WORLD
+#### DELETE THE WORLD ############
 
 rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_DELETE || handle_error "Failed to delete overworld files"
 rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_DELETE}_nether || handle_error "Failed to delete nether files"
@@ -112,5 +116,7 @@ rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_DELETE}_the_end || handle_error
 
 
 
+
+#### WE MADE IT ############
 
 echo "World deleted!"

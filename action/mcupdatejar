@@ -15,13 +15,21 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
+
+
+
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
@@ -37,6 +45,6 @@ fi
 
 
 
-### RUN UPDATE WORKER
+#### RUN UPDATE WORKER ############
 
 bash /usr/local/bin/gorpmc/worker/updatejar.sh $1 $VERSION || handle_error "Failed to run updatejar.sh worker"

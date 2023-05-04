@@ -15,21 +15,25 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 
@@ -47,7 +51,9 @@ SERVER=$2
 
 
 
-### PARAM RT-GUARD
+#### GUARDS ############
+
+#### Bad user input
 
 if [[ "$SERVER" == "" ]]; then
     handle_errors "Bad input. Expected: gorp restore-world [server-name]"
@@ -55,28 +61,18 @@ fi
 
 
 
+#### Server has no backups to restore from
 
-
-
-
-### SERVER DIRECTORY RT-GUARD
-
-if [[ -d "$BACKUP_DEST/$SERVER" ]]; then
-    sleep 0.005
-else
+if [[ ! -d "$BACKUP_DEST/$SERVER" ]]; then
     handle_errors "Server has no backups to restore from"
 fi
 
 
 
+#### Server cannot be running
 
-
-
-
-### SCREEN RT-GUARD
-
-if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        handle_errors "Server cannot be running"
+if [[ "$(is_server_running)" == "true" ]]; then
+        handle_error "Server cannot be running."
 fi
 
 
@@ -85,6 +81,6 @@ fi
 
 
 
-### RUN RESTORE WORKER
+#### RUN RESTORE WORKER ############
 
 bash /usr/local/bin/gorpmc/worker/restoreworld.sh $1 $SERVER || handle_error "Failed to run restoreworld.sh worker"

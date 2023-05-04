@@ -47,7 +47,7 @@ CUSTOM_RAM=$RAM
 
 
 
-### KEY GUARD (to ensure a good, clean startup)
+#### KEY GUARD (to ensure a good, clean startup)
 
 if [[ "$1" == "pleasedontdothis" ]]; then
     handle_error "Script not meant to be run directly"
@@ -67,7 +67,7 @@ fi
 
 
 
-### EXECUTE SERVER, WAIT FOR PROCESS TO DIE
+#### EXECUTE SERVER, WAIT FOR PROCESS TO DIE ############
 
 while [ true ]; do
         java -Xmx$CUSTOM_RAM -Xms$CUSTOM_RAM -jar $CUSTOM_JAR nogui

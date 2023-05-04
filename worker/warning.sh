@@ -16,21 +16,25 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 ACTION=$3
@@ -49,7 +53,7 @@ ACTION=$3
 
 
 
-### SEND WARNING MESSAGE
+#### SEND WARNING MESSAGE ############
 
 echo "Giving a very polite heads up :) ..."
 
@@ -67,7 +71,7 @@ fi
 
 
 
-### WAIT 30 SECONDS
+#### WAIT 30 SECONDS & SHOW COUNTDOWN ############
 
 I=0
 
@@ -86,5 +90,7 @@ done
 
 
 
+
+#### WE MADE IT ############
 
 echo -ne "\n"

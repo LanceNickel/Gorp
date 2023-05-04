@@ -15,21 +15,25 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 
@@ -47,17 +51,13 @@ SERVER=$2
 
 
 
-### SELECT FROM AVAILABLE WORLD FILES
+#### SELECT FROM AVAILABLE BACKUPS ############
 
 cd $BACKUP_DEST/$SERVER/server-backups || handle_error "Failed to cd to $BACKUP_DEST/$SERVER/server-backups"
 
 
 
-
-
-
-
-### SELECT FROM AVAILABLE YEARS
+#### Select year
 
 echo -e "\nSelect year"
 
@@ -72,11 +72,7 @@ YEAR=$d
 
 
 
-
-
-
-
-### SELECT FROM AVAILABLE MONTHS
+#### Select month
 
 echo -e "\nSelect month"
 
@@ -91,11 +87,7 @@ MONTH=$d
 
 
 
-
-
-
-
-### SELECT FROM AVAILABLE DAYS
+#### Select day
 
 echo -e "\nSelect day of month"
 
@@ -110,11 +102,7 @@ DAY=$d
 
 
 
-
-
-
-
-### SELECT BACKUP FILE
+#### Select file
 
 echo -e "\nSelect backup to restore from\nDate format is YYYY-MM-DD_HHMM-SS"
 
@@ -133,34 +121,32 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 
 
-### BACKUP CURRENT WORLD
+#### RESTORE THE SERVER ############
+
+#### Backup current server
 
 echo "Backing up current server..."
-
 bash /usr/local/bin/gorpmc/action/mcbackupserver $1 $SERVER || handle_error "Failed to back up server"
 
 
 
-### FLUSH CURRENT SERVER
-
-echo "Restoring selected files..."
+#### Delete current server
 
 rm -rf $HOMEDIR/servers/$SERVER/ || handle_error "Failed to delete existing server"
 
 
 
+#### Move the tarball to tmp
 
-
-
-
-### RESTORE WORLD
-
+echo "Restoring server..."
 mkdir -p /tmp/gorp/restore || handle_error "Failed to make tmp directory"
-
 cp $BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to copy archive to tmp directory"
 
-tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to extract server backup files"
 
+
+#### Unarchive the file in tmp & move to servers
+
+tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to extract server backup files"
 cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/ || handle_error "Failed to copy restored files to server"
 
 
@@ -168,5 +154,7 @@ cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/ || handle_error "
 
 
 
+
+#### WE MADE IT ############
 
 echo "Server restored from backup!"

@@ -16,20 +16,25 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 WORLD_TO_ARCHIVE=$3
@@ -48,70 +53,56 @@ WORLD_TO_ARCHIVE=$3
 
 
 
-### PARAM RT-GUARD
+#### GUARDS ############
+
+#### Bad input from user
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: 'gorp archive-world [server-name] <world-name>"
+    handle_error "Bad input. Expected: 'gorp archive-world [server-name] <world-name>."
 fi
 
 
 
+#### Server not found
 
-
-
-
-### SERVER DIRECTORY RT-GUARD
-
-if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
-    sleep 0.05
-else
-    handle_error "Server not found"
+if [[ "$(does_server_exist)" == "false" ]]; then
+    handle_error "Server not found."
 fi
 
 
 
-
-
-
-
-### NO WORLDS RT-GUARD
+#### Server has no worlds
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
-    handle_error "No worlds exist on this server"
+    handle_error "No worlds exist on this server."
 fi
 
 
 
+#### Server cannot be running
 
-
-
-
-### SCREEN RT-GUARD
-
-if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-        handle_error "Server cannot be running"
+if [[ "$(is_server_running)" == "true" ]]; then
+        handle_error "Server cannot be running."
 fi
 
 
 
-
-
-
-
-### WORLD DIRECTORY RT-GUARD (when world name passed as param)
+#### World specified by user does not exist.
 
 if [[ "$WORLD_TO_ARCHIVE" != "" ]]; then
 
-    if [[ -d "$HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE" ]]; then
-        sleep 0.005
-    else
-        handle_error "World not found"
+    if [[ ! -d "$HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE" ]]; then
+        handle_error "World not found."
     fi
 
 fi
 
 
 
-### RUN THE WORLD ARCHIVE WORKER
 
-bash /usr/local/bin/gorpmc/worker/archiveworld.sh $1 $SERVER $WORLD_TO_ARCHIVE || handle_error "Failed to run archiveworld.sh worker"
+
+
+
+#### RUN WORLD ARCHIVE WORKER #############
+
+bash /usr/local/bin/gorpmc/worker/archiveworld.sh $1 $SERVER $WORLD_TO_ARCHIVE || handle_error "Failed to run archiveworld.sh worker."

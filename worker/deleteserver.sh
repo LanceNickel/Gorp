@@ -15,9 +15,9 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
     handle_error "Script not meant to be run directly."
@@ -25,11 +25,15 @@ fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 
@@ -47,20 +51,20 @@ SERVER=$2
 
 
 
-### USER CONFIRMATION GUARD
+#### USER CONFIRMATION ############
 
-echo "You are going to DELETE a server. There is no way back."
+echo "You are going to DELETE a server! This is irreversible."
 
 read -r -p "Did you back up the server? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    sleep 0.25
+    sleep 0.005
 else
     handle_error "deleteserver.sh: You answered the prompt wrong!"
 fi
 
 read -r -p "Enter '$SERVER' to confirm: " response
 if [[ "$response" == "$SERVER" ]]; then
-    sleep 0.5
+    sleep 0.005
 else
     handle_error "deleteserver.sh: You answered the prompt wrong!"
 fi
@@ -71,7 +75,7 @@ fi
 
 
 
-### DELETE SERVER
+#### DELETE SERVER ############
 
 rm -rf $HOMEDIR/servers/$SERVER || handle_error "Failed to delete server"
 
@@ -80,5 +84,7 @@ rm -rf $HOMEDIR/servers/$SERVER || handle_error "Failed to delete server"
 
 
 
+
+#### WE MADE IT ############
 
 echo "Server deleted!"

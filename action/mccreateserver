@@ -15,31 +15,35 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
+WORLD=$3
 
-# World name override
 
-if [[ "$3" == "" ]]; then
+
+#### World name override (if left empty by user, use 'default')
+
+if [[ "$WORLD" == "" ]]; then
     WORLD="default"
-else
-    WORLD=$3
 fi
 
 
@@ -56,10 +60,20 @@ fi
 
 
 
-### PARAM RT-GUARD
+#### GUARDS ############
+
+#### Bad user input
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: gorp create-server [server-name] <world-name>"
+    handle_error "Bad input. Expected: gorp create-server [server-name] <world-name>."
+fi
+
+
+
+#### Server already exists
+
+if [[ "$(does_server_exist)" == "true" ]]; then
+    handle_error "Server already exists."
 fi
 
 
@@ -68,27 +82,15 @@ fi
 
 
 
-### SERVER DIRECTORY RT-GUARD
+#### MINECRAFT EULA ############
 
-if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
-    handle_error "Server already exists"
-fi
-
-
-
-
-
-
-
-### USER EULA AND AGREEMENT RT-GUARD
-
-if $OUTPUT; then echo -e "\n==== IMPORTANT! ====\nTo continue you must agree to the Minecraft EULA (https://aka.ms/MinecraftEULA)."; fi
+echo -e "\n==== IMPORTANT! ====\nTo continue you must agree to the Minecraft EULA (https://aka.ms/MinecraftEULA)."
 
 read -r -p "Do you agree to the Minecraft EULA? [y/n]: " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.25
 else
-    handle_error "You must agree to the EULA"
+    handle_error "You must agree to the Minecraft EULA! Read it: https://aka.ms/MinecraftEULA"
 fi
 
 
@@ -97,7 +99,6 @@ fi
 
 
 
-
-### RUN THE CREATOR WORKER
+#### RUN THE CREATOR WORKER ############
 
 bash /usr/local/bin/gorpmc/worker/createserver.sh $1 $SERVER $WORLD || handle_error "Failed to run createserver.sh worker"

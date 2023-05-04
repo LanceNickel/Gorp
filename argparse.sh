@@ -38,19 +38,7 @@ TESTSTRING=pleasedontdothis
 
 
 
-### PARAMS RT-GUARD
-
-if [[ "$GAMEVER" == "" ]] || [[ "$RAM" == "" ]] || [[ "$HOMEDIR" == "" ]] || [[ "$BACKUP_DEST" == "" ]] || [[ "$ARCHIVE_DEST" == "" ]] || [[ "$LATEST_JAR" == "" ]]; then
-    echo "One or more required options in gorp.conf not set."
-fi
-
-
-
-
-
-
-
-### ACTIONS
+#### ACTIONS (i'm truly sorry for this) ############
 
 if [[ "$ACTION" == "backup-world" ]]; then
     bash /usr/local/bin/gorpmc/action/mcbackupworld $TESTSTRING $ARG1 || handle_error "Failed to run action."

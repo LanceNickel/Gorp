@@ -16,9 +16,9 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
     handle_error "Script not meant to be run directly."
@@ -26,11 +26,11 @@ fi
 
 
 
+#### Globals
 
-
-
-
-#### SCRIPT PARAMETERS ################
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
@@ -46,19 +46,16 @@ fi
 
 
 
-### GET AND PROCESS JSON FOR LATEST STABLE PAPER BUILD
+#### GUARDS ############
+
+#### Get build info
 
 echo "Getting latest build information for $GAMEVER..."
-
 curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds" -H 'accept: application/json' -o /tmp/gorp/builds.json || handle_error "Failed to get build info"
 
 
 
-
-
-
-
-### VERSION NOT FOUND RT-GUARD
+#### Gamever not found
 
 if [[ $(cat /tmp/gorp/builds.json | grep 'Version not found.') != "" ]]; then
     handle_error "Game version not found"
@@ -66,50 +63,30 @@ fi
 
 
 
+#### Find latest stable build
 
-
-
-
-### DETERMINE THE LATEST BUILD NUMBER
-
-jq '.builds[-1] | {build, channel, downloads}' /tmp/gorp/builds.json > /tmp/gorp/latest.json
+jq '.builds[-1] | {build, channel, downloads}' /tmp/gorp/builds.json > /tmp/gorp/latest.json || handle_error "Failed to parse build information."
 
 FOUND=false
 I=1
 
-while [ $FOUND = false ];
-do
+while [ $FOUND = false ]; do
         ((I++))
-        # if the channel in latest.json is experimental...
+
+        # If the channel in latest.json is experimental...
         if [[ $(jq '.channel' /tmp/gorp/latest.json) != '"default"' ]]; then
-                # get the second-oldest build version from builds.json and overwrite latest.json with it
+                
+                # Get the second-oldest build version from builds.json and overwrite latest.json with it
                 jq ".builds[-$I] | {build, channel, downloads}" /tmp/gorp/builds.json > /tmp/gorp/latest.json
         else
-                # if the channel in latest.json is NOT experimental, we found the latest stable (default channel) version
+                
+                # If the channel in latest.json is NOT experimental, we found the latest stable (default channel) version
                 FOUND=true
         fi
 
-        # pull from other
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        if [[ "$I" == "25" ]]; then
+                handle_error "Stable version not found, timeout"
+        fi
 done
 
 
@@ -118,7 +95,7 @@ done
 
 
 
-### STORE INFORMATION ABOUT LATEST STABLE BUILD AND CURRENTLY INSTALLED
+#### GET INST. VERSION && PARSE LATEST BUILD INFO ############
 
 INSTALLED=$(cat $HOMEDIR/jars/latest | cut -d "-" -f3 | cut -d "." -f1)
 BUILD=$(jq '.build' /tmp/gorp/latest.json)
@@ -131,21 +108,14 @@ CHECKSUM=$(jq '.downloads.application.sha256' /tmp/gorp/latest.json | tail -c +2
 
 
 
-### DOWNLOAD THE LATEST JAR FILE
+#### DOWNLOAD THE BUILD ############
 
 echo "Downloading latest stable jar file..."
-
 wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME -P /tmp/gorp/ || handle_error "Failed to download JAR file"
 
-echo "Installing build $BUILD over $INSTALLED..."
 
 
-
-
-
-
-
-### TEST THE CHECKSUM (RT-GUARD)
+#### Test checksum
 
 TESTSUM="$(sha256sum /tmp/gorp/$NAME | cut -d " " -f 1)"
 
@@ -159,17 +129,16 @@ fi
 
 
 
-### MOVE THE JAR TO THE $HOMEDIR/jars/ FOLDER AND MAKE IT EXECUTABLE
+#### INSTALL ############
 
+#### Move JAR to jars
+
+echo "Installing build $BUILD over $INSTALLED..."
 mv /tmp/gorp/$NAME $HOMEDIR/jars/ || handle_error "Failed to move JAR to jars folder"
 
 
 
-
-
-
-
-### UPDATE THE LATEST FILE FOR GLOBAL SERVER UPDATES
+#### Update latest jar file
 
 echo "$HOMEDIR/jars/$NAME" > $HOMEDIR/jars/latest || handle_error "Failed to update latest JAR file"
 
@@ -178,5 +147,7 @@ echo "$HOMEDIR/jars/$NAME" > $HOMEDIR/jars/latest || handle_error "Failed to upd
 
 
 
+
+#### WE MADE IT ############
 
 echo "JAR updated! Changes won't take effect until a server restart."

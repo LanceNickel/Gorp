@@ -15,20 +15,25 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 
@@ -46,7 +51,9 @@ SERVER=$2
 
 
 
-### PARAM RT-GUARD
+#### GUARDS ############
+
+#### Bad user input
 
 if [[ "$SERVER" == "" ]]; then
     handle_error "Bad input. Expected: gorp -s [server-name]"
@@ -57,15 +64,9 @@ fi
 
 
 
-#################### GET AND STORE ALL JSON ELEMENTS AS VARIABLES
+#### GET THE RELEVANT DATA ############
 
-
-
-
-
-
-
-### STATUS ARRAY
+#### Status array
 
 # status.running
 if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
@@ -73,7 +74,6 @@ if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
 else
     STATUS_RUNNING="false"
 fi
-
 
 
 # status.version
@@ -84,7 +84,6 @@ if [[ "$STATUS_VERSION" == "" ]]; then
 fi
 
 
-
 # status.jar_file
 STATUS_JAR="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=' | cut -d '=' -f2)"
 
@@ -93,14 +92,12 @@ if [[ "$STATUS_JAR" == '$LATEST_JAR' ]]; then
 fi
 
 
-
 # status.ram
 STATUS_RAM="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f2)"
 
 if [[ "$STATUS_RAM" == '$RAM' ]]; then
     STATUS_RAM=$RAM
 fi
-
 
 
 # status.path
@@ -112,18 +109,13 @@ STATUS_PATH=$HOMEDIR/servers/$SERVER
 
 
 
-### WORLD ARRAY
+#### World array
 
 # world.active
 WORLD_ACTIVE="$(grep 'level-name' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
 
 
-
-## WORLD SIZES (if exists)
-
-
-
-
+# world sizes
 WORLD_TOTAL=$(du -shc $HOMEDIR/servers/$SERVER/$WORLD_ACTIVE* 2> /dev/null | tail -n1 | cut -d$'\t' -f1)
 WORLD_O="$(du -shc $HOMEDIR/servers/$SERVER/$WORLD_ACTIVE/ 2> /dev/null | tail -n1 | cut -d$'\t' -f1)"
 WORLD_N="$(du -shc $HOMEDIR/servers/$SERVER/${WORLD_ACTIVE}_nether/ 2> /dev/null | tail -n1 | cut -d$'\t' -f1)"
@@ -135,26 +127,22 @@ WORLD_E="$(du -shc $HOMEDIR/servers/$SERVER/${WORLD_ACTIVE}_the_end/ 2> /dev/nul
 
 
 
-### PROPERTIES ARRAY
+#### Properties array
 
 # properties.whitelist
 PROPERTIES_WHITELIST="$(grep 'enforce-whitelist=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
-
 
 
 # properties.gamemode
 PROPERTIES_GAMEMODE="$(grep 'gamemode=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
 
 
-
 # properties.difficulty
 PROPERTIES_DIFFICULTY="$(grep 'difficulty=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
 
 
-
 # properties.hardcore
 PROPERTIES_HARDCORE="$(grep 'hardcore=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
-
 
 
 # properties.server_port
@@ -166,13 +154,7 @@ PROPERTIES_PORT="$(grep 'server-port=' $HOMEDIR/servers/$SERVER/server.propertie
 
 
 
-#################### RETURN STATUS IN JSON
-
-
-
-
-
-
+#### PRINT THE JSON
 
 cat <<EOF
 {

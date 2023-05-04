@@ -16,21 +16,25 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 SWITCH_TO=$3
@@ -49,7 +53,9 @@ SWITCH_TO=$3
 
 
 
-### PARAM RT-GUARD
+#### GUARDS ############
+
+#### Bad user input
 
 if [[ "$SERVER" = "" ]]; then
     handle_error "Bad input. Expected: gorp switch-world [server-name] <world-name>"
@@ -57,46 +63,36 @@ fi
 
 
 
+#### Server not found
 
-
-
-
-### SERVER DIRECTORY RT-GUARD
-
-if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
-    sleep 0.05
-else
-    handle_error "Server not found"
+if [[ "$(does_server_exist)" == "false" ]]; then
+    handle_error "Server not found."
 fi
 
 
 
-
-
-
-
-### NO WORLDS RT-GUARD
+#### No worlds on server
 
 if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
-    handle_error "No worlds exist on this server"
+    handle_error "No worlds exist on this server."
 fi
 
 
 
-
-
-
-
-### WORLD DOESN'T EXIST RT-GUARD (when world name passed as param)
+#### World doesn't exist (when passed by user, if not worker will handle this)
 
 if [[ "$SWITCH_TO" != "" ]]; then
-
-    if [[ -d "$HOMEDIR/servers/$SERVER/world-$SWITCH_TO" ]]; then
-        sleep 0.005
-    else
-        handle_error "World not found"
+    if [[ ! -d "$HOMEDIR/servers/$SERVER/world-$SWITCH_TO" ]]; then
+        handle_error "World not found."
     fi
+fi
 
+
+
+#### Server cannot be running
+
+if [[ "$(is_server_running)" == "true" ]]; then
+        handle_error "Server cannot be running."
 fi
 
 
@@ -105,18 +101,6 @@ fi
 
 
 
-### SCREEN RT-GUARD
-
-if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        handle_error "Server cannot be running"
-fi
-
-
-
-
-
-
-
-### RUN THE WORLD CREATOR WORKER
+#### RUN THE WORLD CREATOR WORKER ############
 
 bash /usr/local/bin/gorpmc/worker/switchworld.sh $1 $SERVER $SWITCH_TO || handle_error "Failed to run switchworld.sh worker"

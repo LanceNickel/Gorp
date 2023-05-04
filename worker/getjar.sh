@@ -15,9 +15,9 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
     handle_error "Script not meant to be run directly."
@@ -25,10 +25,15 @@ fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 MODE=$2
 ARG=$3
@@ -47,46 +52,24 @@ ARG=$3
 
 
 
-####################    DOWNLOAD BY URL
+#### DOWNLOAD BY URL ############
 
+if [[ "$MODE" == "-u" ]]; then
 
-
-
-
-
-
-if [[ "$MODE" == "u" ]]; then
-
-
-
-
-
-
-
-        ### DOWNLOAD THE JAR
+        #### Download the JAR
 
         echo "Downloading JAR file from URL..."
-
         cd /tmp/gorp/ || handle_error "Failed to cd to /tmp/gorp"
-
         wget -q $ARG || handle_error "Failed to download passed URL"
 
 
 
-
-
-
-
-        ### SUCCESS, COPY & PRINT PATH
+        #### Move to JARS and print file name
 
         FILENAME="$(echo $ARG | grep -o $(ls))"
-
         cp ./$FILENAME $HOMEDIR/jars/ || handle_error "Failed to copy downloaded file to jars directory"
-
         echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$FILENAME"
-        
-        
-        
+         
 fi
 
 
@@ -95,35 +78,18 @@ fi
 
 
 
-####################    DOWNLOAD BY VERSION
+#### DOWNLOAD BY GAMEVER ############
 
+if [[ "$MODE" == "-g" ]]; then
 
+        #### Get build info
 
-
-
-
-
-if [[ "$MODE" == "g" ]]; then
-
-
-
-
-
-
-
-        ### GET AND PROCESS JSON FOR LATEST STABLE PAPER BUILD
-
-        echo "Downloading Paper $ARG..."
-
+        echo "Getting build information..."
         curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$ARG/builds" -H 'accept: application/json' -o /tmp/gorp/builds.json || handle_error "Failed to get latest build info"
 
 
 
-
-
-
-
-        ### VERSION NOT FOUND RT-GUARD
+        #### Gamever not found
 
         if [[ $(cat /tmp/gorp/builds.json | grep 'Version not found.') != "" ]]; then
                 handle_error "Game version not found."
@@ -131,25 +97,24 @@ if [[ "$MODE" == "g" ]]; then
 
 
 
+        #### Find latest stable build
 
-
-
-
-        ### DETERMINE THE LATEST STABLE BUILD
-
-        jq '.builds[-1] | {build, channel, downloads}' /tmp/gorp/builds.json > /tmp/gorp/latest.json
+        jq '.builds[-1] | {build, channel, downloads}' /tmp/gorp/builds.json > /tmp/gorp/latest.json || handle_error "Failed to parse build information."
 
         FOUND=false
         I=1
 
         while [ $FOUND = false ]; do
                 ((I++))
-                # if the channel in latest.json is experimental...
+
+                # If the channel in latest.json is experimental...
                 if [[ $(jq '.channel' /tmp/gorp/latest.json) != '"default"' ]]; then
-                        # get the second-oldest build version from builds.json and overwrite latest.json with it
+                        
+                        # Get the second-oldest build version from builds.json and overwrite latest.json with it
                         jq ".builds[-$I] | {build, channel, downloads}" /tmp/gorp/builds.json > /tmp/gorp/latest.json
                 else
-                        # if the channel in latest.json is NOT experimental, we found the latest stable (default channel) version
+                        
+                        # If the channel in latest.json is NOT experimental, we found the latest stable (default channel) version
                         FOUND=true
                 fi
 
@@ -164,7 +129,7 @@ if [[ "$MODE" == "g" ]]; then
 
 
 
-        ### STORE INFORMATION ABOUT BUILD TO DOWNLOAD
+        #### PARSE LATEST BUILD INFO ############
 
         BUILD=$(jq '.build' /tmp/gorp/latest.json)
         NAME=$(jq '.downloads.application.name' /tmp/gorp/latest.json | tail -c +2 | head -c -2)
@@ -176,17 +141,13 @@ if [[ "$MODE" == "g" ]]; then
 
 
 
-        ### DOWNLOAD THE LATEST JAR FILE
+        #### DOWNLOAD THE BUILD ############
 
         wget -q https://api.papermc.io/v2/projects/paper/versions/$ARG/builds/$BUILD/downloads/$NAME -P /tmp/gorp/ || handle_error "Failed to download JAR file"
 
 
 
-
-
-
-
-        ### TEST THE CHECKSUM (RT-GUARD)
+        #### Test checksum
 
         TESTSUM="$(sha256sum /tmp/gorp/$NAME | cut -d " " -f 1)"
 
@@ -196,21 +157,15 @@ if [[ "$MODE" == "g" ]]; then
 
 
 
-
-
-
-
-        ### RENAME THE JAR, MOVE IT TO JARS, MAKE IT EXECUTABLE
+        #### Rename the JAR and move it to the jars folder
 
         mv /tmp/gorp/$NAME /tmp/gorp/$ARG.jar || handle_error "Failed to rename JAR file"
         cp -f /tmp/gorp/$ARG.jar $HOMEDIR/jars/ || handle_error "Failed to move JAR to jars directory"
-
-
-
-
-
-
-
+        
+        
+        
+        #### Done
+        
         echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$ARG.jar"
 
 fi

@@ -16,9 +16,9 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
     handle_error "Script not meant to be run directly."
@@ -26,22 +26,19 @@ fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
-WORLD_TO_RESET=$(activeWorld "$SERVER")
-
-# Is the server running?
-
-if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-    RUNNING=true
-else
-    RUNNING=false
-fi
+WORLD_TO_RESET=$(get_active_world "$SERVER")
+RUNNING=$(is_server_running "$SERVER")
 
 
 
@@ -57,7 +54,7 @@ fi
 
 
 
-### USER CONFIRMATION GUARDS
+#### USER CONFIRMATION ############
 
 echo "You are about to reset the world named '$WORLD_TO_RESET' in the '$SERVER' server instance."
 
@@ -74,11 +71,11 @@ fi
 
 
 
-### STOP SERVER (if already running)
+#### IF SERVER RUNNING, STOP ############
 
-if [[ $RUNNING = true ]]; then
+if [[ "$RUNNING" == "true" ]]; then
     echo "Stopping server..."
-    bash /usr/local/bin/gorpmc/action/mcstop $1 $SERVER -n > /dev/null || handle_error "Failed to stop server"
+    bash /usr/local/bin/gorpmc/action/mcstop $1 $SERVER now > /dev/null || handle_error "Failed to stop server"
 fi
 
 
@@ -87,9 +84,7 @@ fi
 
 
 
-### DELETE THE WORLD
-
-echo "Regenerating $WORLD_TO_RESET..."
+#### DELETE WORLD ############
 
 rm -rf $HOMEDIR/servers/$SERVER/$WORLD_TO_RESET || handle_error "Failed to delete overworld files"
 rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_nether || handle_error "Failed to delete nether files"
@@ -101,8 +96,9 @@ rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_the_end || handle_error "Faile
 
 
 
-### START SERVER (to generate world)
+#### START SERVER TO GENERATE NEW WORLD ############
 
+echo "Generating new world..."
 bash /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_error "Failed to start server"
 
 
@@ -110,5 +106,7 @@ bash /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_er
 
 
 
+
+#### WE MADE IT ############
 
 echo "World reset! Server is running."

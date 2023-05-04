@@ -15,9 +15,9 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
     handle_error "Script not meant to be run directly."
@@ -25,11 +25,15 @@ fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 CURRENT_LEVEL_NAME=$(activeWorld "$SERVER")
@@ -48,7 +52,7 @@ CURRENT_LEVEL_NAME=$(activeWorld "$SERVER")
 
 
 
-### SELECT FROM AVAILABLE WORLD FILES
+#### SELECT FROM AVAILABLE BACKUPS ############
 
 cd $BACKUP_DEST/$SERVER
 
@@ -65,11 +69,8 @@ RESTORE_LEVEL_NAME=$d
 
 
 
+#### Select year
 
-
-
-
-### SELECT FROM AVAILABLE YEARS
 echo -e "\nSelect year"
 
 select d in *;
@@ -83,11 +84,7 @@ YEAR=$d
 
 
 
-
-
-
-
-### SELECT FROM AVAILABLE MONTHS
+#### Select month
 
 echo -e "\nSelect month"
 
@@ -102,11 +99,7 @@ MONTH=$d
 
 
 
-
-
-
-
-### SELECT FROM AVAILABLE DAYS
+#### Select day
 
 echo -e "\nSelect day of month"
 
@@ -121,11 +114,7 @@ DAY=$d
 
 
 
-
-
-
-
-### SELECT BACKUP FILE
+#### Select backup file
 
 echo -e "\nSelect backup to restore from\nDate format is YYYY-MM-DD_HHMM-SS"
 
@@ -144,38 +133,32 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 
 
-### BACKUP CURRENT WORLD
+#### RESTORE WORLD ############
+
+#### Backup current world
 
 echo "Backing up current world..."
-
 bash /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER || handle_error "Failed to back up world"
 
 
 
-
-
-
-
-### FLUSH CURRENT WORLD
-
-echo "Restoring selected files..."
+#### Delete current world
 
 rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}* || handle_error "Failed to delete existing world"
 
 
 
+#### Move tarball to tmp
 
-
-
-
-### RESTORE WORLD
-
+echo "Restoring world..."
 mkdir -p /tmp/gorp/restore || handle_error "Failed to make tmp directory"
-
 cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to copy backup archive to tmp"
 
-tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to extract backup files"
 
+
+#### Unarchive and move to server
+
+tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to extract backup files"
 cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/ || handle_error "Failed to copy restored files to server"
 
 
@@ -183,5 +166,7 @@ cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/ || handle
 
 
 
+
+#### WE MADE IT ############
 
 echo "World restored from backup!"

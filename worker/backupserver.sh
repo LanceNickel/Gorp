@@ -16,17 +16,25 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
-#### SCRIPT PARAMETERS ################
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
+
+
+
+#### Collect arguments & additional variables
 
 SERVER=$2
 
@@ -56,12 +64,12 @@ TMP=/tmp/gorp
 
 
 
-### SOURCE DIRECTORY RT-GUARD
+#### GUARDS ############
 
-if [[ -d "$SOURCE/" ]]; then
-        sleep 0.005
-else
-        handle_error "Backup failed because the source cannot be found"
+#### Source not found
+
+if [[ ! -d "$SOURCE/" ]]; then
+        handle_error "Backup failed because the source cannot be found."
 fi
 
 
@@ -70,43 +78,31 @@ fi
 
 
 
-### CHECK FOR (OR CREATE) DESTINATION DIRECTORY (RT-GUARD)
+#### HANDLE FILES ############
+
+#### Create destination
 
 echo "Backing up $SERVER... (This may take a while!)"
-
 mkdir -p $DEST/ || handle_error "Failed to mkdir $DEST/"
 
 
 
+#### Copy files to tmp
 
-
-
-
-### COPY SERVER DIRECTORY TO TEMP
-
-echo "Copying files to temp directory..."
-
+echo "Copying files..."
 cp -r $SOURCE $TMP/$BACKUP_NAME/ || handle_error "Failed to copy server to tmp directory"
 
 
 
+#### Tarball the files
 
-
-
-
-### COMPRESS FILES IN TEMP DIRECTORY
-
-echo "Compressing files..."
 cd $TMP || handle_error "Failed to cd to $TMP"
+echo "Compressing files..."
 tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null || handle_error "Failed to compress files"
 
 
 
-
-
-
-
-### COPY THE COMPRESSED BACKUP TO THE DESTINATION
+#### Copy tarball to destination
 
 echo "Copying files to backup directory..."
 cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to copy tarball to destination"
@@ -117,5 +113,7 @@ cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to copy tarball to de
 
 
 
-echo "Backup name: $BACKUP_NAME"
+#### WE MADE IT ############
+
+echo "Backup name: ${$BACKUP_NAME}.tar.gz"
 echo "Server backup complete!"

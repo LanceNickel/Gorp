@@ -15,21 +15,25 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 GENERATE=$3
@@ -48,7 +52,9 @@ GENERATE=$3
 
 
 
-### PARAM GUARD
+#### GUARDS ############
+
+#### Bad user input
 
 if [[ "$SERVER" == "" ]]; then
     handle_error "Bad input. Expected: gorp start [server-name]"
@@ -56,39 +62,18 @@ fi
 
 
 
+#### Server not found
 
-
-
-
-### GET ADDITIONAL SERVER INFO
-
-SERVER_EXISTS=$(serverExists "$SERVER")
-SERVER_RUNNING=$(serverRunning "$SERVER")
-
-
-
-
-
-
-
-### SERVER DIRECTORY GUARD
-
-if [[ $SERVER_EXISTS == "true" ]]; then
-    cd $HOMEDIR/servers/$SERVER
-else
-    handle_error "Server not found"
+if [[ "$(does_server_exist)" == "false" ]]; then
+    handle_error "Server not found."
 fi
 
 
 
+#### Server is already running
 
-
-
-
-### SCREEN GUARD
-
-if [[ "$SERVER_RUNNING" == "true" ]]; then
-        handle_error "Server already running"
+if [[ "$(is_server_running)" == "true" ]]; then
+        handle_error "Server is already running."
 fi
 
 
@@ -98,6 +83,6 @@ fi
 
 
 
-### RUN STARTUP WORKER
+#### RUN STARTUP WORKER ############
 
 bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER $GENERATE || handle_error "Failed to run start.sh worker"

@@ -16,9 +16,9 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
     handle_error "Script not meant to be run directly."
@@ -26,16 +26,20 @@ fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
 NEW_WORLD=$3
 
-OLD_WORLD=$(activeWorld "$SERVER")
+CURRENT_ACTIVE_WORLD=$(get_active_world "$SERVER")
 
 
 
@@ -51,7 +55,7 @@ OLD_WORLD=$(activeWorld "$SERVER")
 
 
 
-### IF NEW_WORLD NOT SPECIFIED THEN ASK USER
+#### IF NEW_WORLD NOT SPECIFIED THEN ASK USER ############
 
 if [[ "$NEW_WORLD" == "" ]]; then
 
@@ -75,12 +79,11 @@ fi
 
 
 
-### UPDATE 'level-name' IN 'server.properties' AND START/STOP SERVER TO GENERATE WORLD FILES
+#### UPDATE 'level-name' IN 'server.properties' AND START/STOP SERVER TO GENERATE WORLD FILES ##########
 
 echo "Generating new world..."
 
-sed -i "s/level-name=$OLD_WORLD/level-name=world-$NEW_WORLD/" $HOMEDIR/servers/$SERVER/server.properties  || handle_error "Failed to update level-name in server.properties"
-
+sed -i "s/level-name=$CURRENT_ACTIVE_WORLD/level-name=world-$NEW_WORLD/" $HOMEDIR/servers/$SERVER/server.properties  || handle_error "Failed to update level-name in server.properties"
 bash /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_error "message" || handle_error "Failed to start server"
 
 
@@ -88,5 +91,7 @@ bash /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_er
 
 
 
+
+#### WE MADE IT ############
 
 echo "New world created! Server is running."

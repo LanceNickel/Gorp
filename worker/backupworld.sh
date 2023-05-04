@@ -16,9 +16,9 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
     handle_error "Script not meant to be run directly."
@@ -26,14 +26,18 @@ fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
-WORLD=$(activeWorld "$SERVER")
+WORLD=$(get_active_world "$SERVER")
 
 YEAR=$(date +"%Y")
 MONTH=$(date +"%m")
@@ -61,11 +65,11 @@ TMP=/tmp/gorp
 
 
 
-### SOURCE DIRECTORY RT-GUARD
+#### GUARDS ############
 
-if [[ -d "$SOURCE" ]]; then
-        sleep 0.005
-else
+#### Source not found
+
+if [[ ! -d "$SOURCE" ]]; then
         handle_error "Backup failed because the source cannot be found."
 fi
 
@@ -75,43 +79,27 @@ fi
 
 
 
-### CHECK FOR (OR CREATE) DESTINATION DIRECTORY (RT-GUARD)
+#### IF SERVER IS RUNNING, SAVE PROPERLY, THEN TURN OFF AUTOSAVE ############
 
-echo "Backing up $WORLD..."
+RUNNING=$(is_server_running "$SERVER")
 
-mkdir -p $DEST || handle_error "Failed to mkdir $DEST"
-
-
-
-
-
-
-
-### FIGURE OUT IF THE SERVER IS CURRENTLY RUNNING
-
-if [[ $(screen -ls | grep "$SERVER")  != "" ]]; then
-        RUNNING=true
-else
-        RUNNING=false
-fi
-
-
-
-
-
-
-
-### IF SERVER IS RUNNING, SAVE PROPERLY, THEN TURN OFF AUTOSAVE
-
-if [[ $RUNNING == true ]]; then
+if [[ "$RUNNING" == "true" ]]; then
         screen -S $SERVER -X stuff "save-all\n" || handle_error "Failed to stuff 'save-all' to $SERVER"
+
+        I=0
 
         while [ true ]
         do
-                sleep 0.2
+                sleep 0.05
 
                 if [[ $(tail $HOMEDIR/servers/$SERVER/logs/latest.log -n1 | grep 'Saved the game') != "" ]]; then
-                        break
+                    break
+                fi
+
+                ((I++))
+
+                if [[ "$I" >= 300 ]]; then
+                        handle_error "Reached time out for world save."
                 fi
         done
 
@@ -124,21 +112,24 @@ fi
 
 
 
-### COPY WORLD DIRECTORIES TO TEMP
+#### HANDLE FILES ############
 
-echo "Copying files to temp directory..."
+#### Create destination dir
 
+mkdir -p $DEST || handle_error "Failed to mkdir $DEST"
+
+
+
+#### Copy world files to temp
+
+echo "Copying files...."
 cp -r $SOURCE $TMP/$BACKUP_NAME/$WORLD || handle_error "Failed to copy overworld files to tmp directory"
 cp -r ${SOURCE}_nether $TMP/$BACKUP_NAME/${WORLD}_nether || handle_error "Failed to copy nether files to tmp directory"
 cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end || handle_error "Failed to copy end files to tmp directory"
 
 
 
-
-
-
-
-### IF SERVER IS RUNNING, TURN AUTOSAVE BACK ON
+#### If server is running, turn autosave back on now that we've got the files
 
 if [[ $RUNNING == true ]]; then
         screen -S $SERVER -X stuff "save-on\n" || handle_error "Failed to stuff 'save-on' to $SERVER"
@@ -146,11 +137,7 @@ fi
 
 
 
-
-
-
-
-### COMPRESS FILES IN TEMP DIRECTORY
+#### Tarball the files
 
 echo "Compressing files..."
 cd $TMP || handle_error "Failed to cd to $TMP"
@@ -158,13 +145,9 @@ tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null || handle_error
 
 
 
+#### Copy files to destination
 
-
-
-
-### COPY THE COMPRESSED BACKUP TO THE DESTINATION
-
-echo "Copying files to backup directory..."
+echo "Copying files to destination..."
 cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to copy tarball in tmp to destination"
 
 
@@ -172,6 +155,8 @@ cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to copy tarball in tm
 
 
 
+
+#### WE MADE IT ############
 
 echo "Backup name: $BACKUP_NAME"
 echo "World backup complete!"

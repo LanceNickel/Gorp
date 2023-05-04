@@ -15,9 +15,9 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### ROOT GUARD
+#### Root guard
 
 if [[ "$EUID" == 0 ]]; then
     echo "Please don't run as root or with sudo."
@@ -26,14 +26,14 @@ fi
 
 
 
-### GET SUDO PERMISSIONS
+#### Get sudo
 
 echo "To install, Gorp will use sudo."
 sudo whoami > /dev/null
 
 
 
-### ALREADY INSTALLED GUARD
+#### Already installed
 
 if [[ -d "/usr/local/bin/gorp" ]]; then
     echo -e "Gorp is already installed. To update, run 'sudo gorp upgrade'.\nRunning into problems? Open an issue: https://github.com/LanceNickel/Gorp/issues\nOr send me an email: gorp@lanickel.com"
@@ -42,9 +42,13 @@ fi
 
 
 
-#### SCRIPT PARAMETERS ################
+#### Get user's OS homedir
 
 HOMEDIR=~
+
+
+
+
 
 
 
@@ -52,81 +56,113 @@ HOMEDIR=~
 
 
 
-### WELCOME
+
+
+
+
+#### INSTALL GORP ############
 
 echo -e "\nInstalling Gorp..."
 
 
 
-### MAKE SCRIPTS EXECUTABLE
+#### Make scripts executable
 
 chmod +x action/*
+chmod +x functions/*
 chmod +x worker/*
-chmod +x entry.sh
 chmod +x argparse.sh
+chmod +x entry.sh
 chmod +x gorp
 
 
 
-### UPDATE HOMEDIR OPTIONS IN gorp.conf
+#### Update homedir in gorp.conf
 
 sed -i "s:BOBSBURGERS:$HOMEDIR/gorpmc:g" gorp.conf
 
 
 
-### CREATE REQUIRED DIRS
+#### Create dirs in /usr/local/bin/ & /usr/local/etc/
 
 sudo mkdir -p /usr/local/bin/gorpmc/
 sudo mkdir -p /usr/local/bin/gorpmc/action/
+sudo mkdir -p /usr/local/bin/gorpmc/functions/
 sudo mkdir -p /usr/local/bin/gorpmc/worker/
+sudo mkdir -p /usr/local/etc/
 
-if [[ -d "$HOMEDIR/gorpmc" ]]; then
+
+
+#### Create gorp homedir (or set to warn if already exists)
+
+if [[ -d "$HOMEDIR/gorpmc/" ]]; then
     WARN=true
 else
     WARN=false
     mkdir $HOMEDIR/gorpmc/
-    mkdir $HOMEDIR/gorpmc/backups
-    mkdir $HOMEDIR/gorpmc/jars
-    mkdir $HOMEDIR/gorpmc/servers
+    mkdir $HOMEDIR/gorpmc/backups/
+    mkdir $HOMEDIR/gorpmc/jars/
+    mkdir $HOMEDIR/gorpmc/servers/
 fi
 
 
 
-### MOVE FILES
+#### Move the files to their installed directories
 
+# /usr/local/bin/
 sudo cp action/* /usr/local/bin/gorpmc/action/
+sudo cp functions/* /usr/local/bin/gorpmc/functions/
 sudo cp worker/* /usr/local/bin/gorpmc/worker/
-sudo cp help.txt /usr/local/bin/gorpmc/
 sudo cp argparse.sh /usr/local/bin/gorpmc/
 sudo cp entry.sh /usr/local/bin/gorpmc/
 sudo cp gorp /usr/local/bin/
+sudo cp help.txt /usr/local/bin/gorpmc/
 
-sudo mkdir -p /usr/local/etc/
+# /usr/local/etc/
 sudo cp gorp.conf /usr/local/etc/
+
+
+
+
+
+
+
+#### GET LATEST JAR FILE ############
+
+#### Set build to 000 to force a JAR download
 
 echo "paper-0-000.jar" > $HOMEDIR/gorpmc/jars/latest
 
 
 
-### RUN UPDATE ACTION TO GET & SET JAR FILE
+#### Get JAR file
 
 echo -e "Getting latest Paper JAR file..."
-
-bash /usr/local/bin/gorpmc/worker/i_getconfigparams.sh || echo "Installation error -- Failed to get new config paremeters. Please uninstall Gorp and try again. If this issue persists, open an issue." && exit 1
-
+bash /usr/local/bin/gorpmc/functions/params.sh || echo "Installation error -- Failed to get new config paremeters. Please uninstall Gorp and try again. If this issue persists, open an issue." && exit 1
 bash /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
 
 
 
-### FINISHED, SHOW WARNING
+
+
+
+
+#### WE MADE IT ############
+
+#### Print user intro
 
 echo -e "\nINSTALLATION FINISHED\n\nCreate your first server with:    gorp create-server [server-name] <world-name>\nStart the server                  gorp start [server-name]\n\nRead more at https://gorp.lanickel.com/"
 
+
+
+#### Print warning if ~/gorpmc/ already existed
 
 if [ $WARN = true ]; then
     echo -e "\n\nWARNING:\n'$HOMEDIR/gorpmc' directory already exists. Refer to installation instructions for more info:\nhttps://gorp.lanickel.com/getting-started/install/"
 fi
 
 
+
+#### Exit
 
 exit 0

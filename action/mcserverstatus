@@ -15,23 +15,31 @@
 
 
 
-#### GUARDS ################
+#### SETUP ############
 
-### KEY GUARD
+#### Key guard
 
 if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly"
+    handle_error "Script not meant to be run directly."
 fi
 
 
 
+#### Globals
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/functions.sh
 
 
 
-
-#### SCRIPT PARAMETERS ################
+#### Collect arguments & additional variables
 
 SERVER=$2
+
+
+
+
 
 
 
@@ -43,7 +51,9 @@ SERVER=$2
 
 
 
-### PARAM RT-GUARD
+#### GUARDS ############
+
+#### Bad user input
 
 if [[ "$SERVER" == "" ]]; then
     handle_error "Bad input. Expected: gorp -s [server-name]"
@@ -51,33 +61,24 @@ fi
 
 
 
+#### Server not found
 
-
-
-
-### SERVER DIRECTORY RT-GUARD
-
-if [[ -d "$HOMEDIR/servers/$SERVER" ]]; then
-    # we can continue
-    sleep 0.005
-else
-    handle_error "Server not found"
+if [[ "$(does_server_exist)" == "false" ]]; then
+    handle_error "Server not found."
 fi
 
 
 
+######## SERVER NEVER RUN BEFORE
 
+#### Server properties has no level name
 
-
-
-### NEVER RUN BEFORE RT-GUARDS
-
-# Server.properties has no world set
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2) = "" ]]; then
     handle_error "The server must be run at least once"
 fi
 
-# Server.properties only one line (default)
+#### Server properties is only one line
+
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | wc -l) = "1" ]]; then
     handle_error "The server must be run at least once"
 fi
@@ -88,6 +89,6 @@ fi
 
 
 
-### RUN STATUS WORKER
+#### RUN STATUS WORKER ############
 
 bash /usr/local/bin/gorpmc/worker/serverstatus.sh $1 $SERVER || handle_error "Failed to run serverstatus.sh worker"
