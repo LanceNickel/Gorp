@@ -60,7 +60,7 @@ echo "You are about to reset the world named '$WORLD_TO_RESET' in the '$SERVER' 
 
 read -r -p "Did you back up the world/don't care about it? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    echo "Resetting world..."
+    sleep 0.005
 else
     handle_error "You answered the prompt wrong!"
 fi
