@@ -61,10 +61,14 @@ fi
 
 
 
-#### Server has no backups to restore from
+#### No backups found to restore from
 
-if [[ ! -d "$BACKUP_DEST/$SERVER" ]]; then
-    handle_error "Server has no backups to restore from"
+if [[ -d "$BACKUP_DEST/worlds/$SERVER/" ]]; then
+    if [[ "$(ls $BACKUP_DEST/worlds/$SERVER/)" == "" ]]; then
+        handle_error "Server has no world backups to restore from"
+    fi
+else
+    handle_error "Server has no world backups to restore from"
 fi
 
 

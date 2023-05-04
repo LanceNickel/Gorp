@@ -63,8 +63,8 @@ fi
 
 #### No backups found to restore from
 
-if [[ -d "$BACKUP_DEST/$SERVER/server-backups/" ]]; then
-    if [[ "$(ls $BACKUP_DEST/$SERVER/server-backups/)" == "" ]]; then
+if [[ -d "$BACKUP_DEST/servers/$SERVER/" ]]; then
+    if [[ "$(ls $BACKUP_DEST/servers/$SERVER/)" == "" ]]; then
         handle_error "Server has no backups to restore from"
     fi
 else
