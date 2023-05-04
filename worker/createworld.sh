@@ -81,7 +81,7 @@ echo "Generating new world..."
 
 sed -i "s/level-name=$OLD_WORLD/level-name=world-$NEW_WORLD/" $HOMEDIR/servers/$SERVER/server.properties  || handle_error "Failed to update level-name in server.properties"
 
-source /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_error "message" || handle_error "Failed to start server"
+bash /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_error "message" || handle_error "Failed to start server"
 
 
 

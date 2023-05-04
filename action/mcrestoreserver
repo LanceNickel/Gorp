@@ -89,4 +89,4 @@ fi
 
 ### RUN RESTORE WORKER
 
-source /usr/local/bin/gorpmc/worker/restoreserver.sh $1 $SERVER || handle_error "Failed to run restoreserver.sh worker"
+bash /usr/local/bin/gorpmc/worker/restoreserver.sh $1 $SERVER || handle_error "Failed to run restoreserver.sh worker"

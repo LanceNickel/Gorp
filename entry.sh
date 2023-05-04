@@ -19,9 +19,9 @@
 
 ######## SOURCES/IMPORTS
 
-source /usr/local/bin/gorpmc/functions/exit.sh
-source /usr/local/bin/gorpmc/functions/params.sh
-source /usr/local/bin/gorpmc/functions/common.sh
+bash /usr/local/bin/gorpmc/functions/exit.sh
+bash /usr/local/bin/gorpmc/functions/params.sh
+bash /usr/local/bin/gorpmc/functions/common.sh
 
 
 
@@ -73,7 +73,7 @@ fi
 
 
 
-source /usr/local/bin/gorpmc/argparse.sh $ACTION $ARG1 $ARG2
+bash /usr/local/bin/gorpmc/argparse.sh $ACTION $ARG1 $ARG2
 
 
 

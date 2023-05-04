@@ -23,4 +23,4 @@
 
 ################ SEND TO ENTRY ################
 
-source /usr/local/bin/gorpmc/entry.sh
+bash /usr/local/bin/gorpmc/entry.sh

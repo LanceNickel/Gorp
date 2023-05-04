@@ -114,4 +114,4 @@ fi
 
 ### RUN THE WORLD ARCHIVE WORKER
 
-source /usr/local/bin/gorpmc/worker/archiveworld.sh $1 $SERVER $WORLD_TO_ARCHIVE || handle_error "Failed to run archiveworld.sh worker"
+bash /usr/local/bin/gorpmc/worker/archiveworld.sh $1 $SERVER $WORLD_TO_ARCHIVE || handle_error "Failed to run archiveworld.sh worker"

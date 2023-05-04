@@ -148,7 +148,7 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 echo "Backing up current world..."
 
-source /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER || handle_error "Failed to back up world"
+bash /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER || handle_error "Failed to back up world"
 
 
 

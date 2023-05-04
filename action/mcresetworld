@@ -86,4 +86,4 @@ fi
 
 ### RUN THE WORLD DELETE WORKER
 
-source /usr/local/bin/gorpmc/worker/resetworld.sh $1 $SERVER || handle_error "Failed to run resetworld.sh worker"
+bash /usr/local/bin/gorpmc/worker/resetworld.sh $1 $SERVER || handle_error "Failed to run resetworld.sh worker"

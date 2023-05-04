@@ -88,4 +88,4 @@ fi
 
 ### RUN BACKUP WORKER
 
-source /usr/local/bin/gorpmc/worker/backupserver.sh $1 $SERVER || handle_error "Failed to run backupserver.sh worker"
+bash /usr/local/bin/gorpmc/worker/backupserver.sh $1 $SERVER || handle_error "Failed to run backupserver.sh worker"

@@ -87,4 +87,4 @@ fi
 
 ### RUN DELETE WORKER
 
-source /usr/local/bin/gorpmc/worker/deleteserver.sh $1 $SERVER || handle_error "Failed to run deleteserver.sh worker"
+bash /usr/local/bin/gorpmc/worker/deleteserver.sh $1 $SERVER || handle_error "Failed to run deleteserver.sh worker"

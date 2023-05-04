@@ -90,4 +90,4 @@ fi
 
 ### RUN STATUS WORKER
 
-source /usr/local/bin/gorpmc/worker/serverstatus.sh $1 $SERVER || handle_error "Failed to run serverstatus.sh worker"
+bash /usr/local/bin/gorpmc/worker/serverstatus.sh $1 $SERVER || handle_error "Failed to run serverstatus.sh worker"

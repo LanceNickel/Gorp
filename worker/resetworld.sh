@@ -78,7 +78,7 @@ fi
 
 if [[ $RUNNING = true ]]; then
     echo "Stopping server..."
-    source /usr/local/bin/gorpmc/action/mcstop $1 $SERVER -n > /dev/null || handle_error "Failed to stop server"
+    bash /usr/local/bin/gorpmc/action/mcstop $1 $SERVER -n > /dev/null || handle_error "Failed to stop server"
 fi
 
 
@@ -103,7 +103,7 @@ rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_the_end || handle_error "Faile
 
 ### START SERVER (to generate world)
 
-source /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_error "Failed to start server"
+bash /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_error "Failed to start server"
 
 
 

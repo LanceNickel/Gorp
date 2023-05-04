@@ -89,4 +89,4 @@ done
 
 ### CALL THE WORKER
 
-source /usr/local/bin/gorpmc/worker/movehome.sh $1 $NEW_HOMEDIR || handle_error "Unable to launch movehome.sh worker"
+bash /usr/local/bin/gorpmc/worker/movehome.sh $1 $NEW_HOMEDIR || handle_error "Unable to launch movehome.sh worker"

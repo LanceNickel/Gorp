@@ -137,7 +137,7 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 echo "Backing up current server..."
 
-source /usr/local/bin/gorpmc/action/mcbackupserver $1 $SERVER || handle_error "Failed to back up server"
+bash /usr/local/bin/gorpmc/action/mcbackupserver $1 $SERVER || handle_error "Failed to back up server"
 
 
 

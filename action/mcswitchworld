@@ -119,4 +119,4 @@ fi
 
 ### RUN THE WORLD CREATOR WORKER
 
-source /usr/local/bin/gorpmc/worker/switchworld.sh $1 $SERVER $SWITCH_TO || handle_error "Failed to run switchworld.sh worker"
+bash /usr/local/bin/gorpmc/worker/switchworld.sh $1 $SERVER $SWITCH_TO || handle_error "Failed to run switchworld.sh worker"

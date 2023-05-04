@@ -115,16 +115,16 @@ fi
 ### RUN WORKERS BASED ON PASSED PARAMS
 
 if [[ "$MODE" == "normal" ]]; then
-    source /usr/local/bin/gorpmc/worker/backupworld.sh $1 $SERVER || handle_error "Failed to run backupworld.sh worker"
-    source /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "stop" || handle_error "Failed to run warning.sh worker"
-    source /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
+    bash /usr/local/bin/gorpmc/worker/backupworld.sh $1 $SERVER || handle_error "Failed to run backupworld.sh worker"
+    bash /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "stop" || handle_error "Failed to run warning.sh worker"
+    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
 fi
 
 if [[ "$MODE" == "f" ]]; then
-    source /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "stop" || handle_error "Failed to run warning.sh worker"
-    source /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
+    bash /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "stop" || handle_error "Failed to run warning.sh worker"
+    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
 fi
 
 if [[ "$MODE" == "n" ]]; then
-    source /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
+    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
 fi

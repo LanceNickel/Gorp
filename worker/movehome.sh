@@ -84,7 +84,7 @@ sed -i "s:$HOMEDIR:$NEW_HOMEDIR:" $NEW_HOMEDIR/jars/latest || handle_error "Fail
 
 
 # Validate these
-source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+bash /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
 
 if [[ "$HOMEDIR" != "$NEW_HOMEDIR" ]]; then
     handle_error "Configuration update failed. Please manually update HOMEDIR to $NEW_HOMEDIR in /usr/local/etc/gorp.conf."
