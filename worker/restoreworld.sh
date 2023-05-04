@@ -51,23 +51,6 @@ SERVER=$2
 
 
 
-#### USER CONFIRMATION ############
-
-echo "Restoring this world will overwrite the current version, if it is still there."
-
-read -r -p "Confirm overwrite of current world? [y/n] " response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    sleep 0.005
-else
-    handle_error "You answered the prompt wrong!"
-fi
-
-
-
-
-
-
-
 #### SELECT FROM AVAILABLE BACKUPS ############
 
 cd $BACKUP_DEST/worlds/$SERVER
@@ -142,6 +125,25 @@ done
 
 FILE_TO_RESTORE="$d"
 FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
+
+
+
+
+
+
+
+#### USER CONFIRMATION (if necessary) ############
+
+if [[ -d "$HOMEDIR/servers/$SERVER/$RESTORE_LEVEL_NAME" ]]; then
+    echo "Restoring this world will overwrite the current version."
+
+    read -r -p "Confirm overwrite (make SURE you have a backup)? [y/n] " response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        sleep 0.005
+    else
+        handle_error "You answered the prompt wrong!"
+    fi
+fi
 
 
 

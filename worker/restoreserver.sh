@@ -121,14 +121,24 @@ FOLDER_TO_RESTORE=$(echo $d | cut -d '.' -f1)
 
 
 
+#### USER CONFIRMATION (if necessary) ############
+
+if [[ -d "$HOMEDIR/servers/$SERVER/" ]]; then
+    echo "Restoring this server will overwrite the current version."
+
+    read -r -p "Take a backup of the current server? [y/n] " response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        /usr/local/bin/gorpmc/action/mcbackupserver $1 $SERVER
+    fi
+fi
+
+
+
+
+
+
+
 #### RESTORE THE SERVER ############
-
-#### Backup current server
-
-echo "Backing up current server..."
-bash /usr/local/bin/gorpmc/action/mcbackupserver $1 $SERVER || handle_error "Failed to back up server"
-
-
 
 #### Delete current server (if it exists)
 
