@@ -65,7 +65,7 @@ fi
 
 #### Server not found
 
-if [[ "$(does_server_exist)" == "false" ]]; then
+if [[ "$(does_server_exist $SERVER)" == "false" ]]; then
     handle_error "Server not found."
 fi
 
