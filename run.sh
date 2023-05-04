@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-bash /usr/local/bin/gorpmc/worker/i_getconfigparams.sh
+. /usr/local/bin/gorpmc/functions/params.sh
 ### [RUN SERVER IN-DIRECTORY WORKER] ##############################
 #   Description:  Worker that actually executes a server JAR.
 #   Parameters:   None
