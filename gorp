@@ -19,4 +19,4 @@
 
 #### GO TO ENTRY ############
 
-bash /usr/local/bin/gorpmc/entry.sh
+bash /usr/local/bin/gorpmc/entry.sh $1 $2 $3
