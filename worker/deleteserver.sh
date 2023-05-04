@@ -59,14 +59,14 @@ read -r -p "Did you back up the server? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.005
 else
-    handle_error "deleteserver.sh: You answered the prompt wrong!"
+    handle_error "You answered the prompt wrong!"
 fi
 
 read -r -p "Enter '$SERVER' to confirm: " response
 if [[ "$response" == "$SERVER" ]]; then
     sleep 0.005
 else
-    handle_error "deleteserver.sh: You answered the prompt wrong!"
+    handle_error "You answered the prompt wrong!"
 fi
 
 

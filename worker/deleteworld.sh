@@ -89,14 +89,14 @@ read -r -p "Did you back up the world? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     sleep 0.005
 else
-    echo "You answered the prompt wrong!"
+    handle_error "You answered the prompt wrong!"
 fi
 
 read -r -p "Enter '$WORLD_TO_DELETE' to confirm: " response
 if [[ "$response" == "$WORLD_TO_DELETE" ]]; then
     sleep 0.005
 else
-    echo "You answered the prompt wrong!"
+    handle_error "You answered the prompt wrong!"
 fi
 
 
