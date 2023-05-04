@@ -45,7 +45,7 @@ DATE_FILE=$(date +"%Y-%m-%d_%H%M-%S")
 
 BACKUP_NAME=$SERVER-$DATE_FILE
 
-.=$HOMEDIR/servers/$SERVER
+SOURCE=$HOMEDIR/servers/$SERVER
 DEST=$BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY
 
 TMP=/tmp/gorp
@@ -66,9 +66,9 @@ TMP=/tmp/gorp
 
 #### GUARDS ############
 
-#### . not found
+#### Source not found
 
-if [[ ! -d "$./" ]]; then
+if [[ ! -d "$SOURCE/" ]]; then
         handle_error "Backup failed because the . cannot be found."
 fi
 
@@ -90,7 +90,7 @@ mkdir -p $DEST/ || handle_error "Failed to mkdir $DEST/"
 #### Copy files to tmp
 
 echo "Copying files..."
-cp -r $. $TMP/$BACKUP_NAME/ || handle_error "Failed to copy server to tmp directory"
+cp -r $SOURCE $TMP/$BACKUP_NAME/ || handle_error "Failed to copy server to tmp directory"
 
 
 
