@@ -137,8 +137,12 @@ echo "paper-0-000.jar" > $HOMEDIR/gorpmc/jars/latest
 
 #### Get JAR file
 
+mkdir /tmp/gorp/
+
 echo -e "Getting latest Paper JAR file..."
 bash /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
+
+rm -rf /tmp/gorp/
 
 
 
