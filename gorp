@@ -20,7 +20,7 @@
 #### HANDLE USER INTERRUPT ############
 
 user_interrupted() {
-    echo "User interrupted"
+    echo -e "\nCheesing it."
 
     if [[ -d "/tmp/gorp/" ]]; then
         rm -rf /tmp/gorp/
