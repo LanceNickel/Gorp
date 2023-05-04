@@ -37,7 +37,7 @@ fi
 #### Collect arguments & additional variables
 
 SERVER=$2
-WORLD=$(get_active_world "$SERVER")
+WORLD="world-$(get_active_world $SERVER)"
 
 YEAR=$(date +"%Y")
 MONTH=$(date +"%m")

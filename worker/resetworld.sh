@@ -86,9 +86,9 @@ fi
 
 #### DELETE WORLD ############
 
-rm -rf $HOMEDIR/servers/$SERVER/$WORLD_TO_RESET || handle_error "Failed to delete overworld files"
-rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_nether || handle_error "Failed to delete nether files"
-rm -rf $HOMEDIR/servers/$SERVER/${WORLD_TO_RESET}_the_end || handle_error "Failed to delete end files"
+rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_RESET || handle_error "Failed to delete overworld files"
+rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_nether || handle_error "Failed to delete nether files"
+rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_the_end || handle_error "Failed to delete end files"
 
 
 
