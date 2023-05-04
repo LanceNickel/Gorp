@@ -72,7 +72,7 @@ fi
 
 #### Server already exists
 
-if [[ "$(does_server_exist)" == "true" ]]; then
+if [[ "$(does_server_exist $SERVER)" == "true" ]]; then
     handle_error "Server already exists."
 fi
 
