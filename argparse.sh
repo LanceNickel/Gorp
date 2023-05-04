@@ -23,82 +23,6 @@
 ### SET DEFAULT PARAMS FOR NO FLAGS
 
 TESTSTRING=pleasedontdothis
-ACTION=$1
-ARG1=$2
-ARG2=$3
-
-
-
-### CHECK FOR FLAGS AND ADJUST PARAMS
-
-OPTIND=1
-while getopts ":fg:hnqQs:t:u:vy" flag; do
-    case $flag in
-        # GLOBAL FLAGS
-        h)  # help (gorp -h)
-            ACTION="help"
-            ;;
-        q)  # quiet (gorp -q [command])
-            TESTSTRING=pleaseshutup
-            ACTION=$2
-            ARG1=$3
-            ARG2=$4
-            OUTPUT=false
-            ERRORS=true
-            ;;
-        Q)  # Quiet (gorp -Q [command])
-            TESTSTRING=pleasebesilent
-            ACTION=$2
-            ARG1=$3
-            ARG2=$4
-            OUTPUT=false
-            ERRORS=false        
-            ;;
-        s)  # status (gorp -s [server])
-            ACTION="status"
-            ARG1="$OPTARG"
-            ;;
-        t)  #tail (gorp -t [server])
-            ACTION="tail"
-            ARG1="$OPTARG"
-            ;;
-        v)  # version (gorp -v)
-            ACTION="version"
-            ;;
-        
-        # RUNTIME FLAGS
-        f)  # fast (gorp -f stop|restart [server])
-            ACTION=$2
-            ARG1=$3
-            ARG2="-f"
-            ;;
-        g)  # gamever (gorp -g [version] get-jar)
-            ACTION="get-jar"
-            ARG1="-g"
-            ARG2="$OPTARG"
-            ;;
-        n)  # now (gorp -n stop|restart [server])
-            ACTION=$2
-            ARG1=$3
-            ARG2="-n"
-            ;;
-        u)  # url (gorp -u [url] get-jar)
-            ACTION="get-jar"
-            ARG1="-u"
-            ARG2="$OPTARG"
-            ;;
-        y)
-            ACTION=$2
-            ARG1=$3
-            ARG2="-y"
-            ;;
-        
-        # UNKNOWN FLAGS (all other entries)
-        *)
-            echo "Invalid or unknown flags. Exit."
-            ;;
-    esac
-done
 
 
 
@@ -185,10 +109,10 @@ elif [[ "$ACTION" == "help" ]]; then
 elif [[ "$ACTION" == "upgrade" ]]; then
     source /usr/local/bin/gorpmc/action/gorpupgrade $TESTSTRING || handle_error "Failed to run action."
 
-elif [[ "$ACTION" == "version" ]]; then
+elif [[ "$ACTION" == "-v" ]]; then
     source /usr/local/bin/gorpmc/action/gorpversion || handle_error "Failed to run action."
 
-elif [[ "$ACTION" == "status" ]]; then
+elif [[ "$ACTION" == "-s" ]]; then
     source /usr/local/bin/gorpmc/action/mcserverstatus $TESTSTRING $ARG1 || handle_error "Failed to run action."
 
 elif [[ "$ACTION" == "tail" ]]; then

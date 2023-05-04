@@ -17,31 +17,23 @@
 
 
 
+######## SOURCES/IMPORTS
+
+source /usr/local/bin/gorpmc/functions/exit.sh
+source /usr/local/bin/gorpmc/functions/params.sh
+source /usr/local/bin/gorpmc/functions/common.sh
+
+
+
 
 
 
 
 ################ SETUP ################
 
-
-
-
-
-
-
-######## ERROR HANDLER
-
-handle_error() {
-    message=$1
-
-    if [[ "$1" == "" ]]; then
-        message="ERROR: Gorp encountered an error and exited. Furthermore, no internal error message was provided."
-    fi
-
-    echo "ERROR: $message"
-
-    exit 1
-}
+ACTION=$1
+ARG1=$2
+ARG2=$3
 
 
 
@@ -50,12 +42,6 @@ handle_error() {
 if [[ "$EUID" == 0 ]]; then
     handle_error "Gorp cannot be run as root or with sudo."
 fi
-
-
-
-######## Get parameters.
-
-source /usr/local/bin/gorpmc/worker/i_getconfigparams.sh || handle_error "Unable to load Gorp parameters."
 
 
 
@@ -87,7 +73,7 @@ fi
 
 
 
-source /usr/local/bin/gorpmc/argparse.sh $1 $2 $3
+source /usr/local/bin/gorpmc/argparse.sh $ACTION $ARG1 $ARG2
 
 
 
@@ -103,15 +89,9 @@ source /usr/local/bin/gorpmc/argparse.sh $1 $2 $3
 
 
 
-####### Delete tmp dir.
+####### Delete tmp dir (by extension, releasing lock)
 
 rm -rf /tmp/gorp/ || handle_error "Unable to delete tmp directory at /tmp/gorp/"
-
-
-
-####### Release lock file
-
-rm /tmp/gorp/gorp.lock
 
 
 

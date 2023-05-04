@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 
-### [GORP] ########################################################
-#   Description:  The Gorp top-level entry-caller. Highest level.
-#   Parameters:   1: (required) Action to pass to arg-int.
-#                 2: (optional) Argument 1
-#                 3: (optional) Argument 2
+### [GORP EXIT FUNCTION] ##########################################
+#   Description:  Single-function file to exit cleanly on error.
 
 ############################ [WARNING] ############################
 ##    No part of this script is designed to be user-editable.    ##
@@ -17,10 +14,18 @@
 
 
 
+handle_error() {
+    message=$1
 
+    if [[ -d "/tmp/gorp/" ]]; then
+        rm -rf /tmp/gorp/
+    fi
 
+    if [[ "$message" == "" ]]; then
+        message="Gorp encoutered a problem and needed to exit."
+    fi
 
+    echo "ERROR: $message"
 
-################ SEND TO ENTRY ################
-
-source /usr/local/bin/gorpmc/entry.sh
+    exit 1
+}
