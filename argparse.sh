@@ -22,7 +22,7 @@
 
 ### SET DEFAULT PARAMS FOR NO FLAGS
 
-TESTSTRING=pleasedontdothis
+TESTSTRING="pleasedontdothis"
 ACTION=$1
 ARG1=$2
 ARG2=$3
