@@ -24,8 +24,8 @@
 
 TESTSTRING=pleasedontdothis
 ACTION=$1
-$ARG1=$2
-$ARG2=$3
+ARG1=$2
+ARG2=$3
 
 
 
