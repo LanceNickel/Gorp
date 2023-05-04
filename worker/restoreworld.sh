@@ -54,7 +54,7 @@ CURRENT_LEVEL_NAME=$(activeWorld "$SERVER")
 
 #### SELECT FROM AVAILABLE BACKUPS ############
 
-cd $BACKUP_DEST/$SERVER
+cd $BACKUP_DEST/worlds/$SERVER
 
 echo -e "\nPlease select a world (level-name in server.properties)"
 
@@ -152,7 +152,7 @@ rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}* || handle_error "Failed t
 
 echo "Restoring world..."
 mkdir -p /tmp/gorp/restore || handle_error "Failed to make tmp directory"
-cp $BACKUP_DEST/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to copy backup archive to tmp"
+cp $BACKUP_DEST/worlds/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to copy backup archive to tmp"
 
 
 

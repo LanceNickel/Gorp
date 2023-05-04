@@ -53,7 +53,7 @@ SERVER=$2
 
 #### SELECT FROM AVAILABLE BACKUPS ############
 
-cd $BACKUP_DEST/$SERVER/server-backups || handle_error "Failed to cd to $BACKUP_DEST/$SERVER/server-backups"
+cd $BACKUP_DEST/servers/$SERVER/ || handle_error "Failed to cd to server backups directory."
 
 
 
@@ -140,7 +140,7 @@ rm -rf $HOMEDIR/servers/$SERVER/ || handle_error "Failed to delete existing serv
 
 echo "Restoring server..."
 mkdir -p /tmp/gorp/restore || handle_error "Failed to make tmp directory"
-cp $BACKUP_DEST/$SERVER/server-backups/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to copy archive to tmp directory"
+cp $BACKUP_DEST/servers/$SERVER/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to copy archive to tmp directory"
 
 
 
