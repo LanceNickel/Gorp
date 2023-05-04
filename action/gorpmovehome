@@ -17,19 +17,19 @@
 
 #### SETUP ############
 
-#### Key guard
-
-if [[ "$1" == "pleasedontdothis" ]]; then
-    handle_error "Script not meant to be run directly."
-fi
-
-
-
 #### Globals
 
 source /usr/local/bin/gorpmc/functions/exit.sh
 source /usr/local/bin/gorpmc/functions/params.sh
 source /usr/local/bin/gorpmc/functions/functions.sh
+
+
+
+#### Key guard
+
+if [[ "$1" == "pleasedontdothis" ]]; then
+    handle_error "Script not meant to be run directly."
+fi
 
 
 
