@@ -36,7 +36,6 @@ fi
 #### Collect arguments & additional variables
 
 SERVER=$2
-CURRENT_LEVEL_NAME=$(activeWorld "$SERVER")
 
 
 
@@ -142,9 +141,11 @@ bash /usr/local/bin/gorpmc/action/mcbackupworld pleasedontdothis $SERVER || hand
 
 
 
-#### Delete current world
+#### Delete current world (if it exists)
 
-rm -rf $HOMEDIR/servers/$SERVER/${CURRENT_LEVEL_NAME}* || handle_error "Failed to delete existing world"
+if [[ -d "$HOMEDIR/servers/$SERVER/$RESTORE_LEVEL_NAME/" ]]; then
+    rm -rf $HOMEDIR/servers/$SERVER/${RESTORE_LEVEL_NAME}* || handle_error "Failed to delete existing world"
+fi
 
 
 

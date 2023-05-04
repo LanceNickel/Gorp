@@ -130,9 +130,11 @@ bash /usr/local/bin/gorpmc/action/mcbackupserver $1 $SERVER || handle_error "Fai
 
 
 
-#### Delete current server
+#### Delete current server (if it exists)
 
-rm -rf $HOMEDIR/servers/$SERVER/ || handle_error "Failed to delete existing server"
+if [[ -d "$HOMEDIR/servers/$SERVER/" ]]; then
+    rm -rf $HOMEDIR/servers/$SERVER/ || handle_error "Failed to delete existing server"
+fi
 
 
 
