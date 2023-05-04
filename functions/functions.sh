@@ -61,12 +61,10 @@ get_active_world() {
 does_server_exist() {
     if [[ "$1" == "" ]];
         echo "false"
+    elif [[ -d "$HOMEDIR/servers/$1" ]]; then
+        echo "true"
     else
-        if [[ -d "$HOMEDIR/servers/$1" ]]; then
-            echo "true"
-        else
-            echo "false"
-        fi
+        echo "false"
     fi
 }
 
