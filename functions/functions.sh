@@ -14,7 +14,9 @@
 
 
 
+######## GET PARAMS
 
+. /usr/local/bin/gorpmc/functions/params.sh
 
 
 
@@ -58,9 +60,9 @@ get_active_world() {
 
 does_server_exist() {
     if [[ -d "$HOMEDIR/servers/$1" ]]; then
-        echo true
+        echo "true"
     else
-        echo false
+        echo "false"
     fi
 }
 
