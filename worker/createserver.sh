@@ -54,8 +54,8 @@ WORLD=$3
 
 #### CREATE SERVER DIRECTORY AND COPY RUN.SH ############
 
-mkdir $HOMEDIR/servers/$SERVER || handle_error "Failed to mkdir $HOMEDIR/servers/$SERVER"
-cp /usr/local/bin/gorpmc/run.sh $HOMEDIR/servers/$SERVER/ || handle_error "Failed to copy run.sh file to new server directory"
+mkdir $HOMEDIR/servers/$SERVER || handle_error "Failed to create server directory."
+cp /usr/local/bin/gorpmc/run.sh $HOMEDIR/servers/$SERVER/ || handle_error "Failed to copy run.sh file to new server directory."
 
 
 
@@ -65,8 +65,8 @@ cp /usr/local/bin/gorpmc/run.sh $HOMEDIR/servers/$SERVER/ || handle_error "Faile
 
 #### PREPARE SERVER FILES ############
 
-echo "eula=true" > $HOMEDIR/servers/$SERVER/eula.txt || handle_error "Failed to echo eula accept to eula.txt"
-echo "level-name=world-$WORLD" > $HOMEDIR/servers/$SERVER/server.properties || handle_error "Failed to echo to server.properties"
+echo "eula=true" > $HOMEDIR/servers/$SERVER/eula.txt || handle_error "Failed to echo eula accept to eula.txt."
+echo "level-name=world-$WORLD" > $HOMEDIR/servers/$SERVER/server.properties || handle_error "Failed to echo to server.properties."
 
 
 

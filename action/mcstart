@@ -57,7 +57,7 @@ GENERATE=$3
 #### Bad user input
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: gorp start [server-name]"
+    handle_error "Bad input. Expected: gorp start [server-name]."
 fi
 
 
@@ -136,4 +136,4 @@ fi
 
 #### RUN STARTUP WORKER ############
 
-bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER $GENERATE || handle_error "Failed to run start.sh worker"
+bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER $GENERATE || handle_error "Failed to run start.sh worker."

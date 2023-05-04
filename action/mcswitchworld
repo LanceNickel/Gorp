@@ -58,7 +58,7 @@ SWITCH_TO=$3
 #### Bad user input
 
 if [[ "$SERVER" = "" ]]; then
-    handle_error "Bad input. Expected: gorp switch-world [server-name] <world-name>"
+    handle_error "Bad input. Expected: gorp switch-world [server-name] <world-name>."
 fi
 
 
@@ -103,4 +103,4 @@ fi
 
 #### RUN THE WORLD CREATOR WORKER ############
 
-bash /usr/local/bin/gorpmc/worker/switchworld.sh $1 $SERVER $SWITCH_TO || handle_error "Failed to run switchworld.sh worker"
+bash /usr/local/bin/gorpmc/worker/switchworld.sh $1 $SERVER $SWITCH_TO || handle_error "Failed to run switchworld.sh worker."

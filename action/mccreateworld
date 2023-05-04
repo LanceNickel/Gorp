@@ -97,4 +97,4 @@ fi
 
 ### RUN THE WORLD CREATOR WORKER ############
 
-bash /usr/local/bin/gorpmc/worker/createworld.sh $1 $SERVER $NEW_WORLD || handle_error "Failed to run createworld.sh worker"
+bash /usr/local/bin/gorpmc/worker/createworld.sh $1 $SERVER $NEW_WORLD || handle_error "Failed to run createworld.sh worker."

@@ -58,11 +58,11 @@ ACTION=$3
 echo "Giving a very polite heads up :) ..."
 
 if [[ "$ACTION" == "power" ]]; then
-        screen -S $SERVER -X stuff "say ATTENTION: Due to a power outage, this server must be shut down.\n" || handle_error "Failed to stuff into $SERVER"
+        screen -S $SERVER -X stuff "say ATTENTION: Due to a power outage, this server must be shut down.\n" || handle_error "Failed to stuff message to server."
         sleep 0.25
-        screen -S $SERVER -X stuff "say ATTENTION: This server will shut down in 30 seconds.\n" || handle_error "Failed to stuff into $SERVER"
+        screen -S $SERVER -X stuff "say ATTENTION: This server will shut down in 30 seconds.\n" || handle_error "Failed to stuff message to server."
 else
-        screen -S $SERVER -X stuff "say ATTENTION: This server will $ACTION in 30 seconds.\n" || handle_error "Failed to stuff into $SERVER"
+        screen -S $SERVER -X stuff "say ATTENTION: This server will $ACTION in 30 seconds.\n" || handle_error "Failed to stuff message to server."
 fi
 
 

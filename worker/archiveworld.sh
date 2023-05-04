@@ -92,24 +92,24 @@ mkdir -p $ARCHIVE_DEST/$SERVER || handle_error "Failed to make destination folde
 #### Copy files to tmp
 
 echo "Copying files for $WORLD_TO_ARCHIVE..."
-cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp overworld files to tmp"
-cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp nether files to tmp"
-cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp end files to tmp"
+cp -r $HOMEDIR/servers/$SERVER/world-$WORLD_TO_ARCHIVE/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp overworld files to tmp."
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_nether/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp nether files to tmp."
+cp -r $HOMEDIR/servers/$SERVER/world-${WORLD_TO_ARCHIVE}_the_end/ /tmp/gorp/$WORLD_TO_ARCHIVE/ || handle_error "Failed to cp end files to tmp."
 
 
 
 #### Tarball files in tmp
 
 echo "Compressing files..."
-cd /tmp/gorp || handle_error "Failed to cd to /tmp/gorp"
-tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null || handle_error "Failed to compress archive files"
+cd /tmp/gorp || handle_error "Failed to cd to /tmp/gorp/."
+tar -czf $WORLD_TO_ARCHIVE.tar.gz $WORLD_TO_ARCHIVE >/dev/null 2>/dev/null || handle_error "Failed to compress archive files."
 
 
 
 #### Copy tarball to destination
 
 echo "Moving archive to destination..."
-cp /tmp/gorp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/ || handle_error "Failed to copy archive to destination"
+cp /tmp/gorp/$WORLD_TO_ARCHIVE.tar.gz $ARCHIVE_DEST/$SERVER/ || handle_error "Failed to copy archive to destination."
 
 
 
@@ -119,7 +119,7 @@ CHECKSUM=$(sha256sum /tmp/gorp/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 TESTSUM=$(sha256sum $ARCHIVE_DEST/$SERVER/$WORLD_TO_ARCHIVE.tar.gz | cut -d ' ' -f1)
 
 if [[ "$CHECKSUM" != "$TESTSUM" ]]; then
-    handle_error "Archived files in destination failed checksum test"
+    handle_error "Archived files in destination failed checksum test."
 fi
 
 

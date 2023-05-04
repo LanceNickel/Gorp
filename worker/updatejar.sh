@@ -51,14 +51,14 @@ fi
 #### Get build info
 
 echo "Getting latest build information for $GAMEVER..."
-curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds" -H 'accept: application/json' -o /tmp/gorp/builds.json || handle_error "Failed to get build info"
+curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds" -H 'accept: application/json' -o /tmp/gorp/builds.json || handle_error "Failed to get build information."
 
 
 
 #### Gamever not found
 
 if [[ $(cat /tmp/gorp/builds.json | grep 'Version not found.') != "" ]]; then
-    handle_error "Game version not found"
+    handle_error "Game version not found."
 fi
 
 
@@ -85,7 +85,7 @@ while [ $FOUND = false ]; do
         fi
 
         if [[ "$I" == "25" ]]; then
-                handle_error "Stable version not found, timeout"
+                handle_error "Stable version not found, timeout."
         fi
 done
 
@@ -111,7 +111,7 @@ CHECKSUM=$(jq '.downloads.application.sha256' /tmp/gorp/latest.json | tail -c +2
 #### DOWNLOAD THE BUILD ############
 
 echo "Downloading latest stable jar file..."
-wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME -P /tmp/gorp/ || handle_error "Failed to download JAR file"
+wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD/downloads/$NAME -P /tmp/gorp/ || handle_error "Failed to download JAR file."
 
 
 
@@ -120,7 +120,7 @@ wget -q https://api.papermc.io/v2/projects/paper/versions/$GAMEVER/builds/$BUILD
 TESTSUM="$(sha256sum /tmp/gorp/$NAME | cut -d " " -f 1)"
 
 if [[ $TESTSUM != $CHECKSUM ]]; then
-        handle_error "Downloaded JAR file failed checksum test"
+        handle_error "Downloaded JAR file failed checksum test."
 fi
 
 
@@ -134,13 +134,13 @@ fi
 #### Move JAR to jars
 
 echo "Installing build $BUILD over $INSTALLED..."
-mv /tmp/gorp/$NAME $HOMEDIR/jars/ || handle_error "Failed to move JAR to jars folder"
+mv /tmp/gorp/$NAME $HOMEDIR/jars/ || handle_error "Failed to move JAR to jars folder."
 
 
 
 #### Update latest jar file
 
-echo "$HOMEDIR/jars/$NAME" > $HOMEDIR/jars/latest || handle_error "Failed to update latest JAR file"
+echo "$HOMEDIR/jars/$NAME" > $HOMEDIR/jars/latest || handle_error "Failed to update latest JAR file."
 
 
 

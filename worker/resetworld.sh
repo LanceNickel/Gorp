@@ -75,7 +75,7 @@ fi
 
 if [[ "$RUNNING" == "true" ]]; then
     echo "Stopping server..."
-    bash /usr/local/bin/gorpmc/action/mcstop $1 $SERVER now > /dev/null || handle_error "Failed to stop server"
+    bash /usr/local/bin/gorpmc/action/mcstop $1 $SERVER now > /dev/null || handle_error "Failed to stop server."
 fi
 
 
@@ -86,9 +86,9 @@ fi
 
 #### DELETE WORLD ############
 
-rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_RESET || handle_error "Failed to delete overworld files"
-rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_nether || handle_error "Failed to delete nether files"
-rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_the_end || handle_error "Failed to delete end files"
+rm -rf $HOMEDIR/servers/$SERVER/world-$WORLD_TO_RESET || handle_error "Failed to delete overworld files."
+rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_nether || handle_error "Failed to delete nether files."
+rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_the_end || handle_error "Failed to delete end files."
 
 
 
@@ -99,7 +99,7 @@ rm -rf $HOMEDIR/servers/$SERVER/world-${WORLD_TO_RESET}_the_end || handle_error 
 #### START SERVER TO GENERATE NEW WORLD ############
 
 echo "Generating new world..."
-bash /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_error "Failed to start server"
+bash /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_error "Failed to start server."
 
 
 

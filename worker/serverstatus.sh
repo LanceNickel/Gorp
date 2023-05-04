@@ -56,7 +56,7 @@ SERVER=$2
 #### Bad user input
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: gorp -s [server-name]"
+    handle_error "Bad input. Expected: gorp -s [server-name]."
 fi
 
 

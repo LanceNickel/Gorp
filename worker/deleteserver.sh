@@ -77,7 +77,7 @@ fi
 
 #### DELETE SERVER ############
 
-rm -rf $HOMEDIR/servers/$SERVER || handle_error "Failed to delete server"
+rm -rf $HOMEDIR/servers/$SERVER || handle_error "Failed to delete server."
 
 
 

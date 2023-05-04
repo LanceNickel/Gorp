@@ -59,11 +59,11 @@ MODE=$3
 #### Bad user input
 
 if [[ "$SERVER" = "" ]] || [[ "$SERVER" == "fast" ]] || [[ "$SERVER" == "now" ]]; then
-    handle_error "Bad input. Expected: gorp restart [server] <fast|now>"
+    handle_error "Bad input. Expected: gorp restart [server] <fast|now>."
 fi
 
 if [[ "$MODE" != "fast" ]] && [[ "$MODE" != "now" ]] && [[ "$MODE" != "" ]]; then
-    handle_error "Bad input. Expected: gorp restart [server] <fast|now>"
+    handle_error "Bad input. Expected: gorp restart [server] <fast|now>."
 fi
 
 
@@ -93,25 +93,25 @@ fi
 #### Fast restart (no backup)
 
 if [[ "$MODE" == "fast" ]]; then
-    bash /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "restart" || handle_error "Failed to run warning.sh worker"
-    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
-    bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER || handle_error "Failed to run start.sh worker"
+    bash /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "restart" || handle_error "Failed to run warning.sh worker."
+    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker."
+    bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER || handle_error "Failed to run start.sh worker."
 
 
 
 #### Now restart (no warning or backup)
 
 elif [[ "$MODE" == "now" ]]; then
-    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
-    bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER || handle_error "Failed to run start.sh worker"
+    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker."
+    bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER || handle_error "Failed to run start.sh worker."
 
 
 
 #### Normal restart (no/unrecognized param)
 
 else
-    bash /usr/local/bin/gorpmc/worker/backupworld.sh $1 $SERVER || handle_error "Failed to run backupworld.sh worker"
-    bash /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "restart" || handle_error "Failed to run warning.sh worker"
-    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker"
-    bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER || handle_error "Failed to run start.sh worker"
+    bash /usr/local/bin/gorpmc/worker/backupworld.sh $1 $SERVER || handle_error "Failed to run backupworld.sh worker."
+    bash /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "restart" || handle_error "Failed to run warning.sh worker."
+    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker."
+    bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER || handle_error "Failed to run start.sh worker."
 fi

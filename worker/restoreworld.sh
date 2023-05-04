@@ -156,7 +156,7 @@ fi
 #### Delete current world (if it exists)
 
 if [[ -d "$HOMEDIR/servers/$SERVER/$RESTORE_LEVEL_NAME/" ]]; then
-    rm -rf $HOMEDIR/servers/$SERVER/${RESTORE_LEVEL_NAME}* || handle_error "Failed to delete existing world"
+    rm -rf $HOMEDIR/servers/$SERVER/${RESTORE_LEVEL_NAME}* || handle_error "Failed to delete existing world."
 fi
 
 
@@ -165,14 +165,14 @@ fi
 
 echo "Restoring world..."
 mkdir -p /tmp/gorp/restore || handle_error "Failed to make tmp directory"
-cp $BACKUP_DEST/worlds/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to copy backup archive to tmp"
+cp $BACKUP_DEST/worlds/$SERVER/$RESTORE_LEVEL_NAME/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to copy backup archive to tmp."
 
 
 
 #### Unarchive and move to server
 
-tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to extract backup files"
-cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/ || handle_error "Failed to copy restored files to server"
+tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to extract backup files."
+cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/$SERVER/ || handle_error "Failed to copy restored files to server."
 
 
 

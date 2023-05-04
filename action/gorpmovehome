@@ -53,15 +53,15 @@ NEW_HOMEDIR=$2
 
 #### Get sudo
 
-echo "Gorp will use sudo to update the configuration file"
-sudo whoami > /dev/null || handle_error "Failed to get sudo privileges"
+echo "Gorp will use sudo to update the configuration file."
+sudo whoami > /dev/null || handle_error "Failed to get sudo privileges."
 
 
 
 #### Check for conflicting destination (already exists)
 
 if [[ -d $NEW_HOMEDIR ]]; then
-    handle_error "This directory already exists"
+    handle_error "This directory already exists."
 fi
 
 
@@ -73,7 +73,7 @@ do
         SERVER=$(basename "$d")
         
         if [[ $(gorp -s $SERVER | jq .status[].running) == "true" ]]; then
-            handle_error "Servers cannot be running. Shut down all servers and try again"
+            handle_error "Servers cannot be running. Shut down all servers and try again."
         fi
 done
 
@@ -85,4 +85,4 @@ done
 
 #### CALL THE WORKER ############
 
-bash /usr/local/bin/gorpmc/worker/movehome.sh $1 $NEW_HOMEDIR || handle_error "Unable to launch movehome.sh worker"
+bash /usr/local/bin/gorpmc/worker/movehome.sh $1 $NEW_HOMEDIR || handle_error "Unable to launch movehome.sh worker."

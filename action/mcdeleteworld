@@ -58,7 +58,7 @@ WORLD_TO_DELETE=$3
 #### Bad user input
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: gorp delete-world [server-name] <world-name>"
+    handle_error "Bad input. Expected: gorp delete-world [server-name] <world-name>."
 fi
 
 
@@ -105,4 +105,4 @@ fi
 
 #### RUN THE WORLD DELETE WORKER ############
 
-bash /usr/local/bin/gorpmc/worker/deleteworld.sh $1 $SERVER $WORLD_TO_DELETE || handle_error "Failed to run deleteworld.sh worker"
+bash /usr/local/bin/gorpmc/worker/deleteworld.sh $1 $SERVER $WORLD_TO_DELETE || handle_error "Failed to run deleteworld.sh worker."

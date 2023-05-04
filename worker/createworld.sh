@@ -83,8 +83,8 @@ fi
 
 echo "Generating new world..."
 
-sed -i "s/level-name=world-$CURRENT_ACTIVE_WORLD/level-name=world-$NEW_WORLD/" $HOMEDIR/servers/$SERVER/server.properties  || handle_error "Failed to update level-name in server.properties"
-bash /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_error "message" || handle_error "Failed to start server"
+sed -i "s/level-name=world-$CURRENT_ACTIVE_WORLD/level-name=world-$NEW_WORLD/" $HOMEDIR/servers/$SERVER/server.properties  || handle_error "Failed to update level-name in server.properties."
+bash /usr/local/bin/gorpmc/action/mcstart $1 $SERVER -y > /dev/null || handle_error "message" || handle_error "Failed to start server."
 
 
 

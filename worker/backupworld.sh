@@ -84,7 +84,7 @@ fi
 RUNNING=$(is_server_running "$SERVER")
 
 if [[ "$RUNNING" == "true" ]]; then
-        screen -S $SERVER -X stuff "save-all\n" || handle_error "Failed to stuff 'save-all' to $SERVER"
+        screen -S $SERVER -X stuff "save-all\n" || handle_error "Failed to stuff 'save-all' into server."
 
         I=0
 
@@ -103,7 +103,7 @@ if [[ "$RUNNING" == "true" ]]; then
                 fi
         done
 
-        screen -S $SERVER -X stuff "save-off\n" || handle_error "Failed to stuff 'save-off' to $SERVER"
+        screen -S $SERVER -X stuff "save-off\n" || handle_error "Failed to stuff 'save-off' into server."
 fi
 
 
@@ -124,16 +124,16 @@ mkdir -p $TMP/$BACKUP_NAME/ || handle_error "Failed to create temp directory."
 #### Copy world files to temp
 
 echo "Copying files...."
-cp -r $SOURCE $TMP/$BACKUP_NAME/$WORLD || handle_error "Failed to copy overworld files to tmp directory"
-cp -r ${SOURCE}_nether $TMP/$BACKUP_NAME/${WORLD}_nether || handle_error "Failed to copy nether files to tmp directory"
-cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end || handle_error "Failed to copy end files to tmp directory"
+cp -r $SOURCE $TMP/$BACKUP_NAME/$WORLD || handle_error "Failed to copy overworld files to tmp directory."
+cp -r ${SOURCE}_nether $TMP/$BACKUP_NAME/${WORLD}_nether || handle_error "Failed to copy nether files to tmp directory."
+cp -r ${SOURCE}_the_end $TMP/$BACKUP_NAME/${WORLD}_the_end || handle_error "Failed to copy end files to tmp directory."
 
 
 
 #### If server is running, turn autosave back on now that we've got the files
 
 if [[ $RUNNING == true ]]; then
-        screen -S $SERVER -X stuff "save-on\n" || handle_error "Failed to stuff 'save-on' to $SERVER"
+        screen -S $SERVER -X stuff "save-on\n" || handle_error "Failed to stuff 'save-on' into server."
 fi
 
 
@@ -141,15 +141,15 @@ fi
 #### Tarball the files
 
 echo "Compressing files..."
-cd $TMP || handle_error "Failed to cd to $TMP"
-tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null || handle_error "Failed to compress files"
+cd $TMP || handle_error "Failed to cd to $TMP."
+tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null || handle_error "Failed to compress files."
 
 
 
 #### Copy files to destination
 
 echo "Copying files to destination..."
-cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to copy tarball in tmp to destination"
+cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to copy tarball in tmp to destination."
 
 
 

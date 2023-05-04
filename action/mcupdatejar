@@ -47,4 +47,4 @@ fi
 
 #### RUN UPDATE WORKER ############
 
-bash /usr/local/bin/gorpmc/worker/updatejar.sh $1 $VERSION || handle_error "Failed to run updatejar.sh worker"
+bash /usr/local/bin/gorpmc/worker/updatejar.sh $1 $VERSION || handle_error "Failed to run updatejar.sh worker."

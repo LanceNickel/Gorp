@@ -54,7 +54,7 @@ SERVER=$2
 #### STOP THE SERVER ############
 
 echo "Stopping server..."
-screen -S $SERVER -X stuff 'stop\n' || handle_error "Failed to stuff 'stop' into $SERVER"
+screen -S $SERVER -X stuff 'stop\n' || handle_error "Failed to stuff 'stop' into server."
 
 
 

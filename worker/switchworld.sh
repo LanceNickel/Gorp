@@ -84,7 +84,7 @@ fi
 
 #### SWITCH VALUE IN SERVER PROPERTIES ############
 
-sed -i "s/level-name=world-$CURRENT_WORLD/level-name=world-$SWITCH_TO/" $HOMEDIR/servers/$SERVER/server.properties || handle_error "Failed to update level-name in server.properties"
+sed -i "s/level-name=world-$CURRENT_WORLD/level-name=world-$SWITCH_TO/" $HOMEDIR/servers/$SERVER/server.properties || handle_error "Failed to update level-name in server.properties."
 
 
 

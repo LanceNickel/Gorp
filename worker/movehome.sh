@@ -55,7 +55,7 @@ NEW_HOMEDIR=$2
 
 #### Create new homedir
 
-mkdir -p $NEW_HOMEDIR/ > /dev/null || handle_error "Failed to make new home directory"
+mkdir -p $NEW_HOMEDIR/ > /dev/null || handle_error "Failed to make new home directory."
 
 
 
@@ -63,7 +63,7 @@ mkdir -p $NEW_HOMEDIR/ > /dev/null || handle_error "Failed to make new home dire
 
 echo "Copying files to new home..."
 
-cp -r $HOMEDIR/* $NEW_HOMEDIR/ || handle_error "Failed to copy homedir to new location"
+cp -r $HOMEDIR/* $NEW_HOMEDIR/ || handle_error "Failed to copy homedir to new location."
 
 
 
@@ -73,8 +73,8 @@ cp -r $HOMEDIR/* $NEW_HOMEDIR/ || handle_error "Failed to copy homedir to new lo
 
 #### UPDATE CONFIGS ############
 
-sudo sed -i "40s:.*:HOMEDIR=$NEW_HOMEDIR:" /usr/local/etc/gorp.conf || handle_error "Failed to update HOMEDIR in config file"
-sed -i "s:$HOMEDIR:$NEW_HOMEDIR:" $NEW_HOMEDIR/jars/latest || handle_error "Failed to update homedir path in latest JAR file"
+sudo sed -i "40s:.*:HOMEDIR=$NEW_HOMEDIR:" /usr/local/etc/gorp.conf || handle_error "Failed to update HOMEDIR in config file."
+sed -i "s:$HOMEDIR:$NEW_HOMEDIR:" $NEW_HOMEDIR/jars/latest || handle_error "Failed to update homedir path in latest JAR file."
 
 
 
@@ -87,7 +87,7 @@ if [[ "$HOMEDIR" != "$NEW_HOMEDIR" ]]; then
 fi
 
 if [[ "$(grep "$HOMEDIR" $HOMEDIR/jars/latest)" == "" ]]; then
-    handle_error "Configuration update failed. Please manually update the directory in $HOMEDIR/jars/latest"
+    handle_error "Configuration update failed. Please manually update the directory in $HOMEDIR/jars/latest."
 fi
 
 

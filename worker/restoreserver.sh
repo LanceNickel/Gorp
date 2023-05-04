@@ -143,7 +143,7 @@ fi
 #### Delete current server (if it exists)
 
 if [[ -d "$HOMEDIR/servers/$SERVER/" ]]; then
-    rm -rf $HOMEDIR/servers/$SERVER/ || handle_error "Failed to delete existing server"
+    rm -rf $HOMEDIR/servers/$SERVER/ || handle_error "Failed to delete existing server."
 fi
 
 
@@ -151,15 +151,15 @@ fi
 #### Move the tarball to tmp
 
 echo "Restoring server..."
-mkdir -p /tmp/gorp/restore || handle_error "Failed to make tmp directory"
-cp $BACKUP_DEST/servers/$SERVER/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to copy archive to tmp directory"
+mkdir -p /tmp/gorp/restore || handle_error "Failed to make tmp directory."
+cp $BACKUP_DEST/servers/$SERVER/$YEAR/$MONTH/$DAY/$FILE_TO_RESTORE /tmp/gorp/restore/ || handle_error "Failed to copy archive to tmp directory."
 
 
 
 #### Unarchive the file in tmp & move to servers
 
-tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to extract server backup files"
-cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/ || handle_error "Failed to copy restored files to server"
+tar -xf /tmp/gorp/restore/$FILE_TO_RESTORE -C /tmp/gorp/restore/ || handle_error "Failed to extract server backup files."
+cp -r /tmp/gorp/restore/$FOLDER_TO_RESTORE/* $HOMEDIR/servers/ || handle_error "Failed to copy restored files to server."
 
 
 
