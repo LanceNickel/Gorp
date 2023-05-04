@@ -73,6 +73,7 @@ chmod +x functions/*
 chmod +x worker/*
 chmod +x argparse.sh
 chmod +x entry.sh
+chmod +x run.sh
 chmod +x gorp
 
 
@@ -117,6 +118,7 @@ sudo cp argparse.sh /usr/local/bin/gorpmc/
 sudo cp entry.sh /usr/local/bin/gorpmc/
 sudo cp gorp /usr/local/bin/
 sudo cp help.txt /usr/local/bin/gorpmc/
+sudo cp run.sh /usr/local/bin/gorpmc/
 
 # /usr/local/etc/
 sudo cp gorp.conf /usr/local/etc/

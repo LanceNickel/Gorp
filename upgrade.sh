@@ -59,6 +59,7 @@ chmod +x /tmp/gorp/updatefiles/worker/* || handle_error "Failed to +x workers"
 chmod +x /tmp/gorp/updatefiles/argparse.sh || handle_error "Failed to +x argparse"
 chmod +x /tmp/gorp/updatefiles/entry.sh || handle_error "Failed to +x entry"
 chmod +x /tmp/gorp/updatefiles/gorp || handle_error "Failed to +x gorp"
+chmod +x /tmp/gorp/updatefiles/run.sh || handle_error "Failed to +x run"
 
 
 
@@ -83,6 +84,7 @@ sudo cp /tmp/gorp/updatefiles/argparse.sh /usr/local/bin/gorpmc/ || handle_error
 sudo cp /tmp/gorp/updatefiles/entry.sh /usr/local/bin/gorpmc/ || handle_error "Failed to cp /tmp/gorp/updatefiles/entry.sh to /usr/local/bin/gorpmc/"
 sudo cp /tmp/gorp/updatefiles/gorp /usr/local/bin/ || handle_error "Failed to cp /tmp/gorp/updatefiles/gorp to /usr/local/bin/"
 sudo cp /tmp/gorp/updatefiles/help.txt /usr/local/bin/gorpmc/ || handle_error "Failed to cp /tmp/gorp/updatefiles/help.txt to /usr/local/bin/gorpmc/"
+sudo cp /tmp/gorp/updatefiles/run.sh /usr/local/bin/gorpmc/ || handle_error "Failed to cp /tmp/gorp/updatefiles/run.sh to /usr/local/bin/gorpmc/"
 
 
 
