@@ -94,13 +94,20 @@ fi
 
 
 
-#### Ensure we're safe with RAM
 
-# Get allocated ram from running servers (if any)
+
+
+
+#### ENSURE WE'RE SAFE WITH RAM ###########
+
+#### Get allocated ram from running servers (if any)
+
 CURRENT_ALLOCATED_RAM=$(calculate_allocated_ram)
 
 
-# See what this server says
+
+#### See what this server says
+
 RUN_SAYS="$(grep -e '^CUSTOM_RAM=' $HOMEDIR/servers/$SERVER/run.sh | cut -d '=' -f2)"
 
 if [[ "$RUN_SAYS" == '$RAM' ]]; then
@@ -111,12 +118,15 @@ fi
 
 TO_RUN=$(($SERVER_RAM+$CURRENT_ALLOCATED_RAM))
 MAX=$(echo $MAX_RAM | cut -d 'G' -f1)
+#### Ensure we're safe with RAM
 
 
-# Compare with limit
-if [[ $TO_RUN > $MAX ]]; then
+#### Compare with limit
+
+if (( $TO_RUN > $MAX )); then
     handle_error "Not enough RAM to start server."
 fi
+
 
 
 
