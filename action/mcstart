@@ -80,7 +80,7 @@ fi
 
 #### Make sure JAR exists
 
-JAR="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=')"
+JAR="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'CUSTOM_JAR=' | cut -d '=' -f2)"
 
 if [[ "$JAR" == '$LATEST_JAR' ]]; then
     if [[ ! -f "$(cat $HOMEDIR/jars/latest)" ]]; then
@@ -92,6 +92,31 @@ else
     fi
 fi
 
+
+
+#### Ensure we're safe with RAM
+
+# Get allocated ram from running servers (if any)
+CURRENT_ALLOCATED_RAM=$(calculate_allocated_ram)
+
+
+# See what this server says
+RUN_SAYS="$(grep -e '^CUSTOM_RAM=' $HOMEDIR/servers/$SERVER/run.sh | cut -d '=' -f2)"
+
+if [[ "$RUN_SAYS" == '$RAM' ]]; then
+    SERVER_RAM=$(echo $RAM | cut -d 'G' -f1)
+else
+    SERVER_RAM=$(echo $RUN_SAYS | cut -d 'G' -f1)
+fi
+
+TO_RUN=$(($SERVER_RAM+$CURRENT_ALLOCATED_RAM))
+MAX=$(echo $MAX_RAM | cut -d 'G' -f1)
+
+
+# Compare with limit
+if [[ $TO_RUN > $MAX ]]; then
+    handle_error "Not enough RAM to start server."
+fi
 
 
 

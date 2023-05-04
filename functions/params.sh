@@ -33,7 +33,8 @@ fi
 ######## GET CONFIG FILE ITEMS
 
 GAMEVER=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f2)
-RAM=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f2)
+RAM=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep -e '^RAM=' | cut -d '=' -f2)
+MAX_RAM=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'MAX_RAM=' | cut -d '=' -f2)
 HOMEDIR=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'HOMEDIR=' | cut -d '=' -f2)
 BACKUP_DEST=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'BACKUP_DEST=' | cut -d '=' -f2)
 ARCHIVE_DEST=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'ARCHIVE_DEST=' | cut -d '=' -f2)

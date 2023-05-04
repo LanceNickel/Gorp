@@ -89,3 +89,36 @@ is_server_running() {
 get_server_port() {
     echo $(cat $HOMEDIR/servers/$1/server.properties | grep 'server-port=' | cut -d '=' -f2)
 }
+
+
+
+
+
+
+
+#### SAFETY FUNCTIONS ############
+
+#### Calculate current allocated RAM
+
+calculate_allocated_ram() {
+    ALLOCATED=0
+
+    for d in "$HOMEDIR/servers/"*
+    do
+        SERVER=$(echo $(basename "$d"))
+
+        if [[ "$(is_server_running $SERVER)" == "true" ]]; then
+            RUN_SAYS="$(grep -e '^CUSTOM_RAM=' $d/run.sh | cut -d '=' -f2)"
+
+            if [[ "$RUN_SAYS" == '$RAM' ]]; then
+                SERVER_RAM=$(echo $RAM | cut -d 'G' -f1)
+            else
+                SERVER_RAM=$(echo $RUN_SAYS | cut -d 'G' -f1)
+            fi
+
+            ALLOCATED=$(($SERVER_RAM+$ALLOCATED))
+        fi
+    done
+
+    echo "$ALLOCATED"
+}
