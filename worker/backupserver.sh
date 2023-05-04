@@ -28,7 +28,7 @@ source /usr/local/bin/gorpmc/functions/functions.sh
 
 #### Key guard
 
-if [[ "$1" == "pleasedontdothis" ]]; then
+if [[ "$1" != "pleasedontdothis" ]]; then
     handle_error "Script not meant to be run directly."
 fi
 
