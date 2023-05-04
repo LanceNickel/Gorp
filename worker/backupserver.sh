@@ -116,5 +116,5 @@ cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to copy tarball to de
 
 #### WE MADE IT ############
 
-echo "Backup name: ${$BACKUP_NAME}.tar.gz"
+echo "Backup name: ${BACKUP_NAME}.tar.gz"
 echo "Server backup complete!"
