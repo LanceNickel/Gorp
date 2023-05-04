@@ -114,7 +114,7 @@ elif [[ "$ACTION" == "-v" ]]; then
 elif [[ "$ACTION" == "-s" ]]; then
     bash /usr/local/bin/gorpmc/action/mcserverstatus $TESTSTRING $ARG1 || handle_error "Failed to run action."
 
-elif [[ "$ACTION" == "tail" ]]; then
+elif [[ "$ACTION" == "-f" ]]; then
     tail -f $HOMEDIR/servers/$ARG1/logs/latest.log || handle_error "Failed to tail latest.log"
 
 elif [[ "$ACTION" == "ls" ]]; then

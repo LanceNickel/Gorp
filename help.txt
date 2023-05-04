@@ -43,12 +43,12 @@ JAR Utilities:
   --get-jar [-v version] | [-u url]           -- Download a Paper server JAR file to ~/gorpmc/jars/.
 
 Update, Status, Logs, Etc.:
+  --gorp help                                      -- View this help text.
   gorp upgrade                                   -- Get the newest version of Gorp and install it.
   --gorp ls                                        -- See a list of all servers in ~/gorpmc/servers/.
   --gorp -s [server-name]                          -- See the status of a server in JSON format.
   gorp -f [server-name]                          -- Follow the outout of latest.log for a specific server.
-  gorp -v                                        -- Get the Gorp version and current home directory.
-  gorp -h                                        -- View this help text.
+  --gorp -v                                        -- Get the Gorp version and current home directory.
 
 EXAMPLES:
   gorp start public                         # Start a server named "public".
