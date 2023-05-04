@@ -116,8 +116,8 @@ fi
 
 #### Create destination dir and tmp dir
 
-mkdir -p $DEST || handle_error "Failed to create destination dir."
-mkdir -p $TMP/$BACKUP_NAME/ || handle_error "Failed to create temp dir."
+mkdir -p $DEST || handle_error "Failed to create destination directory."
+mkdir -p $TMP/$BACKUP_NAME/ || handle_error "Failed to create temp directory."
 
 
 

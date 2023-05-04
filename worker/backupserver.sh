@@ -80,10 +80,11 @@ fi
 
 #### HANDLE FILES ############
 
-#### Create destination
+#### Create destination and tmp
 
 echo "Backing up $SERVER... (This may take a while!)"
-mkdir -p $DEST/ || handle_error "Failed to mkdir $DEST/"
+mkdir -p $DEST/ || handle_error "Failed to create destination directory."
+mkdir -p $TMP/$BACKUP_NAME/ || handle_error "Failed to create temp directory."
 
 
 
