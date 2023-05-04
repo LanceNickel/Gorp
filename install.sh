@@ -129,6 +129,12 @@ sudo cp gorp.conf /usr/local/etc/
 
 #### GET LATEST JAR FILE ############
 
+#### Get newly-installed params
+
+. /usr/local/bin/gorpmc/functions/params.sh || echo "Installation error -- Failed to get new config paremeters. Please uninstall Gorp and try again. If this issue persists, open an issue." && exit 1
+
+
+
 #### Set build to 000 to force a JAR download
 
 echo "paper-0-000.jar" > $HOMEDIR/gorpmc/jars/latest
@@ -138,7 +144,6 @@ echo "paper-0-000.jar" > $HOMEDIR/gorpmc/jars/latest
 #### Get JAR file
 
 echo -e "Getting latest Paper JAR file..."
-bash /usr/local/bin/gorpmc/functions/params.sh || echo "Installation error -- Failed to get new config paremeters. Please uninstall Gorp and try again. If this issue persists, open an issue." && exit 1
 bash /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
 
 
