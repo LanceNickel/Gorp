@@ -64,7 +64,7 @@ fi
 #### Server has no backups to restore from
 
 if [[ ! -d "$BACKUP_DEST/$SERVER" ]]; then
-    handle_errors "Server has no backups to restore from"
+    handle_error "Server has no backups to restore from"
 fi
 
 
