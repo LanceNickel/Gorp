@@ -78,6 +78,22 @@ fi
 
 
 
+#### Make sure JAR exists
+
+JAR="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=')"
+
+if [[ "$JAR" == '$LATEST_JAR' ]]; then
+    if [[ ! -f "$(cat $HOMEDIR/jars/latest)" ]]; then
+        handle_error "JAR file does not exist."
+    fi
+else
+    if [[ ! -f "$JAR" ]]; then
+        handle_error "JAR file does not exist."
+    fi
+fi
+
+
+
 
 
 
