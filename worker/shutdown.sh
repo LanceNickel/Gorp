@@ -77,7 +77,7 @@ while true; do
         while [[ $J -le 5 ]]; do
             sleep 1
             ((J++))
-            screen -S $SERVER -X stuff '\n' > /dev/null || handle_error "Failed to stuff '\n' into $SERVER"
+            screen -S $SERVER -X stuff '\n' > /dev/null # this does not have error checking, it is designed to run into an error
         done
 
         break
