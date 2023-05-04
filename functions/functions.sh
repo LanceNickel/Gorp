@@ -59,6 +59,11 @@ get_active_world() {
 #### Check if a server exists (server name)
 
 does_server_exist() {
+    if [[ "$1" == "" ]];
+        echo "false"
+        break
+    fi
+
     if [[ -d "$HOMEDIR/servers/$1" ]]; then
         echo "true"
     else
@@ -71,7 +76,11 @@ does_server_exist() {
 #### Check if a server is running (server name)
 
 is_server_running() {
-    echo $(gorp -s $1 | jq .status[].running 2> /dev/null)
+    if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
+        echo "true"
+    else
+        echo "false"
+    fi
 }
 
 

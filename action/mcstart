@@ -72,7 +72,7 @@ fi
 
 #### Server is already running
 
-if [[ "$(is_server_running)" == "true" ]]; then
+if [[ "$(is_server_running $SERVER)" == "true" ]]; then
         handle_error "Server is already running."
 fi
 

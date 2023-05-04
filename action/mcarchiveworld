@@ -81,7 +81,7 @@ fi
 
 #### Server cannot be running
 
-if [[ "$(is_server_running)" == "true" ]]; then
+if [[ "$(does_server_exist $SERVER)" == "true" ]]; then
         handle_error "Server cannot be running."
 fi
 

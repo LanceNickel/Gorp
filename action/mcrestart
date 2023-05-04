@@ -78,7 +78,7 @@ fi
 
 #### Server is not running
 
-if [[ "$(is_server_running)" == "false" ]]; then
+if [[ "$(is_server_running $SERVER)" == "false" ]]; then
         handle_error "Server is not running."
 fi
 

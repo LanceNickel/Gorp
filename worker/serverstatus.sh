@@ -69,11 +69,7 @@ fi
 #### Status array
 
 # status.running
-if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
-    STATUS_RUNNING="true"
-else
-    STATUS_RUNNING="false"
-fi
+STATUS_RUNNING="$(is_server_running $SERVER)"
 
 
 # status.version
