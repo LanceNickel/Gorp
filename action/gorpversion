@@ -7,6 +7,8 @@
 # Distributed under GNU GPL v3.
 # <https://gorp.lanickel.com/license/>
 
+. /usr/local/bin/gorpmc/functions/params.sh
+
 GORP_VERSION=$(grep 'Gorp version' /usr/local/etc/gorp.conf | cut -d ':' -f2)
 GORP_HOMEDIR=$HOMEDIR
 
