@@ -116,18 +116,11 @@ sudo cp /tmp/gorp/updatefiles/gorp.conf /usr/local/etc/gorp.conf || handle_error
 
 sudo sed -i "20s:.*:GAMEVER=$GAMEVER_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update GAMEVER in config"
 sudo sed -i "30s:.*:RAM=$RAM_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update RAM in config"
+sudo sed -i "40s:.*:MAX_RAM=$MAX_RAM_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update MAX_RAM in config"
 sudo sed -i "50s:.*:HOMEDIR=$HOMEDIR_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update HOMEDIR in config"
 sudo sed -i "60s:.*:BACKUP_DEST=$BACKUP_DEST_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update BACKUP_DEST in config"
 sudo sed -i "70s:.*:ARCHIVE_DEST=$ARCHIVE_DEST_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update ARCHIVE_DEST in config"
 
-
-
-#### Special handler for MAX_RAM
-#### MAX_RAM was added in v0.5.0
-
-if [[ "$MAX_RAM_ORIG" != "" ]]; then
-    sudo sed -i "40s:.*:MAX_RAM=$MAX_RAM_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update MAX_RAM in config"
-fi
 
 
 
