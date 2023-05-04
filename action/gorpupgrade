@@ -66,10 +66,10 @@ cd /tmp/gorp/ || handle_error "Failed to cd to /tmp/gorp/.."
 
 #### Do we even need to upgrade?
 
-# if [[ "$I_VERSION" == "$R_VERSION" ]]; then
-#     echo "No need to upgrade, already on latest available version."
-#     exit 0
-# fi
+if [[ "$I_VERSION" == "$R_VERSION" ]]; then
+    echo "No need to upgrade, already on latest available version."
+    exit 0
+fi
 
 
 
