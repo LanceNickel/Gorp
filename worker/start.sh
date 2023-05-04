@@ -94,6 +94,7 @@ fi
 
 #### START THE SERVER IN A NEW SCREEN ############
 
+cd $HOMEDIR/servers/$SERVER/ || handle_error "Failed to cd to server directory."
 screen -d -m -S "$SERVER" $HOMEDIR/servers/$SERVER/run.sh $1 || handle_error "Failed to start screen for world."
 
 
