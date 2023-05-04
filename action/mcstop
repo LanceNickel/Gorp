@@ -62,7 +62,7 @@ if [[ "$SERVER" = "" ]] || [[ "$SERVER" == "fast" ]] || [[ "$SERVER" == "now" ]]
     handle_error "Bad input. Expected: gorp stop [server] <fast|now>"
 fi
 
-if [[ "$MODE" != "fast" ]] && [[ "$MODE" != "now" ]]; then
+if [[ "$MODE" != "fast" ]] && [[ "$MODE" != "now" ]] && [[ "$MODE" != "" ]]; then
     handle_error "Bad input. Expected: gorp stop [server] <fast|now>"
 fi
 
