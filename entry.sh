@@ -34,6 +34,7 @@
 ACTION=$1
 ARG1=$2
 ARG2=$3
+ARG3=$4
 
 
 
@@ -67,7 +68,7 @@ fi
 
 #### EXECUTE ############
 
-bash /usr/local/bin/gorpmc/argparse.sh $ACTION $ARG1 $ARG2
+bash /usr/local/bin/gorpmc/argparse.sh $ACTION $ARG1 $ARG2 $ARG3
 
 
 

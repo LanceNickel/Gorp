@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+
+### [ACTION: RENAME-WORLD] ########################################
+#   Description:  Rename a world in a server instance.
+#   Parameters:   1: (required) Server directory name
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+# Copyright (C) Lance Nickel 2023.
+# Distributed under GNU GPL v3.
+# <https://gorp.lanickel.com/license/>
+
+
+
+#### SETUP ############
+
+#### Globals
+
+. /usr/local/bin/gorpmc/functions/exit.sh
+. /usr/local/bin/gorpmc/functions/params.sh
+. /usr/local/bin/gorpmc/functions/functions.sh
+
+
+
+#### Key guard
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    handle_error "Script not meant to be run directly."
+fi
+
+
+
+#### Collect arguments & additional variables
+
+SERVER=$2
+CURRENT_NAME=$3
+NEW_NAME=$4
+
+# Sanitize current world name
+if [[ "$(echo $CURRENT_NAME | grep 'world-')" != '' ]]; then
+    CURRENT_NAME="$(echo $CURRENT_NAME | cut -d '-' -f2-99)"
+fi
+
+# Sanitize new world name
+if [[ "$(echo $NEW_NAME | grep 'world-')" != '' ]]; then
+    NEW_NAME="$(echo $NEW_NAME | cut -d '-' -f2-99)"
+fi
+
+
+
+
+
+
+
+####
+
+
+
+
+
+
+
+#### GUARDS ############
+
+#### Bad user input
+
+if [[ "$NEW_NAME" == "" ]]; then
+    handle_error "Bad input. Expected: gorp rename-world [server-name] [world-name] [new-world-name]."
+fi
+
+
+
+#### Server not found
+
+if [[ "$(does_server_exist $SERVER)" == "false" ]]; then
+    handle_error "Server not found."
+fi
+
+
+#### Server cannot be running
+
+if [[ "$(is_server_running $SERVER)" == "true" ]]; then
+    handle_error "Server cannot be running."
+fi
+
+
+
+#### World not found
+
+if [[ "$(does_world_exist $SERVER $CURRENT_NAME)" == "false" ]]; then
+    handle_error "World not found."
+fi
+
+
+
+#### New name conflicts
+
+if [[ "$(does_world_exist $SERVER $NEW_NAME)" == "true" ]]; then
+    handle_error "World with that name already exists."
+fi
+
+
+
+
+
+
+
+#### RUN THE WORLD DELETE WORKER ############
+
+bash /usr/local/bin/gorpmc/worker/renameworld.sh $1 $SERVER $CURRENT_NAME $NEW_NAME || handle_error "Failed to run renameworld.sh worker."

@@ -45,7 +45,7 @@ does_world_exist() {
 #### Get server's active world (server name)
 
 get_active_world() {
-    echo $(cat $HOMEDIR/servers/$1/server.properties | grep 'level-name=' | cut -d '=' -f2 | cut -d '-' -f2)
+    echo $(cat $HOMEDIR/servers/$1/server.properties | grep 'level-name=' | cut -d '=' -f2 | cut -d '-' -f2-99)
 }
 
 

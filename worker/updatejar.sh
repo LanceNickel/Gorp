@@ -34,6 +34,18 @@ fi
 
 
 
+#### Collect arguments & additional variables
+
+# Latest available Paper version from Paper's Downloads API
+LATEST_AVAILABLE_VERSION="$(curl -s 'https://api.papermc.io/v2/projects/paper' -H 'accept: application/json' | jq -r last\(.versions[]\))"
+
+# If GAMEVER is set to 'latest', use the above value
+if [[ "$GAMEVER"  == 'latest' ]]; then
+        GAMEVER="$LATEST_AVAILABLE_VERSION"
+fi
+
+
+
 
 
 
