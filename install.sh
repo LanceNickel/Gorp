@@ -80,7 +80,9 @@ chmod +x gorp
 
 #### Update homedir in gorp.conf
 
-sed -i "s:BOBSBURGERS:$HOMEDIR/gorpmc:g" gorp.conf
+sed -Ei "s:^HOMEDIR=:HOMEDIR=$HOMEDIR/gorpmc:g" gorp.conf
+sed -Ei "s:^BACKUP_DEST=:BACKUP_DEST=$HOMEDIR/gorpmc/backups:g" gorp.conf
+sed -Ei "s:^ARCHIVE_DEST=:ARCHIVE_DEST=$HOMEDIR/gorpmc/archives:g" gorp.conf
 
 
 

@@ -92,7 +92,6 @@ sudo whoami > /dev/null || handle_error "Failed to get sudo privileges."
 
 echo "Downloading latest release..."
 
-cd /tmp/gorp/ || handle_error "Failed to cd to /tmp/gorp/."
 wget -q https://gorp.lanickel.com/latest.tar.gz || handle_error "Failed to download latest release archive."
 
 
