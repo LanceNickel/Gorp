@@ -1,5 +1,5 @@
 Gorp - Simple Minecraft CLI tools.
-v0.5.1
+v0.5.2
 
 Docs:       https://gorp.lanickel.com/
 License:    https://gorp.lanickel.com/license/
