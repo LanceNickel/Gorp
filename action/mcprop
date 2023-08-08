@@ -37,9 +37,9 @@ fi
 
 #### Collect arguments & additional variables
 
-SERVER=$2
-KEY=$3
-VALUE=$4
+SERVER="$2"
+KEY="$3"
+VALUE="$4"
 
 
 
@@ -95,7 +95,7 @@ fi
 
 #### Key does not exist
 
-if [[ "$(grep -e "^$KEY=" $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)" == "" ]]; then
+if [[ "$(grep -e "^$KEY=" $HOMEDIR/servers/$SERVER/server.properties)" == "" ]]; then
     handle_error "Key in server.properties not found."
 fi
 
@@ -107,4 +107,4 @@ fi
 
 #### RUN WORLD ARCHIVE WORKER #############
 
-bash /usr/local/bin/gorpmc/worker/archiveworld.sh $1 $SERVER $KEY $VAULE || handle_error "Failed to run archiveworld.sh worker."
+bash /usr/local/bin/gorpmc/worker/prop.sh "$1" "$SERVER" "$KEY" "$VALUE" || handle_error "Failed to run prop.sh worker."

@@ -36,9 +36,9 @@ fi
 
 #### Collect arguments & additional variables
 
-SERVER=$2
-KEY=$3
-VALUE=$4
+SERVER="$2"
+KEY="$3"
+VALUE="$4"
 
 
 
@@ -67,4 +67,4 @@ sed -i "s/$KEY=$current/$KEY=$VALUE/g" $HOMEDIR/servers/$SERVER/server.propertie
 
 #### WE MADE IT ############
 
-echo "Server properties updated! Old value was: $current"
+echo "Server properties updated! Old value was: '$current'"
