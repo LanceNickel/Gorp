@@ -36,14 +36,33 @@ fi
 #### Collect arguments & additional variables
 
 SERVER=$2
-WORLD=$3
+ARG1=$3
+ARG2=$4
 
 
 
-#### World name override (if left empty by user, use 'default')
+#### Handle positional world name and velocity arguments
 
-if [[ "$WORLD" == "" ]]; then
+# User gave a world name and "velocity"
+if [[ "$ARG2" == "velocity" ]]; then
+    WORLD="$ARG1"
+    VELOCITY="true"
+
+# User gave "velocity" but did not specify a world name (velocity is back one position)
+elif [[ "$ARG1" == "velocity" ]] && [[ "$ARG2" == "" ]]; then
     WORLD="default"
+    VELOCITY="true"
+
+# User gave a world name but did not specify "velocity" (normal creation w/o velocity)
+elif [[ "$ARG1" != "" ]]; then
+    WORLD="$ARG1"
+    VELOCITY="false"
+
+# User gave no world name or velocity
+elif [[ "$ARG1" == "" ]]; then
+    WORLD="default"
+    VELOCITY="false"
+
 fi
 
 
@@ -65,7 +84,7 @@ fi
 #### Bad user input
 
 if [[ "$SERVER" == "" ]]; then
-    handle_error "Bad input. Expected: gorp create-server [server-name] <world-name>."
+    handle_error "Bad input. Expected: gorp create-server [server-name] <world-name> <velocity>."
 fi
 
 
@@ -101,4 +120,4 @@ fi
 
 #### RUN THE CREATOR WORKER ############
 
-bash /usr/local/bin/gorpmc/worker/createserver.sh $1 $SERVER $WORLD || handle_error "Failed to run createserver.sh worker."
+bash /usr/local/bin/gorpmc/worker/createserver.sh $1 $SERVER $WORLD $VELOCITY || handle_error "Failed to run createserver.sh worker."

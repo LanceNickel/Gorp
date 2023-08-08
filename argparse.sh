@@ -50,7 +50,7 @@ ARG3=$4
 
 
 
-#### ACTIONS (i'm truly sorry for this) ############
+#### ACTIONS (lord forgive me for the code below) ############
 
 if [[ "$ACTION" == "backup-world" ]]; then
     bash /usr/local/bin/gorpmc/action/mcbackupworld $TESTSTRING $ARG1
@@ -71,7 +71,7 @@ elif [[ "$ACTION" == "get-jar" ]]; then
     bash /usr/local/bin/gorpmc/action/mcgetjar $TESTSTRING $ARG1 $ARG2
 
 elif [[ "$ACTION" == "create-server" ]]; then
-    bash /usr/local/bin/gorpmc/action/mccreateserver $TESTSTRING $ARG1 $ARG2
+    bash /usr/local/bin/gorpmc/action/mccreateserver $TESTSTRING $ARG1 $ARG2 $ARG3
 
 elif [[ "$ACTION" == "delete-server" ]]; then
     bash /usr/local/bin/gorpmc/action/mcdeleteserver $TESTSTRING $ARG1

@@ -58,13 +58,13 @@ WORLD_EXISTS=$(does_world_exist "$SERVER" "$ACTIVE_WORLD")
 #### FIRST TIME RUNNING SERVER (bypass generate override) ############
 
 if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | grep 'level-name=' | cut -d '=' -f2) = "" ]]; then
-    echo "level-name=world-default" >> $HOMEDIR/sesrvers/$SERVER/server.properties || handle_error "Failed to update level-name in server.properties."
+    echo "level-name=world-default" >> $HOMEDIR/servers/$SERVER/server.properties || handle_error "Failed to update level-name in server.properties."
     GENERATE="-y"
 fi
 
 
 
-if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | wc -l) == "1" ]]; then
+if [[ $(cat $HOMEDIR/servers/$SERVER/server.properties | wc -l) -le 2 ]]; then
     GENERATE="-y"
 fi
 

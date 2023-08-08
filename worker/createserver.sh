@@ -38,6 +38,7 @@ fi
 
 SERVER=$2
 WORLD=$3
+VELOCITY=$4
 
 
 
@@ -74,6 +75,51 @@ echo "level-name=world-$WORLD" > $HOMEDIR/servers/$SERVER/server.properties || h
 
 
 
+#### VELOCITY SETUP (if called for) ############
+
+if [[ "$VELOCITY" == "true" ]]; then
+
+    #### Get Velocity forwarding secret
+
+    read -r -p "Velocity forwarding secret: " secret
+    sleep 1
+    echo -e "\nPerforming setup for Velocity. This will take a few moments..."
+
+    ### Turn online-mode off in server.properties
+
+    echo "online-mode=false" >> $HOMEDIR/servers/$SERVER/server.properties || handle_error "Failed to echo to server.properties."
+
+
+
+    #### Start and stop the server to generate Paper properties files
+
+    bash /usr/local/bin/gorpmc/worker/start.sh $1 $SERVER -y > /dev/null || handle_error "Failed to start server."
+    sleep 3
+    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER now > /dev/null || handle_error "Failed to stop server."
+    sleep 1
+
+
+
+    #### Update Paper config for Velocity
+
+    yq -iy '.proxies.velocity.enabled = true' $HOMEDIR/servers/$SERVER/config/paper-global.yml 2> /dev/null || yq -i '.proxies.velocity.enabled = true' $HOMEDIR/servers/$SERVER/config/paper-global.yml 2> /dev/null || handle_error "Failed to enable Velocity in paper-global settings."
+    yq -iy '.proxies.velocity."online-mode" = true' $HOMEDIR/servers/$SERVER/config/paper-global.yml 2> /dev/null || yq -i '.proxies.velocity."online-mode" = true' $HOMEDIR/servers/$SERVER/config/paper-global.yml 2> /dev/null || handle_error "Failed to enable Velocity online mode in paper-global settings."
+    secret="$secret" yq -iy '.proxies.velocity.secret = env(secret)' $HOMEDIR/servers/$SERVER/config/paper-global.yml 2> /dev/null || secret="$secret" yq -i '.proxies.velocity.secret = env(secret)' $HOMEDIR/servers/$SERVER/config/paper-global.yml 2> /dev/null || handle_error "Failed to set Velocity forwarding secret in paper-global settings."
+
+fi
+
+
+
+
+
+
+
+
+
 #### WE MADE IT ############
 
 echo "Server created!"
+
+if [[ "$VELOCITY" == "true" ]]; then
+    echo "Velocity has been configured for server-side setup with Modern forwarding. Configure your Velocity proxy settings if needed."
+fi
