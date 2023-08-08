@@ -81,18 +81,32 @@ fi
 
 
 # status.jar_file
-STATUS_JAR="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=' | cut -d '=' -f2)"
+STATUS_JAR_RAW="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=' | cut -d '=' -f2)"
 
-if [[ "$STATUS_JAR" == '$LATEST_JAR' ]]; then
+if [[ "$STATUS_JAR_RAW" == '$LATEST_JAR' ]]; then
     STATUS_JAR=$LATEST_JAR
+    STATUS_JAR_OVERRIDDEN="false"
 fi
 
 
 # status.ram
-STATUS_RAM="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f2)"
+STATUS_RAM_RAW="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f2)"
 
-if [[ "$STATUS_RAM" == '$RAM' ]]; then
+if [[ "$STATUS_RAM_RAW" == '$RAM' ]]; then
     STATUS_RAM=$RAM
+    STATUS_RAM_OVERRIDDEN="false"
+fi
+
+
+# status.jar_file_overridden
+if [[ "$STATUS_JAR_RAW" != '$LATEST_JAR' ]]; then
+  STATUS_JAR_OVERRIDDEN="true"
+fi
+
+
+# status.ram_overridden
+if [[ "$STATUS_RAM_RAW" != '$RAM' ]]; then
+  STATUS_RAM_OVERRIDDEN="true"
 fi
 
 
@@ -159,7 +173,9 @@ cat <<EOF
       "running": $STATUS_RUNNING,
       "version": "$STATUS_VERSION",
       "jar_file": "$STATUS_JAR",
+      "jar_file_overridden": $STATUS_JAR_OVERRIDDEN,
       "ram": "$STATUS_RAM",
+      "ram_overridden": $STATUS_RAM_OVERRIDDEN,
       "path": "$STATUS_PATH"
     }
   ],
