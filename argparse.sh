@@ -76,6 +76,9 @@ elif [[ "$ACTION" == "create-server" ]]; then
 elif [[ "$ACTION" == "delete-server" ]]; then
     bash /usr/local/bin/gorpmc/action/mcdeleteserver $TESTSTRING $ARG1
 
+elif [[ "$ACTION" == "prop" ]]; then
+    bash /usr/local/bin/gorpmc/action/mcdeleteserver $TESTSTRING $ARG1 $ARG2 $ARG3
+
 elif [[ "$ACTION" == "create-world" ]]; then
     bash /usr/local/bin/gorpmc/action/mccreateworld $TESTSTRING $ARG1 $ARG2
 

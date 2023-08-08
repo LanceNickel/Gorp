@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+
+### [ACTION: PROP] ################################################
+#   Description:  Change a property in server.properties
+#   Parameters:   1: (required) Server directory name
+#                 2: (required) Key
+#                 3: (required) Value
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+# Copyright (C) Lance Nickel 2023.
+# Distributed under GNU GPL v3.
+# <https://gorp.lanickel.com/license/>
+
+
+
+#### SETUP ############
+
+#### Globals
+
+. /usr/local/bin/gorpmc/functions/exit.sh
+. /usr/local/bin/gorpmc/functions/params.sh
+. /usr/local/bin/gorpmc/functions/functions.sh
+
+
+
+#### Key guard
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    handle_error "Script not meant to be run directly."
+fi
+
+
+
+#### Collect arguments & additional variables
+
+SERVER=$2
+KEY=$3
+VALUE=$4
+
+
+
+#### Process key shortcuts
+
+if [[ "$KEY" == "seed" ]]; then
+    KEY="level-seed"
+
+elif [[ "$KEY" == "port" ]]; then
+    KEY="server-port"
+
+fi
+
+
+
+
+
+
+
+####
+
+
+
+
+
+
+
+#### GUARDS ############
+
+#### Bad input from user
+
+if [[ "$SERVER" == "" ]] || [[ "$KEY" == "" ]] || [[ "$VALUE" == "" ]]; then
+    handle_error "Bad input. Expected: 'gorp prop [server-name] [key] [value]."
+fi
+
+
+
+#### Server not found
+
+if [[ "$(does_server_exist $SERVER)" == "false" ]]; then
+    handle_error "Server not found."
+fi
+
+
+
+#### Server cannot be running
+
+if [[ "$(is_server_running $SERVER)" == "true" ]]; then
+        handle_error "Server cannot be running."
+fi
+
+
+
+#### Key does not exist
+
+if [[ "$(grep -e "^$KEY=" $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)" == "" ]]; then
+    handle_error "Key in server.properties not found."
+fi
+
+
+
+
+
+
+
+#### RUN WORLD ARCHIVE WORKER #############
+
+bash /usr/local/bin/gorpmc/worker/archiveworld.sh $1 $SERVER $KEY $VAULE || handle_error "Failed to run archiveworld.sh worker."
