@@ -11,8 +11,7 @@
 
 GORP_VERSION=$(grep 'Gorp version' /usr/local/etc/gorp.conf | cut -d ':' -f2)
 GORP_HOMEDIR=$HOMEDIR
-GORP_BUILD=$BUILD
 
-echo -e "$GORP_VERSION\nBuild $GORP_BUILD\n$HOMEDIR"
+echo -e "$GORP_VERSION\nGorp Home: $HOMEDIR"
 
 echo -e "\nGorp Copyright (C) 2023 Lance Nickel\nThis program comes with ABSOLUTELY NO WARRANTY.\nGorp is released under the GNU GPL v3 License. Learn more at\nhttps://gorp.lanickel.com/license/"

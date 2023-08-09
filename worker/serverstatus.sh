@@ -86,6 +86,8 @@ STATUS_JAR_RAW="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JA
 if [[ "$STATUS_JAR_RAW" == '$LATEST_JAR' ]]; then
     STATUS_JAR=$LATEST_JAR
     STATUS_JAR_OVERRIDDEN="false"
+else
+    STATUS_JAR=$STATUS_JAR_RAW
 fi
 
 
@@ -95,6 +97,8 @@ STATUS_RAM_RAW="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'RA
 if [[ "$STATUS_RAM_RAW" == '$RAM' ]]; then
     STATUS_RAM=$RAM
     STATUS_RAM_OVERRIDDEN="false"
+else
+    STATUS_RAM=$STATUS_RAM_RAW
 fi
 
 

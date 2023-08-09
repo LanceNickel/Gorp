@@ -136,13 +136,17 @@ if [[ $(ls $HOMEDIR/servers/) != "" ]]; then
 
         SERVER=$(echo $(basename "$d"))
 
-        JAR_ORIG="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=')"
-        RAM_ORIG="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'RAM=')"
+        if [[ -f "$HOMEDIR/servers/$SERVER/run.sh" ]]; then
 
-        cp /tmp/gorp/updatefiles/worker/run.sh $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to cp /tmp/gorp/updatefiles/worker/run.sh to $HOMEDIR/servers/$SERVER/run.sh"
+            JAR_ORIG="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'CUSTOM_JAR=')"
+            RAM_ORIG="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'CUSTOM_RAM=')"
 
-        sed -i "25s:.*:$JAR_ORIG:" $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to update JAR in run.sh for $SERVER"
-        sed -i "34s:.*:$RAM_ORIG:" $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to update RAM in run.sh for $SERVER"
+            cp /tmp/gorp/updatefiles/worker/run.sh $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to cp /tmp/gorp/updatefiles/worker/run.sh to $HOMEDIR/servers/$SERVER/run.sh"
+
+            sed -i "25s:.*:$JAR_ORIG:" $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to update JAR in run.sh for $SERVER"
+            sed -i "34s:.*:$RAM_ORIG:" $HOMEDIR/servers/$SERVER/run.sh || handle_error "Failed to update RAM in run.sh for $SERVER"
+        
+        fi
 
     done
 
