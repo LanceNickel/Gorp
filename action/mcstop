@@ -37,8 +37,8 @@ fi
 
 #### Collect arguments & additional variables
 
-SERVER=$2
-MODE=$3
+SERVER="$2"
+MODE="$3"
 
 
 
@@ -93,22 +93,22 @@ fi
 #### Fast shutdown (no backup)
 
 if [[ "$MODE" == "fast" ]]; then
-    bash /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "stop" || handle_error "Failed to run warning.sh worker."
-    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker."
+    bash /usr/local/bin/gorpmc/worker/warning.sh ""$1"" "$SERVER" "stop" || handle_error "Failed to run warning.sh worker."
+    bash /usr/local/bin/gorpmc/worker/shutdown.sh "$1" "$SERVER" || handle_error "Failed to run shutdown.sh worker."
 
 
 
 #### Now shutdown (no warning or backup)
 
 elif [[ "$MODE" == "now" ]]; then
-    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker."
+    bash /usr/local/bin/gorpmc/worker/shutdown.sh "$1" "$SERVER" || handle_error "Failed to run shutdown.sh worker."
 
 
 
 #### Normal shutdown (no/unrecognized param)
 
 else
-    bash /usr/local/bin/gorpmc/worker/backupworld.sh $1 $SERVER || handle_error "Failed to run backupworld.sh worker."
-    bash /usr/local/bin/gorpmc/worker/warning.sh $1 $SERVER "stop" || handle_error "Failed to run warning.sh worker."
-    bash /usr/local/bin/gorpmc/worker/shutdown.sh $1 $SERVER || handle_error "Failed to run shutdown.sh worker."
+    bash /usr/local/bin/gorpmc/worker/backupworld.sh "$1" "$SERVER" || handle_error "Failed to run backupworld.sh worker."
+    bash /usr/local/bin/gorpmc/worker/warning.sh "$1" "$SERVER" "stop" || handle_error "Failed to run warning.sh worker."
+    bash /usr/local/bin/gorpmc/worker/shutdown.sh "$1" "$SERVER" || handle_error "Failed to run shutdown.sh worker."
 fi

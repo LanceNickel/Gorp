@@ -58,14 +58,14 @@ if [[ "$SERVER" != "" ]]; then
 
     #### Server not found
 
-    if [[ "$(does_server_exist $SERVER)" == "false" ]]; then
+    if [[ "$(does_server_exist "$SERVER")" == "false" ]]; then
         handle_error "Server not found."
     fi
 
 
     #### Server cannot be running
 
-    if [[ "$(is_server_running $SERVER)" == "true" ]]; then
+    if [[ "$(is_server_running "$SERVER")" == "true" ]]; then
         handle_error "Server cannot be running."
     fi
 

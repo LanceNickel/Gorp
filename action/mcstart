@@ -35,8 +35,8 @@ fi
 
 #### Collect arguments & additional variables
 
-SERVER=$2
-GENERATE=$3
+SERVER="$2"
+GENERATE="$3"
 
 
 

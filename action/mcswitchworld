@@ -36,8 +36,8 @@ fi
 
 #### Collect arguments & additional variables
 
-SERVER=$2
-SWITCH_TO=$3
+SERVER="$2"
+SWITCH_TO="$3"
 
 
 
@@ -65,7 +65,7 @@ fi
 
 #### Server not found
 
-if [[ "$(does_server_exist $SERVER)" == "false" ]]; then
+if [[ "$(does_server_exist "$SERVER")" == "false" ]]; then
     handle_error "Server not found."
 fi
 
@@ -73,7 +73,7 @@ fi
 
 #### No worlds on server
 
-if [[ $(ls $HOMEDIR/servers/$SERVER/ | grep 'world') == "" ]]; then
+if [[ $(ls "$HOMEDIR"/servers/"$SERVER"/ | grep 'world') == "" ]]; then
     handle_error "No worlds exist on this server."
 fi
 
@@ -103,4 +103,4 @@ fi
 
 #### RUN THE WORLD CREATOR WORKER ############
 
-bash /usr/local/bin/gorpmc/worker/switchworld.sh $1 $SERVER $SWITCH_TO || handle_error "Failed to run switchworld.sh worker."
+bash /usr/local/bin/gorpmc/worker/switchworld.sh "$1" "$SERVER" "$SWITCH_TO" || handle_error "Failed to run switchworld.sh worker."
