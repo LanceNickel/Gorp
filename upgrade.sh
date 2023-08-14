@@ -102,6 +102,8 @@ MAX_RAM_ORIG="$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep -e '^MAX_RAM
 HOMEDIR_ORIG="$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep -e '^HOMEDIR=' | cut -d '=' -f2)"
 BACKUP_DEST_ORIG="$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep -e '^BACKUP_DEST=' | cut -d '=' -f2)"
 ARCHIVE_DEST_ORIG="$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep -e '^ARCHIVE_DEST=' | cut -d '=' -f2)"
+UPDATE_FREQUENCY_ORIG="$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep -e '^UPDATE_FREQUENCY=' | cut -d '=' -f2)"
+TEXT_EDITOR_ORIG="$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep -e '^TEXT_EDITOR=' | cut -d '=' -f2)"
 
 
 
@@ -120,6 +122,27 @@ sudo sed -i "40s:.*:MAX_RAM=$MAX_RAM_ORIG:" /usr/local/etc/gorp.conf || handle_e
 sudo sed -i "50s:.*:HOMEDIR=$HOMEDIR_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update HOMEDIR in config"
 sudo sed -i "60s:.*:BACKUP_DEST=$BACKUP_DEST_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update BACKUP_DEST in config"
 sudo sed -i "70s:.*:ARCHIVE_DEST=$ARCHIVE_DEST_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update ARCHIVE_DEST in config"
+
+
+
+#### New configuration key handler. For when an update adds a previously non-existent config key.
+
+## Handle UPDATE_FREQUENCY (added in 0.6.2)
+if [[ "$UPDATE_FREQUENCY_ORIG" == "" ]]; then
+    sudo sed -i "80s:.*:UPDATE_FREQUENCY=0 4 * * 2:" /usr/local/etc/gorp.conf || handle_error "Failed to update UPDATE_FREQUENCY in config"
+else
+    sudo sed -i "80s:.*:UPDATE_FREQUENCY=$UPDATE_FREQUENCY_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update UPDATE_FREQUENCY in config"
+fi
+
+
+## Handle TEXT_EDITOR (added in 0.6.2)
+if [[ "$TEXT_EDITOR_ORIG" == "" ]]; then
+    sudo sed -i "90s:.*:TEXT_EDITOR=:" /usr/local/etc/gorp.conf || handle_error "Failed to update TEXT_EDITOR in config"
+else
+    sudo sed -i "90s:.*:TEXT_EDITOR=$TEXT_EDITOR_ORIG:" /usr/local/etc/gorp.conf || handle_error "Failed to update TEXT_EDITOR in config"
+fi
+
+
 
 
 

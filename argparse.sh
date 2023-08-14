@@ -115,6 +115,9 @@ elif [[ "$ACTION" == "help" ]]; then
 elif [[ "$ACTION" == "upgrade" ]]; then
     bash /usr/local/bin/gorpmc/action/gorpupgrade "$TESTSTRING"
 
+elif [[ "$ACTION" == "config" ]]; then
+    bash /usr/local/bin/gorpmc/action/gorpconfig "$TESTSTRING" "$ARG1"
+
 elif [[ "$ACTION" == "-v" ]]; then
     bash /usr/local/bin/gorpmc/action/gorpversion
 

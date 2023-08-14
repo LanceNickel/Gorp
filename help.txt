@@ -10,50 +10,38 @@ GLOBAL FLAGS:
   gorp -q ...   Only show exit errors.
   gorp -Q ...   No output except strictly necessary.
 
-COMMANDS:
-  [] = required
-  <> = optional
-  |  = mutually exclusive
+PLACEHOLDERS:
+  <required>
+  [optional]
+  {mutually|exclusive}
 
-Start & Stop:
-  start [server-name]                                 -- Start a server.
-  stop [server-name] <fast|now>                       -- Stop a server.
-  restart [server-name] <fast|now>                    -- Restart a server.
+MANAGE SERVER INSTANCES:
+  gorp start <server> [-y]                        -- Starts a server. Use -y to override regeneration warning.
+  gorp stop <server> {fast|now}                   -- Stops a server. Fast skips backup, now skips backup and warning.
+  gorp restart <server> {fast|now}                -- Restarts a server. Fast and now have same behaviour as stop.
+  gorp create-server <server> [world] [velocity]  -- Creates a server instance. Optionally, with a default world name. 'Velocity' sets up for proxy.
+  gorp delete-server <server>                     -- Deletes a server. Cannot be undone! Have a backup!
+  gorp backup-server <server>                     -- Backs up a server.
+  gorp restore-server <server>                    -- Restores a server from a backup.
 
-Manage Servers:
-  create-server [server-name]                         -- Create a new server instance.
-  delete-server [server-name]                         -- Delete a server instance.
-  move-home [destination]                             -- Move Gorp's home files to a new location. Do !NOT! use a trailing slash.
+MANAGE WORLDS:
+  gorp create-world <server> [world]              -- Creates a new world in the specified server.
+  gorp delete-world <server> [world]              -- Deletes a world in the specified server.
+  gorp rename-world <server> <world> <newname>    -- Rename a world in the specified server.
+  gorp reset-world <server>                       -- Deletes and regenerates the active world in a server.
+  gorp switch-world <server> [world]              -- Switches the active world in a server.
+  gorp backup-world <server>                      -- Backs up the active world in a server.
+  gorp restore-world <server>                     -- Restores a world from a backup.
+  gorp archive-world <server>                     -- Creates a world archive for long-term preservation.
 
-Manage Worlds:
-  create-world [server-name] <world-name>             -- Create a new world in a particular server instance.
-  delete-world [server-name] <world-name>             -- Delete a world in a particular server instance.
-  switch-world [server-name] <world-name>             -- Switch the active world in a particular server instance.
-  rename-world [server-name] [world-name] [new-name]  -- Rename a specified world to a new name.
-  reset-world [server-name]                           -- Regenerate the currently set world in a directory. "Mulligan".
-  archive-world [server-name] <world-name>            -- Archive and move a world out of a particular server instance.
+UTILITIES:
+  gorp update-jar                                 -- Downloads and sets the latest stable Paper JAR file globally.
+  gorp get-jar {-g <gamever> | -u <url>}          -- Downloads a Paper JAR of the specified version | downloads JAR file from URL.
+  gorp prop <server> <key> <value>                -- Updates server.properties for the specified server, using the key/value pair.
+  gorp config [server]                            -- Edit the Gorp configuration. If a server is specified, update that server's conf insead.
+  gorp upgrade                                    -- Upgrade the installed version of Gorp, if an update is available.
+  gorp -s <server>                                -- Get a server's status in JSON format.
 
-Manage Backups:
-  backup-world [server-name]                          -- Backup a server instance's currently set world files.
-  restore-world [server-name]                         -- Restore a world's files from backup.
-  backup-server [server-name]                         -- Backup a server instance. This may take a while!
-  restore-server [server-name]                        -- Restore a server instance's files from backup. This may take a while!
-
-JAR Utilities:
-  update-jar                                          -- Get the newest Minecraft server JAR file and install it.
-  get-jar [-v version] | [-u url]                     -- Download a Paper server JAR file to ~/gorpmc/jars/.
-
-Update, Status, Logs, Etc.:
-  gorp help                                           -- View this help text.
-  gorp upgrade                                        -- Get the newest version of Gorp and install it.
-  gorp ls                                             -- See a list of all servers in ~/gorpmc/servers/.
-  gorp -s [server-name]                               -- See the status of a server in JSON format.
-  gorp -f [server-name]                               -- Follow the outout of latest.log for a specific server.
-  gorp -v                                             -- Get the Gorp version and current home directory.
-
-EXAMPLES:
-  gorp start public                                   # Start a server named "public".
-  gorp create-server private                          # Create a new server named "private".
-  gorp stop public now                                # Shut down the server named "public" in the fastest way possible.
-  gorp update                                         # Update the default JAR file to the latest stable version.
-  gorp -s public                                      # Get a status report of the "public" server instance.
+MISCELLANEOUS:
+  gorp help                                       -- Display this help text.
+  gorp -v                                         -- Show the installed Gorp version.

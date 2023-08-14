@@ -38,18 +38,14 @@ MAX_RAM=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'MAX_RAM=' | cut -
 HOMEDIR=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'HOMEDIR=' | cut -d '=' -f2)
 BACKUP_DEST=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'BACKUP_DEST=' | cut -d '=' -f2)
 ARCHIVE_DEST=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'ARCHIVE_DEST=' | cut -d '=' -f2)
+UPDATE_FREQUENCY=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'UPDATE_FREQUENCY=' | cut -d '=' -f2)
+TEXT_EDITOR=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'TEXT_EDITOR=' | cut -d '=' -f2)
 
 
 
 #### GET LATEST JAR
 
 LATEST_JAR=$(cat $HOMEDIR/jars/latest)
-
-
-
-#### BUILD NUMBER
-
-GORP_BUILD="2023052400"
 
 
 

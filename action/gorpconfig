@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+### [ACTION: CONFIG] ##############################################
+#   Description:  Update a configuration file
+#   Parameters:   (optional) Server name to update run.sh
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+# Copyright (C) Lance Nickel 2023.
+# Distributed under GNU GPL v3.
+# <https://gorp.lanickel.com/license/>
+
+
+
+#### SETUP ############
+
+#### Globals
+
+. /usr/local/bin/gorpmc/functions/exit.sh
+. /usr/local/bin/gorpmc/functions/params.sh
+. /usr/local/bin/gorpmc/functions/functions.sh
+
+
+
+#### Key guard
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    handle_error "Script not meant to be run directly."
+fi
+
+
+
+#### Collect arguments & additional variables
+
+SERVER="$2"
+
+
+
+
+
+
+
+####
+
+
+
+
+
+
+
+#### GUARDS ############
+
+## Only if a server is specified
+if [[ "$SERVER" != "" ]]; then
+
+    #### Server not found
+
+    if [[ "$(does_server_exist $SERVER)" == "false" ]]; then
+        handle_error "Server not found."
+    fi
+
+
+    #### Server cannot be running
+
+    if [[ "$(is_server_running $SERVER)" == "true" ]]; then
+        handle_error "Server cannot be running."
+    fi
+
+fi
+
+
+
+
+
+
+
+#### RUN THE CONFIG EDITOR WORKER ############
+
+bash /usr/local/bin/gorpmc/worker/gorpconfig.sh "$1" "$SERVER" || handle_error "Failed to run gorpconfig.sh worker."
