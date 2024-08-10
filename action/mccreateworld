@@ -91,6 +91,14 @@ fi
 
 
 
+#### Illegal world names
+
+if [[ "$NEW_WORLD" == "--all" ]] || [[ "$NEW_WORLD" == "-all" ]] || [[ "$NEW_WORLD" == "all" ]]; then
+    handle_error "Invalid world name, try another."
+fi
+
+
+
 
 
 
