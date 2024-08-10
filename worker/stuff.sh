@@ -55,7 +55,11 @@ MESSAGE="$3"
 
 #### IF NOT ALL, SEND MESSAGE ############
 
-screen -S "$SERVER" -X stuff "say $MESSAGE\n" || handle_error "Failed to stuff message to server."
+if [[ "$SERVER" != "--all" ]]; then
+
+    screen -S "$SERVER" -X stuff "say $MESSAGE\n" || handle_error "Failed to stuff message to server."
+
+fi
 
 
 

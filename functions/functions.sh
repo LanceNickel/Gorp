@@ -75,7 +75,7 @@ does_server_exist() {
 #### Check if a server is running (server name)
 
 is_server_running() {
-    if [[ $(screen -ls | grep "$SERVER") != "" ]]; then
+    if [[ $(screen -ls | grep "$1") != "" ]]; then
         echo "true"
     else
         echo "false"
