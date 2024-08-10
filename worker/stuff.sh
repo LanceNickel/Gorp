@@ -55,7 +55,7 @@ MESSAGE="$3"
 
 #### IF NOT ALL, SEND MESSAGE ############
 
-screen -S "$SERVER" -X stuff "say "$MESSAGE"\n" || handle_error "Failed to stuff message to server."
+screen -S "$SERVER" -X stuff "say $MESSAGE\n" || handle_error "Failed to stuff message to server."
 
 
 
@@ -78,7 +78,7 @@ if [[ "$SERVER" == "--all" ]]; then
         #### Only if the server is running...
 
         if [[ "$(is_server_running $THIS_SERVER)" == "true" ]]; then
-            screen -S "$THIS_SERVER" -X stuff "say "$MESSAGE"\n" || handle_error "Failed to stuff message to server: $THIS_SERVER."
+            screen -S "$THIS_SERVER" -X stuff "say $MESSAGE\n" || handle_error "Failed to stuff message to server: $THIS_SERVER."
         fi
 
     done

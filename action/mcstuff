@@ -57,6 +57,18 @@ MESSAGE="$3"
 
 
 
+#### Bad user input
+
+if [[ "$SERVER" == "" ]]; then
+    handle_error "Bad input. Expected: gorp stuff [server-name] [message]."
+fi
+
+if [[ "$MESSAGE" == "" ]]; then
+    handle_error "Bad input. Expected: gorp stuff [server-name] [message]."
+fi
+
+
+
 #### If "--all" is used, skip these checks (we'll check ourselves later)
 
 if [[ "$SERVER" != "--all" ]]; then
