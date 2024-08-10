@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+
+### [ACTION: STUFF] ###############################################
+#   Description:  Stuff a message into a running server.
+#   Parameters:   1: (required) Server or --all for all servers
+#                 2: (required) Message to send. Must be quoted, ""
+
+############################ [WARNING] ############################
+##    No part of this script is designed to be user-editable.    ##
+##   This script is OVERWRITTEN any time a Gorp update is run.   ##
+###################################################################
+
+# Copyright (C) Lance Nickel 2023.
+# Distributed under GNU GPL v3.
+# <https://gorp.lanickel.com/license/>
+
+
+
+#### SETUP ############
+
+#### Globals
+
+. /usr/local/bin/gorpmc/functions/exit.sh
+. /usr/local/bin/gorpmc/functions/params.sh
+. /usr/local/bin/gorpmc/functions/functions.sh
+
+
+
+#### Key guard
+
+if [[ "$1" != "pleasedontdothis" ]]; then
+    handle_error "Script not meant to be run directly."
+fi
+
+
+
+#### Collect arguments & additional variables
+
+SERVER="$2"
+MESSAGE="$3"
+
+
+
+
+
+
+
+####
+
+
+
+
+
+
+
+#### GUARDS ############
+
+
+
+#### If "--all" is used, skip these checks (we'll check ourselves later)
+
+if [[ "$SERVER" != "--all" ]]; then
+
+    #### Server not found
+
+    if [[ "$(does_server_exist $SERVER)" == "false" ]]; then
+        handle_error "Server not found."
+    fi
+
+
+
+    #### Server is not running
+
+    if [[ "$(is_server_running $SERVER)" == "false" ]]; then
+            handle_error "Server is not running."
+    fi
+
+fi
+
+
+
+
+
+
+
+#### RUN THE STUFF WORKER ############
+
+bash /usr/local/bin/gorpmc/worker/stuff.sh "$1" "$SERVER" "$MESSAGE" || handle_error "Failed to run stuff.sh worker."

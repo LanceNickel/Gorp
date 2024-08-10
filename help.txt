@@ -1,5 +1,5 @@
 Gorp - Simple Minecraft CLI tools.
-v0.6.1
+v0.7.0
 
 Docs:       https://gorp.lanickel.com/
 License:    https://gorp.lanickel.com/license/
@@ -41,6 +41,7 @@ UTILITIES:
   gorp config [server]                            -- Edit the Gorp configuration. If a server is specified, update that server's conf insead.
   gorp upgrade                                    -- Upgrade the installed version of Gorp, if an update is available.
   gorp -s <server>                                -- Get a server's status in JSON format.
+  gor stuff {server|--all} <message>              -- Send a chat message as Server into a specified server. Use --all to send to all running servers.
 
 MISCELLANEOUS:
   gorp help                                       -- Display this help text.
