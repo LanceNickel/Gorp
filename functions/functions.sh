@@ -92,6 +92,14 @@ get_server_port() {
 
 
 
+#### Get server's last started version
+
+get_server_version() {
+    echo $(cat $HOMEDIR/servers/$1/lastrunversion)
+}
+
+
+
 
 
 

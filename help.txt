@@ -1,14 +1,10 @@
 Gorp - Simple Minecraft CLI tools.
-v0.7.0
+v0.7.1
 
 Docs:       https://gorp.lanickel.com/
 License:    https://gorp.lanickel.com/license/
 
 Usage:      gorp action [options]...
-
-GLOBAL FLAGS:
-  gorp -q ...   Only show exit errors.
-  gorp -Q ...   No output except strictly necessary.
 
 PLACEHOLDERS:
   <required>

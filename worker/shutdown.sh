@@ -36,6 +36,7 @@ fi
 #### Collect arguments & additional variables
 
 SERVER=$2
+VERSION=$(get_server_version $SERVER)
 
 
 
@@ -71,7 +72,9 @@ while true; do
     sleep 1
     ((I++))
 
-    if [[ "$(grep 'INFO]: Closing Server' $HOMEDIR/servers/$SERVER/logs/latest.log)" != "" ]]; then
+    stop_target="INFO]: ThreadedAnvilChunkStorage: All dimensions are saved"
+
+    if [[ "$(grep $stop_target $HOMEDIR/servers/$SERVER/logs/latest.log)" != "" ]]; then
         
         J=0
         while [[ $J -le 5 ]]; do
