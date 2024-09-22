@@ -72,9 +72,7 @@ while true; do
     sleep 1
     ((I++))
 
-    stop_target="INFO]: ThreadedAnvilChunkStorage: All dimensions are saved"
-
-    if [[ "$(grep $stop_target $HOMEDIR/servers/$SERVER/logs/latest.log)" != "" ]]; then
+    if [[ "$(grep 'INFO]: ThreadedAnvilChunkStorage: All dimensions are saved' $HOMEDIR/servers/$SERVER/logs/latest.log)" != "" ]]; then
         
         J=0
         while [[ $J -le 5 ]]; do
