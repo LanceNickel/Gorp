@@ -74,7 +74,7 @@ while [ true ]; do
 
         echo -e "\n\nTHIS SERVER HAS STOPPED! Press any key to prevent restart."
 
-        read -t 5 input;
+        read -t 10 input;
 
         if [ $? == 0 ]; then
                 break;
