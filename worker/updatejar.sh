@@ -96,7 +96,7 @@ while [ $FOUND = false ]; do
                 FOUND=true
         fi
 
-        if [[ "$I" == "25" ]]; then
+        if [[ "$I" == "50" ]]; then
                 handle_error "Stable version not found, timeout."
         fi
 done
