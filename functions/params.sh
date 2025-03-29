@@ -30,6 +30,12 @@ fi
 
 
 
+#### GORP VERSION
+
+GORP_VERSION="0.7.4"
+
+
+
 #### GET CONFIG FILE ITEMS
 
 GAMEVER=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f2)

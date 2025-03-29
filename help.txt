@@ -2,7 +2,6 @@ Gorp - Simple Minecraft CLI tools.
 v0.7.4
 
 Docs:       https://gorp.lanickel.com/
-License:    https://gorp.lanickel.com/license/
 
 Usage:      gorp action [options]...
 
@@ -12,8 +11,8 @@ PLACEHOLDERS:
   {mutually|exclusive}
 
 MANAGE SERVER INSTANCES:
-  gorp start <server> [-y]                        -- Starts a server. Use -y to override regeneration warning.
-  gorp stop <server> {fast|now}                   -- Stops a server. Fast skips backup, now skips backup and warning.
+  gorp start {<server>|--all} [-y]                -- Starts a server. Use -y to override regeneration warning.
+  gorp stop <server> {power|fast|now}             -- Stops a server. Fast skips backup, now skips backup and warning.
   gorp restart <server> {fast|now}                -- Restarts a server. Fast and now have same behaviour as stop.
   gorp create-server <server> [world] [velocity]  -- Creates a server instance. Optionally, with a default world name. 'Velocity' sets up for proxy.
   gorp delete-server <server>                     -- Deletes a server. Cannot be undone! Have a backup!
