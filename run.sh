@@ -10,7 +10,7 @@
 ##     All other parts are OVERWRITTEN during a Gorp update.     ##
 ###################################################################
 
-# Copyright (C) Lance Nickel 2023.
+# Copyright (C) Lance Nickel 2025.
 # Distributed under GNU GPL v3.
 # <https://gorp.lanickel.com/license/>
 

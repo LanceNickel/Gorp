@@ -9,7 +9,7 @@
 ##   This script is OVERWRITTEN any time a Gorp update is run.   ##
 ###################################################################
 
-# Copyright (C) Lance Nickel 2023.
+# Copyright (C) Lance Nickel 2025.
 # Distributed under GNU GPL v3.
 # <https://gorp.lanickel.com/license/>
 
