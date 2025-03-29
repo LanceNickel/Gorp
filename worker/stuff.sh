@@ -73,7 +73,7 @@ if [[ "$SERVER" == "--all" ]]; then
 
     #### Loop through server directories
 
-    for d in "$HOMEDIR/servers/*"; do
+    for d in "$HOMEDIR"/servers/*; do
 
         THIS_SERVER="$(basename $d)"
 
