@@ -56,32 +56,49 @@ MODE="$3"
 
 #### GUARDS ############
 
-#### Bad user input
+#### Only allow --all with power
 
-if [[ "$SERVER" = "" ]] || [[ "$SERVER" == "fast" ]] || [[ "$SERVER" == "now" ]]; then
-    handle_error "Bad input. Expected: gorp stop [server] <fast|now>."
+if [[ "$SERVER" == "--all" ]] && [[ "$MODE" != "power" ]]; then
+    handle_error "Bad input. The only valid --all command is 'gorp stop --all power'."
 fi
 
-if [[ "$MODE" != "fast" ]] && [[ "$MODE" != "now" ]] && [[ "$MODE" != "" ]]; then
-    handle_error "Bad input. Expected: gorp stop [server] <fast|now>."
+#### Bad user input (bypass if valid --all and power is sent)
+
+if [[ "$SERVER" != "--all" ]] && [[ "$MODE" != "power" ]]; then
+
+    if [[ "$SERVER" = "" ]] || [[ "$SERVER" == "fast" ]] || [[ "$SERVER" == "now" ]]; then
+        handle_error "Bad input. Expected: gorp stop [server] <fast|now>."
+    fi
+
+    if [[ "$MODE" != "fast" ]] && [[ "$MODE" != "now" ]] && [[ "$MODE" != "" ]]; then
+        handle_error "Bad input. Expected: gorp stop [server] <power|fast|now>."
+    fi
+
 fi
 
 
 
-#### Server not found
+#### Server not found (bypass if --all sent)
 
-if [[ "$(does_server_exist $SERVER)" == "false" ]]; then
-    handle_error "Server not found."
+if [[ "$SERVER" != "--all" ]]; then
+
+    if [[ "$(does_server_exist $SERVER)" == "false" ]]; then
+        handle_error "Server not found."
+    fi
+
 fi
 
 
 
-#### Server is not running
+#### Server is not running (bypass if --all sent)
 
-if [[ "$(is_server_running $SERVER)" == "false" ]]; then
-        handle_error "Server is not running."
+if [[ "$SERVER" != "--all" ]]; then
+
+    if [[ "$(is_server_running $SERVER)" == "false" ]]; then
+            handle_error "Server is not running."
+    fi
+
 fi
-
 
 
 
@@ -106,13 +123,12 @@ if [[ "$MODE" == "power" ]]; then
         fi
 
     done
-fi
 
 
 
 #### Fast shutdown (no backup)
 
-if [[ "$MODE" == "fast" ]]; then
+elif [[ "$MODE" == "fast" ]]; then
     bash /usr/local/bin/gorpmc/worker/warning.sh "$1" "$SERVER" "stop" || handle_error "Failed to run warning.sh worker."
     bash /usr/local/bin/gorpmc/worker/shutdown.sh "$1" "$SERVER" || handle_error "Failed to run shutdown.sh worker."
 
