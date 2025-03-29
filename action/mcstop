@@ -90,10 +90,30 @@ fi
 
 #### COORDINATE WORKERS ############
 
+#### Power shutdown (warning, no backup)
+
+if [[ "$MODE" == "power" ]]; then
+
+    #### Loop through server directories
+    for d in "$HOMEDIR"/servers/*; do
+
+        THIS_SERVER="$(basename $d)"
+
+        #### Only if the server is running...
+        if [[ "$(is_server_running $THIS_SERVER)" == "true" ]]; then
+            bash /usr/local/bin/gorpmc/worker/warning.sh "$1" "$THIS_SERVER" "stop" || handle_error "Failed to run warning.sh worker."
+            bash /usr/local/bin/gorpmc/worker/shutdown.sh "$1" "$THIS_SERVER" || handle_error "Failed to run shutdown.sh worker."
+        fi
+
+    done
+fi
+
+
+
 #### Fast shutdown (no backup)
 
 if [[ "$MODE" == "fast" ]]; then
-    bash /usr/local/bin/gorpmc/worker/warning.sh ""$1"" "$SERVER" "stop" || handle_error "Failed to run warning.sh worker."
+    bash /usr/local/bin/gorpmc/worker/warning.sh "$1" "$SERVER" "stop" || handle_error "Failed to run warning.sh worker."
     bash /usr/local/bin/gorpmc/worker/shutdown.sh "$1" "$SERVER" || handle_error "Failed to run shutdown.sh worker."
 
 
