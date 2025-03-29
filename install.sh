@@ -35,9 +35,18 @@ sudo whoami > /dev/null
 
 #### Already installed
 
-if [[ -d "/usr/local/bin/gorp" ]]; then
-    echo -e "Gorp is already installed. To update, run 'sudo gorp upgrade'.\nRunning into problems? Open an issue: https://github.com/LanceNickel/Gorp/issues\nOr send me an email: gorp@lanickel.com"
-    exit 1
+UPDATE="no"
+
+if [[ -f "/usr/local/bin/gorp" ]] || [[ -d "/usr/local/bin/gorpmc/" ]] || [[ -f "/usr/local/etc/gorp.conf" ]]; then
+
+    read -r -p "It looks like Gorp is already installed. Would you like to update? [y/N]: " response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        UPDATE="yes"
+    else
+        UPDATE="no"
+        exit 1
+    fi
+
 fi
 
 
@@ -60,9 +69,13 @@ HOMEDIR=~
 
 
 
-#### INSTALL GORP ############
+#### INSTALL/UPDATE GORP ############
 
-echo -e "\nInstalling Gorp..."
+if [[ "$UPDATE" == "yes" ]]; then
+    echo -e "\nUpdating Gorp..."
+else
+    echo -e "\nInstalling Gorp..."
+fi
 
 
 
@@ -78,34 +91,50 @@ chmod +x gorp
 
 
 
-#### Update homedir in gorp.conf
+#### Update homedir in gorp.conf (only if not updating)
 
-sed -Ei "s:^HOMEDIR=:HOMEDIR=$HOMEDIR/gorpmc:g" gorp.conf
-sed -Ei "s:^BACKUP_DEST=:BACKUP_DEST=$HOMEDIR/gorpmc/backups:g" gorp.conf
-sed -Ei "s:^ARCHIVE_DEST=:ARCHIVE_DEST=$HOMEDIR/gorpmc/archives:g" gorp.conf
+if [[ "$UPDATE" == "no" ]]; then
+
+    sed -Ei "s:^HOMEDIR=:HOMEDIR=$HOMEDIR/gorpmc:g" gorp.conf
+    sed -Ei "s:^BACKUP_DEST=:BACKUP_DEST=$HOMEDIR/gorpmc/backups:g" gorp.conf
+    sed -Ei "s:^ARCHIVE_DEST=:ARCHIVE_DEST=$HOMEDIR/gorpmc/archives:g" gorp.conf
+
+fi
 
 
+#### Create dirs in /usr/local/bin/ & /usr/local/etc/ (delete first if updating)
 
-#### Create dirs in /usr/local/bin/ & /usr/local/etc/
+if [[ "$UPDATE" == "yes" ]]; then
+    sudo rm -rf /usr/local/bin/gorpmc/
+    sudo rm /usr/local/bin/gorp
+fi
 
 sudo mkdir -p /usr/local/bin/gorpmc/
 sudo mkdir -p /usr/local/bin/gorpmc/action/
 sudo mkdir -p /usr/local/bin/gorpmc/functions/
 sudo mkdir -p /usr/local/bin/gorpmc/worker/
-sudo mkdir -p /usr/local/etc/
+
+# Create conf dir only if not updating
+if [[ "$UPDATE" == "no" ]]; then
+    sudo mkdir -p /usr/local/etc/
+fi
 
 
 
-#### Create gorp homedir (or set to warn if already exists)
+#### Create gorp homedir (or set to warn if already exists) (only if not updating)
 
-if [[ -d "$HOMEDIR/gorpmc/" ]]; then
-    WARN=true
-else
-    WARN=false
-    mkdir $HOMEDIR/gorpmc/
-    mkdir $HOMEDIR/gorpmc/backups/
-    mkdir $HOMEDIR/gorpmc/jars/
-    mkdir $HOMEDIR/gorpmc/servers/
+if [[ "$UPDATE" == "no" ]]; then
+
+    if [[ -d "$HOMEDIR/gorpmc/" ]]; then
+        WARN=true
+    else
+        WARN=false
+        mkdir $HOMEDIR/gorpmc/
+        mkdir $HOMEDIR/gorpmc/backups/
+        mkdir $HOMEDIR/gorpmc/jars/
+        mkdir $HOMEDIR/gorpmc/servers/
+    fi
+
 fi
 
 
@@ -122,8 +151,10 @@ sudo cp gorp /usr/local/bin/
 sudo cp help.txt /usr/local/bin/gorpmc/
 sudo cp run.sh /usr/local/bin/gorpmc/
 
-# /usr/local/etc/
-sudo cp gorp.conf /usr/local/etc/
+# /usr/local/etc/ (only if not updating)
+if [[ "$UPDATE" == "no" ]]; then
+    sudo cp gorp.conf /usr/local/etc/
+fi
 
 
 
@@ -132,21 +163,26 @@ sudo cp gorp.conf /usr/local/etc/
 
 
 #### GET LATEST JAR FILE ############
+#### (only if not updating)
 
-#### Set build to 000 to force a JAR download
+if [[ "$UPDATE" == "no" ]]; then
 
-echo "paper-0-000.jar" > $HOMEDIR/gorpmc/jars/latest
+    #### Set build to 000 to force a JAR download
+
+    echo "paper-0-000.jar" > $HOMEDIR/gorpmc/jars/latest
 
 
 
-#### Get JAR file
+    #### Get JAR file
 
-mkdir /tmp/gorp/
+    mkdir /tmp/gorp/
 
-echo -e "Getting latest Paper JAR file..."
-bash /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
+    echo -e "Getting latest Paper JAR file..."
+    bash /usr/local/bin/gorpmc/action/mcupdatejar pleasedontdothis
 
-rm -rf /tmp/gorp/
+    rm -rf /tmp/gorp/
+
+fi
 
 
 
@@ -156,16 +192,30 @@ rm -rf /tmp/gorp/
 
 #### WE MADE IT ############
 
-#### Print user intro
+#### Print user intro (only if not updating)
 
-echo -e "\nINSTALLATION FINISHED\n\nCreate your first server with:    gorp create-server [server-name] <world-name>\nStart the server                  gorp start [server-name]\n\nRead more at https://gorp.lanickel.com/"
+if [[ "$UPDATE" == "no" ]]; then
+
+    echo -e "\nINSTALLATION FINISHED\n\nCreate your first server with:    gorp create-server [server-name] <world-name>\nStart the server                  gorp start [server-name]\n\nRead more at https://gorp.lanickel.com/"
+
+fi
 
 
+#### Print warning if ~/gorpmc/ already existed (only if not updating)
 
-#### Print warning if ~/gorpmc/ already existed
+if [[ "$UPDATE" == "no" ]]; then
 
-if [ $WARN = true ]; then
-    echo -e "\n\nWARNING:\n'$HOMEDIR/gorpmc' directory already exists. Refer to installation instructions for more info:\nhttps://gorp.lanickel.com/getting-started/install/"
+    if [ $WARN = true ]; then
+        echo -e "\n\nWARNING:\n'$HOMEDIR/gorpmc' directory already exists. Refer to installation instructions for more info:\nhttps://gorp.lanickel.com/getting-started/install/"
+    fi
+
+fi
+
+
+#### Print update successful (if updating)
+
+if [[ "$UPDATE" == "yes" ]]; then
+    echo -e "\nGORP HAS UPDATED! Check the Gorp documentation at https://gorp.lanickel.com/ to ensure no further steps are required."
 fi
 
 
