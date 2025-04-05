@@ -115,9 +115,6 @@ elif [[ "$ACTION" == "stuff" ]]; then
 elif [[ "$ACTION" == "help" ]]; then
     bash /usr/local/bin/gorpmc/action/gorphelp
 
-elif [[ "$ACTION" == "upgrade" ]]; then
-    bash /usr/local/bin/gorpmc/action/gorpupgrade "$TESTSTRING"
-
 elif [[ "$ACTION" == "config" ]]; then
     bash /usr/local/bin/gorpmc/action/gorpconfig "$TESTSTRING" "$ARG1"
 
@@ -131,7 +128,7 @@ elif [[ "$ACTION" == "-f" ]]; then
     tail -f $HOMEDIR/servers/"$ARG1"/logs/latest.log || handle_error "Failed to tail latest.log"
 
 elif [[ "$ACTION" == "ls" ]]; then
-    echo $(ls $HOMEDIR/servers)
+    echo "$(ls $HOMEDIR/servers)"
 
 elif [[ "$ACTION" == "move-home" ]]; then
     bash /usr/local/bin/gorpmc/action/gorpmovehome "$TESTSTRING" "$ARG1"
