@@ -77,7 +77,7 @@ fi
 #### PROMPT USER TO RE-GENERATE (if this isn't first time running) ############
 
 if [[ "$WORLD_EXISTS" == "false" ]] && [[ "$GENERATE" != "-y" ]]; then
-    read -r -p "Active world ($ACTIVE_WORLD) doesn't exist. Generate new world? [y/n] " response
+    read -r -p "Active world ($ACTIVE_WORLD) doesn't exist. Generate new world? [y/N] " response
 
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
         sleep 0.005

@@ -68,7 +68,7 @@ fi
 
 #### Make sure no servers are running
 
-for d in "$HOMEDIR/servers/"*
+for d in "$HOMEDIR"/servers/*
 do
         SERVER=$(basename "$d")
         
