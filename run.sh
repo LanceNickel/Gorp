@@ -22,7 +22,7 @@
 # Expected value:  Absolute path to a JAR file
 # Default:         CUSTOM_JAR=$LATEST_JAR
 
-CUSTOM_JAR=$LATEST_JAR
+CUSTOM_JAR="$LATEST_JAR"
 
 
 
@@ -31,7 +31,7 @@ CUSTOM_JAR=$LATEST_JAR
 # Expected value:  Amount of RAM as an integer, followed immedately by "G" (ex: 4G)
 # Default:         CUSTOM_RAM=$RAM
 
-CUSTOM_RAM=$RAM
+CUSTOM_RAM="$RAM"
 
 
 
@@ -69,16 +69,17 @@ fi
 
 #### EXECUTE SERVER, WAIT FOR PROCESS TO DIE ############
 
-while [ true ]; do
-        java -Xmx$CUSTOM_RAM -Xms$CUSTOM_RAM -jar $CUSTOM_JAR nogui
+while true;
+do
+    java -Xmx"$CUSTOM_RAM" -Xms"$CUSTOM_RAM" -jar "$CUSTOM_JAR" nogui
 
-        echo -e "\n\nTHIS SERVER HAS STOPPED! Press any key to prevent restart."
+    echo -e "\n\nTHIS SERVER HAS STOPPED! Press any key within 10 seconds to prevent restart."
 
-        read -t 10 input;
+    read -t 10 input;
 
-        if [ $? == 0 ]; then
-                break;
-        else
-                echo "Restarting server..."
-        fi
+    if [ $? == 0 ]; then
+        break;
+    else
+        echo "Restarting server..."
+    fi
 done

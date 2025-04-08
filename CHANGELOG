@@ -1,0 +1,4 @@
+0.8.0
+    * Started keeping a changelog
+    * Many general BASH safety improvements
+    + Better upgrade process, including automatically updating config and server run.sh files
