@@ -82,7 +82,7 @@ fi
 
 JAR="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'CUSTOM_JAR=' | cut -d '=' -f2)"
 
-if [[ "$JAR" == '$LATEST_JAR' ]]; then
+if [[ "$JAR" == '$LATEST_JAR' ]] || [[ "$JAR" == '"$LATEST_JAR"' ]]; then
     if [[ ! -f "$(cat $HOMEDIR/jars/latest)" ]]; then
         handle_error "JAR file does not exist."
     fi
@@ -110,7 +110,7 @@ CURRENT_ALLOCATED_RAM=$(calculate_allocated_ram)
 
 RUN_SAYS="$(grep -e '^CUSTOM_RAM=' $HOMEDIR/servers/$SERVER/run.sh | cut -d '=' -f2)"
 
-if [[ "$RUN_SAYS" == '$RAM' ]]; then
+if [[ "$RUN_SAYS" == '$RAM' ]] || [[ "$RUN_SAYS" == '"$RAM"' ]]; then
     SERVER_RAM=$(echo $RAM | cut -d 'G' -f1)
 else
     SERVER_RAM=$(echo $RUN_SAYS | cut -d 'G' -f1)

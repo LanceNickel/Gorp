@@ -20,7 +20,7 @@
 ######## Option: CUSTOM_JAR #########################################################
 # Description:     An (optional) custom JAR file to run as the server.
 # Expected value:  Absolute path to a JAR file
-# Default:         CUSTOM_JAR=$LATEST_JAR
+# Default:         CUSTOM_JAR="$LATEST_JAR"
 
 CUSTOM_JAR="$LATEST_JAR"
 
@@ -29,7 +29,7 @@ CUSTOM_JAR="$LATEST_JAR"
 ######## Option: CUSTOM_RAM #########################################################
 # Description:     An (optional) custom RAM allocation for this server.
 # Expected value:  Amount of RAM as an integer, followed immedately by "G" (ex: 4G)
-# Default:         CUSTOM_RAM=$RAM
+# Default:         CUSTOM_RAM="$RAM"
 
 CUSTOM_RAM="$RAM"
 

@@ -74,7 +74,7 @@ HOMEDIR=~
 if [[ "$UPDATE" == "yes" ]]; then
     echo -e "\nUpdating Gorp..."
 else
-    echo -e "\nInstalling Gorp..."
+    echo -e "\nInstalling Gorp 0.8.1..."
 fi
 
 
@@ -196,7 +196,7 @@ fi
 
 if [[ "$UPDATE" == "no" ]]; then
 
-    echo -e "\nINSTALLATION FINISHED\n\nCreate your first server with:    gorp create-server [server-name] <world-name>\nStart the server                  gorp start [server-name]\n\nRead more at https://gorp.lanickel.com/"
+    echo -e "\nINSTALLATION FINISHED\n\nCreate your first server with:  gorp create-server <server-name> [world-name]\nStart the server:               gorp start <server-name>\n\nRead more at https://gorp.lanickel.com/"
 
 fi
 

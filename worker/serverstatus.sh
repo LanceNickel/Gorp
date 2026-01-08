@@ -72,6 +72,10 @@ fi
 STATUS_RUNNING="$(is_server_running $SERVER)"
 
 
+# status.connected_players
+STATUS_PLAYERS="$(get_connected_players $SERVER)"
+
+
 # status.version
 STATUS_VERSION="$(cat $HOMEDIR/servers/$SERVER/lastrunversion)"
 
@@ -175,6 +179,7 @@ cat <<EOF
   "status": [
     {
       "running": $STATUS_RUNNING,
+      "connected_players": $STATUS_PLAYERS,
       "version": "$STATUS_VERSION",
       "jar_file": "$STATUS_JAR",
       "jar_file_overridden": $STATUS_JAR_OVERRIDDEN,

@@ -99,4 +99,9 @@ sed -i -e "s/$KEY=$current/$KEY=$VALUE/g" $HOMEDIR/servers/$SERVER/server.proper
 
 #### WE MADE IT ############
 
-echo "Server properties updated! Old value was: '$current'"
+if [[ "$KEY" != "" ]]; then
+    echo "Server properties updated! Old value was: '$current'."
+    echo "A server restart may be required for changes to take effect."
+else
+    echo "Server properties updated! A server restart may be required for changes to take effect."
+fi

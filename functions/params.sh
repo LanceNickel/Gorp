@@ -32,7 +32,7 @@ fi
 
 #### GORP VERSION
 
-GORP_VERSION="0.8.0"
+GORP_VERSION="0.8.1"
 
 
 

@@ -103,7 +103,7 @@ fi
 
 #### Key does not exist
 
-if [[ "$(grep -e "^$KEY=" $HOMEDIR/servers/$SERVER/server.properties)" == "" ]]; then
+if [[ "$KEY" != "" ]] && [[ "$(grep -e "^$KEY=" $HOMEDIR/servers/$SERVER/server.properties)" == "" ]]; then
     handle_error "Key in server.properties not found."
 fi
 
