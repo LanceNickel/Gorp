@@ -81,24 +81,32 @@ fi
 
 #### Make scripts executable
 
-chmod +x action/*
-chmod +x functions/*
-chmod +x worker/*
-chmod +x argparse.sh
-chmod +x entry.sh
-chmod +x run.sh
-chmod +x gorp
+chmod +x ./action/*
+chmod +x ./functions/*
+chmod +x ./worker/*
+chmod +x ./argparse.sh
+chmod +x ./entry.sh
+chmod +x ./run.sh
+chmod +x ./gorp
 
 
 
-#### Update homedir in gorp.conf (only if not updating)
+#### Update homedir in gorp.conf and params.sh (only if not updating)
 
 if [[ "$UPDATE" == "no" ]]; then
 
-    sed -Ei "s:^HOMEDIR=:HOMEDIR=$HOMEDIR/gorpmc:g" gorp.conf
-    sed -Ei "s:^BACKUP_DEST=:BACKUP_DEST=$HOMEDIR/gorpmc/backups:g" gorp.conf
-    sed -Ei "s:^ARCHIVE_DEST=:ARCHIVE_DEST=$HOMEDIR/gorpmc/archives:g" gorp.conf
+    sed -Ei "s:^HOMEDIR=.*$:HOMEDIR=$HOMEDIR/gorpmc:g" ./gorp.conf
+    sed -Ei "s:^HOMEDIR=.*$:HOMEDIR=$HOMEDIR/gorpmc:g" ./functions/params.sh
+    sed -Ei "s:^BACKUP_DEST=.*$:BACKUP_DEST=$HOMEDIR/gorpmc/backups:g" ./gorp.conf
+    sed -Ei "s:^ARCHIVE_DEST=.*$:ARCHIVE_DEST=$HOMEDIR/gorpmc/archives:g" ./gorp.conf
 
+fi
+
+#### Set homedir in params.sh upon update, pulling value from current params.sh
+
+if [[ "$UPDATE" == "yes" ]]; then
+    CURRENT_HOMEDIR="$(cat /usr/local/bin/gorpmc/functions/params.sh | grep "^[^#;]" | grep 'HOMEDIR=' | cut -d '=' -f2)"
+    sed -Ei "s:^HOMEDIR=.*$:HOMEDIR=$CURRENT_HOMEDIR:g" ./functions/params.sh
 fi
 
 
@@ -114,11 +122,6 @@ sudo mkdir -p /usr/local/bin/gorpmc/action/
 sudo mkdir -p /usr/local/bin/gorpmc/functions/
 sudo mkdir -p /usr/local/bin/gorpmc/worker/
 
-# Create conf dir only if not updating
-if [[ "$UPDATE" == "no" ]]; then
-    sudo mkdir -p /usr/local/etc/
-fi
-
 
 
 #### Create gorp homedir (or set to warn if already exists) (only if not updating)
@@ -129,10 +132,10 @@ if [[ "$UPDATE" == "no" ]]; then
         WARN=true
     else
         WARN=false
-        mkdir $HOMEDIR/gorpmc/
-        mkdir $HOMEDIR/gorpmc/backups/
-        mkdir $HOMEDIR/gorpmc/jars/
-        mkdir $HOMEDIR/gorpmc/servers/
+        mkdir "$HOMEDIR"/gorpmc/
+        mkdir "$HOMEDIR"/gorpmc/backups/
+        mkdir "$HOMEDIR"/gorpmc/jars/
+        mkdir "$HOMEDIR"/gorpmc/servers/
     fi
 
 fi
@@ -142,18 +145,86 @@ fi
 #### Move the files to their installed directories
 
 # /usr/local/bin/
-sudo cp action/* /usr/local/bin/gorpmc/action/
-sudo cp functions/* /usr/local/bin/gorpmc/functions/
-sudo cp worker/* /usr/local/bin/gorpmc/worker/
-sudo cp argparse.sh /usr/local/bin/gorpmc/
-sudo cp entry.sh /usr/local/bin/gorpmc/
-sudo cp gorp /usr/local/bin/
-sudo cp help.txt /usr/local/bin/gorpmc/
-sudo cp run.sh /usr/local/bin/gorpmc/
+sudo cp ./action/* /usr/local/bin/gorpmc/action/
+sudo cp ./functions/* /usr/local/bin/gorpmc/functions/
+sudo cp ./worker/* /usr/local/bin/gorpmc/worker/
+sudo cp ./argparse.sh /usr/local/bin/gorpmc/
+sudo cp ./entry.sh /usr/local/bin/gorpmc/
+sudo cp ./gorp /usr/local/bin/
+sudo cp ./help.txt /usr/local/bin/gorpmc/
+sudo cp ./run.sh /usr/local/bin/gorpmc/
 
-# /usr/local/etc/ (only if not updating)
+
+
+
+
+
+
+#### HANDLE CONFIG FILE ############
+
+## Copy default config only if this is a fresh install
+
 if [[ "$UPDATE" == "no" ]]; then
-    sudo cp gorp.conf /usr/local/etc/
+    cp ./gorp.conf "$HOMEDIR"/gorpmc/gorp.conf
+fi
+
+
+## Update the existing config file if this is an update
+
+if [[ "$UPDATE" == "yes" ]]; then
+
+    ## Get current values
+    ## Expected: GAMEVER, RAM, MAX_RAM, BACKUP_DEST, ARCHIVE_DEST, UPDATE_FREQUENCY, TEXT_EDITOR
+
+    ORIG_GAMEVER="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f2)"
+    ORIG_RAM="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep -e '^RAM=' | cut -d '=' -f2)"
+    ORIG_MAX_RAM="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep 'MAX_RAM=' | cut -d '=' -f2)"
+    ORIG_BACKUP_DEST="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep 'BACKUP_DEST=' | cut -d '=' -f2)"
+    ORIG_ARCHIVE_DEST="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep 'ARCHIVE_DEST=' | cut -d '=' -f2)"
+    ORIG_TEXT_EDITOR="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep 'TEXT_EDITOR=' | cut -d '=' -f2)"
+
+    
+    ## Set defaults if empty
+
+    if [[ "$ORIG_GAMEVER" == "" ]]; then
+        ORIG_GAMEVER="latest"
+    fi
+
+    if [[ "$ORIG_RAM" == "" ]]; then
+        ORIG_RAM="4G"
+    fi
+
+    if [[ "$ORIG_MAX_RAM" == "" ]]; then
+        ORIG_MAX_RAM="8G"
+    fi
+
+    if [[ "$ORIG_BACKUP_DEST" == "" ]]; then
+        ORIG_BACKUP_DEST="$HOMEDIR/gorpmc/backups"
+    fi
+
+    if [[ "$ORIG_ARCHIVE_DEST" == "" ]]; then
+        ORIG_ARCHIVE_DEST="$HOMEDIR/gorpmc/archives"
+    fi
+
+    if [[ "$ORIG_TEXT_EDITOR" == "" ]]; then
+        ORIG_TEXT_EDITOR=""
+    fi
+
+    
+    ## Update bundled config file
+
+    sed -Ei "s:^GAMEVER=.*$:GAMEVER=$ORIG_GAMEVER:g" ./gorp.conf
+    sed -Ei "s:^RAM=.*$:RAM=$ORIG_RAM:g" ./gorp.conf
+    sed -Ei "s:^MAX_RAM=.*$:MAX_RAM=$ORIG_MAX_RAM:g" ./gorp.conf
+    sed -Ei "s:^BACKUP_DEST=.*$:BACKUP_DEST=$ORIG_BACKUP_DEST:g" ./gorp.conf
+    sed -Ei "s:^ARCHIVE_DEST=.*$:ARCHIVE_DEST=$ORIG_ARCHIVE_DEST:g" ./gorp.conf
+    sed -Ei "s:^TEXT_EDITOR=.*$:TEXT_EDITOR=$ORIG_TEXT_EDITOR:g" ./gorp.conf
+
+
+    ## Copy bundled config file to config file directory
+
+    cp ./gorp.conf "$HOMEDIR"/gorpmc/gorp.conf    
+
 fi
 
 

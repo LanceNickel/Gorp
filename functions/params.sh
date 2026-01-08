@@ -18,40 +18,41 @@
 
 
 
-#### CONFIG FILE GUARD
-
-if [[ ! -f "/usr/local/etc/gorp.conf" ]]; then
-    handle_error "Configuration file not found."
-fi
-
-
-
-
-
-
-
 #### GORP VERSION
 
 GORP_VERSION="0.8.1"
 
 
 
+#### HOMEDIR (only config item set DIRECTLY within this file)
+
+HOMEDIR=
+
+
+
+#### CONFIG FILE GUARD
+
+if [[ ! -f "$HOMEDIR"/gorp.conf ]]; then
+    handle_error "(params) Configuration file not found."
+fi
+
+
+
 #### GET CONFIG FILE ITEMS
 
-GAMEVER=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f2)
-RAM=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep -e '^RAM=' | cut -d '=' -f2)
-MAX_RAM=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'MAX_RAM=' | cut -d '=' -f2)
-HOMEDIR=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'HOMEDIR=' | cut -d '=' -f2)
-BACKUP_DEST=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'BACKUP_DEST=' | cut -d '=' -f2)
-ARCHIVE_DEST=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'ARCHIVE_DEST=' | cut -d '=' -f2)
-UPDATE_FREQUENCY=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'UPDATE_FREQUENCY=' | cut -d '=' -f2)
-TEXT_EDITOR=$(cat /usr/local/etc/gorp.conf | grep "^[^#;]" | grep 'TEXT_EDITOR=' | cut -d '=' -f2)
+GAMEVER="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f2)"
+RAM="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep -e '^RAM=' | cut -d '=' -f2)"
+MAX_RAM="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep 'MAX_RAM=' | cut -d '=' -f2)"
+BACKUP_DEST="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep 'BACKUP_DEST=' | cut -d '=' -f2)"
+ARCHIVE_DEST="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep 'ARCHIVE_DEST=' | cut -d '=' -f2)"
+UPDATE_FREQUENCY="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep 'UPDATE_FREQUENCY=' | cut -d '=' -f2)"
+TEXT_EDITOR="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep 'TEXT_EDITOR=' | cut -d '=' -f2)"
 
 
 
 #### GET LATEST JAR
 
-LATEST_JAR=$(cat $HOMEDIR/jars/latest)
+LATEST_JAR="$(cat $HOMEDIR/jars/latest)"
 
 
 
@@ -62,5 +63,5 @@ LATEST_JAR=$(cat $HOMEDIR/jars/latest)
 #### MAKE SURE ALL ARE POPULATED
 
 if [[ "$GAMEVER" == "" ]] || [[ "$RAM" == "" ]] || [[ "$HOMEDIR" == "" ]] || [[ "$BACKUP_DEST" == "" ]] || [[ "$ARCHIVE_DEST" == "" ]] || [[ "$LATEST_JAR" == "" ]]; then
-    handle_error "One or more required options in gorp.conf not set."
+    handle_error "(params) One or more required options in gorp.conf not set."
 fi

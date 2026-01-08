@@ -114,6 +114,28 @@ get_connected_players() {
 
 
 
+######## CONFIGURATION FILE
+
+#### Update config item
+
+update_config() {
+    key="$1"
+    value="$2"
+    
+    if [[ "$key" == "" ]] || [[ "$value" == "" ]]; then
+        echo "update_config() expects two parameters: key, value"
+        exit 1
+    fi
+
+    sed -Ei "s:^$key=.*$:$key=$value:g" "$HOMEDIR"/gorp.conf
+}
+
+
+
+
+
+
+
 #### SAFETY FUNCTIONS ############
 
 #### Calculate current allocated RAM

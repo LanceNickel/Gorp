@@ -45,7 +45,6 @@ echo -e "Uninstalling..."
 
 sudo rm -rf /usr/local/bin/gorpmc/
 sudo rm /usr/local/bin/gorp
-sudo rm /usr/local/etc/gorp.conf
 
 
 
