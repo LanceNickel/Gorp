@@ -87,7 +87,7 @@ fi
 # status.jar_file
 STATUS_JAR_RAW="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'JAR=' | cut -d '=' -f2)"
 
-if [[ "$STATUS_JAR_RAW" == '$LATEST_JAR' ]]; then
+if [[ "$STATUS_JAR_RAW" == '$LATEST_JAR' ]] || [[ "$STATUS_JAR_RAW" == '"$LATEST_JAR"' ]]; then
     STATUS_JAR=$LATEST_JAR
     STATUS_JAR_OVERRIDDEN="false"
 else
@@ -98,7 +98,7 @@ fi
 # status.ram
 STATUS_RAM_RAW="$(cat $HOMEDIR/servers/$SERVER/run.sh | grep "^[^#;]" | grep 'RAM=' | cut -d '=' -f2)"
 
-if [[ "$STATUS_RAM_RAW" == '$RAM' ]]; then
+if [[ "$STATUS_RAM_RAW" == '$RAM' ]] || [[ "$STATUS_RAM_RAW" == '"$RAM"' ]]; then
     STATUS_RAM=$RAM
     STATUS_RAM_OVERRIDDEN="false"
 else
@@ -107,13 +107,13 @@ fi
 
 
 # status.jar_file_overridden
-if [[ "$STATUS_JAR_RAW" != '$LATEST_JAR' ]]; then
+if [[ "$STATUS_JAR_RAW" != '$LATEST_JAR' ]] && [[ "$STATUS_JAR_RAW" != '"$LATEST_JAR"' ]]; then
   STATUS_JAR_OVERRIDDEN="true"
 fi
 
 
 # status.ram_overridden
-if [[ "$STATUS_RAM_RAW" != '$RAM' ]]; then
+if [[ "$STATUS_RAM_RAW" != '$RAM' ]] && [[ "$STATUS_RAM_RAW" != '"$RAM"' ]]; then
   STATUS_RAM_OVERRIDDEN="true"
 fi
 
@@ -148,7 +148,7 @@ WORLD_E="$(du -shc $HOMEDIR/servers/$SERVER/${WORLD_ACTIVE}_the_end/ 2> /dev/nul
 #### Properties array
 
 # properties.whitelist
-PROPERTIES_WHITELIST="$(grep 'enforce-whitelist=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
+PROPERTIES_WHITELIST="$(grep -e '^enforce-whitelist=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
 
 
 # properties.gamemode
@@ -156,15 +156,15 @@ PROPERTIES_GAMEMODE="$(grep -e '^gamemode=' $HOMEDIR/servers/$SERVER/server.prop
 
 
 # properties.difficulty
-PROPERTIES_DIFFICULTY="$(grep 'difficulty=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
+PROPERTIES_DIFFICULTY="$(grep -e '^difficulty=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
 
 
 # properties.hardcore
-PROPERTIES_HARDCORE="$(grep 'hardcore=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
+PROPERTIES_HARDCORE="$(grep -e '^hardcore=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
 
 
 # properties.server_port
-PROPERTIES_PORT="$(grep 'server-port=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
+PROPERTIES_PORT="$(grep -e '^server-port=' $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
 
 
 
