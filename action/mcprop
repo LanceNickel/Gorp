@@ -71,8 +71,8 @@ fi
 
 #### Bad input from user
 
-if [[ "$SERVER" == "" ]] || [[ "$KEY" == "" ]] || [[ "$VALUE" == "" ]]; then
-    handle_error "Bad input. Expected: 'gorp prop [server-name] [key] [value]."
+if [[ "$SERVER" == "" ]]; then
+    handle_error "Bad input. Expected: 'gorp prop <server-name> [key] [value]."
 fi
 
 
@@ -89,6 +89,14 @@ fi
 
 if [[ "$(is_server_running $SERVER)" == "true" ]]; then
         handle_error "Server cannot be running."
+fi
+
+
+
+#### Server.properties does not exist
+
+if [[ ! -f "$HOMEDIR"/servers/"$SERVER"/server.properties ]]; then
+    handle_error "server.properties not found in for $SERVER."
 fi
 
 

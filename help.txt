@@ -1,5 +1,5 @@
 Gorp - Simple Minecraft CLI tools.
-v0.8.0
+v0.8.1
 
 Docs:       https://gorp.lanickel.com/
 
@@ -32,7 +32,7 @@ MANAGE WORLDS:
 UTILITIES:
   gorp update-jar                                 -- Downloads and sets the latest stable Paper JAR file globally.
   gorp get-jar {-g <gamever> | -u <url>}          -- Downloads a Paper JAR of the specified version | downloads JAR file from URL.
-  gorp prop <server> <key> <value>                -- Updates server.properties for the specified server, using the key/value pair.
+  gorp prop <server> [key] [value]                -- Updates server.properties for the. Pass no key/value to open full properties.
   gorp config [server]                            -- Edit the Gorp configuration. If a server is specified, update that server's conf insead.
   gorp upgrade                                    -- Upgrade the installed version of Gorp, if an update is available.
   gorp -s <server>                                -- Get a server's status in JSON format.

@@ -2,3 +2,7 @@
     * Started keeping a changelog
     * Many general BASH safety improvements
     + Better upgrade process, including automatically updating config and server run.sh files
+
+0.8.1
+    * Fix for prop where shell commands are expanded (bad, nasty bug!)
+    + Prop will now open the full server.properties when no other params are passed

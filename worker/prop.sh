@@ -54,10 +54,42 @@ VALUE="$4"
 
 
 
-#### UPDATE SERVER PROPERTIES ############
+#### OPEN server.properties IN PREFERRED TEXT EDITOR IF K/V NOT PASSED
+
+if [[ "$KEY" == "" ]] && [[ "$VALUE" == "" ]]; then
+
+    #### Prompt for text editor if invalid/unset
+
+    if [[ "$TEXT_EDITOR" != "vim" ]] && [[ "$TEXT_EDITOR" != "vi" ]] && [[ "$TEXT_EDITOR" != "emacs" ]] && [[ "$TEXT_EDITOR" != "nano" ]]; then
+        echo "Please choose a text editor. (Ensure it's installed, too!)"
+
+        select editor in vi vim emacs nano
+        do
+            TEXT_EDITOR=$editor
+            break
+        done
+
+        sudo sed -i "90s:.*:TEXT_EDITOR=$editor:" /usr/local/etc/gorp.conf || handle_error "Failed to update TEXT_EDITOR in config"
+
+    fi
+
+
+    #### Open server.properties in preferred text editor
+
+    "$TEXT_EDITOR" "$HOMEDIR"/servers/"$SERVER"/server.properties || handle_error "Failed to open server.properties using $TEXT_EDITOR"
+
+fi
+
+
+
+
+
+
+
+#### UPDATE SERVER PROPERTIES IF K/V PASSED ############
 
 current="$(grep -e "^$KEY=" $HOMEDIR/servers/$SERVER/server.properties | cut -d '=' -f2)"
-sed -i "s/$KEY=$current/$KEY=$VALUE/g" $HOMEDIR/servers/$SERVER/server.properties || handle_error "Failed to update server.properties."
+sed -i -e "s/$KEY=$current/$KEY=$VALUE/g" $HOMEDIR/servers/$SERVER/server.properties || handle_error "Failed to update server.properties."
 
 
 
