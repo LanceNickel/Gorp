@@ -112,6 +112,9 @@ elif [[ "$ACTION" == "restart" ]]; then
 elif [[ "$ACTION" == "tell" ]]; then
     bash /usr/local/bin/gorpmc/action/mcstuff "$TESTSTRING" "$ARG1" "$ARG2"
 
+elif [[ "$ACTION" == "stuff" ]]; then
+    bash /usr/local/bin/gorpmc/action/mcstuff "$TESTSTRING" "$ARG1" "$ARG2"
+
 elif [[ "$ACTION" == "help" ]]; then
     bash /usr/local/bin/gorpmc/action/gorphelp
 
