@@ -137,5 +137,5 @@ elif [[ "$ACTION" == "move-home" ]]; then
     bash /usr/local/bin/gorpmc/action/gorpmovehome "$TESTSTRING" "$ARG1"
 
 else
-    echo "Invalid parameters. Use gorp help for more information."
+    echo "Invalid action. Use gorp help for more information."
 fi
