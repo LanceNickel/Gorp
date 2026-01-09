@@ -6,3 +6,6 @@
 0.8.1
     + Prop will now open the full server.properties when no other params are passed
     + Status now outputs how many users connected to server
+    * Upgrade process now processes and upgrades configuration file
+    * Configuration file moved from /usr/local/etc to ~/gorpmc/gorp.config
+    * Upgrade process now processes and upgrades run.sh in existing servers
