@@ -103,6 +103,11 @@ get_server_version() {
 #### Get the current connected players on a server
 
 get_connected_players() {
+    if [[ "$1" == "" ]]; then
+        echo "get_connected_players(): Invalid home directory"
+        exit 1
+    fi
+
     running="$(is_server_running $1)"
 
     if [[ "$running" == "false" ]]; then
@@ -110,9 +115,9 @@ get_connected_players() {
     fi
 
     if [[ "$running" == "true" ]]; then
-        count="$(screen -S "$1" -X stuff "list\n" && sleep 0.1 && screen -S "$1" -X hardcopy /tmp/serverdump"$1".dump && tail -n2 /tmp/serverdump"$1".dump | head -n1 | grep -oP 'There are (\d+) of a max' | cut -d ' ' -f3)"
+        count="$(screen -S "$1" -X stuff "list\n" && sleep 0.1 && screen -S "$1" -X hardcopy "$HOMEDIR"/"$1".dump && tail -n2 "$HOMEDIR"/"$1".dump | head -n1 | grep -oP 'There are (\d+) of a max' | cut -d ' ' -f3)"
         echo "$count"
-        rm /tmp/serverdump"$1".dump
+        rm "$HOMEDIR"/"$1".dump
     fi
 }
 
