@@ -3,14 +3,12 @@
 # GORP MICRO-SCRIPT, does just a few tiny things.
 # GORP VERSION REPORTER
 
-# Copyright (C) Lance Nickel 2025.
+# Copyright (C) Lance Nickel 2026.
 # Distributed under GNU GPL v3.
 # <https://gorp.lanickel.com/license/>
 
 . /usr/local/bin/gorpmc/functions/params.sh
 
-GORP_HOMEDIR=$HOMEDIR
+echo -e "Gorp $GORP_VERSION\nGorp Home: $HOMEDIR"
 
-echo -e "Gorp version $GORP_VERSION\nGorp Home: $HOMEDIR"
-
-echo -e "\nGorp Copyright (C) 2025 Lance Nickel\nThis program comes with ABSOLUTELY NO WARRANTY.\nGorp is released under the GNU GPL v3 License. Learn more at\nhttps://gorp.lanickel.com/license/"
+echo -e "\nGorp Copyright (C) 2026 Lance Nickel\nThis program comes with ABSOLUTELY NO WARRANTY.\nGorp is released under the GNU GPL v3 License. Learn more at\nhttps://gorp.lanickel.com/license/"
