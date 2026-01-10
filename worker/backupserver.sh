@@ -43,7 +43,7 @@ MONTH=$(date +"%m")
 DAY=$(date +"%d")
 DATE_FILE=$(date +"%Y-%m-%d_%H%M-%S")
 
-BACKUP_NAME=$SERVER-$DATE_FILE
+BACKUP_NAME="__gorp_bk__$SERVER-$DATE_FILE"
 
 SOURCE=$HOMEDIR/servers/$SERVER
 DEST=$BACKUP_DEST/servers/$SERVER/$YEAR/$MONTH/$DAY
@@ -82,31 +82,31 @@ fi
 
 #### Create destination and tmp
 
-echo "Backing up $SERVER... (This may take a while!)"
-mkdir -p $DEST/ || handle_error "Failed to create destination directory."
-mkdir -p $TMP/$BACKUP_NAME/ || handle_error "Failed to create temp directory."
+echo "Backing up "$SERVER"... (This may take a while!)"
+mkdir -p "$DEST"/ || handle_error "Failed to create destination directory."
+mkdir -p "$TMP"/"$BACKUP_NAME"/ || handle_error "Failed to create temp directory."
 
 
 
 #### Copy files to tmp
 
 echo "Copying files..."
-cp -r $SOURCE $TMP/$BACKUP_NAME/ || handle_error "Failed to copy server to tmp directory."
+cp -r "$SOURCE" "$TMP"/"$BACKUP_NAME"/ || handle_error "Failed to copy server to tmp directory."
 
 
 
 #### Tarball the files
 
-cd $TMP || handle_error "Failed to cd to $TMP"
+cd "$TMP" || handle_error "Failed to cd to $TMP"
 echo "Compressing files..."
-tar -czf $BACKUP_NAME.tar.gz $BACKUP_NAME >/dev/null 2>/dev/null || handle_error "Failed to compress files."
+tar -czf "$BACKUP_NAME".tar.gz "$BACKUP_NAME" >/dev/null 2>/dev/null || handle_error "Failed to compress files."
 
 
 
 #### Copy tarball to destination
 
 echo "Copying files to backup directory..."
-cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to copy tarball to destination."
+cp "$TMP"/"$BACKUP_NAME".tar.gz "$DEST"/ || handle_error "Failed to copy tarball to destination."
 
 
 
@@ -116,5 +116,4 @@ cp $TMP/$BACKUP_NAME.tar.gz $DEST/ || handle_error "Failed to copy tarball to de
 
 #### WE MADE IT ############
 
-echo "Backup name: ${BACKUP_NAME}.tar.gz"
 echo "Server backup complete!"
