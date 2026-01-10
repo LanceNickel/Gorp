@@ -44,7 +44,7 @@ MONTH=$(date +"%m")
 DAY=$(date +"%d")
 DATE_FILE=$(date +"%Y-%m-%d_%H%M-%S")
 
-BACKUP_NAME="__gorp_bk__$WORLD-$DATE_FILE"
+BACKUP_NAME="__bk__worldname_${WORLD}__date_${DATE_FILE}"
 
 SOURCE=$HOMEDIR/servers/$SERVER/$WORLD
 DEST=$BACKUP_DEST/worlds/$SERVER/$WORLD/$YEAR/$MONTH/$DAY

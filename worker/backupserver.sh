@@ -43,7 +43,7 @@ MONTH=$(date +"%m")
 DAY=$(date +"%d")
 DATE_FILE=$(date +"%Y-%m-%d_%H%M-%S")
 
-BACKUP_NAME="__gorp_bk__$SERVER-$DATE_FILE"
+BACKUP_NAME="__bk__servername_${SERVER}__date_${DATE_FILE}"
 
 SOURCE=$HOMEDIR/servers/$SERVER
 DEST=$BACKUP_DEST/servers/$SERVER/$YEAR/$MONTH/$DAY
