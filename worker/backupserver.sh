@@ -90,7 +90,7 @@ mkdir -p "$TMP"/"$BACKUP_NAME"/ || handle_error "Failed to create temp directory
 
 #### Copy files to tmp
 
-echo "Copying files..."
+echo "Creating backup..."
 cp -r "$SOURCE" "$TMP"/"$BACKUP_NAME"/ || handle_error "Failed to copy server to tmp directory."
 
 
@@ -98,14 +98,12 @@ cp -r "$SOURCE" "$TMP"/"$BACKUP_NAME"/ || handle_error "Failed to copy server to
 #### Tarball the files
 
 cd "$TMP" || handle_error "Failed to cd to $TMP"
-echo "Compressing files..."
 tar -czf "$BACKUP_NAME".tar.gz "$BACKUP_NAME" >/dev/null 2>/dev/null || handle_error "Failed to compress files."
 
 
 
 #### Copy tarball to destination
 
-echo "Copying files to backup directory..."
 cp "$TMP"/"$BACKUP_NAME".tar.gz "$DEST"/ || handle_error "Failed to copy tarball to destination."
 
 
