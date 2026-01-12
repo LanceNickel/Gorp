@@ -43,6 +43,7 @@ fi
 GAMEVER="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f2)"
 RAM="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep -e '^RAM=' | cut -d '=' -f2)"
 MAX_RAM="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep 'MAX_RAM=' | cut -d '=' -f2)"
+SILENT_CHAT_MESSAGES="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep 'SILENT_CHAT_MESSAGES=' | cut -d '=' -f2)"
 BACKUP_DEST="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep 'BACKUP_DEST=' | cut -d '=' -f2)"
 ARCHIVE_DEST="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep 'ARCHIVE_DEST=' | cut -d '=' -f2)"
 UPDATE_FREQUENCY="$(cat "$HOMEDIR"/gorp.conf | grep "^[^#;]" | grep 'UPDATE_FREQUENCY=' | cut -d '=' -f2)"

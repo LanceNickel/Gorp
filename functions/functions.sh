@@ -100,6 +100,25 @@ get_server_version() {
 
 
 
+#### Stuff message to server
+
+tell() {
+    server="$1"
+    message="$2"
+
+    if [[ "$(does_server_exist $server)" == "true" ]] && [[ "$(is_server_running $server)" == "true" ]] && [[ "$message" != "" ]]; then
+
+        if [[ "$SILENT_CHAT_MESSAGES" == "no" ]]; then
+            screen -S "$server" -X stuff "say $message\n"
+        else
+            screen -S "$server" -X stuff "tellraw $message\n"
+        fi
+
+    fi
+}
+
+
+
 #### Get the current connected players on a server
 
 get_connected_players() {
