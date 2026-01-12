@@ -55,7 +55,7 @@ VERSION=$(get_server_version $SERVER)
 #### STOP THE SERVER ############
 
 echo "Stopping server..."
-screen -S $SERVER -X stuff 'stop\n' || handle_error "Failed to stuff 'stop' into server."
+cmd "$SERVER" "stop" || handle_error "Failed to cmd stop into server."
 
 
 

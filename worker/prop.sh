@@ -69,7 +69,7 @@ if [[ "$KEY" == "" ]] && [[ "$VALUE" == "" ]]; then
             break
         done
 
-        sudo sed -i "90s:.*:TEXT_EDITOR=$editor:" /usr/local/etc/gorp.conf || handle_error "Failed to update TEXT_EDITOR in config"
+        update_config "TEXT_EDITOR" "$TEXT_EDITOR"
 
     fi
 

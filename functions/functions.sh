@@ -110,11 +110,15 @@ tell() {
 
         if [[ "$SILENT_CHAT_MESSAGES" == "no" ]]; then
             screen -S "$server" -X stuff "say $message\n"
+            return
         else
             screen -S "$server" -X stuff "tellraw $message\n"
+            return
         fi
 
     fi
+
+    return 1
 }
 
 
@@ -122,13 +126,16 @@ tell() {
 #### Stuff command to server
 #### NEVER EXPOSE TO THE USER! THIS IS INHERENTLLY DANGEROUS AND DOES NOT FILTER/SANATIZE.
 
-command() {
+cmd() {
     server="$1"
     command="$2"
 
     if [[ "$(does_server_exist $server)" == "true" ]] && [[ "$(is_server_running $server)" == "true" ]] && [[ "$command" != "" ]]; then
         screen -S "$server" -X stuff "$command\n"
+        return
     fi
+
+    return 1
 }
 
 
@@ -168,12 +175,12 @@ update_config() {
     key="$1"
     value="$2"
     
-    if [[ "$key" == "" ]] || [[ "$value" == "" ]]; then
-        echo "update_config() expects two parameters: key, value"
-        exit 1
+    if [[ "$key" != "" ]] || [[ "$value" != "" ]]; then
+        sed -Ei "s:^$key=.*$:$key=$value:g" "$HOMEDIR"/gorp.conf
+        return
     fi
 
-    sed -Ei "s:^$key=.*$:$key=$value:g" "$HOMEDIR"/gorp.conf
+    return 1
 }
 
 

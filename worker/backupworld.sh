@@ -86,7 +86,7 @@ RUNNING=$(is_server_running "$SERVER")
 if [[ "$RUNNING" == "true" ]]; then
         echo "Saving game..."
 
-        screen -S "$SERVER" -X stuff "save-all\n" || handle_error "Failed to stuff 'save-all' into server."
+        cmd "$SERVER" "save-all" || handle_error "Failed to cmd save-all into server."
 
         I=0
 
@@ -105,7 +105,7 @@ if [[ "$RUNNING" == "true" ]]; then
                 fi
         done
 
-        screen -S "$SERVER" -X stuff "save-off\n" || handle_error "Failed to stuff 'save-off' into server."
+        cmd "$SERVER" "safe-off" || handle_error "Failed to cmd safe-off into server."
 fi
 
 
@@ -135,7 +135,7 @@ cp -r "${SOURCE}_the_end" "$TMP"/"$BACKUP_NAME"/"${WORLD}_the_end" || handle_err
 #### If server is running, turn autosave back on now that we've got the files
 
 if [[ "$RUNNING" == "true" ]]; then
-        screen -S "$SERVER" -X stuff "save-on\n" || handle_error "Failed to stuff 'save-on' into server."
+        cmd "$SERVER" "save-on" || handle_error "Failed to cmd save-on into server. ATTENTION!!!! THIS NEEDS TO BE MANUALLY FIXED! Your server will not auto-save until you type '/save-on' into your server chat. Do this NOW!"
 fi
 
 

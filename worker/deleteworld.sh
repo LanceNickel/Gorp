@@ -83,7 +83,7 @@ fi
 
 #### USER CONFIRMATION ############
 
-echo "You are about to delete a world named '$WORLD_TO_DELETE' in the '$SERVER' server instance."
+echo "You are about to DELETE a world named '$WORLD_TO_DELETE' in the '$SERVER' server instance."
 
 read -r -p "Did you back up the world? [y/n] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
