@@ -8,3 +8,7 @@
     + Status now outputs how many users connected to server
     * Upgrade process now processes and upgrades configuration file
     * Configuration file moved from /usr/local/etc to ~/gorpmc/gorp.config
+
+0.8.2
+    + Ability to send silent chat messages from server
+    + Automated backup management

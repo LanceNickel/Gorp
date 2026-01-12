@@ -74,7 +74,7 @@ HOMEDIR=~
 if [[ "$UPDATE" == "yes" ]]; then
     echo -e "\nUpdating Gorp..."
 else
-    echo -e "\nInstalling Gorp 0.8.1..."
+    echo -e "\nInstalling Gorp 0.8.2..."
 fi
 
 
@@ -179,6 +179,7 @@ if [[ "$UPDATE" == "yes" ]]; then
     ORIG_GAMEVER="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep 'GAMEVER=' | cut -d '=' -f2)"
     ORIG_RAM="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep -e '^RAM=' | cut -d '=' -f2)"
     ORIG_MAX_RAM="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep 'MAX_RAM=' | cut -d '=' -f2)"
+    ORIG_SILENT_CHAT_MESSAGES="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep 'SILENT_CHAT_MESSAGES=' | cut -d '=' -f2)"
     ORIG_BACKUP_DEST="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep 'BACKUP_DEST=' | cut -d '=' -f2)"
     ORIG_ARCHIVE_DEST="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep 'ARCHIVE_DEST=' | cut -d '=' -f2)"
     ORIG_TEXT_EDITOR="$(cat "$HOMEDIR"/gorpmc/gorp.conf | grep "^[^#;]" | grep 'TEXT_EDITOR=' | cut -d '=' -f2)"
@@ -196,6 +197,10 @@ if [[ "$UPDATE" == "yes" ]]; then
 
     if [[ "$ORIG_MAX_RAM" == "" ]]; then
         ORIG_MAX_RAM="8G"
+    fi
+
+    if [[ "$ORIG_SILENT_CHAT_MESSAGES" == "" ]]; then
+        ORIG_SILENT_CHAT_MESSAGES="yes"
     fi
 
     if [[ "$ORIG_BACKUP_DEST" == "" ]]; then
@@ -216,6 +221,7 @@ if [[ "$UPDATE" == "yes" ]]; then
     sed -Ei "s:^GAMEVER=.*$:GAMEVER=$ORIG_GAMEVER:g" ./gorp.conf
     sed -Ei "s:^RAM=.*$:RAM=$ORIG_RAM:g" ./gorp.conf
     sed -Ei "s:^MAX_RAM=.*$:MAX_RAM=$ORIG_MAX_RAM:g" ./gorp.conf
+    sed -Ei "s:^SILENT_CHAT_MESSAGES=.*$:SILENT_CHAT_MESSAGES=$ORIG_SILENT_CHAT_MESSAGES:g" ./gorp.conf
     sed -Ei "s:^BACKUP_DEST=.*$:BACKUP_DEST=$ORIG_BACKUP_DEST:g" ./gorp.conf
     sed -Ei "s:^ARCHIVE_DEST=.*$:ARCHIVE_DEST=$ORIG_ARCHIVE_DEST:g" ./gorp.conf
     sed -Ei "s:^TEXT_EDITOR=.*$:TEXT_EDITOR=$ORIG_TEXT_EDITOR:g" ./gorp.conf
