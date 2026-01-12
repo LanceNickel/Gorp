@@ -119,6 +119,20 @@ tell() {
 
 
 
+#### Stuff command to server
+#### NEVER EXPOSE TO THE USER! THIS IS INHERENTLLY DANGEROUS AND DOES NOT FILTER/SANATIZE.
+
+command() {
+    server="$1"
+    command="$2"
+
+    if [[ "$(does_server_exist $server)" == "true" ]] && [[ "$(is_server_running $server)" == "true" ]] && [[ "$command" != "" ]]; then
+        screen -S "$server" -X stuff "$command\n"
+    fi
+}
+
+
+
 #### Get the current connected players on a server
 
 get_connected_players() {
