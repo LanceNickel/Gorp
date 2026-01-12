@@ -105,7 +105,7 @@ if [[ "$RUNNING" == "true" ]]; then
                 fi
         done
 
-        cmd "$SERVER" "safe-off" || handle_error "Failed to cmd safe-off into server."
+        cmd "$SERVER" "save-off" || handle_error "Failed to cmd save-off into server."
 fi
 
 
