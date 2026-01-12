@@ -112,7 +112,7 @@ tell() {
             screen -S "$server" -X stuff "say $message\n"
             return
         else
-            screen -S "$server" -X stuff "tellraw $message\n"
+            screen -S "$server" -X stuff "tellraw @a $message\n"
             return
         fi
 
