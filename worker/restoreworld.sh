@@ -10,7 +10,7 @@
 ###################################################################
 
 # Copyright (C) Lance Nickel 2026.
-# Distributed under GNU GPL v3.
+# Gorp is distributed under the MIT license.
 # <https://gorp.lanickel.com/license/>
 
 
@@ -55,7 +55,9 @@ SERVER=$2
 
 cd $BACKUP_DEST/worlds/$SERVER
 
-echo -e "\nPlease select a world (level-name in server.properties)"
+clear
+echo -e "====== RESTORING WORLD BACKUP ======"
+echo -e "\nSelect a world (level-name in server.properties)"
 
 select d in *;
 do
@@ -70,6 +72,9 @@ RESTORE_LEVEL_NAME=$d
 
 #### Select year
 
+clear
+echo -e "====== RESTORING WORLD BACKUP ======"
+echo -e "WORLD: $RESTORE_LEVEL_NAME\n"
 echo -e "\nSelect year"
 
 select d in *;
@@ -85,6 +90,9 @@ YEAR=$d
 
 #### Select month
 
+clear
+echo -e "====== RESTORING WORLD BACKUP ======"
+echo -e "WORLD: $RESTORE_LEVEL_NAME  |  YEAR: $YEAR\n"
 echo -e "\nSelect month"
 
 select d in *;
@@ -100,6 +108,9 @@ MONTH=$d
 
 #### Select day
 
+clear
+echo -e "====== RESTORING WORLD BACKUP ======"
+echo -e "WORLD: $RESTORE_LEVEL_NAME  |  YEAR: $YEAR  |  MONTH: $MONTH\n"
 echo -e "\nSelect day of month"
 
 select d in *;
@@ -115,7 +126,10 @@ DAY=$d
 
 #### Select backup file
 
-echo -e "\nSelect backup to restore from\nDate format is YYYY-MM-DD_HHMM-SS"
+clear
+echo -e "====== RESTORING WORLD BACKUP ======"
+echo -e "WORLD: $RESTORE_LEVEL_NAME  |  YEAR: $YEAR  |  MONTH: $MONTH  |  DAY: $DAY\n"
+echo -e "\nSelect backup to restore from\nDate format is YYYY-MM-DD_HHMM-SS\n"
 
 select d in *;
 do

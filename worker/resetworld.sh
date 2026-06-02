@@ -11,7 +11,7 @@
 ###################################################################
 
 # Copyright (C) Lance Nickel 2026.
-# Distributed under GNU GPL v3.
+# Gorp is distributed under the MIT license.
 # <https://gorp.lanickel.com/license/>
 
 

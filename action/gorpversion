@@ -4,7 +4,7 @@
 # GORP VERSION REPORTER
 
 # Copyright (C) Lance Nickel 2026.
-# Distributed under GNU GPL v3.
+# Gorp is distributed under the MIT license.
 # <https://gorp.lanickel.com/license/>
 
 . /usr/local/bin/gorpmc/functions/params.sh
