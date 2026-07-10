@@ -114,7 +114,7 @@ while [ true ]; do
     sleep 1
     ((I++))
 
-    if [[ "$(grep 'INFO]: Done (' $HOMEDIR/servers/$SERVER/logs/latest.log)" != "" ]]; then
+    if [[ "$(grep 'INFO]: Done (' $HOMEDIR/servers/$SERVER/logs/latest.log 2>/dev/null)" != "" ]]; then
         break
     fi
 
