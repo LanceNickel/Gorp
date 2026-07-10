@@ -11,4 +11,4 @@
 
 echo -e "Gorp $GORP_VERSION\nGorp Home: $HOMEDIR"
 
-echo -e "\nGorp Copyright (C) 2026 Lance Nickel\nThis program comes with ABSOLUTELY NO WARRANTY.\nGorp is released under the GNU GPL v3 License. Learn more at\nhttps://gorp.lanickel.com/license/"
+echo -e "\nGorp Copyright (C) 2026 Lance Nickel\nThis program comes with ABSOLUTELY NO WARRANTY.\nGorp is released under the MIT License. Learn more at\nhttps://gorp.lanickel.com/license/"
