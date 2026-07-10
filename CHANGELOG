@@ -12,3 +12,7 @@
 0.8.2
     + Ability to send silent chat messages from server
     + Automated backup management
+
+0.8.3
+    + Support for Paper API v3
+    + Fixed bug when server started without previous latest.log file existing
