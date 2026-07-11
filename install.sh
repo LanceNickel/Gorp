@@ -74,7 +74,7 @@ HOMEDIR=~
 if [[ "$UPDATE" == "yes" ]]; then
     echo -e "\nUpdating Gorp..."
 else
-    echo -e "\nInstalling Gorp 0.8.3..."
+    echo -e "\nInstalling Gorp 0.8.2..."
 fi
 
 
