@@ -78,50 +78,56 @@ fi
 
 
 
-#### DOWNLOAD BY GAMEVER ############
+#### DOWNLOAD BY GAME VERSION ############
 
 if [[ "$MODE" == "-g" ]]; then
 
-        #### Get build info
+        # If ARG is set to 'latest', get the latest available stable paper version and build
+        if [[ "$ARG" == 'latest' ]]; then
+                VERSIONS=$(curl -s -H "User-Agent: $USER_AGENT" https://fill.papermc.io/v3/projects/paper/versions | jq -r '.versions[].version.id')
 
-        echo "Getting build information..."
-        curl -s -X 'GET' "https://api.papermc.io/v2/projects/paper/versions/$ARG/builds" -H 'accept: application/json' -o /tmp/gorp/builds.json || handle_error "Failed to get latest build info."
+                ITERS=0
 
+                for version in ${VERSIONS}; do
 
+                        # Get latest stable build for version
+                        LATEST_BUILD=$(curl -s -H "User-Agent: $USER_AGENT" https://fill.papermc.io/v3/projects/paper/versions/${version}/builds | jq -r 'map(select(.channel == "STABLE")) | .[0] | .id')
 
-        #### Gamever not found
+                        if [ "$LATEST_BUILD" != "null" ]; then
+                                ARG="$version"
+                                break
+                        fi
 
-        if [[ $(cat /tmp/gorp/builds.json | grep 'Version not found.') != "" ]]; then
-                handle_error "Game version not found."
+                        ITERS=$(($ITERS+1))
+
+                        if [[ $ITERS -ge 10 ]]; then
+                                handle_error "Not able to find latest game version."
+                        fi
+
+                done
+        fi
+
+        # Get latest stable build
+        LATEST_BUILD=$(curl -s -H "User-Agent: $USER_AGENT" https://fill.papermc.io/v3/projects/paper/versions/${ARG}/builds | jq -r 'map(select(.channel == "STABLE")) | .[0] | .id' 2>/dev/null)
+
+        if [[ "$?" != "0" ]]; then
+                handle_error "Build for game version $ARG not found."
+        fi
+
+        if [ "$LATEST_BUILD" != "null" ]; then
+                BUILD="$LATEST_BUILD"
+        else
+                handle_error "A stable build was not found for game version $ARG. Gorp cannot install experimental builds, download them manually."
         fi
 
 
 
-        #### Find latest stable build
 
-        jq '.builds[-1] | {build, channel, downloads}' /tmp/gorp/builds.json > /tmp/gorp/latest.json || handle_error "Failed to parse build information."
 
-        FOUND=false
-        I=1
 
-        while [ $FOUND = false ]; do
-                ((I++))
 
-                # If the channel in latest.json is experimental...
-                if [[ $(jq '.channel' /tmp/gorp/latest.json) != '"default"' ]]; then
-                        
-                        # Get the second-oldest build version from builds.json and overwrite latest.json with it
-                        jq ".builds[-$I] | {build, channel, downloads}" /tmp/gorp/builds.json > /tmp/gorp/latest.json
-                else
-                        
-                        # If the channel in latest.json is NOT experimental, we found the latest stable (default channel) version
-                        FOUND=true
-                fi
 
-                if [[ "$I" == "25" ]]; then
-                        handle_error "Stable version not found, timeout."
-                fi
-        done
+        ####
 
 
 
@@ -129,11 +135,14 @@ if [[ "$MODE" == "-g" ]]; then
 
 
 
-        #### PARSE LATEST BUILD INFO ############
+        #### DOWNLOAD THE FILE AND VERIFY IT ############
 
-        BUILD=$(jq '.build' /tmp/gorp/latest.json)
-        NAME=$(jq '.downloads.application.name' /tmp/gorp/latest.json | tail -c +2 | head -c -2)
-        CHECKSUM=$(jq '.downloads.application.sha256' /tmp/gorp/latest.json | tail -c +2 | head -c -2)
+        #### Get build info
+
+        BUILD_INFO=$(curl -s -H "User-Agent: $USER_AGENT" https://fill.papermc.io/v3/projects/paper/versions/$ARG/builds/$BUILD)
+        URL=$(echo "$BUILD_INFO" | jq -r .downloads[].url)
+        CHECKSUM=$(echo "$BUILD_INFO" | jq -r .downloads[].checksums.sha256)
+        FILENAME="paper-${ARG}-${BUILD}.jar"
 
 
 
@@ -143,13 +152,14 @@ if [[ "$MODE" == "-g" ]]; then
 
         #### DOWNLOAD THE BUILD ############
 
-        wget -q https://api.papermc.io/v2/projects/paper/versions/$ARG/builds/$BUILD/downloads/$NAME -P /tmp/gorp/ || handle_error "Failed to download JAR file."
+        echo "Downloading latest stable build for game version $ARG..."
+        curl --silent --output /tmp/gorp/"$FILENAME" "$URL" || handle_error "Failed to download JAR file."
 
 
 
         #### Test checksum
 
-        TESTSUM="$(sha256sum /tmp/gorp/$NAME | cut -d " " -f 1)"
+        TESTSUM="$(sha256sum /tmp/gorp/$FILENAME | cut -d " " -f 1)"
 
         if [[ "$TESTSUM" != "$CHECKSUM" ]]; then
                 handle_error "Downloaded JAR file failed checksum test."
@@ -157,15 +167,21 @@ if [[ "$MODE" == "-g" ]]; then
 
 
 
-        #### Rename the JAR and move it to the jars folder
 
-        mv /tmp/gorp/$NAME /tmp/gorp/$ARG.jar || handle_error "Failed to rename JAR file."
-        cp -f /tmp/gorp/$ARG.jar $HOMEDIR/jars/ || handle_error "Failed to move JAR to jars directory."
+
+
+
+        #### INSTALL ############
+
+        #### Move JAR to jars
+
+        echo "Installing version $ARG build $BUILD..."
+        mv /tmp/gorp/"$FILENAME" "$HOMEDIR"/jars/ || handle_error "Failed to move JAR to jars folder."
+
+
+
+        #### Done!
         
-        
-        
-        #### Done
-        
-        echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$ARG.jar"
+        echo -e "JAR file downloaded!\nPath: $HOMEDIR/jars/$FILENAME"
 
 fi

@@ -102,7 +102,7 @@ INSTALLED=$(cat $HOMEDIR/jars/latest)
 BUILD_INFO=$(curl -s -H "User-Agent: $USER_AGENT" https://fill.papermc.io/v3/projects/paper/versions/$GAMEVER/builds/$BUILD)
 URL=$(echo "$BUILD_INFO" | jq -r .downloads[].url)
 CHECKSUM=$(echo "$BUILD_INFO" | jq -r .downloads[].checksums.sha256)
-FILENAME="${GAMEVER}_${BUILD}.jar"
+FILENAME="paper-${GAMEVER}-${BUILD}.jar"
 
 
 
@@ -112,7 +112,7 @@ FILENAME="${GAMEVER}_${BUILD}.jar"
 
 #### DOWNLOAD THE BUILD ############
 
-echo "Downloading latest stable jar file..."
+echo "Downloading latest stable build for game version $GAMEVER..."
 curl --silent --output /tmp/gorp/"$FILENAME" "$URL" || handle_error "Failed to download JAR file."
 
 
@@ -135,7 +135,7 @@ fi
 
 #### Move JAR to jars
 
-echo "Installing version $GAMEVER build $BUILD over $INSTALLED..."
+echo "Installing version $GAMEVER build $BUILD..."
 mv /tmp/gorp/"$FILENAME" "$HOMEDIR"/jars/ || handle_error "Failed to move JAR to jars folder."
 
 
