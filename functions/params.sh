@@ -20,7 +20,7 @@
 
 #### GORP VERSION & USER AGENT STRING
 
-GORP_VERSION="0.8.3"
+GORP_VERSION="0.8.2"
 USER_AGENT="gorp/$GORP_VERSION (https://gorp.lanickel.com)"
 
 
