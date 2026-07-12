@@ -12,4 +12,5 @@
 0.8.2
     + Ability to send silent chat messages from server
     + Support for Paper API v3
-    + Fixed bug when server started without previous latest.log file existing 
+    + Fixed bug when server started without previous latest.log file existing
+    + Improved backups to handle dimensions being within the main world directory instead of being separate

@@ -126,9 +126,16 @@ mkdir -p "$TMP"/"$BACKUP_NAME"/ || handle_error "Failed to create temp directory
 #### Copy world files to temp
 
 echo "Creating backup..."
-cp -r "$SOURCE" "$TMP"/"$BACKUP_NAME"/"$WORLD" || handle_error "Failed to copy overworld files to tmp directory."
-cp -r "${SOURCE}_nether" "$TMP"/"$BACKUP_NAME"/"${WORLD}_nether" || handle_error "Failed to copy nether files to tmp directory."
-cp -r "${SOURCE}_the_end" "$TMP"/"$BACKUP_NAME"/"${WORLD}_the_end" || handle_error "Failed to copy end files to tmp directory."
+
+cp -r "$SOURCE" "$TMP"/"$BACKUP_NAME"/"$WORLD" || handle_error "Failed to copy world files to tmp directory."
+
+if [[ -d "${SOURCE}_nether" ]]; then
+        cp -r "${SOURCE}_nether" "$TMP"/"$BACKUP_NAME"/"${WORLD}_nether" || handle_error "Failed to copy nether files to tmp directory."
+fi
+
+if [[ -d "${SOURCE}_the_end" ]]; then
+        cp -r "${SOURCE}_the_end" "$TMP"/"$BACKUP_NAME"/"${WORLD}_the_end" || handle_error "Failed to copy end files to tmp directory."
+fi
 
 
 
